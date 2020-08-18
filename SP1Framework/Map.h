@@ -1,8 +1,7 @@
 #pragma once
 class Map
 {
-private:
-	
+
 public:
 	int i = 0;
 	int j = 0;
