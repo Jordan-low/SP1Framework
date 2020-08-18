@@ -211,6 +211,25 @@ void Map::dungeon_stealth1()
 	j = 6; Grid[56][j] = '|'; Grid[57][j] = 'B'; Grid[58][j] = '|';
 }
 
+void Map::dungeon_stealth3()
+{
+	//doors
+	j = 24; for (i = 0; i < 6; i++) { (Grid[i][j] = '@'); }
+	j = 0; for (i = 60; i < 80; i++) { (Grid[i][j] = '@'); }
+	//walls
+	j = 20; for (i = 0; i < 60; i++) { (Grid[i][j] = '-'); }
+	i = 59; for (j = 0; j < 20; j++) { (Grid[i][j] = '|'); }
+	i = 59; for (j = 8; j < 13; j++) { (Grid[i][j] = ' '); }
+	//elevator
+	j = 2; Grid[4][j] = '|'; Grid[5][j] = 'E'; Grid[6][j] = '|';
+	//statue
+	j = 9; for (i = 5; i < 15; i++) { (Grid[i][j] = '-'); }
+	j = 16; for (i = 5; i < 15; i++) { (Grid[i][j] = '-'); }
+	i = 5; for (j = 10; j < 16; j++) { (Grid[i][j] = '|'); }
+	i = 14; for (j = 10; j < 16; j++) { (Grid[i][j] = '|'); }
+	j = 12; Grid[9][j] = 'O'; Grid[10][j] = 'O';
+	j = 13; Grid[9][j] = 'O'; Grid[10][j] = 'O';
+}
 
 void Map::orphanage()
 {
