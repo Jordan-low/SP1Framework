@@ -15,5 +15,6 @@ public:
 
 	void orphanage();
 	void protest_area();
+	void insideAbandonedFacility1();
 };
 
