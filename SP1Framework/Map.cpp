@@ -172,6 +172,44 @@ void Map::insideMedicalFacility()
 	j = 18; for (i = 20; i < 26; i++) { (Grid[i][j] = '-'); }
 }
 
+void Map::dungeon_stealth1()
+{
+	//door
+	j = 24; for (i = 0; i < 16; i++) { (Grid[i][j] = '@'); }
+	//maze generation
+	i = 7; for (j = 19; j < 25; j++) { (Grid[i][j] = '|'); }
+	j = 18; for (i = 7; i < 25; i++) { (Grid[i][j] = '-'); }
+	i = 25; for (j = 12; j < 22; j++) { (Grid[i][j] = '|'); }
+	j = 11; for (i = 12; i < 26; i++) { (Grid[i][j] = '-'); }
+	j = 16; for (i = 11; i < 25; i++) { (Grid[i][j] = '-'); }
+	i = 11; for (j = 5; j < 14; j++) { (Grid[i][j] = '|'); }
+	j = 4; for (i = 4; i < 37; i++) { (Grid[i][j] = '-'); }
+	i = 4; for (j = 5; j < 12; j++) { (Grid[i][j] = '|'); }
+	i = 36; for (j = 5; j < 12; j++) { (Grid[i][j] = '|'); }
+	j = 15; for (i = 26; i < 49; i++) { (Grid[i][j] = '-'); }
+	i = 48; for (j = 7; j < 15; j++) { (Grid[i][j] = '|'); }
+	j = 7; for (i = 48; i < 60; i++) { (Grid[i][j] = '-'); }
+	j = 11; for (i = 49; i < 70; i++) { (Grid[i][j] = '-'); }
+	i = 69; for (j = 0; j < 11; j++) { (Grid[i][j] = '|'); }
+	i = 55; for (j = 4; j < 7; j++) { (Grid[i][j] = '|'); }
+	j = 22; for (i = 25; i < 49; i++) { (Grid[i][j] = '-'); }
+	i = 48; for (j = 19; j < 22; j++) { (Grid[i][j] = '|'); }
+	j = 18; for (i = 48; i < 70; i++) { (Grid[i][j] = '-'); }
+	i = 59; for (j = 15; j < 18; j++) { (Grid[i][j] = '|'); }
+	j = 14; for (i = 59; i < 75; i++) { (Grid[i][j] = '-'); }
+	i = 69; for (j = 19; j < 22; j++) { (Grid[i][j] = '|'); }
+	j = 20; for (i = 49; i < 60; i++) { (Grid[i][j] = '-'); }
+	//locked door
+	j = 15; for (i = 34; i < 41; i++) { (Grid[i][j] = '&'); }
+	//barrel locations
+	j = 0; Grid[77][j] = '('; Grid[78][j] = 'B'; Grid[79][j] = ')';
+	j = 21; Grid[26][j] = '('; Grid[27][j] = 'B'; Grid[28][j] = ')';
+	j = 20; Grid[4][j] = '('; Grid[5][j] = 'B'; Grid[6][j] = ')';
+	//box locations
+	j = 21; Grid[4][j] = '|'; Grid[5][j] = 'B'; Grid[6][j] = '|';
+	j = 19; Grid[49][j] = '|'; Grid[50][j] = 'B'; Grid[51][j] = '|';
+	j = 6; Grid[56][j] = '|'; Grid[57][j] = 'B'; Grid[58][j] = '|';
+}
 
 void Map::orphanage()
 {
