@@ -10,3 +10,8 @@ public:
 	char GetName();
 };
 
+class Player :
+	public Entity
+{
+};
+
