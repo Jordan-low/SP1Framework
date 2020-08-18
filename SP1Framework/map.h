@@ -15,10 +15,13 @@ public:
 	void insideAbandonedFacility3();
 	void insideMedicalFacility();
 
-	char map[27][83];
+
 	void orphanage();
 	void protest_area();
 	void insideAbandonedFacility2();
+	void insideAbandonedFacility4();
+	void dungeon_cell();
+	void dungeon_stealth2();
 
 };
 

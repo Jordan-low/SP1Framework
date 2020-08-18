@@ -1,6 +1,7 @@
 #pragma once
+#include "Entity.h"
 
-class Damage
+class Damage : public Entity
 {
 private:
 	int dmg;
@@ -8,6 +9,4 @@ private:
 public:
 	Damage();
 	~Damage();
-	void setDamage(int x);
-	int getDamage();
 };
