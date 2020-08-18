@@ -9,9 +9,3 @@ public:
 	~Player();
 	char GetName();
 };
-
-class Player :
-	public Entity
-{
-};
-
