@@ -7,10 +7,17 @@ Player::Player()
 
 Player::~Player()
 {
-	//test
+	
 }
 
 char Player::GetName()
 {
 	return name;
+}
+
+void Player::Attack()
+{
+	Damage Melee;
+	Melee.setDamage(5);
+	Melee.getDamage();
 }

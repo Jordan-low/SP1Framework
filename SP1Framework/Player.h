@@ -8,4 +8,5 @@ public:
 	Player();
 	~Player();
 	char GetName();
+	void Attack();
 };
