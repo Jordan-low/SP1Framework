@@ -15,6 +15,7 @@ public:
 	void insideAbandonedFacility3();
 	void insideMedicalFacility();
 	void dungeon_stealth1();
+	void dungeon_stealth3();
 
 	void orphanage();
 	void protest_area();
