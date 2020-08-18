@@ -81,3 +81,17 @@ void Map::townsquare()
 	//Orphanage
 	j = 21; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }Grid[21][22] = '|'; Grid[22][22] = ' '; Grid[23][22] = 'â'; Grid[24][22] = ' '; Grid[25][22] = '|'; j = 23; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }
 }
+
+void Map::patharea()
+{
+	//path lines
+	i = 35; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); }
+	i = 45; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); }
+	j = 10; for (int i = 45; i < 80; i++) { (Grid[i][j] = '-'); }
+	j = 15; for (int i = 45; i < 80; i++) { (Grid[i][j] = '-'); }
+	i = 45; for (int j = 11; j < 15; j++) { (Grid[i][j] = ' '); }
+	//door
+	j = 0; for (int i = 36; i < 45; i++) { (Grid[i][j] = '@'); }
+	j = 24; for (int i = 36; i < 45; i++) { (Grid[i][j] = '@'); }
+	i = 79; for (int j = 11; j < 15; j++) { (Grid[i][j] = '@'); }
+}
