@@ -1,11 +1,9 @@
-#include "map.h"
-
-#include "map.h"
+#include "Map.h"
 #include <iostream>
 
 using namespace std;
 
-void map::initialise()
+void Map::initialise()
 {
 	//initialise map
 	for (j = 0; j < 25; j++)
@@ -17,7 +15,7 @@ void map::initialise()
 	}
 }
 
-void map::printmap()
+void Map::printmap()
 {
 	//print first line
 	j = 0;
@@ -48,7 +46,7 @@ void map::printmap()
 
 }
 
-void map::townsquare()
+void Map::townsquare()
 {
 	//doors
 	j = 0; for (i = 8; i < 24; i++) { (Grid[i][j] = '@'); }
