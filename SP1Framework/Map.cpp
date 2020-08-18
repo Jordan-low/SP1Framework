@@ -173,6 +173,7 @@ void Map::insideMedicalFacility()
 }
 
 
+
 void Map::orphanage()
 {
 	char map[27][83] = {
