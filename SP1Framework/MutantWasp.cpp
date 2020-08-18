@@ -32,6 +32,11 @@ void MutantWasp::Drop()
 	}
 }
 
+void MutantWasp::Damaged()
+{
+	this->Hit();
+}
+
 MutantWasp::~MutantWasp()
 {
 

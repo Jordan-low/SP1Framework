@@ -11,5 +11,6 @@ public:
 	TutEnemy();
 	void Attack();
 	void Debuff();
+	void Damaged();
 	~TutEnemy();
 };

@@ -7,6 +7,7 @@ private:
 	Pig();
 	void Attack();
 	void Drop();
+	void Damaged();
 	~Pig();
 };
 

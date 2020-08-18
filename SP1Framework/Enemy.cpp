@@ -25,6 +25,12 @@ string Enemy::getName()
 	return name;
 }
 
+void Enemy::Hit()
+{
+	HP -= 5;
+	HP--;
+}
+
 Enemy::~Enemy()
 {
 

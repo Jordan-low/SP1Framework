@@ -22,6 +22,11 @@ void Guard::Drop()
 	}
 }
 
+void Guard::Damaged()
+{
+	this->Hit();
+}
+
 Guard::~Guard()
 {
 	if (HP == 0)

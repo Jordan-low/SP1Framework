@@ -16,5 +16,6 @@ public:
 	void setEnemy(int h, int d, string n);
 	short getEnemy();
 	string getName();
+	void Hit();
 };
 

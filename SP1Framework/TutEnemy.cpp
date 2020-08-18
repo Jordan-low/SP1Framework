@@ -24,6 +24,11 @@ void TutEnemy::Debuff()
 	}
 }
 
+void TutEnemy::Damaged()
+{
+	this->Hit();
+}
+
 TutEnemy::~TutEnemy()
 {
 	if (HP == 0)

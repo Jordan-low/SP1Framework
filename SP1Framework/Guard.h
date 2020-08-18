@@ -6,5 +6,6 @@ class Guard : public Enemy
 	Guard();
 	void Attack();
 	void Drop();
+	void Damaged();
 	~Guard();
 };

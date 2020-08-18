@@ -14,7 +14,7 @@ public:
 	void insideAbandonedFacility1();
 	void insideAbandonedFacility3();
 	void insideMedicalFacility();
-
+	void dungeon_stealth1();
 
 	void orphanage();
 	void protest_area();
@@ -22,6 +22,7 @@ public:
 	void insideAbandonedFacility4();
 	void dungeon_cell();
 	void dungeon_stealth2();
+	void boss_room();
 
 };
 

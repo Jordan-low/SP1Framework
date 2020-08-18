@@ -10,6 +10,7 @@ public:
 	void Attack();
 	void Debuff();
 	void Drop();
+	void Damaged();
 	~MutantWasp();
 };
 

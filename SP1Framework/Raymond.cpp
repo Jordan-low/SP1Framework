@@ -53,6 +53,11 @@ void Raymond::Talk()
 	}
 }
 
+void Raymond::Damaged()
+{
+	this->Hit();
+}
+
 Raymond::~Raymond()
 {
 	if (HP == 0)

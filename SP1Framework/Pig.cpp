@@ -22,6 +22,11 @@ void Pig::Drop()
 	}
 }
 
+void Pig::Damaged()
+{
+	this->Hit();
+}
+
 Pig::~Pig()
 {
 
