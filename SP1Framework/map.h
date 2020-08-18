@@ -22,6 +22,7 @@ public:
 	void insideAbandonedFacility4();
 	void dungeon_cell();
 	void dungeon_stealth2();
+	void boss_room();
 
 };
 
