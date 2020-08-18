@@ -17,7 +17,11 @@ char Player::GetName()
 
 void Player::Attack()
 {
+	Player player;
+	player.SetD(5);
+	/*
 	Damage Melee;
 	Melee.setDamage(5);
 	Melee.getDamage();
+	*/
 }

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+using namespace std;
 
 double  g_dElapsedTime;
 double  g_dDeltaTime;
@@ -322,6 +323,8 @@ void renderGame()
 
 void renderMap()
 {
+
+
     // Set up sample colours, and output shadings
     const WORD colors[] = {
         0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
