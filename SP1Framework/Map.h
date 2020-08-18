@@ -2,8 +2,6 @@
 
 class Map
 {
-private:
-	char map[28][83];
 public:
 	int i = 0;
 	int j = 0;
