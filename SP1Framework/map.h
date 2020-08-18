@@ -16,5 +16,6 @@ public:
 	void protest_area();
 	void insideAbandonedFacility1();
 	void insideAbandonedFacility3();
+	void insideMedicalFacility();
 };
 

@@ -81,7 +81,6 @@ void Map::townsquare()
 	//Orphanage
 	j = 21; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }Grid[21][22] = '|'; Grid[22][22] = ' '; Grid[23][22] = 'â'; Grid[24][22] = ' '; Grid[25][22] = '|'; j = 23; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }
 }
-
 void Map::patharea()
 {
 	//path lines
@@ -95,6 +94,85 @@ void Map::patharea()
 	j = 24; for (int i = 36; i < 45; i++) { (Grid[i][j] = '@'); }
 	i = 79; for (int j = 11; j < 15; j++) { (Grid[i][j] = '@'); }
 }
+
+void Map::insideAbandonedFacility1()
+{
+	j = 24; for (int i = 34; i < 44; i++) { (Grid[i][j] = '@'); }
+	//generator vertical
+	j = 15; for (int i = 20; i < 60; i++) { (Grid[i][j] = '-'); }
+	j = 0; for (int i = 20; i < 60; i++) { (Grid[i][j] = '-'); }
+	//generator horizontal
+	i = 20; for (int j = 1; j < 15; j++) { (Grid[i][j] = '|'); }
+	i = 59; for (int j = 1; j < 15; j++) { (Grid[i][j] = '|'); }
+	//opening
+	j = 15; for (int i = 34; i < 44; i++) { (Grid[i][j] = ' '); }
+	//locked doors
+	i = 0; for (int j = 17; j < 23; j++) { (Grid[i][j] = '&'); }
+	i = 79; for (int j = 17; j < 23; j++) { (Grid[i][j] = '&'); }
+	//minigame
+	j = 2; Grid[54][j] = '|'; Grid[55][j] = '!'; Grid[56][j] = '|';
+	//Control Room
+	j = 7; Grid[32][j] = 'C'; Grid[33][j] = 'o'; Grid[34][j] = 'n'; Grid[35][j] = 't'; Grid[36][j] = 'r'; Grid[37][j] = 'o'; Grid[38][j] = 'l'; Grid[42][j] = 'R'; Grid[43][j] = 'o'; Grid[44][j] = 'o'; Grid[45][j] = 'm';
+
+	//barrel locations
+	//left side
+	j = 0;  Grid[1][j] = '|'; Grid[2][j] = 'B'; Grid[3][j] = '|';
+	j = 1; Grid[7][j] = '|'; Grid[8][j] = 'B'; Grid[9][j] = '|';
+	j = 4; Grid[2][j] = '|'; Grid[3][j] = 'B'; Grid[4][j] = '|';
+	j = 0; Grid[17][j] = '|'; Grid[18][j] = 'B'; Grid[19][j] = '|';
+	j = 7; Grid[17][j] = '|'; Grid[18][j] = 'B'; Grid[19][j] = '|';
+	//right side
+	j = 0; Grid[77][j] = '|'; Grid[78][j] = 'B'; Grid[79][j] = '|';
+	j = 1; Grid[60][j] = '|'; Grid[61][j] = 'B'; Grid[62][j] = '|';
+	j = 3; Grid[65][j] = '|'; Grid[66][j] = 'B'; Grid[67][j] = '|';
+	j = 7; Grid[77][j] = '|'; Grid[78][j] = 'B'; Grid[79][j] = '|';
+	j = 11; Grid[60][j] = '|'; Grid[61][j] = 'B'; Grid[62][j] = '|';
+}
+
+void Map::insideAbandonedFacility3()
+{
+	//small box
+	j = 0; for (i = 30; i < 50; i++) { (Grid[i][j] = '-'); }
+	j = 10; for (i = 30; i < 50; i++) { (Grid[i][j] = '-'); }
+	j = 10; for (i = 39; i < 42; i++) { (Grid[i][j] = ' '); }
+	i = 30; for (j = 1; j < 10; j++) { (Grid[i][j] = '|'); }
+	i = 49; for (j = 1; j < 10; j++) { (Grid[i][j] = '|'); }
+	i = 38; for (j = 11; j < 25; j++) { (Grid[i][j] = '|'); }
+	i = 42; for (j = 11; j < 25; j++) { (Grid[i][j] = '|'); }
+	//door
+	j = 24; for (i = 39; i < 42; i++) { (Grid[i][j] = '@'); }
+}
+
+void Map::insideMedicalFacility()
+{
+	//door
+	i = 0; for (int j = 10; j < 15; j++) { (Grid[i][j] = '@'); }
+	//beds
+	//vertical
+	i = 75; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 65; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 60; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 50; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 45; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 35; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	//horizontal
+	j = 0; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 2; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 6; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 18; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 22; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 24; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	for (j = 0; j < 25; j++) { for (i = 61; i < 65; i++) { (Grid[i][j] = ' '); } }
+	for (j = 0; j < 25; j++) { for (i = 46; i < 50; i++) { (Grid[i][j] = ' '); } }
+	//front desk
+	i = 20; for (int j = 8; j < 18; j++) { (Grid[i][j] = '|'); }
+	i = 23; for (int j = 2; j < 23; j++) { (Grid[i][j] = '|'); }
+	for (j = 8; j < 18; j++) { for (i = 21; i < 26; i++) { (Grid[i][j] = ' '); } }
+	j = 7; for (i = 20; i < 26; i++) { (Grid[i][j] = '-'); }
+	j = 18; for (i = 20; i < 26; i++) { (Grid[i][j] = '-'); }
+}
+
+
 
 void Map::orphanage()
 {
