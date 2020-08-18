@@ -1,7 +1,6 @@
 #pragma once
-class map
+class Map
 {
-
 public:
 	int i = 0;
 	int j = 0;
@@ -9,7 +8,5 @@ public:
 	void initialise();
 	void printmap();
 	void townsquare();
-
-
 };
 
