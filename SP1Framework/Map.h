@@ -1,7 +1,8 @@
 #pragma once
-
 class Map
 {
+private:
+	char map[27][83];
 public:
 	int i = 0;
 	int j = 0;
