@@ -8,5 +8,6 @@ public:
 	void initialise();
 	void printmap();
 	void townsquare();
+	void patharea();
 };
 
