@@ -162,7 +162,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     if (key != K_COUNT)
     {
         g_skKeyEvent[key].keyDown = keyboardEvent.bKeyDown;
-        //g_skKeyEvent[key].keyReleased = !keyboardEvent.bKeyDown;
+        g_skKeyEvent[key].keyReleased = !keyboardEvent.bKeyDown;
     }    
 }
 
