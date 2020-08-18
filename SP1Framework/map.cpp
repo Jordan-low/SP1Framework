@@ -1,6 +1,5 @@
 #include "Map.h"
 #include <iostream>
-
 using namespace std;
 
 void Map::initialise()
