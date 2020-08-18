@@ -1,13 +1,21 @@
 #include "Damage.h"
 
-Entity Atk;
-
 Damage::Damage()
 {
-	Atk.SetD(0);
-	Atk.GetD();
+	dmg = 0;
+}
+
+void Damage::setDamage(int x)
+{
+	dmg = x;
+}
+
+int Damage::getDamage()
+{
+	return dmg;
 }
 
 Damage::~Damage()
 {
+
 }

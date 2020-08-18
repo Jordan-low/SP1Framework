@@ -1,27 +1,23 @@
 #include "Enemy.h"
 
-Entity Bad;
-
 Enemy::Enemy()
 {
-	name = ' ';
+	HP = 0;
+	Atk = 0;
 }
 
-void Enemy::setEnemy(string n)
+void Enemy::setEnemy(int h, int d, string n)
 {
-	this->SetD(0);
-	this->SetH(0);
-	this->SetX(1);
-	this->SetY(1);
+	HP = h;
+	Atk = d;
+	d = this->getDamage();
 	name = n;
 }
 
-int Enemy::getEnemy()
+short Enemy::getEnemy()
 {
-	this->GetD();
-	this->GetH();
-	this->GetX();
-	this->GetY();
+	return HP;
+	return Atk;
 }
 
 string Enemy::getName()

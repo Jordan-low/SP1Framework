@@ -5,16 +5,16 @@
 
 using namespace std;
 
-class Enemy : public Entity
+class Enemy : public Damage
 {
-private:
-	string name;
-
 public:
+	short HP;
+	short Atk;
+	string name;
 	Enemy();
 	~Enemy();
-	void setEnemy(string n);
-	int getEnemy();
+	void setEnemy(int h, int d, string n);
+	short getEnemy();
 	string getName();
 };
 
