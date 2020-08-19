@@ -815,31 +815,144 @@ void Map::dungeon_stealth2(Console& g_Console)
 
 void Map::boss_room(Console& g_Console)
 {
+	Border(g_Console);
+	COORD c;
 	//doors (elevator)
-	for (i = 35; i <= 43; i++) { Grid[i][24] = '@'; }
-
+	for (i = 37; i <= 43; i++)
+	{
+		c.X = i;
+		c.Y = 22;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
+	
 	//long table
-	for (i = 24; i <= 54; i++) { Grid[i][2] = '-'; }
-	for (j = 3; j <= 5; j++) { Grid[24][j] = '|'; }
-	for (j = 3; j <= 5; j++) { Grid[54][j] = '|'; }
-	for (i = 24; i <= 54; i++) { Grid[i][6] = '-'; }
+	for (i = 26; i <= 54; i++)
+	{
+		c.X = i;
+		c.Y = 4;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
+	for (j = 5; j <= 7; j++)
+	{
+		c.X = 26;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 5; j <= 7; j++)
+	{
+		c.X = 54;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 26; i <= 54; i++)
+	{
+		c.X = i;
+		c.Y = 8;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
 
 	//chairs
-	for (i = 28; i <= 32; i++) { Grid[i][8] = '_'; }//cc
-	for (j = 9; j <= 10; j++) { Grid[27][j] = '|'; }
-	for (j = 9; j <= 10; j++) { Grid[33][j] = '|'; }
-	for (i = 28; i <= 32; i++) { Grid[i][10] = '_'; }
+	for (i = 31; i <= 35; i++)
+	{
+		c.X = i;
+		c.Y = 9;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	for (j = 10; j <= 11; j++)
+	{
+		c.X = 30;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 10; j <= 11; j++)
+	{
+		c.X = 36;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 31; i <= 35; i++)
+	{
+		c.X = i;
+		c.Y = 11;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
 
-	for (i = 46; i <= 50; i++) { Grid[i][8] = '_'; }
-	for (j = 9; j <= 10; j++) { Grid[45][j] = '|'; }
-	for (j = 9; j <= 10; j++) { Grid[51][j] = '|'; }
-	for (i = 46; i <= 50; i++) { Grid[i][10] = '_'; }
+	for (i = 45; i <= 49; i++)
+	{
+		c.X = i;
+		c.Y = 9;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	for (j = 10; j <= 11; j++)
+	{
+		c.X = 44;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 10; j <= 11; j++)
+	{
+		c.X = 50;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 45; i <= 49; i++)
+	{
+		c.X = i;
+		c.Y = 11;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
 
-	//coffee table(?)
-	for (i = 31; i <= 47; i++) { Grid[i][14] = '-'; }
-	for (j = 15; j <= 16; j++) { Grid[31][j] = '|'; }
-	for (j = 15; j <= 16; j++) { Grid[47][j] = '|'; }
-	for (i = 31; i <= 47; i++) { Grid[i][17] = '-'; }
+	//coffee table
+	for (i = 33; i <= 47; i++)
+	{
+		c.X = i;
+		c.Y = 13;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
+	for (j = 14; j <= 15; j++)
+	{
+		c.X = 33;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 14; j <= 15; j++)
+	{
+		c.X = 47;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 33; i <= 47; i++)
+	{
+		c.X = i;
+		c.Y = 16;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
+
+	////doors (elevator)
+	//for (i = 35; i <= 43; i++) { Grid[i][24] = '@'; }
+
+	////long table
+	//for (i = 24; i <= 54; i++) { Grid[i][2] = '-'; }
+	//for (j = 3; j <= 5; j++) { Grid[24][j] = '|'; }
+	//for (j = 3; j <= 5; j++) { Grid[54][j] = '|'; }
+	//for (i = 24; i <= 54; i++) { Grid[i][6] = '-'; }
+
+	////chairs
+	//for (i = 28; i <= 32; i++) { Grid[i][8] = '_'; }//cc
+	//for (j = 9; j <= 10; j++) { Grid[27][j] = '|'; }
+	//for (j = 9; j <= 10; j++) { Grid[33][j] = '|'; }
+	//for (i = 28; i <= 32; i++) { Grid[i][10] = '_'; }
+
+	//for (i = 46; i <= 50; i++) { Grid[i][8] = '_'; }
+	//for (j = 9; j <= 10; j++) { Grid[45][j] = '|'; }
+	//for (j = 9; j <= 10; j++) { Grid[51][j] = '|'; }
+	//for (i = 46; i <= 50; i++) { Grid[i][10] = '_'; }
+
+	////coffee table(?)
+	//for (i = 31; i <= 47; i++) { Grid[i][14] = '-'; }
+	//for (j = 15; j <= 16; j++) { Grid[31][j] = '|'; }
+	//for (j = 15; j <= 16; j++) { Grid[47][j] = '|'; }
+	//for (i = 31; i <= 47; i++) { Grid[i][17] = '-'; }
 }
 
 void Map::Box(Console& g_Console, int x, int y)
