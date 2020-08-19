@@ -917,7 +917,16 @@ void Map::insideAbandonedFacility4(Console& g_Console)
 	for (j = 11; j <= 14; j++)
 	{
 		c.X = 2;
+		c.Y = j;
 		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
+
+	//box thing for defense items
+	for (i = 34; i <= 46; i++) 
+	{ 
+		c.X = i;
+		c.Y = 4;
+		g_Console.writeToBuffer(c, '-', 0x1A);
 	}
 
 	////doors
