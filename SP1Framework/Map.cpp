@@ -960,14 +960,40 @@ void Map::insideAbandonedFacility4(Console& g_Console)
 
 void Map::dungeon_cell(Console& g_Console)
 {
+	Border(g_Console);
+	COORD c;
 	//doors
-	for (i = 0; i <= 8; i++) { Grid[i][0] = '@'; }
-
+	for (i = 2; i <= 10; i++)
+	{ 
+		c.X = i;
+		c.Y = 2;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
+	
 	//cell bars
-	for (i = 0; i <= 79; i++) { Grid[i][8] = '-'; }
+	for (i = 2; i <= 77; i++) 
+	{ 
+		c.X = i;
+		c.Y = 8;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
 
 	//locked doors
-	for (i = 34; i <= 46; i++) { Grid[i][8] = '&'; }
+	for (i = 33; i <= 45; i++) 
+	{ 
+		c.X = i;
+		c.Y = 8;
+		g_Console.writeToBuffer(c, '&', 0x1A);
+	}
+
+	////doors
+	//for (i = 0; i <= 8; i++) { Grid[i][0] = '@'; }
+
+	////cell bars
+	//for (i = 0; i <= 79; i++) { Grid[i][8] = '-'; }
+
+	////locked doors
+	//for (i = 34; i <= 46; i++) { Grid[i][8] = '&'; }
 }
 
 void Map::dungeon_stealth2(Console& g_Console)
