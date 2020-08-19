@@ -15,14 +15,34 @@ void Map::initialise()
 	}
 }
 
-void Map::printmap()
+void Map::printmap(Console &g_Console)
 {
 	//print first line
 	j = 0;
-	for (i = 0; i < 82; i++)
+	COORD c; COORD d; COORD e;
+	for (int col = 0; col < 80; col++)
 	{
-		cout << "#";
+		c.X = col;
+		c.Y = 1;
+		g_Console.writeToBuffer(c, "#", 0x3C);
 	}
+
+	for (int row = 0; row < 27; row++)
+	{
+		d.X = 1;
+		d.Y = row;
+		g_Console.writeToBuffer(d, "#", 0x3C );
+		for (int col = 0; col < 83; col++)
+		{
+			e.X = col;
+			e.Y = row;
+			g_Console.writeToBuffer(e, Grid[row][col], 0x2B);
+		}
+		//g_Console.writeToBuffer(c, "#");
+	}
+	/*c.X = 5;
+	c.Y = 5;
+	g_Console.writeToBuffer(c, "***");
 	cout << "\n";
 
 	//print middle
@@ -43,7 +63,7 @@ void Map::printmap()
 		cout << "#";
 	}
 	cout << "\n";
-
+*/
 }
 
 void Map::townsquare()
@@ -301,6 +321,21 @@ void Map::protest_area()
 
 void Map::outside_abandoned_facility()
 {
+	//doors
+	for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
+	for (j = 18; j <= 22; j++) { Grid[59][j] = '@'; }
+
+	//building
+	for (i = 60; i <= 78; i++) { Grid[i][1] = '-'; }
+	for (j = 2; j <= 22; j++) { Grid[60][j] = '|'; }
+	for (j = 2; j <= 22; j++) { Grid[78][j] = '|'; }
+	for (i = 60; i <= 78; i++) { Grid[i][23] = '-'; }
+
+	//camera
+	for (i = 50; i <= 51; i++) { Grid[i][0] = '_'; }
+	Grid[49][1] = '|';
+	Grid[52][1] = '|';
+	for (i = 50; i <= 51; i++) { Grid[i][1] = '_'; }
 }
 
 void Map::insideAbandonedFacility2()
