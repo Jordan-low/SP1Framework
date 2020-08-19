@@ -19,7 +19,7 @@ void Map::printmap(Console& g_Console)
 {
 	//print first line
 	j = 0;
-	COORD c; COORD d; COORD e;
+	COORD c; COORD d;
 	for (int col = 1; col < 79; col++)
 	{
 		c.X = col;
@@ -69,7 +69,7 @@ void Map::printmap(Console& g_Console)
 
 void Map::Border(Console &g_Console)
 {
-	COORD c; COORD d; COORD e;
+	COORD c; COORD d;
 	for (int col = 1; col < 79; col++)
 	{
 		c.X = col;
@@ -93,7 +93,7 @@ void Map::Border(Console &g_Console)
 
 void Map::House(Console& g_Console, int x, int y)
 {
-	COORD c; COORD d; COORD e;
+	COORD c;
 	int xLoc = x;
 	int yLoc = y;
 	for (int i = 0; i < 5; i++)
@@ -130,7 +130,7 @@ void Map::House(Console& g_Console, int x, int y)
 
 void Map::House2(Console& g_Console, int x, int y)
 {
-	COORD c; COORD d; COORD e;
+	COORD c;
 	int xLoc = x;
 	int yLoc = y;
 	for (int i = 0; i < 5; i++)
@@ -988,7 +988,7 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 
 void Map::Road(Console& g_Console, int x, int y, int count)
 {
-	COORD c; COORD d; COORD e;
+	COORD c;
 	int counts = count;
 	int xLoc = x;
 	int yLoc = y;
@@ -1001,7 +1001,7 @@ void Map::Road(Console& g_Console, int x, int y, int count)
 }
 void Map::Road2(Console& g_Console, int x, int y, int count)
 {
-	COORD c; COORD d; COORD e;
+	COORD c;
 	int counts = count;
 	int xLoc = x;
 	int yLoc = y;
@@ -1015,7 +1015,7 @@ void Map::Road2(Console& g_Console, int x, int y, int count)
 
 void Map::Road3(Console& g_Console, int x, int y, int count)
 {
-	COORD c; COORD d; COORD e;
+	COORD c;
 	int counts = count;
 	int xLoc = x;
 	int yLoc = y;
@@ -1026,32 +1026,3 @@ void Map::Road3(Console& g_Console, int x, int y, int count)
 		g_Console.writeToBuffer(c, "@", 0x1A);
 	}
 }
-
-void Map::Box(Console& g_Console, int x, int y)
-{
-	COORD c;
-	c.X = x;
-	c.Y = y;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = x + 1;
-	c.Y = y;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = x + 2;
-	c.Y = y;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-}
-
-void Map::Barrel(Console& g_Console, int x, int y)
-{
-	COORD c;
-	c.X = x;
-	c.Y = y;
-	g_Console.writeToBuffer(c, "(", 0x1A);
-	c.X = x + 1;
-	c.Y = y;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = x + 2;
-	c.Y = y;
-	g_Console.writeToBuffer(c, ")", 0x1A);
-}
-
