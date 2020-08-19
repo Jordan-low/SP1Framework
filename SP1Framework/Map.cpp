@@ -1017,6 +1017,16 @@ void Map::boss_room(Console& g_Console)
 
 
 
+
+
+
+
+
+
+
+
+
+
 void Map::patharea(Console& g_Console)
 {
 	Border(g_Console);
