@@ -24,7 +24,7 @@ void Map::printmap()
 		cout << "#";
 	}
 	cout << "\n";
-
+//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 	//print middle
 	for (j = 0; j < 25; j++)
 	{
