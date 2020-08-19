@@ -328,7 +328,7 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    Townsquare.townsquare(g_Console);
+    Townsquare.insideAbandonedFacility2(g_Console);
     //renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
 }

@@ -31,11 +31,7 @@ public:
 	void House(Console& g_Console, int x, int y);
 	void House2(Console& g_Console, int x, int y);
 
-
-
-	void House(Console& g_Console, int x, int y);
-
-	void House2(Console& g_Console, int x, int y);
+	void Box(Console& g_Console, int x, int y);
 
 };
 

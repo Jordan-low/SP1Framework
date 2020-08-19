@@ -165,6 +165,20 @@ void Map::House2(Console& g_Console, int x, int y)
 	}
 }
 
+void Map::Box(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = x + 1;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = x + 2;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+}
+
 //aaaaaaaaaaaaaaaaaaaaaaaaa
 
 void Map::townsquare(Console &g_Console)
@@ -847,27 +861,63 @@ void Map::outside_abandoned_facility(Console& g_Console)
 
 void Map::insideAbandonedFacility2(Console& g_Console)
 {
+	Border(g_Console);
+	COORD c;
 	//doors
-	for (i = 35; i <= 45; i++) { Grid[i][0] = '@'; }
-	for (j = 10; j <= 15; j++) { Grid[79][j] = '@'; }
+	for (i = 32; i <= 44; i++)
+	{
+		c.X = i;
+		c.Y = 2;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
+	for (j = 11; j <= 15; j++)
+	{
+		c.X = 76;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
 
 	//boxes
-	Grid[2][1] = '|'; Grid[3][1] = 'B'; Grid[4][1] = '|';
-	Grid[5][1] = '|'; Grid[6][1] = 'B'; Grid[7][1] = '|';
-	Grid[4][2] = '|'; Grid[5][2] = 'B'; Grid[6][2] = '|';
+	Box(g_Console, 3, 3);
+	Box(g_Console, 6, 3);
+	Box(g_Console, 5, 4);
 
-	Grid[4][22] = '|'; Grid[5][22] = 'B'; Grid[6][22] = '|';
-	Grid[2][23] = '|'; Grid[3][23] = 'B'; Grid[4][23] = '|';
-	Grid[5][23] = '|'; Grid[6][23] = 'B'; Grid[7][23] = '|';
+	Box(g_Console, 3, 21);
+	Box(g_Console, 6, 21);
+	Box(g_Console, 5, 20);
 
 	//mess
-	for (j = 3; j <= 22; j++)
+	for (j = 5; j <= 20; j++)
 	{
-		for (i = 21; i <= 67; i++)
+		for (i = 23; i <= 70; i++)
 		{
-			Grid[i][j] = '/';
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, '/', 0x1A);
 		}
 	}
+
+	////doors
+	//for (i = 35; i <= 45; i++) { Grid[i][0] = '@'; }
+	//for (j = 10; j <= 15; j++) { Grid[79][j] = '@'; }
+
+	////boxes
+	//Grid[2][1] = '|'; Grid[3][1] = 'B'; Grid[4][1] = '|';
+	//Grid[5][1] = '|'; Grid[6][1] = 'B'; Grid[7][1] = '|';
+	//Grid[4][2] = '|'; Grid[5][2] = 'B'; Grid[6][2] = '|';
+
+	//Grid[4][22] = '|'; Grid[5][22] = 'B'; Grid[6][22] = '|';
+	//Grid[2][23] = '|'; Grid[3][23] = 'B'; Grid[4][23] = '|';
+	//Grid[5][23] = '|'; Grid[6][23] = 'B'; Grid[7][23] = '|';
+
+	////mess
+	//for (j = 3; j <= 22; j++)
+	//{
+	//	for (i = 21; i <= 67; i++)
+	//	{
+	//		Grid[i][j] = '/';
+	//	}
+	//}
 
 }
 
