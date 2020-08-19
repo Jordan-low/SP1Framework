@@ -76,19 +76,93 @@ void Map::Border(Console &g_Console)
 		c.Y = 1;
 		d.X = col;
 		d.Y = 23;
-		g_Console.writeToBuffer(c, "#");
-		g_Console.writeToBuffer(d, "#");
+		g_Console.writeToBuffer(c, "#", 0x1A);
+		g_Console.writeToBuffer(d, "#", 0x1A);
 		for (int row = 1; row < 24; row++)
 		{
 			c.X = 78;
 			c.Y = row;
 			d.X = 1;
 			d.Y = row;
-			g_Console.writeToBuffer(c, "#");
-			g_Console.writeToBuffer(d, "#");
+			g_Console.writeToBuffer(c, "#", 0x1A);
+			g_Console.writeToBuffer(d, "#", 0x1A);
 		}
 	}
 
+}
+
+void Map::House(Console& g_Console, int x, int y)
+{
+	COORD c; COORD d; COORD e;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < 5; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc + 2;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc + 2;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "H", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc + 4;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+}
+
+void Map::House2(Console& g_Console, int x, int y)
+{
+	COORD c; COORD d; COORD e;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < 5; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc + 2;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc + 2;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "O", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc + 4;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
 }
 
 
@@ -96,6 +170,26 @@ void Map::Border(Console &g_Console)
 void Map::townsquare(Console &g_Console)
 {
 	Border(g_Console);
+	House(g_Console, 5, 3);
+	House(g_Console, 5, 7);
+	House(g_Console, 5, 11);
+	House(g_Console, 5, 15);
+	House(g_Console, 5, 19);
+
+	House(g_Console, 70, 3);
+	House(g_Console, 70, 7);
+	House(g_Console, 70, 11);
+	House(g_Console, 70, 15);
+	House(g_Console, 70, 19);
+
+	House2(g_Console, 20, 19);
+	House(g_Console, 35, 19);
+	House(g_Console, 50, 19);
+
+	House(g_Console, 5, 3);
+	House(g_Console, 5, 7);
+	House(g_Console, 5, 11);
+
 	/*
 	//doors
 	j = 0; for (i = 8; i < 24; i++) { (Grid[i][j] = '@'); }
@@ -516,91 +610,91 @@ void Map::orphanage(Console &g_Console)
 	}
 	c.X = 2;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	c.X = 3;
 	c.Y = 21;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	c.X = 4;
 	c.Y = 20;
 	for (int i = 0; i < 4; i++)
 	{
 		c.X = 4 + i;
 		c.Y = 20;
-		g_Console.writeToBuffer(c, "_", 0x1A);
+		g_Console.writeToBuffer(c, "_");
 	}
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	for (int i = 0; i < 5; i++)
 	{
 		c.X = 8 + i;
 		c.Y = 19;
-		g_Console.writeToBuffer(c, "_", 0x1A);
+		g_Console.writeToBuffer(c, "_");
 	}
 	for (int i = 0; i < 2; i++)
 	{
 		c.X = 13 + i;
 		c.Y = 19 - i;
-		g_Console.writeToBuffer(c, "/", 0x1A);
+		g_Console.writeToBuffer(c, "/");
 	}
 	for (int i = 0; i < 6; i++)
 	{
 		c.X = 15 + i;
 		c.Y = 17;
-		g_Console.writeToBuffer(c, "_", 0x1A);
+		g_Console.writeToBuffer(c, "_");
 	}
 	c.X = 21;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	c.X = 22;
 	c.Y = 16;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	c.X = 23;
 	c.Y = 15;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	for (int i = 0; i < 10; i++)
 	{
 		c.X = 24 + i;
 		c.Y = 14;
-		g_Console.writeToBuffer(c, "_", 0x1A);
+		g_Console.writeToBuffer(c, "_");
 	}
 	c.X = 34;
 	c.Y = 14;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	c.X = 35;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	for (int i = 0; i < 15; i++)
 	{
 		c.X = 36 + i;
 		c.Y = 12;
-		g_Console.writeToBuffer(c, "_", 0x1A);
+		g_Console.writeToBuffer(c, "_");
 	}
 	c.X = 51;
 	c.Y = 12;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	for (int i = 0; i < 7; i++)
 	{
 		c.X = 52 + i;
 		c.Y = 11;
-		g_Console.writeToBuffer(c, "_", 0x1A);
+		g_Console.writeToBuffer(c, "_");
 	}
 	c.X = 59;
 	c.Y = 11;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	c.X = 60;
 	c.Y = 10;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	c.X = 61;
 	c.Y = 9;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	for (int i = 0; i < 15; i++)
 	{
 		c.X = 62 + i;
 		c.Y = 8;
-		g_Console.writeToBuffer(c, "_", 0x1A);
+		g_Console.writeToBuffer(c, "_");
 	}
 	c.X = 77;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, "/", 0x1A);
+	g_Console.writeToBuffer(c, "/");
 	/*
 	//doors
 	Grid[78][0] = '@'; Grid[79][0] = '@';
@@ -670,21 +764,45 @@ void Map::protest_area(Console& g_Console)
 
 void Map::outside_abandoned_facility(Console& g_Console)
 {
+	Border(g_Console);
+	COORD c;
 	//doors
-	for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
-	for (j = 18; j <= 22; j++) { Grid[59][j] = '@'; }
+	for (i = 2; i <= 11; i++)
+	{
+		c.X = i;
+		c.Y = 2;
+		g_Console.writeToBuffer(c, '@');
+	}
+	for (j = 18; j <= 21; j++)
+	{
+		c.X = 61;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '@');
+	}
 
-	//building
-	for (i = 60; i <= 78; i++) { Grid[i][1] = '-'; }
-	for (j = 2; j <= 22; j++) { Grid[60][j] = '|'; }
-	for (j = 2; j <= 22; j++) { Grid[78][j] = '|'; }
-	for (i = 60; i <= 78; i++) { Grid[i][23] = '-'; }
+	//Building
+	for (i = 62; i <= 80; i++)
+	{
+		c.X = i;
+		c.Y = 2;
+		g_Console.writeToBuffer(c, '-');
+	}
 
-	//camera
-	for (i = 50; i <= 51; i++) { Grid[i][0] = '_'; }
-	Grid[49][1] = '|';
-	Grid[52][1] = '|';
-	for (i = 50; i <= 51; i++) { Grid[i][1] = '_'; }
+	////doors
+	//for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
+	//for (j = 18; j <= 22; j++) { Grid[59][j] = '@'; }
+
+	////building
+	//for (i = 60; i <= 78; i++) { Grid[i][1] = '-'; }
+	//for (j = 2; j <= 22; j++) { Grid[60][j] = '|'; }
+	//for (j = 2; j <= 22; j++) { Grid[78][j] = '|'; }
+	//for (i = 60; i <= 78; i++) { Grid[i][23] = '-'; }
+
+	////camera
+	//for (i = 50; i <= 51; i++) { Grid[i][0] = '_'; }
+	//Grid[49][1] = '|';
+	//Grid[52][1] = '|';
+	//for (i = 50; i <= 51; i++) { Grid[i][1] = '_'; }
 }
 
 
