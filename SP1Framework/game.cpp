@@ -292,7 +292,7 @@ void render()
     {
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
-    case S_GAME: Townsquare.printmap(g_Console);
+    case S_GAME: Townsquare.orphanage(g_Console);
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
