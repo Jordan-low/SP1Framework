@@ -19,6 +19,7 @@ public:
 
 	void orphanage();
 	void protest_area();
+	void outside_abandoned_facility();
 	void insideAbandonedFacility2();
 	void insideAbandonedFacility4();
 	void dungeon_cell();
