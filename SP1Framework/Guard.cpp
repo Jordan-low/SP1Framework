@@ -1,25 +1,19 @@
 #include "Guard.h"
-
-Enemy Aggressive;
+#include "Enemy.h"
+#include <iostream>
 
 Guard::Guard()
 {
-	Aggressive.setEnemy(40, 15, "Guard");
+	this->setEnemy('G');
+	this->SetD(15);
+	this->SetH(50);
+	this->SetX(1);
+	this->SetY(1);
 }
 
 void Guard::Attack()
 {
-	Damage Whack;
-	Whack.setDamage(15);
-	Whack.getDamage();
-}
-
-void Guard::Drop()
-{
-	if (HP == 0)
-	{
-		cout << "???" << endl; //Guard Suit???
-	}
+	this->beenHit();
 }
 
 void Guard::Damaged()
@@ -27,10 +21,15 @@ void Guard::Damaged()
 	this->Hit();
 }
 
+void Guard::Drop()
+{
+	if (GetH() == 0)
+	{
+		cout << "Guard Armor" << endl;
+	}
+}
+
 Guard::~Guard()
 {
-	if (HP == 0)
-	{
-		
-	}
+	
 }

@@ -1,11 +1,16 @@
 #pragma once
 #include "Damage.h"
+#include <string>
+
+using namespace std;
 
 class Entity
 {
 protected:
 	int x, y, h, d;
 	char name;
+	bool attack;
+	bool attacked;
 public:
 	Entity();
 	~Entity();

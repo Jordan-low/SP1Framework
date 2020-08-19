@@ -1,21 +1,14 @@
 #pragma once
-#include "Damage.h"
-#include <string>
-#include <iostream>
+#include "Entity.h"
 
-using namespace std;
-
-class Enemy : public Damage
+class Enemy : public Entity
 {
 public:
-	short HP;
-	short Atk;
-	string name;
 	Enemy();
 	~Enemy();
-	void setEnemy(int h, int d, string n);
+	void setEnemy(const char n);
 	short getEnemy();
-	string getName();
 	void Hit();
+	void beenHit();
 };
 
