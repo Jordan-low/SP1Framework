@@ -317,7 +317,7 @@ void Map::outside_abandoned_facility()
 	Grid[52][1] = '|';
 	for (i = 50; i <= 51; i++) { Grid[i][1] = '_'; }
 }
-}
+
 
 void Map::insideAbandonedFacility2()
 {
