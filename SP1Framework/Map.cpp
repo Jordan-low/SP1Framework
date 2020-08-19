@@ -928,6 +928,24 @@ void Map::insideAbandonedFacility4(Console& g_Console)
 		c.Y = 4;
 		g_Console.writeToBuffer(c, '-', 0x1A);
 	}
+	for (j = 5; j <= 7; j++)
+	{
+		c.X = 34;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 5; j <= 7; j++)
+	{
+		c.X = 46;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 34; i <= 46; i++)
+	{
+		c.X = i;
+		c.Y = 8;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
 
 	////doors
 	//for (j = 10; j <= 15; j++) { Grid[0][j] = '@'; }
