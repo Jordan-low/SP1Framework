@@ -27,5 +27,7 @@ public:
 	void dungeon_stealth2();
 	void boss_room();
 
+	void Border(Console &g_Console);
+
 };
 

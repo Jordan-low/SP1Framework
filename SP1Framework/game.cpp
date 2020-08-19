@@ -292,12 +292,12 @@ void render()
     {
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
-    case S_GAME: Townsquare.orphanage(g_Console);
+    case S_GAME: renderGame();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
-    renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
+    renderToScreen(); // dump the contents of the buffer to the screen, one frame worth of game
 }
 
 void clearScreen()
@@ -328,7 +328,8 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    renderMap();        // renders the map to the buffer first
+    Townsquare.townsquare(g_Console);
+    //renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
 }
 

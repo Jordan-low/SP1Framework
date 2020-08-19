@@ -67,7 +67,7 @@ void Map::printmap(Console& g_Console)
 */
 }
 
-void Map::townsquare(Console &g_Console)
+void Map::Border(Console &g_Console)
 {
 	COORD c; COORD d; COORD e;
 	for (int col = 1; col < 79; col++)
@@ -75,7 +75,7 @@ void Map::townsquare(Console &g_Console)
 		c.X = col;
 		c.Y = 1;
 		d.X = col;
-		d.Y = 24;
+		d.Y = 23;
 		g_Console.writeToBuffer(c, "#");
 		g_Console.writeToBuffer(d, "#");
 		for (int row = 1; row < 24; row++)
@@ -87,8 +87,14 @@ void Map::townsquare(Console &g_Console)
 			g_Console.writeToBuffer(c, "#");
 			g_Console.writeToBuffer(d, "#");
 		}
-
 	}
+
+}
+
+
+void Map::townsquare(Console &g_Console)
+{
+	Border(g_Console);
 	/*
 	//doors
 	j = 0; for (i = 8; i < 24; i++) { (Grid[i][j] = '@'); }
@@ -575,3 +581,4 @@ void Map::boss_room()
 	for (j = 15; j <= 16; j++) { Grid[47][j] = '|'; }
 	for (i = 31; i <= 47; i++) { Grid[i][17] = '-'; }
 }
+
