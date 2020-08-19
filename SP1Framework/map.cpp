@@ -20,14 +20,26 @@ void Map::printmap(Console& g_Console)
 	//print first line
 	j = 0;
 	COORD c; COORD d; COORD e;
-	for (int col = 0; col < 80; col++)
+	for (int col = 1; col < 79; col++)
 	{
-		cout << "#";
 		c.X = col;
 		c.Y = 1;
-		g_Console.writeToBuffer(c, "#", 0x3C);
+		d.X = col;
+		d.Y = 23;
+		g_Console.writeToBuffer(c, "#");
+		g_Console.writeToBuffer(d, "#");
+		for (int row = 1; row < 24; row++)
+		{
+			c.X = 78;
+			c.Y = row;
+			d.X = 1;
+			d.Y = row;
+			g_Console.writeToBuffer(c, "#");
+			g_Console.writeToBuffer(d, "#");
+		}
+		
 	}
-
+	/*
 	for (int row = 0; row < 27; row++)
 	{
 		d.X = 1;
@@ -41,7 +53,7 @@ void Map::printmap(Console& g_Console)
 		}
 		//g_Console.writeToBuffer(c, "#");
 	}
-	/*c.X = 5;
+	c.X = 5;
 	c.Y = 5;
 	g_Console.writeToBuffer(c, "***");
 	cout << "\n";
@@ -55,8 +67,29 @@ void Map::printmap(Console& g_Console)
 */
 }
 
-void Map::townsquare()
+void Map::townsquare(Console &g_Console)
 {
+	COORD c; COORD d; COORD e;
+	for (int col = 1; col < 79; col++)
+	{
+		c.X = col;
+		c.Y = 1;
+		d.X = col;
+		d.Y = 24;
+		g_Console.writeToBuffer(c, "#");
+		g_Console.writeToBuffer(d, "#");
+		for (int row = 1; row < 24; row++)
+		{
+			c.X = 78;
+			c.Y = row;
+			d.X = 1;
+			d.Y = row;
+			g_Console.writeToBuffer(c, "#");
+			g_Console.writeToBuffer(d, "#");
+		}
+
+	}
+	/*
 	//doors
 	j = 0; for (i = 8; i < 24; i++) { (Grid[i][j] = '@'); }
 	j = 0; for (i = 57; i < 73; i++) { (Grid[i][j] = '@'); }
@@ -89,6 +122,7 @@ void Map::townsquare()
 	j = 11; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }Grid[54][12] = '|'; Grid[55][12] = ' '; Grid[56][12] = 'H'; Grid[57][12] = ' '; Grid[58][12] = '|'; j = 13; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }
 	//Orphanage
 	j = 21; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }Grid[21][22] = '|'; Grid[22][22] = ' '; Grid[23][22] = 'â'; Grid[24][22] = ' '; Grid[25][22] = '|'; j = 23; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }
+	*/
 }
 void Map::patharea()
 {
@@ -240,8 +274,128 @@ void Map::dungeon_stealth3()
 	j = 13; Grid[9][j] = 'O'; Grid[10][j] = 'O';
 }
 
-void Map::orphanage()
+void Map::orphanage(Console &g_Console)
 {
+	COORD c; COORD d; COORD e;
+	for (int col = 1; col < 79; col++) // border
+	{
+		c.X = col;
+		c.Y = 1;
+		d.X = col;
+		d.Y = 23;
+		g_Console.writeToBuffer(c, "#");
+		g_Console.writeToBuffer(d, "#");
+		for (int row = 1; row < 24; row++)
+		{
+			c.X = 78;
+			c.Y = row;
+			d.X = 1;
+			d.Y = row;
+			g_Console.writeToBuffer(c, "#");
+			g_Console.writeToBuffer(d, "#");
+		}
+
+	}
+	for (int i = 0; i < 2; i++) // door
+	{
+		c.X = 76;
+		c.Y = 2 + i;
+		d.X = 76 + i;
+		d.Y = 2;
+		e.X = 76 + i;
+		e.Y = 2 + i;
+		g_Console.writeToBuffer(c, "@");
+		g_Console.writeToBuffer(d, "@");
+		g_Console.writeToBuffer(e, "@");
+	}
+	c.X = 2;
+	c.Y = 22;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	c.X = 3;
+	c.Y = 21;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	c.X = 4;
+	c.Y = 20;
+	for (int i = 0; i < 4; i++)
+	{
+		c.X = 4 + i;
+		c.Y = 20;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	for (int i = 0; i < 5; i++)
+	{
+		c.X = 8 + i;
+		c.Y = 19;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		c.X = 13 + i;
+		c.Y = 19 - i;
+		g_Console.writeToBuffer(c, "/", 0x1A);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		c.X = 15 + i;
+		c.Y = 17;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+	c.X = 21;
+	c.Y = 17;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	c.X = 22;
+	c.Y = 16;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	c.X = 23;
+	c.Y = 15;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	for (int i = 0; i < 10; i++)
+	{
+		c.X = 24 + i;
+		c.Y = 14;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+	c.X = 34;
+	c.Y = 14;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	c.X = 35;
+	c.Y = 13;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	for (int i = 0; i < 15; i++)
+	{
+		c.X = 36 + i;
+		c.Y = 12;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+	c.X = 51;
+	c.Y = 12;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	for (int i = 0; i < 7; i++)
+	{
+		c.X = 52 + i;
+		c.Y = 11;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+	c.X = 59;
+	c.Y = 11;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	c.X = 60;
+	c.Y = 10;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	c.X = 61;
+	c.Y = 9;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	for (int i = 0; i < 15; i++)
+	{
+		c.X = 62 + i;
+		c.Y = 8;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+	c.X = 77;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, "/", 0x1A);
+	/*
 	//doors
 	Grid[78][0] = '@'; Grid[79][0] = '@';
 	Grid[78][1] = '@'; Grid[79][1] = '@';
@@ -262,7 +416,7 @@ void Map::orphanage()
 	for (i = 67; i <= 73; i++) { Grid[i][11] = '_'; } Grid[74][11] = '/';
 	for (i = 75; i <= 76; i++) { Grid[i][10] = '_'; } Grid[77][10] = '/';
 	for (i = 78; i <= 79; i++) { Grid[i][9] = '_'; };
-
+	*/
 }
 
 void Map::protest_area()
