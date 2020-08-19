@@ -165,6 +165,46 @@ void Map::House2(Console& g_Console, int x, int y)
 	}
 }
 
+void Map::Road(Console& g_Console, int x, int y, int count)
+{
+	COORD c; COORD d; COORD e;
+	int counts = count;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < count; i++)
+	{
+		c.X = xLoc;
+		c.Y = yLoc + i;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+}
+void Map::Road2(Console& g_Console, int x, int y, int count)
+{
+	COORD c; COORD d; COORD e;
+	int counts = count;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < count; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+}
+
+void Map::Road3(Console& g_Console, int x, int y, int count)
+{
+	COORD c; COORD d; COORD e;
+	int counts = count;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < count; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
+}
 //aaaaaaaaaaaaaaaaaaaaaaaaa
 
 void Map::townsquare(Console &g_Console)
@@ -186,9 +226,37 @@ void Map::townsquare(Console &g_Console)
 	House(g_Console, 35, 19);
 	House(g_Console, 50, 19);
 
-	House(g_Console, 5, 3);
-	House(g_Console, 5, 7);
-	House(g_Console, 5, 11);
+	House(g_Console, 25, 3);
+	House(g_Console, 25, 7);
+	House(g_Console, 25, 11);
+
+	House(g_Console, 45, 3);
+	House(g_Console, 45, 7);
+	House(g_Console, 45, 11);
+	
+	Road(g_Console, 10, 2, 17);
+	Road(g_Console, 69, 2, 17);
+	Road(g_Console, 24, 2, 13);
+	Road(g_Console, 50, 2, 13);
+
+	Road2(g_Console, 11, 18, 58);
+	Road2(g_Console, 25, 14, 25);
+
+	Road(g_Console, 17, 5, 1);
+	Road(g_Console, 17, 10, 1);
+	Road(g_Console, 17, 15, 1);
+	Road(g_Console, 59, 5, 1);
+	Road(g_Console, 59, 10, 1);
+	Road(g_Console, 59, 15, 1);
+
+	Road2(g_Console, 23, 16, 1);
+	Road2(g_Console, 38, 16, 1);
+	Road2(g_Console, 53, 16, 1);
+
+	Road3(g_Console, 11, 2, 13);
+	Road3(g_Console, 51, 2, 18);
+
+
 
 	/*
 	//doors
