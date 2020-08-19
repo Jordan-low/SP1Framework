@@ -7,6 +7,9 @@ Entity::Entity()
 	h = 0;
 	d = 0;
 	name = ' ';
+	attack = false;
+	attacked = false;
+	
 }
 
 Entity::~Entity()

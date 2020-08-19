@@ -5,14 +5,25 @@ Player::Player()
 	name = 'O';
 }
 
-Player::~Player()
+void Player::setPlayer()
 {
-	
+	this->SetD(5);
+	this->SetH(50);
+	this->SetX(0);
+	this->SetY(0);
+}
+
+int Player::getPlayer()
+{
+	return this->GetD();
+	return this->GetH();
+	return this->GetX();
+	return this->GetY();
 }
 
 char Player::GetName()
 {
-	return name;
+	return this->GetName();
 }
 
 void Player::Attack()
@@ -24,4 +35,9 @@ void Player::Attack()
 	Melee.setDamage(5);
 	Melee.getDamage();
 	*/
+}
+
+Player::~Player()
+{
+
 }

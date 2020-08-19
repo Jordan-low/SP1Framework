@@ -1,37 +1,53 @@
 #include "Enemy.h"
+#include "Entity.h"
 #include "Player.h"
+#include "Guard.h"
 
 Enemy::Enemy()
 {
-	HP = 0;
-	Atk = 0;
+	name = 'E';
 }
 
-void Enemy::setEnemy(int h, int d, string n)
+void Enemy::setEnemy(const char n)
 {
-	HP = h;
-	Atk = d;
-	d = this->getDamage();
+	this->SetX(1);
+	this->SetY(1);
+	this->SetH(0);
+	this->SetD(0);
 	name = n;
 }
 
 short Enemy::getEnemy()
 {
-	return HP;
-	return Atk;
-}
-
-string Enemy::getName()
-{
-	return name;
+	return this->GetX();
+	return this->GetY();
+	return this->GetH();
+	return this->GetD();
+	return this->GetName();
 }
 
 void Enemy::Hit()
 {
 	Player Attack;
-	Attack.Attack();
-	HP -= 5;
-	HP--;
+	if (attack == true)
+	{
+		this->SetH(x);
+		Attack.Attack();
+		this->SetH(x - 5);
+		this->GetH();
+	}
+}
+
+void Enemy::beenHit()
+{
+	Player Attacked;
+	if (attacked == true)
+	{
+		Attacked.SetH(50);
+		this->SetD(d);
+		Attacked.SetH(50 - d);
+		this->GetH();
+	}
 }
 
 Enemy::~Enemy()

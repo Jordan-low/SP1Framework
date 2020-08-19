@@ -1,18 +1,20 @@
 #include "MutantWasp.h"
-
-Enemy myEnemy;
+#include <iostream>
 
 MutantWasp::MutantWasp()
 {
 	chance = 0;
-	myEnemy.setEnemy(25, 5, "Mutant Wasp");
+	this->setEnemy('W');
+	this->SetD(5);
+	this->SetH(25);
+	this->SetX(1);
+	this->SetY(1);
+
 }
 
 void MutantWasp::Attack()
 {
-	Damage Sting;
-	Sting.setDamage(5);
-	Sting.getDamage();
+	this->beenHit();
 }
 
 void MutantWasp::Debuff()
@@ -26,7 +28,7 @@ void MutantWasp::Debuff()
 
 void MutantWasp::Drop()
 {
-	if (HP == 0)
+	if (GetH() == 0)
 	{
 		cout << "Stinger" << endl;
 	}

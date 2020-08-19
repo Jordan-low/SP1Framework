@@ -1,18 +1,19 @@
 #include "TutEnemy.h"
-
-Enemy ThisEnemy;
+#include <iostream>
 
 TutEnemy::TutEnemy()
 {
 	chance = 0;
-	ThisEnemy.setEnemy(10, 2, "Tutorial Enemy");
+	this->setEnemy('T');
+	this->SetD(2);
+	this->SetH(10);
+	this->SetX(1);
+	this->SetY(1);
 }
 
 void TutEnemy::Attack()
 {
-	Damage Lunge;
-	Lunge.setDamage(2);
-	Lunge.getDamage();
+	this->beenHit();
 }
 
 void TutEnemy::Debuff()
@@ -31,8 +32,5 @@ void TutEnemy::Damaged()
 
 TutEnemy::~TutEnemy()
 {
-	if (HP == 0)
-	{
-		
-	}
+	
 }

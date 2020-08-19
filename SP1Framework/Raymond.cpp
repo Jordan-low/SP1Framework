@@ -1,19 +1,20 @@
 #include "Raymond.h"
 #include <ctime>
 #include <stdlib.h> 
-
-Enemy Boss;
+#include <iostream>
 
 Raymond::Raymond()
 {
-	Boss.setEnemy(120, 25, "Raymond");
+	this->setEnemy('R');
+	this->SetD(25);
+	this->SetH(120);
+	this->SetX(1);
+	this->SetY(1);
 }
 
 void Raymond::Attack()
 {
-	Damage Beat;
-	Beat.setDamage(25);
-	Beat.getDamage();
+	this->beenHit();
 }
 
 void Raymond::Talk()
@@ -60,8 +61,5 @@ void Raymond::Damaged()
 
 Raymond::~Raymond()
 {
-	if (HP == 0)
-	{
-
-	}
+	
 }

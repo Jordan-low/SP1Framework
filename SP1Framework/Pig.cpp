@@ -1,22 +1,23 @@
 #include "Pig.h"
-
-Enemy Friendly;
+#include <iostream>
 
 Pig::Pig()
 {
-	Friendly.setEnemy(15, 3, "Pig");
+	this->setEnemy('P');
+	this->SetD(3);
+	this->SetH(15);
+	this->SetX(1);
+	this->SetY(1);
 }
 
 void Pig::Attack()
 {
-	Damage Hit;
-	Hit.setDamage(3);
-	Hit.getDamage();
+	this->beenHit();
 }
 
 void Pig::Drop()
 {
-	if (HP == 0)
+	if (GetH() == 0)
 	{
 		cout << "Raw Meat" << endl;
 	}
