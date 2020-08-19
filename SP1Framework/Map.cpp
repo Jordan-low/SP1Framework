@@ -165,10 +165,6 @@ void Map::House2(Console& g_Console, int x, int y)
 	}
 }
 
-
-
-//aaaaaaaaaaaaaaaaaaaaaaaaa
-
 void Map::townsquare(Console &g_Console)
 {
 	Border(g_Console);
@@ -227,7 +223,6 @@ void Map::townsquare(Console &g_Console)
 	j = 21; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }Grid[21][22] = '|'; Grid[22][22] = ' '; Grid[23][22] = 'â'; Grid[24][22] = ' '; Grid[25][22] = '|'; j = 23; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }
 	*/
 }
-
 
 void Map::insideAbandonedFacility3(Console& g_Console)
 {
@@ -1067,6 +1062,7 @@ void Map::Road(Console& g_Console, int x, int y, int count)
 		g_Console.writeToBuffer(c, "|", 0x1A);
 	}
 }
+
 void Map::Road2(Console& g_Console, int x, int y, int count)
 {
 	COORD c;
