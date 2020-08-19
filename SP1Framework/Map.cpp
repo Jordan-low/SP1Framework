@@ -528,23 +528,62 @@ void Map::outside_abandoned_facility(Console& g_Console)
 	for (i = 2; i <= 11; i++)
 	{
 		c.X = i;
-		c.Y = 2;
-		g_Console.writeToBuffer(c, '@');
+		c.Y = 22;
+		g_Console.writeToBuffer(c, '@', 0x1A);
 	}
-	for (j = 18; j <= 21; j++)
+	for (j = 17; j <= 20; j++)
 	{
-		c.X = 61;
+		c.X = 58;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '@');
+		g_Console.writeToBuffer(c, '@', 0x1A);
 	}
 
 	//Building
-	for (i = 62; i <= 80; i++)
+	for (i = 58; i <= 76; i++)
 	{
 		c.X = i;
-		c.Y = 2;
-		g_Console.writeToBuffer(c, '-');
+		c.Y = 3;
+		g_Console.writeToBuffer(c, '-', 0x1A);
 	}
+	for (j = 4; j <= 16; j++)
+	{
+		c.X = 58;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 4; j <= 20; j++)
+	{
+		c.X = 76;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 58; i <= 76; i++)
+	{
+		c.X = i;
+		c.Y = 21;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
+
+	//camera
+	for (i = 40; i <= 41; i++)
+	{
+		c.X = i;
+		c.Y = 3;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	c.X = 39;
+	c.Y = 4;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+	c.X = 42;
+	c.Y = 4;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+	for (i = 40; i <= 41; i++)
+	{
+		c.X = i;
+		c.Y = 4;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+
 
 	////doors
 	//for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
@@ -566,40 +605,94 @@ void Map::outside_abandoned_facility(Console& g_Console)
 
 void Map::insideAbandonedFacility2(Console& g_Console)
 {
+	Border(g_Console);
+	COORD c;
 	//doors
-	for (i = 35; i <= 45; i++) { Grid[i][0] = '@'; }
-	for (j = 10; j <= 15; j++) { Grid[79][j] = '@'; }
+	for (i = 32; i <= 44; i++)
+	{
+		c.X = i;
+		c.Y = 2;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
+	for (j = 11; j <= 15; j++)
+	{
+		c.X = 76;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
 
 	//boxes
-	Grid[2][1] = '|'; Grid[3][1] = 'B'; Grid[4][1] = '|';
-	Grid[5][1] = '|'; Grid[6][1] = 'B'; Grid[7][1] = '|';
-	Grid[4][2] = '|'; Grid[5][2] = 'B'; Grid[6][2] = '|';
+	Box(g_Console, 3, 3);
+	Box(g_Console, 6, 3);
+	Box(g_Console, 5, 4);
 
-	Grid[4][22] = '|'; Grid[5][22] = 'B'; Grid[6][22] = '|';
-	Grid[2][23] = '|'; Grid[3][23] = 'B'; Grid[4][23] = '|';
-	Grid[5][23] = '|'; Grid[6][23] = 'B'; Grid[7][23] = '|';
+	Box(g_Console, 3, 21);
+	Box(g_Console, 6, 21);
+	Box(g_Console, 5, 20);
 
 	//mess
-	for (j = 3; j <= 22; j++)
+	for (j = 5; j <= 20; j++)
 	{
-		for (i = 21; i <= 67; i++)
+		for (i = 23; i <= 70; i++)
 		{
-			Grid[i][j] = '/';
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, '/', 0x1A);
 		}
 	}
+
+	////doors
+	//for (i = 35; i <= 45; i++) { Grid[i][0] = '@'; }
+	//for (j = 10; j <= 15; j++) { Grid[79][j] = '@'; }
+
+	////boxes
+	//Grid[2][1] = '|'; Grid[3][1] = 'B'; Grid[4][1] = '|';
+	//Grid[5][1] = '|'; Grid[6][1] = 'B'; Grid[7][1] = '|';
+	//Grid[4][2] = '|'; Grid[5][2] = 'B'; Grid[6][2] = '|';
+
+	//Grid[4][22] = '|'; Grid[5][22] = 'B'; Grid[6][22] = '|';
+	//Grid[2][23] = '|'; Grid[3][23] = 'B'; Grid[4][23] = '|';
+	//Grid[5][23] = '|'; Grid[6][23] = 'B'; Grid[7][23] = '|';
+
+	////mess
+	//for (j = 3; j <= 22; j++)
+	//{
+	//	for (i = 21; i <= 67; i++)
+	//	{
+	//		Grid[i][j] = '/';
+	//	}
+	//}
 
 }
 
 void Map::insideAbandonedFacility4(Console& g_Console)
 {
-	//doors
-	for (j = 10; j <= 15; j++) { Grid[0][j] = '@'; }
+	Border(g_Console);
+	//door
+	COORD c;
+	for (j = 11; j <= 14; j++)
+	{
+		c.X = 2;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
 
-	//box thing for defense items??
-	for (i = 34; i <= 46; i++) { Grid[i][4] = '-'; }
-	for (j = 5; j <= 7; j++) { Grid[34][j] = '|'; }
-	for (j = 5; j <= 7; j++) { Grid[46][j] = '|'; }
-	for (i = 34; i <= 46; i++) { Grid[i][8] = '-'; }
+	//box thing for defense items
+	for (i = 34; i <= 46; i++)
+	{
+		c.X = i;
+		c.Y = 4;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
+
+	////doors
+	//for (j = 10; j <= 15; j++) { Grid[0][j] = '@'; }
+
+	////box thing for defense items??
+	//for (i = 34; i <= 46; i++) { Grid[i][4] = '-'; }
+	//for (j = 5; j <= 7; j++) { Grid[34][j] = '|'; }
+	//for (j = 5; j <= 7; j++) { Grid[46][j] = '|'; }
+	//for (i = 34; i <= 46; i++) { Grid[i][8] = '-'; }
 
 }
 
@@ -658,374 +751,33 @@ void Map::boss_room(Console& g_Console)
 	for (i = 31; i <= 47; i++) { Grid[i][17] = '-'; }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void Map::Box(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = x + 1;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = x + 2;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+}
+
+void Map::Barrel(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "(", 0x1A);
+	c.X = x + 1;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = x + 2;
+	c.Y = y;
+	g_Console.writeToBuffer(c, ")", 0x1A);
+}
 
 void Map::patharea(Console& g_Console)
 {
@@ -1256,3 +1008,32 @@ void Map::Road3(Console& g_Console, int x, int y, int count)
 		g_Console.writeToBuffer(c, "@", 0x1A);
 	}
 }
+
+void Map::Box(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = x + 1;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = x + 2;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+}
+
+void Map::Barrel(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "(", 0x1A);
+	c.X = x + 1;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = x + 2;
+	c.Y = y;
+	g_Console.writeToBuffer(c, ")", 0x1A);
+}
+
