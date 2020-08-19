@@ -468,23 +468,47 @@ void Map::protest_area()
 
 }
 
-void Map::outside_abandoned_facility()
+void Map::outside_abandoned_facility(Console& g_Console)
 {
+	Border(g_Console);
+	COORD c;
 	//doors
-	for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
-	for (j = 18; j <= 22; j++) { Grid[59][j] = '@'; }
+	for (i = 2; i <= 11; i++)
+	{
+		c.X = i;
+		c.Y = 2;
+		g_Console.writeToBuffer(c, '@');
+	}
+	for (j = 18; j <= 21; j++)
+	{
+		c.X = 61;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '@');
+	}
 
-	//building
-	for (i = 60; i <= 78; i++) { Grid[i][1] = '-'; }
-	for (j = 2; j <= 22; j++) { Grid[60][j] = '|'; }
-	for (j = 2; j <= 22; j++) { Grid[78][j] = '|'; }
-	for (i = 60; i <= 78; i++) { Grid[i][23] = '-'; }
+	//Building
+	for (i = 62; i <= 80; i++)
+	{
+		c.X = i;
+		c.Y = 2;
+		g_Console.writeToBuffer(c, '-');
+	}
 
-	//camera
-	for (i = 50; i <= 51; i++) { Grid[i][0] = '_'; }
-	Grid[49][1] = '|';
-	Grid[52][1] = '|';
-	for (i = 50; i <= 51; i++) { Grid[i][1] = '_'; }
+	////doors
+	//for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
+	//for (j = 18; j <= 22; j++) { Grid[59][j] = '@'; }
+
+	////building
+	//for (i = 60; i <= 78; i++) { Grid[i][1] = '-'; }
+	//for (j = 2; j <= 22; j++) { Grid[60][j] = '|'; }
+	//for (j = 2; j <= 22; j++) { Grid[78][j] = '|'; }
+	//for (i = 60; i <= 78; i++) { Grid[i][23] = '-'; }
+
+	////camera
+	//for (i = 50; i <= 51; i++) { Grid[i][0] = '_'; }
+	//Grid[49][1] = '|';
+	//Grid[52][1] = '|';
+	//for (i = 50; i <= 51; i++) { Grid[i][1] = '_'; }
 }
 
 
