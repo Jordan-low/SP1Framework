@@ -19,7 +19,7 @@ void Map::printmap(Console& g_Console)
 {
 	//print first line
 	j = 0;
-	COORD c; COORD d; COORD e;
+	COORD c; COORD d;
 	for (int col = 1; col < 79; col++)
 	{
 		c.X = col;
@@ -69,7 +69,7 @@ void Map::printmap(Console& g_Console)
 
 void Map::Border(Console &g_Console)
 {
-	COORD c; COORD d; COORD e;
+	COORD c; COORD d;
 	for (int col = 1; col < 79; col++)
 	{
 		c.X = col;
@@ -93,7 +93,7 @@ void Map::Border(Console &g_Console)
 
 void Map::House(Console& g_Console, int x, int y)
 {
-	COORD c; COORD d; COORD e;
+	COORD c;
 	int xLoc = x;
 	int yLoc = y;
 	for (int i = 0; i < 5; i++)
@@ -130,7 +130,7 @@ void Map::House(Console& g_Console, int x, int y)
 
 void Map::House2(Console& g_Console, int x, int y)
 {
-	COORD c; COORD d; COORD e;
+	COORD c;
 	int xLoc = x;
 	int yLoc = y;
 	for (int i = 0; i < 5; i++)
@@ -227,251 +227,7 @@ void Map::townsquare(Console &g_Console)
 	j = 21; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }Grid[21][22] = '|'; Grid[22][22] = ' '; Grid[23][22] = 'â'; Grid[24][22] = ' '; Grid[25][22] = '|'; j = 23; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }
 	*/
 }
-void Map::patharea(Console& g_Console)
-{
-	Border(g_Console);
-	COORD c; 
-	//path lines
-	
-	i = 35; 
-	for (int j = 0; j < 25; j++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "|", 0x1A);
-	}
 
-	i = 45;
-	for (int j = 0; j < 25; j++)
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "|", 0x1A);
-	}
-
-	j = 10; 
-	for (int i = 45; i < 80; i++)
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "-", 0x1A);
-	}
-
-	j = 15; 
-	for (int i = 45; i < 80; i++)
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "-", 0x1A);
-	}
-
-	i = 45; 
-	for (int j = 11; j < 15; j++)
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "|", 0x1A);
-	}
-
-	//door
-	j = 0; 
-	for (int i = 36; i < 45; i++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "@", 0x1A);
-	}
-
-	j = 24; 
-	for (int i = 36; i < 45; i++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "@", 0x1A);
-	}
-	i = 79; 
-	for (int j = 11; j < 15; j++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "@", 0x1A);
-	}
-}
-
-void Map::insideAbandonedFacility1(Console& g_Console)
-{
-	COORD c;
-	Border(g_Console);
-	j = 24; for (int i = 34; i < 44; i++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "@", 0x1A);
-	}
-	//generator horizontal
-	j = 15; for (int i = 20; i < 60; i++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "-", 0x1A);
-	}
-	j = 0; for (int i = 20; i < 60; i++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "-", 0x1A);
-	}
-	//generator vertical
-	i = 20; for (int j = 1; j < 15; j++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "|", 0x1A);
-	}
-	i = 59; for (int j = 1; j < 15; j++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "|", 0x1A);
-	}
-	//opening
-	j = 15; for (int i = 34; i < 44; i++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, " ", 0x1A);
-	}
-	//locked doors
-	i = 0; for (int j = 17; j < 23; j++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "&", 0x1A);
-	}
-	i = 79; for (int j = 17; j < 23; j++) 
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, "&", 0x1A);
-	}
-	//minigame
-	c.Y = 2;
-	c.X = 54;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 55;
-	g_Console.writeToBuffer(c, "!", 0x1A);
-	c.X = 56;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	
-	//Control Room
-	c.Y = 7;
-	c.X = 32;
-	g_Console.writeToBuffer(c, "C", 0x1A);
-	c.X = 33;
-	g_Console.writeToBuffer(c, "o", 0x1A);
-	c.X = 34;
-	g_Console.writeToBuffer(c, "n", 0x1A);
-	c.X = 35;
-	g_Console.writeToBuffer(c, "t", 0x1A);
-	c.X = 36;
-	g_Console.writeToBuffer(c, "r", 0x1A);
-	c.X = 37;
-	g_Console.writeToBuffer(c, "o", 0x1A);
-	c.X = 38;
-	g_Console.writeToBuffer(c, "l", 0x1A);
-	c.X = 40;
-	g_Console.writeToBuffer(c, "R", 0x1A);
-	c.X = 43;
-	g_Console.writeToBuffer(c, "o", 0x1A);
-	c.X = 44;
-	g_Console.writeToBuffer(c, "o", 0x1A);
-	c.X = 45;
-	g_Console.writeToBuffer(c, "m", 0x1A);
-	
-
-	//barrel locations
-	//left side
-	c.Y = 0;
-	c.X = 1;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 2;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 3;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-
-	c.Y = 1;
-	c.X = 7;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 8;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 9;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-
-	c.Y = 4;
-	c.X = 2;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 3;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 4;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-
-	c.Y = 0;
-	c.X = 17;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 18;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 19;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-
-	c.Y = 7;
-	c.X = 17;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 18;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 19;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-
-	//right side
-	c.Y = 0;
-	c.X = 77;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 78;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 79;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-
-	c.Y = 1;
-	c.X = 60;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 61;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 62;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-
-	c.Y = 3;
-	c.X = 65;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 66;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 67;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-
-	c.Y = 7;
-	c.X = 77;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 78;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 79;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-
-	c.Y = 11;
-	c.X = 60;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = 61;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = 62;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-}
 
 void Map::insideAbandonedFacility3(Console& g_Console)
 {
@@ -922,8 +678,8 @@ void Map::insideAbandonedFacility4(Console& g_Console)
 	}
 
 	//box thing for defense items
-	for (i = 34; i <= 46; i++) 
-	{ 
+	for (i = 34; i <= 46; i++)
+	{
 		c.X = i;
 		c.Y = 4;
 		g_Console.writeToBuffer(c, '-', 0x1A);
@@ -1065,4 +821,234 @@ void Map::Barrel(Console& g_Console, int x, int y)
 	c.X = x + 2;
 	c.Y = y;
 	g_Console.writeToBuffer(c, ")", 0x1A);
+}
+
+void Map::patharea(Console& g_Console)
+{
+	Border(g_Console);
+	COORD c;
+	//path lines
+
+	i = 36;
+	for (int j = 2; j < 23; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+
+	i = 46;
+	for (int j = 2; j < 23; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+
+	j = 10;
+	for (int i = 46; i < 78; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+
+	j = 15;
+	for (int i = 46; i < 78; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+
+	i = 46;
+	for (int j = 11; j < 15; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, " ", 0x1A);
+	}
+
+	//door
+	j = 2;
+	for (int i = 37; i < 46; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
+
+	j = 22;
+	for (int i = 37; i < 46; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
+	i = 77;
+	for (int j = 11; j < 15; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
+}
+
+void Map::insideAbandonedFacility1(Console& g_Console)
+{
+	COORD c;
+	Border(g_Console);
+	j = 25; for (int i = 34; i < 44; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
+
+	//generator vertical
+	i = 20; for (int j = 2; j < 16; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+	i = 59; for (int j = 2; j < 16; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+
+	//generator horizontal
+	j = 16; for (int i = 20; i < 60; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	j = 2; for (int i = 20; i < 60; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+
+	//opening
+	j = 16; for (int i = 36; i < 46; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, " ", 0x1A);
+	}
+	//locked doors
+	i = 2; for (int j = 17; j < 23; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "&", 0x1A);
+	}
+	i = 77; for (int j = 17; j < 23; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "&", 0x1A);
+	}
+
+	j = 22; for (int i = 36; i < 46; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "&", 0x1A);
+	}
+
+	//minigame
+	c.Y = 4;
+	c.X = 55;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 56;
+	g_Console.writeToBuffer(c, "!", 0x1A);
+	c.X = 57;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
+	//Control Room
+	c.Y = 7;
+	c.X = 32;
+	g_Console.writeToBuffer(c, "C", 0x1A);
+	c.X = 33;
+	g_Console.writeToBuffer(c, "o", 0x1A);
+	c.X = 34;
+	g_Console.writeToBuffer(c, "n", 0x1A);
+	c.X = 35;
+	g_Console.writeToBuffer(c, "t", 0x1A);
+	c.X = 36;
+	g_Console.writeToBuffer(c, "r", 0x1A);
+	c.X = 37;
+	g_Console.writeToBuffer(c, "o", 0x1A);
+	c.X = 38;
+	g_Console.writeToBuffer(c, "l", 0x1A);
+	c.X = 42;
+	g_Console.writeToBuffer(c, "R", 0x1A);
+	c.X = 43;
+	g_Console.writeToBuffer(c, "o", 0x1A);
+	c.X = 44;
+	g_Console.writeToBuffer(c, "o", 0x1A);
+	c.X = 45;
+	g_Console.writeToBuffer(c, "m", 0x1A);
+
+
+	//barrel locations
+	//left side
+	Box(g_Console, 2, 2);
+	Box(g_Console, 8, 3);
+	Box(g_Console, 3, 6);
+	Box(g_Console, 17, 2);
+	Box(g_Console, 17, 7);
+	//right side
+	Box(g_Console, 75, 2);
+	Box(g_Console, 61, 3);
+	Box(g_Console, 62, 6);
+	Box(g_Console, 66, 5);
+	Box(g_Console, 75, 9);
+	Box(g_Console, 66, 13);
+}
+
+void Map::Road(Console& g_Console, int x, int y, int count)
+{
+	COORD c;
+	int counts = count;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < count; i++)
+	{
+		c.X = xLoc;
+		c.Y = yLoc + i;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+}
+void Map::Road2(Console& g_Console, int x, int y, int count)
+{
+	COORD c;
+	int counts = count;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < count; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+}
+
+void Map::Road3(Console& g_Console, int x, int y, int count)
+{
+	COORD c;
+	int counts = count;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < count; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
 }
