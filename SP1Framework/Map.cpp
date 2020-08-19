@@ -565,7 +565,7 @@ void Map::boss_room()
 	for (i = 24; i <= 54; i++) { Grid[i][6] = '-'; }
 
 	//chairs
-	for (i = 28; i <= 32; i++) { Grid[i][8] = '_'; }
+	for (i = 28; i <= 32; i++) { Grid[i][8] = '_'; }//cc
 	for (j = 9; j <= 10; j++) { Grid[27][j] = '|'; }
 	for (j = 9; j <= 10; j++) { Grid[33][j] = '|'; }
 	for (i = 28; i <= 32; i++) { Grid[i][10] = '_'; }
