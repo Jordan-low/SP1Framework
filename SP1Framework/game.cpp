@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include "Map.h"
 using namespace std;
 
 double  g_dElapsedTime;
@@ -19,7 +20,9 @@ EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
-
+//15 maps
+Map Townsquare;
+Map gameMap[15];
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -266,6 +269,14 @@ void processUserInput()
         g_bQuitGame = true;    
 }
 
+void renderMyGame()
+{
+    COORD c;
+    c.X = 5;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, "***");
+}
+
 //--------------------------------------------------------------
 // Purpose  : Render function is to update the console screen
 //            At this point, you should know exactly what to draw onto the screen.
@@ -281,7 +292,7 @@ void render()
     {
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
-    case S_GAME: renderGame();
+    case S_GAME: Townsquare.printmap(g_Console);
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc

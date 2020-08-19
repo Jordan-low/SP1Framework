@@ -7,6 +7,7 @@ public:
 	int i = 0;
 	int j = 0;
 	char Grid[80][25];
+	bool IsActive;
 	void initialise();
 	void printmap(Console &g_Cosole);
 	void townsquare();
