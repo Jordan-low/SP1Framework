@@ -28,6 +28,10 @@ public:
 	void boss_room(Console& g_Console);
 
 	void Border(Console &g_Console);
+	void House(Console& g_Console, int x, int y);
+	void House2(Console& g_Console, int x, int y);
+
+
 
 };
 
