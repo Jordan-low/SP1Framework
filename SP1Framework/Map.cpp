@@ -165,7 +165,7 @@ void Map::House2(Console& g_Console, int x, int y)
 	}
 }
 
-
+//aaaaaaaaaaaaaaaaaaaaaaaaa
 
 void Map::townsquare(Console &g_Console)
 {
