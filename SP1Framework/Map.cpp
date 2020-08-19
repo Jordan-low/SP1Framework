@@ -76,25 +76,119 @@ void Map::Border(Console &g_Console)
 		c.Y = 1;
 		d.X = col;
 		d.Y = 23;
-		g_Console.writeToBuffer(c, "#");
-		g_Console.writeToBuffer(d, "#");
+		g_Console.writeToBuffer(c, "#", 0x1A);
+		g_Console.writeToBuffer(d, "#", 0x1A);
 		for (int row = 1; row < 24; row++)
 		{
 			c.X = 78;
 			c.Y = row;
 			d.X = 1;
 			d.Y = row;
-			g_Console.writeToBuffer(c, "#");
-			g_Console.writeToBuffer(d, "#");
+			g_Console.writeToBuffer(c, "#", 0x1A);
+			g_Console.writeToBuffer(d, "#", 0x1A);
 		}
 	}
 
+}
+
+void Map::House(Console& g_Console, int x, int y)
+{
+	COORD c; COORD d; COORD e;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < 5; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc + 2;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc + 2;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "H", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc + 4;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+}
+
+void Map::House2(Console& g_Console, int x, int y)
+{
+	COORD c; COORD d; COORD e;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < 5; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc + 2;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc + 2;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "O", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+	for (int i = 0; i < 1; i++)
+	{
+		c.X = xLoc + 4;
+		c.Y = yLoc + 1;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
 }
 
 
 void Map::townsquare(Console &g_Console)
 {
 	Border(g_Console);
+	House(g_Console, 5, 3);
+	House(g_Console, 5, 7);
+	House(g_Console, 5, 11);
+	House(g_Console, 5, 15);
+	House(g_Console, 5, 19);
+
+	House(g_Console, 70, 3);
+	House(g_Console, 70, 7);
+	House(g_Console, 70, 11);
+	House(g_Console, 70, 15);
+	House(g_Console, 70, 19);
+
+	House2(g_Console, 20, 19);
+	House(g_Console, 35, 19);
+	House(g_Console, 50, 19);
+
+	House(g_Console, 5, 3);
+	House(g_Console, 5, 7);
+	House(g_Console, 5, 11);
+
 	/*
 	//doors
 	j = 0; for (i = 8; i < 24; i++) { (Grid[i][j] = '@'); }
