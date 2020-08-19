@@ -20,7 +20,7 @@ public:
 
 	void orphanage(Console &g_Console);
 	void protest_area();
-	void outside_abandoned_facility();
+	void outside_abandoned_facility(Console& g_Console);
 	void insideAbandonedFacility2();
 	void insideAbandonedFacility4();
 	void dungeon_cell();
