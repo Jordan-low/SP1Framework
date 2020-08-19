@@ -92,6 +92,7 @@ void Map::Border(Console &g_Console)
 }
 
 
+
 void Map::townsquare(Console &g_Console)
 {
 	Border(g_Console);
@@ -130,56 +131,255 @@ void Map::townsquare(Console &g_Console)
 	j = 21; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }Grid[21][22] = '|'; Grid[22][22] = ' '; Grid[23][22] = 'â'; Grid[24][22] = ' '; Grid[25][22] = '|'; j = 23; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }
 	*/
 }
-void Map::patharea()
+void Map::patharea(Console& g_Console)
 {
+	Border(g_Console);
+	COORD c; 
 	//path lines
-	i = 35; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); }
-	i = 45; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); }
-	j = 10; for (int i = 45; i < 80; i++) { (Grid[i][j] = '-'); }
-	j = 15; for (int i = 45; i < 80; i++) { (Grid[i][j] = '-'); }
-	i = 45; for (int j = 11; j < 15; j++) { (Grid[i][j] = ' '); }
+	
+	i = 35; 
+	for (int j = 0; j < 25; j++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+
+	i = 45;
+	for (int j = 0; j < 25; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+
+	j = 10; 
+	for (int i = 45; i < 80; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+
+	j = 15; 
+	for (int i = 45; i < 80; i++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+
+	i = 45; 
+	for (int j = 11; j < 15; j++)
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+
 	//door
-	j = 0; for (int i = 36; i < 45; i++) { (Grid[i][j] = '@'); }
-	j = 24; for (int i = 36; i < 45; i++) { (Grid[i][j] = '@'); }
-	i = 79; for (int j = 11; j < 15; j++) { (Grid[i][j] = '@'); }
+	j = 0; 
+	for (int i = 36; i < 45; i++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
+
+	j = 24; 
+	for (int i = 36; i < 45; i++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
+	i = 79; 
+	for (int j = 11; j < 15; j++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
 }
-//aaaaaaaa
-void Map::insideAbandonedFacility1()
+
+void Map::insideAbandonedFacility1(Console& g_Console)
 {
-	j = 24; for (int i = 34; i < 44; i++) { (Grid[i][j] = '@'); }
-	//generator vertical
-	j = 15; for (int i = 20; i < 60; i++) { (Grid[i][j] = '-'); }
-	j = 0; for (int i = 20; i < 60; i++) { (Grid[i][j] = '-'); }
+	COORD c;
+	Border(g_Console);
+	j = 24; for (int i = 34; i < 44; i++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
 	//generator horizontal
-	i = 20; for (int j = 1; j < 15; j++) { (Grid[i][j] = '|'); }
-	i = 59; for (int j = 1; j < 15; j++) { (Grid[i][j] = '|'); }
+	j = 15; for (int i = 20; i < 60; i++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	j = 0; for (int i = 20; i < 60; i++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "-", 0x1A);
+	}
+	//generator vertical
+	i = 20; for (int j = 1; j < 15; j++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+	i = 59; for (int j = 1; j < 15; j++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
 	//opening
-	j = 15; for (int i = 34; i < 44; i++) { (Grid[i][j] = ' '); }
+	j = 15; for (int i = 34; i < 44; i++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, " ", 0x1A);
+	}
 	//locked doors
-	i = 0; for (int j = 17; j < 23; j++) { (Grid[i][j] = '&'); }
-	i = 79; for (int j = 17; j < 23; j++) { (Grid[i][j] = '&'); }
+	i = 0; for (int j = 17; j < 23; j++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "&", 0x1A);
+	}
+	i = 79; for (int j = 17; j < 23; j++) 
+	{
+		c.X = i;
+		c.Y = j;
+		g_Console.writeToBuffer(c, "&", 0x1A);
+	}
 	//minigame
-	j = 2; Grid[54][j] = '|'; Grid[55][j] = '!'; Grid[56][j] = '|';
+	c.Y = 2;
+	c.X = 54;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 55;
+	g_Console.writeToBuffer(c, "!", 0x1A);
+	c.X = 56;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	
 	//Control Room
-	j = 7; Grid[32][j] = 'C'; Grid[33][j] = 'o'; Grid[34][j] = 'n'; Grid[35][j] = 't'; Grid[36][j] = 'r'; Grid[37][j] = 'o'; Grid[38][j] = 'l'; Grid[42][j] = 'R'; Grid[43][j] = 'o'; Grid[44][j] = 'o'; Grid[45][j] = 'm';
+	c.Y = 7;
+	c.X = 32;
+	g_Console.writeToBuffer(c, "C", 0x1A);
+	c.X = 33;
+	g_Console.writeToBuffer(c, "o", 0x1A);
+	c.X = 34;
+	g_Console.writeToBuffer(c, "n", 0x1A);
+	c.X = 35;
+	g_Console.writeToBuffer(c, "t", 0x1A);
+	c.X = 36;
+	g_Console.writeToBuffer(c, "r", 0x1A);
+	c.X = 37;
+	g_Console.writeToBuffer(c, "o", 0x1A);
+	c.X = 38;
+	g_Console.writeToBuffer(c, "l", 0x1A);
+	c.X = 40;
+	g_Console.writeToBuffer(c, "R", 0x1A);
+	c.X = 43;
+	g_Console.writeToBuffer(c, "o", 0x1A);
+	c.X = 44;
+	g_Console.writeToBuffer(c, "o", 0x1A);
+	c.X = 45;
+	g_Console.writeToBuffer(c, "m", 0x1A);
+	
 
 	//barrel locations
 	//left side
-	j = 0;  Grid[1][j] = '|'; Grid[2][j] = 'B'; Grid[3][j] = '|';
-	j = 1; Grid[7][j] = '|'; Grid[8][j] = 'B'; Grid[9][j] = '|';
-	j = 4; Grid[2][j] = '|'; Grid[3][j] = 'B'; Grid[4][j] = '|';
-	j = 0; Grid[17][j] = '|'; Grid[18][j] = 'B'; Grid[19][j] = '|';
-	j = 7; Grid[17][j] = '|'; Grid[18][j] = 'B'; Grid[19][j] = '|';
+	c.Y = 0;
+	c.X = 1;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 2;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 3;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
+	c.Y = 1;
+	c.X = 7;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 8;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 9;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
+	c.Y = 4;
+	c.X = 2;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 3;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 4;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
+	c.Y = 0;
+	c.X = 17;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 18;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 19;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
+	c.Y = 7;
+	c.X = 17;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 18;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 19;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
 	//right side
-	j = 0; Grid[77][j] = '|'; Grid[78][j] = 'B'; Grid[79][j] = '|';
-	j = 1; Grid[60][j] = '|'; Grid[61][j] = 'B'; Grid[62][j] = '|';
-	j = 3; Grid[65][j] = '|'; Grid[66][j] = 'B'; Grid[67][j] = '|';
-	j = 7; Grid[77][j] = '|'; Grid[78][j] = 'B'; Grid[79][j] = '|';
-	j = 11; Grid[60][j] = '|'; Grid[61][j] = 'B'; Grid[62][j] = '|';
+	c.Y = 0;
+	c.X = 77;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 78;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 79;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
+	c.Y = 1;
+	c.X = 60;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 61;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 62;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
+	c.Y = 3;
+	c.X = 65;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 66;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 67;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
+	c.Y = 7;
+	c.X = 77;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 78;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 79;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+
+	c.Y = 11;
+	c.X = 60;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = 61;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = 62;
+	g_Console.writeToBuffer(c, "|", 0x1A);
 }
 
-void Map::insideAbandonedFacility3()
+void Map::insideAbandonedFacility3(Console& g_Console)
 {
+	Border(g_Console);
 	//small box
 	j = 0; for (i = 30; i < 50; i++) { (Grid[i][j] = '-'); }
 	j = 10; for (i = 30; i < 50; i++) { (Grid[i][j] = '-'); }
@@ -192,7 +392,7 @@ void Map::insideAbandonedFacility3()
 	j = 24; for (i = 39; i < 42; i++) { (Grid[i][j] = '@'); }
 }
 
-void Map::insideMedicalFacility()
+void Map::insideMedicalFacility(Console& g_Console)
 {
 	//door
 	i = 0; for (int j = 10; j < 15; j++) { (Grid[i][j] = '@'); }
@@ -221,7 +421,7 @@ void Map::insideMedicalFacility()
 	j = 18; for (i = 20; i < 26; i++) { (Grid[i][j] = '-'); }
 }
 
-void Map::dungeon_stealth1()
+void Map::dungeon_stealth1(Console& g_Console)
 {
 	//door
 	j = 24; for (i = 0; i < 16; i++) { (Grid[i][j] = '@'); }
@@ -260,7 +460,7 @@ void Map::dungeon_stealth1()
 	j = 6; Grid[56][j] = '|'; Grid[57][j] = 'B'; Grid[58][j] = '|';
 }
 
-void Map::dungeon_stealth3()
+void Map::dungeon_stealth3(Console& g_Console)
 {
 	//doors
 	j = 24; for (i = 0; i < 6; i++) { (Grid[i][j] = '@'); }
@@ -425,7 +625,7 @@ void Map::orphanage(Console &g_Console)
 	*/
 }
 
-void Map::protest_area()
+void Map::protest_area(Console& g_Console)
 {
 	//doors
 	for (i = 69; i <= 79; i++) { Grid[i][0] = '@'; }
@@ -468,7 +668,7 @@ void Map::protest_area()
 
 }
 
-void Map::outside_abandoned_facility()
+void Map::outside_abandoned_facility(Console& g_Console)
 {
 	//doors
 	for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
@@ -488,7 +688,7 @@ void Map::outside_abandoned_facility()
 }
 
 
-void Map::insideAbandonedFacility2()
+void Map::insideAbandonedFacility2(Console& g_Console)
 {
 	//doors
 	for (i = 35; i <= 45; i++) { Grid[i][0] = '@'; }
@@ -514,7 +714,7 @@ void Map::insideAbandonedFacility2()
 
 }
 
-void Map::insideAbandonedFacility4()
+void Map::insideAbandonedFacility4(Console& g_Console)
 {
 	//doors
 	for (j = 10; j <= 15; j++) { Grid[0][j] = '@'; }
@@ -527,7 +727,7 @@ void Map::insideAbandonedFacility4()
 
 }
 
-void Map::dungeon_cell()
+void Map::dungeon_cell(Console& g_Console)
 {
 	//doors
 	for (i = 0; i <= 8; i++) { Grid[i][0] = '@'; }
@@ -539,7 +739,7 @@ void Map::dungeon_cell()
 	for (i = 34; i <= 46; i++) { Grid[i][8] = '&'; }
 }
 
-void Map::dungeon_stealth2()
+void Map::dungeon_stealth2(Console& g_Console)
 {
 	//doors
 	for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
@@ -553,7 +753,7 @@ void Map::dungeon_stealth2()
 	for (i = 28; i <= 66; i++) { Grid[i][20] = '_'; }
 }
 
-void Map::boss_room()
+void Map::boss_room(Console& g_Console)
 {
 	//doors (elevator)
 	for (i = 35; i <= 43; i++) { Grid[i][24] = '@'; }
