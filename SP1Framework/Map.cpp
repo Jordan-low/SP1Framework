@@ -15,35 +15,44 @@ void Map::initialise()
 	}
 }
 
-void Map::printmap()
+void Map::printmap(Console& g_Console)
 {
 	//print first line
 	j = 0;
-	for (i = 0; i < 82; i++)
+	COORD c; COORD d; COORD e;
+	for (int col = 0; col < 80; col++)
 	{
 		cout << "#";
+		c.X = col;
+		c.Y = 1;
+		g_Console.writeToBuffer(c, "#", 0x3C);
 	}
-	cout << "\n";
-//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-	//print middle
-	for (j = 0; j < 25; j++)
+
+	for (int row = 0; row < 27; row++)
 	{
-		cout << "#";
-		for (i = 0; i < 80; i++)
+		d.X = 1;
+		d.Y = row;
+		g_Console.writeToBuffer(d, "#", 0x3C);
+		for (int col = 0; col < 83; col++)
 		{
-			cout << Grid[i][j];
+			e.X = col;
+			e.Y = row;
+			g_Console.writeToBuffer(e, Grid[row][col], 0x2B);
 		}
-		cout << "#\n";
+		//g_Console.writeToBuffer(c, "#");
 	}
+	/*c.X = 5;
+	c.Y = 5;
+	g_Console.writeToBuffer(c, "***");
+	cout << "\n";
 
-	//print end
-	j = 25;
-	for (i = 0; i < 82; i++)
-	{
+	//print middle
+@ -43,7 +63,7 @@ void Map::printmap()
 		cout << "#";
 	}
 	cout << "\n";
 
+*/
 }
 
 void Map::townsquare()

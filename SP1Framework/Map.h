@@ -1,4 +1,5 @@
 #pragma once
+#include "Framework\console.h"
 class Map
 {
 
@@ -7,7 +8,7 @@ public:
 	int j = 0;
 	char Grid[80][25];
 	void initialise();
-	void printmap();
+	void printmap(Console &g_Cosole);
 	void townsquare();
 	void patharea();
 	void insideAbandonedFacility1();
