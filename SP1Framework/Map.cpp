@@ -753,16 +753,64 @@ void Map::dungeon_cell(Console& g_Console)
 
 void Map::dungeon_stealth2(Console& g_Console)
 {
+	Border(g_Console);
+	COORD c;
 	//doors
-	for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
-	for (i = 20; i <= 27; i++) { Grid[i][20] = '@'; }
+	for (i = 2; i <= 8; i++)
+	{
+		c.X = i;
+		c.Y = 22;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
+	for (i = 17; i <= 25; i++)
+	{
+		c.X = i;
+		c.Y = 18;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
 
 	//walls
-	for (j = 4; j <= 24; j++) { Grid[10][j] = '|'; }
-	for (j = 4; j <= 24; j++) { Grid[19][j] = '|'; }
-	for (j = 4; j <= 20; j++) { Grid[67][j] = '|'; }
-	for (i = 11; i <= 66; i++) { Grid[i][3] = '_'; }
-	for (i = 28; i <= 66; i++) { Grid[i][20] = '_'; }
+	for (j = 6; j <= 22; j++)
+	{
+		c.X = 9;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 6; j <= 22; j++)
+	{
+		c.X = 16;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 6; j <= 17; j++)
+	{
+		c.X = 69;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 9; i <= 69; i++)
+	{
+		c.X = i;
+		c.Y = 5;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
+	for (i = 27; i <= 69; i++)
+	{
+		c.X = i;
+		c.Y = 18;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
+
+	////doors
+	//for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
+	//for (i = 20; i <= 27; i++) { Grid[i][20] = '@'; }
+
+	////walls
+	//for (j = 4; j <= 24; j++) { Grid[10][j] = '|'; }
+	//for (j = 4; j <= 24; j++) { Grid[19][j] = '|'; }
+	//for (j = 4; j <= 20; j++) { Grid[67][j] = '|'; }
+	//for (i = 11; i <= 66; i++) { Grid[i][3] = '_'; }
+	//for (i = 28; i <= 66; i++) { Grid[i][20] = '_'; }
 }
 
 void Map::boss_room(Console& g_Console)

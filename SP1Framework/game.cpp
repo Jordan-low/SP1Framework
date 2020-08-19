@@ -296,7 +296,7 @@ void render()
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    //renderInputEvents();    // renders status of input events
+    renderInputEvents();    // renders status of input events
     renderToScreen(); // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -328,7 +328,7 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    Townsquare.dungeon_cell(g_Console);
+    Townsquare.dungeon_stealth2(g_Console);
     //renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
 }
