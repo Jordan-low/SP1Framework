@@ -165,19 +165,7 @@ void Map::House2(Console& g_Console, int x, int y)
 	}
 }
 
-void Map::Box(Console& g_Console, int x, int y)
-{
-	COORD c;
-	c.X = x;
-	c.Y = y;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-	c.X = x + 1;
-	c.Y = y;
-	g_Console.writeToBuffer(c, "B", 0x1A);
-	c.X = x + 2;
-	c.Y = y;
-	g_Console.writeToBuffer(c, "|", 0x1A);
-}
+
 
 //aaaaaaaaaaaaaaaaaaaaaaaaa
 
@@ -923,14 +911,23 @@ void Map::insideAbandonedFacility2(Console& g_Console)
 
 void Map::insideAbandonedFacility4(Console& g_Console)
 {
-	//doors
-	for (j = 10; j <= 15; j++) { Grid[0][j] = '@'; }
+	Border(g_Console);
+	//door
+	COORD c;
+	for (j = 11; j <= 14; j++)
+	{
+		c.X = 2;
+		g_Console.writeToBuffer(c, '@', 0x1A);
+	}
 
-	//box thing for defense items??
-	for (i = 34; i <= 46; i++) { Grid[i][4] = '-'; }
-	for (j = 5; j <= 7; j++) { Grid[34][j] = '|'; }
-	for (j = 5; j <= 7; j++) { Grid[46][j] = '|'; }
-	for (i = 34; i <= 46; i++) { Grid[i][8] = '-'; }
+	////doors
+	//for (j = 10; j <= 15; j++) { Grid[0][j] = '@'; }
+
+	////box thing for defense items??
+	//for (i = 34; i <= 46; i++) { Grid[i][4] = '-'; }
+	//for (j = 5; j <= 7; j++) { Grid[34][j] = '|'; }
+	//for (j = 5; j <= 7; j++) { Grid[46][j] = '|'; }
+	//for (i = 34; i <= 46; i++) { Grid[i][8] = '-'; }
 
 }
 
@@ -989,3 +986,30 @@ void Map::boss_room(Console& g_Console)
 	for (i = 31; i <= 47; i++) { Grid[i][17] = '-'; }
 }
 
+void Map::Box(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+	c.X = x + 1;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = x + 2;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "|", 0x1A);
+}
+
+void Map::Barrel(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "(", 0x1A);
+	c.X = x + 1;
+	c.Y = y;
+	g_Console.writeToBuffer(c, "B", 0x1A);
+	c.X = x + 2;
+	c.Y = y;
+	g_Console.writeToBuffer(c, ")", 0x1A);
+}

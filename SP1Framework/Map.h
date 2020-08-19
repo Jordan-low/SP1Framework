@@ -33,5 +33,7 @@ public:
 
 	void Box(Console& g_Console, int x, int y);
 
+	void Barrel(Console& g_Console, int x, int y);
+
 };
 
