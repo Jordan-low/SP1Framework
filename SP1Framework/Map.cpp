@@ -15,34 +15,14 @@ void Map::initialise()
 	}
 }
 
-void Map::printmap(Console &g_Console)
+void Map::printmap()
 {
 	//print first line
 	j = 0;
-	COORD c; COORD d; COORD e;
-	for (int col = 0; col < 80; col++)
+	for (i = 0; i < 82; i++)
 	{
-		c.X = col;
-		c.Y = 1;
-		g_Console.writeToBuffer(c, "#", 0x3C);
+		cout << "#";
 	}
-
-	for (int row = 0; row < 27; row++)
-	{
-		d.X = 1;
-		d.Y = row;
-		g_Console.writeToBuffer(d, "#", 0x3C );
-		for (int col = 0; col < 83; col++)
-		{
-			e.X = col;
-			e.Y = row;
-			g_Console.writeToBuffer(e, Grid[row][col], 0x2B);
-		}
-		//g_Console.writeToBuffer(c, "#");
-	}
-	/*c.X = 5;
-	c.Y = 5;
-	g_Console.writeToBuffer(c, "***");
 	cout << "\n";
 
 	//print middle
@@ -63,7 +43,7 @@ void Map::printmap(Console &g_Console)
 		cout << "#";
 	}
 	cout << "\n";
-*/
+
 }
 
 void Map::townsquare()
@@ -336,6 +316,7 @@ void Map::outside_abandoned_facility()
 	Grid[49][1] = '|';
 	Grid[52][1] = '|';
 	for (i = 50; i <= 51; i++) { Grid[i][1] = '_'; }
+}
 }
 
 void Map::insideAbandonedFacility2()
