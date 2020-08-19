@@ -6,7 +6,6 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include "Map.h"
 using namespace std;
 
 double  g_dElapsedTime;
@@ -18,12 +17,8 @@ SMouseEvent g_mouseEvent;
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
-//15 maps
-Map Townsquare;
-Map gameMap[15];
-
 // Console object
-Console g_Console(200, 200, "SP1 Framework");
+Console g_Console(80, 25, "SP1 Framework");
 
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -271,14 +266,6 @@ void processUserInput()
         g_bQuitGame = true;    
 }
 
-void renderMyGame()
-{
-    COORD c;
-    c.X = 5;
-    c.Y = 5;
-    g_Console.writeToBuffer(c, "***");
-}
-
 //--------------------------------------------------------------
 // Purpose  : Render function is to update the console screen
 //            At this point, you should know exactly what to draw onto the screen.
@@ -294,20 +281,12 @@ void render()
     {
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
-    case S_GAME: Townsquare.printmap(g_Console);
+    case S_GAME: renderGame();
         break;
     }
-
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
-    
-   
-    /*for (int i = 0; i < 15; i++)
-    {
-        if (gameMap[i].isActive == true)*/
-           
-    //}
 }
 
 void clearScreen()

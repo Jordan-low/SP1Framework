@@ -1,16 +1,13 @@
 #pragma once
-#include "Framework\console.h"
 class Map
 {
 
 public:
 	int i = 0;
 	int j = 0;
-	bool isActive;
 	char Grid[80][25];
 	void initialise();
-	void printmap(Console& g_Console);
-	
+	void printmap();
 	void townsquare();
 	void patharea();
 	void insideAbandonedFacility1();
