@@ -770,23 +770,62 @@ void Map::outside_abandoned_facility(Console& g_Console)
 	for (i = 2; i <= 11; i++)
 	{
 		c.X = i;
-		c.Y = 2;
-		g_Console.writeToBuffer(c, '@');
+		c.Y = 22;
+		g_Console.writeToBuffer(c, '@', 0x1A);
 	}
-	for (j = 18; j <= 21; j++)
+	for (j = 17; j <= 20; j++)
 	{
-		c.X = 61;
+		c.X = 58;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '@');
+		g_Console.writeToBuffer(c, '@', 0x1A);
 	}
 
 	//Building
-	for (i = 62; i <= 80; i++)
+	for (i = 58; i <= 76; i++)
 	{
 		c.X = i;
-		c.Y = 2;
-		g_Console.writeToBuffer(c, '-');
+		c.Y = 3;
+		g_Console.writeToBuffer(c, '-', 0x1A);
 	}
+	for (j = 4; j <= 16; j++)
+	{
+		c.X = 58;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 4; j <= 20; j++)
+	{
+		c.X = 76;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 58; i <= 76; i++)
+	{
+		c.X = i;
+		c.Y = 21;
+		g_Console.writeToBuffer(c, '-', 0x1A);
+	}
+
+	//camera
+	for (i = 40; i <= 41; i++)
+	{
+		c.X = i;
+		c.Y = 3;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	c.X = 39;
+	c.Y = 4;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+	c.X = 42;
+	c.Y = 4;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+	for (i = 40; i <= 41; i++)
+	{
+		c.X = i;
+		c.Y = 4;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+
 
 	////doors
 	//for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
