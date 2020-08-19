@@ -301,6 +301,22 @@ void Map::protest_area()
 
 void Map::outside_abandoned_facility()
 {
+	//doors
+	for (i = 0; i <= 9; i++) { Grid[i][24] = '@'; }
+	for (j = 18; j <= 22; j++) { Grid[59][j] = '@'; }
+
+	//building
+	for (i = 60; i <= 78; i++) { Grid[i][1] = '-'; }
+	for (j = 2; j <= 22; j++) { Grid[60][j] = '|'; }
+	for (j = 2; j <= 22; j++) { Grid[78][j] = '|'; }
+	for (i = 60; i <= 78; i++) { Grid[i][23] = '-'; }
+
+	//camera
+	for (i = 50; i <= 51; i++) { Grid[i][0] = '_'; }
+	Grid[49][1] = '|';
+	Grid[52][1] = '|';
+	for (i = 50; i <= 51; i++) { Grid[i][1] = '_'; }
+}
 }
 
 void Map::insideAbandonedFacility2()
