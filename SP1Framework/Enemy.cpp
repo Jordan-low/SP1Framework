@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Player.h"
 
 Enemy::Enemy()
 {
@@ -27,6 +28,8 @@ string Enemy::getName()
 
 void Enemy::Hit()
 {
+	Player Attack;
+	Attack.Attack();
 	HP -= 5;
 	HP--;
 }
