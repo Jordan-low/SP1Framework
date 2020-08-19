@@ -316,91 +316,91 @@ void Map::orphanage(Console &g_Console)
 	}
 	c.X = 2;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	c.X = 3;
 	c.Y = 21;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	c.X = 4;
 	c.Y = 20;
 	for (int i = 0; i < 4; i++)
 	{
 		c.X = 4 + i;
 		c.Y = 20;
-		g_Console.writeToBuffer(c, "_");
+		g_Console.writeToBuffer(c, "_", 0x1A);
 	}
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	for (int i = 0; i < 5; i++)
 	{
 		c.X = 8 + i;
 		c.Y = 19;
-		g_Console.writeToBuffer(c, "_");
+		g_Console.writeToBuffer(c, "_", 0x1A);
 	}
 	for (int i = 0; i < 2; i++)
 	{
 		c.X = 13 + i;
 		c.Y = 19 - i;
-		g_Console.writeToBuffer(c, "/");
+		g_Console.writeToBuffer(c, "/", 0x1A);
 	}
 	for (int i = 0; i < 6; i++)
 	{
 		c.X = 15 + i;
 		c.Y = 17;
-		g_Console.writeToBuffer(c, "_");
+		g_Console.writeToBuffer(c, "_", 0x1A);
 	}
 	c.X = 21;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	c.X = 22;
 	c.Y = 16;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	c.X = 23;
 	c.Y = 15;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	for (int i = 0; i < 10; i++)
 	{
 		c.X = 24 + i;
 		c.Y = 14;
-		g_Console.writeToBuffer(c, "_");
+		g_Console.writeToBuffer(c, "_", 0x1A);
 	}
 	c.X = 34;
 	c.Y = 14;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	c.X = 35;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	for (int i = 0; i < 15; i++)
 	{
 		c.X = 36 + i;
 		c.Y = 12;
-		g_Console.writeToBuffer(c, "_");
+		g_Console.writeToBuffer(c, "_", 0x1A);
 	}
 	c.X = 51;
 	c.Y = 12;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	for (int i = 0; i < 7; i++)
 	{
 		c.X = 52 + i;
 		c.Y = 11;
-		g_Console.writeToBuffer(c, "_");
+		g_Console.writeToBuffer(c, "_", 0x1A);
 	}
 	c.X = 59;
 	c.Y = 11;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	c.X = 60;
 	c.Y = 10;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	c.X = 61;
 	c.Y = 9;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	for (int i = 0; i < 15; i++)
 	{
 		c.X = 62 + i;
 		c.Y = 8;
-		g_Console.writeToBuffer(c, "_");
+		g_Console.writeToBuffer(c, "_", 0x1A);
 	}
 	c.X = 77;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, "/");
+	g_Console.writeToBuffer(c, "/", 0x1A);
 	/*
 	//doors
 	Grid[78][0] = '@'; Grid[79][0] = '@';

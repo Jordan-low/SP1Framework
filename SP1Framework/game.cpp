@@ -303,7 +303,7 @@ void render()
 void clearScreen()
 {
     // Clears the buffer with this colour attribute
-    g_Console.clearBuffer();
+    g_Console.clearBuffer(0x1F);
 }
 
 void renderToScreen()
