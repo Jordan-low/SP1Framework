@@ -235,22 +235,22 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
+    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 2)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y--;       
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
+    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 2)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X--;        
     }
-    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 3)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 3)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X++;        
@@ -296,7 +296,7 @@ void render()
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+    //renderInputEvents();    // renders status of input events
     renderToScreen(); // dump the contents of the buffer to the screen, one frame worth of game
 }
 
