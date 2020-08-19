@@ -9,8 +9,8 @@ public:
 	char Grid[80][25];
 	bool IsActive;
 	void initialise();
-	void printmap(Console &g_Console);
-	void townsquare(Console &g_Console);
+	void printmap(Console &g_Cosole);
+	void townsquare();
 	void patharea();
 	void insideAbandonedFacility1();
 	void insideAbandonedFacility3();
@@ -18,7 +18,7 @@ public:
 	void dungeon_stealth1();
 	void dungeon_stealth3();
 
-	void orphanage(Console &g_Console);
+	void orphanage();
 	void protest_area();
 	void outside_abandoned_facility();
 	void insideAbandonedFacility2();
