@@ -143,7 +143,7 @@ void Map::patharea()
 	j = 24; for (int i = 36; i < 45; i++) { (Grid[i][j] = '@'); }
 	i = 79; for (int j = 11; j < 15; j++) { (Grid[i][j] = '@'); }
 }
-
+//aaaaaaaa
 void Map::insideAbandonedFacility1()
 {
 	j = 24; for (int i = 34; i < 44; i++) { (Grid[i][j] = '@'); }
