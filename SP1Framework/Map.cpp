@@ -1206,4 +1206,43 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	Box(g_Console, 66, 13);
 }
 
+void Map::Road(Console& g_Console, int x, int y, int count)
+{
+	COORD c; COORD d; COORD e;
+	int counts = count;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < count; i++)
+	{
+		c.X = xLoc;
+		c.Y = yLoc + i;
+		g_Console.writeToBuffer(c, "|", 0x1A);
+	}
+}
+void Map::Road2(Console& g_Console, int x, int y, int count)
+{
+	COORD c; COORD d; COORD e;
+	int counts = count;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < count; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "_", 0x1A);
+	}
+}
 
+void Map::Road3(Console& g_Console, int x, int y, int count)
+{
+	COORD c; COORD d; COORD e;
+	int counts = count;
+	int xLoc = x;
+	int yLoc = y;
+	for (int i = 0; i < count; i++)
+	{
+		c.X = xLoc + i;
+		c.Y = yLoc;
+		g_Console.writeToBuffer(c, "@", 0x1A);
+	}
+}

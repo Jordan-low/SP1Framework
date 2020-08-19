@@ -235,22 +235,22 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
+    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 2)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y--;       
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
+    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 2)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X--;        
     }
-    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 3)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.Y++;        
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 3)
     {
         //Beep(1440, 30);
         g_sChar.m_cLocation.X++;        
@@ -296,7 +296,7 @@ void render()
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
+    //renderInputEvents();    // renders status of input events
     renderToScreen(); // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -328,7 +328,7 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    Townsquare.patharea(g_Console);
+    Townsquare.insideAbandonedFacility2(g_Console);
     //renderMap();        // renders the map to the buffer first
     renderCharacter();  // renders the character into the buffer
 }
@@ -392,70 +392,70 @@ void renderInputEvents()
     std::string key;
     for (int i = 0; i < K_COUNT; ++i)
     {
-        ss.str("");
-        switch (i)
-        {
-        case K_UP: key = "UP";
-            break;
-        case K_DOWN: key = "DOWN";
-            break;
-        case K_LEFT: key = "LEFT";
-            break;
-        case K_RIGHT: key = "RIGHT";
-            break;
-        case K_SPACE: key = "SPACE";
-            break;
-        default: continue;
-        }
-        if (g_skKeyEvent[i].keyDown)
-            ss << key << " pressed";
-        else if (g_skKeyEvent[i].keyReleased)
-            ss << key << " released";
-        else
-            ss << key << " not pressed";
+        //ss.str("");
+        //switch (i)
+        //{
+        //case K_UP: key = "UP";
+        //    break;
+        //case K_DOWN: key = "DOWN";
+        //    break;
+        //case K_LEFT: key = "LEFT";
+        //    break;
+        //case K_RIGHT: key = "RIGHT";
+        //    break;
+        //case K_SPACE: key = "SPACE";
+        //    break;
+        //default: continue;
+        //}
+        //if (g_skKeyEvent[i].keyDown)
+        //    ss << key << " pressed";
+        //else if (g_skKeyEvent[i].keyReleased)
+        //    ss << key << " released";
+        //else
+        //    ss << key << " not pressed";
 
         COORD c = { startPos.X, startPos.Y + i };
         g_Console.writeToBuffer(c, ss.str(), 0x17);
     }
 
-    //// mouse events    
-    //ss.str("");
-    //ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
-    //g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
-    //ss.str("");
-    //switch (g_mouseEvent.eventFlags)
-    //{
-    //case 0:
-    //    if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    //    {
-    //        ss.str("Left Button Pressed");
-    //        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
-    //    }
-    //    else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
-    //    {
-    //        ss.str("Right Button Pressed");
-    //        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
-    //    }
-    //    else
-    //    {
-    //        ss.str("Some Button Pressed");
-    //        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
-    //    }
-    //    break;
-    //case DOUBLE_CLICK:
-    //    ss.str("Double Clicked");
-    //    g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-    //    break;        
-    //case MOUSE_WHEELED:
-    //    if (g_mouseEvent.buttonState & 0xFF000000)
-    //        ss.str("Mouse wheeled down");
-    //    else
-    //        ss.str("Mouse wheeled up");
-    //    g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
-    //    break;
-    //default:        
-    //    break;
-    //}
+    // mouse events    
+    ss.str("");
+    ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
+    g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
+    ss.str("");
+    switch (g_mouseEvent.eventFlags)
+    {
+    case 0:
+        if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+        {
+            ss.str("Left Button Pressed");
+            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
+        }
+        else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
+        {
+            ss.str("Right Button Pressed");
+            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
+        }
+        else
+        {
+            ss.str("Some Button Pressed");
+            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
+        }
+        break;
+    case DOUBLE_CLICK:
+        ss.str("Double Clicked");
+        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
+        break;        
+    case MOUSE_WHEELED:
+        if (g_mouseEvent.buttonState & 0xFF000000)
+            ss.str("Mouse wheeled down");
+        else
+            ss.str("Mouse wheeled up");
+        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
+        break;
+    default:        
+        break;
+    }
     
 }
 

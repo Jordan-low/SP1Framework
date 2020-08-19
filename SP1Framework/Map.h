@@ -30,8 +30,14 @@ public:
 	void Border(Console &g_Console);
 	void House(Console& g_Console, int x, int y);
 	void House2(Console& g_Console, int x, int y);
+	void Road(Console& g_Console, int x, int y, int count);
+	void Road2(Console& g_Console, int x, int y, int count);
+	void Road3(Console& g_Console, int x, int y, int count);
 
 
+	void Box(Console& g_Console, int x, int y);
+
+	void Barrel(Console& g_Console, int x, int y);
 
 };
 
