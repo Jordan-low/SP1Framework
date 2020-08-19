@@ -602,7 +602,6 @@ void Map::outside_abandoned_facility(Console& g_Console)
 	//for (i = 50; i <= 51; i++) { Grid[i][1] = '_'; }
 }
 
-
 void Map::insideAbandonedFacility2(Console& g_Console)
 {
 	Border(g_Console);
@@ -735,7 +734,7 @@ void Map::dungeon_cell(Console& g_Console)
 	}
 
 	//locked doors
-	for (i = 33; i <= 45; i++) 
+	for (i = 32; i <= 45; i++) 
 	{ 
 		c.X = i;
 		c.Y = 8;
