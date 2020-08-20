@@ -37,11 +37,11 @@ void Map::printmap(Console& g_Console)
 			g_Console.writeToBuffer(c, "#");
 			g_Console.writeToBuffer(d, "#");
 		}
-		
+
 	}
 }
 
-void Map::Border(Console &g_Console)
+void Map::Border(Console& g_Console)
 {
 	COORD c; COORD d;
 	for (int col = 1; col < 79; col++)
@@ -139,7 +139,7 @@ void Map::House2(Console& g_Console, int x, int y)
 	}
 }
 
-void Map::townsquare(Console &g_Console)
+void Map::townsquare(Console& g_Console)
 {
 	Border(g_Console);
 	House(g_Console, 5, 3);
@@ -164,7 +164,7 @@ void Map::townsquare(Console &g_Console)
 }
 
 void Map::insideAbandonedFacility3(Console& g_Console)
- {
+{
 	Border(g_Console);
 	COORD c;
 	//small box
@@ -520,7 +520,7 @@ void Map::dungeon_stealth3(Console& g_Console)
 	g_Console.writeToBuffer(c, "O", 0x1A);
 }
 
-void Map::orphanage(Console &g_Console)
+void Map::orphanage(Console& g_Console)
 {
 	COORD c; COORD d; COORD e;
 	for (int col = 1; col < 79; col++) // border
@@ -953,23 +953,23 @@ void Map::dungeon_cell(Console& g_Console)
 	COORD c;
 	//doors
 	for (i = 2; i <= 10; i++)
-	{ 
+	{
 		c.X = i;
 		c.Y = 2;
 		g_Console.writeToBuffer(c, '@', 0x1A);
 	}
-	
+
 	//cell bars
-	for (i = 2; i <= 77; i++) 
-	{ 
+	for (i = 2; i <= 77; i++)
+	{
 		c.X = i;
 		c.Y = 8;
 		g_Console.writeToBuffer(c, '-', 0x1A);
 	}
 
 	//locked doors
-	for (i = 32; i <= 45; i++) 
-	{ 
+	for (i = 32; i <= 45; i++)
+	{
 		c.X = i;
 		c.Y = 8;
 		g_Console.writeToBuffer(c, '&', 0x1A);
@@ -1038,7 +1038,7 @@ void Map::boss_room(Console& g_Console)
 		c.Y = 22;
 		g_Console.writeToBuffer(c, '@', 0x1A);
 	}
-	
+
 	//long table
 	for (i = 26; i <= 54; i++)
 	{
