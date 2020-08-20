@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Windows.h"
+#include "Entity.h"
 using namespace std;
 
 class Poison : public Entity
