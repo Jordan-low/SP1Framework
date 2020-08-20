@@ -9,9 +9,10 @@
 class Cutscenes :
     public Map
 {
-    void animate();
-    void nextdialogue();
-    char getgrid(int i, int j, char c);
-    char cleargrid(int i, int j);
+    char c;
+    void animate(Console& g_Console);
+    void nextdialogue(Console& g_Console);
+    char getgrid(Console& g_Console, int x, int y, char c);
+    char cleargrid(Console& g_Console, int x, int y);
 };
 
