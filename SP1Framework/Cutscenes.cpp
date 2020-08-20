@@ -40,7 +40,7 @@ void Cutscenes::orphanageCaretakerCutscene(Console& g_Console, int x, int y, cha
 		c.X = x;
 		c.Y = y;
 	}
-
+	//help
 	//MyMap.orphan6(); 
 	animate(g_Console); 
 	//MyMap.orphan7(); 
