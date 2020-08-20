@@ -41,6 +41,8 @@ enum EGAMESTATES
     S_SPLASHSCREEN,
     S_GAME,
     S_Townsquare,
+    S_Protest_Area,
+    S_Path_Area,
     S_COUNT
 };
 
@@ -67,6 +69,8 @@ void renderGame();          // renders the game stuff
 void renderMap();           // renders the map to the buffer first
 void renderMap_Orphanage();
 void renderMap_Townsquare();
+void renderMap_Protest_Area();
+void renderMap_Path_Area();
 void renderCharacter();     // renders the character into the buffer
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
