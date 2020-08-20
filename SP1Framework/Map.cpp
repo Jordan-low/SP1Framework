@@ -3,13 +3,14 @@
 
 using namespace std;
 
-Map::Map()
+void Map::initialise()
 {
-	for (int i = 0; i < 25; i++)
+	//initialise map
+	for (j = 0; j < 25; j++)
 	{
-		for (int j = 0; j < 80; j++)
+		for (i = 0; i < 80; i++)
 		{
-			Grid[i][j] = ' ';
+			(Grid[i][j] = ' ');
 		}
 	}
 }
@@ -36,36 +37,11 @@ void Map::printmap(Console& g_Console)
 			g_Console.writeToBuffer(c, "#");
 			g_Console.writeToBuffer(d, "#");
 		}
-	}
-	/*
-	for (int row = 0; row < 27; row++)
-	{
-		d.X = 1;
-		d.Y = row;
-		g_Console.writeToBuffer(d, "#", 0x3C);
-		for (int col = 0; col < 83; col++)
-		{
-			e.X = col;
-			e.Y = row;
-			g_Console.writeToBuffer(e, Grid[row][col], 0x2B);
-		}
-		//g_Console.writeToBuffer(c, "#");
-	}
-	c.X = 5;
-	c.Y = 5;
-	g_Console.writeToBuffer(c, "***");
-	cout << "\n";
 
-	//print middle
-@ -43,7 +63,7 @@ void Map::printmap()
-		cout << "#";
 	}
-	cout << "\n";
-
-*/
 }
-/*
-void Map::Border(Console &g_Console)
+
+void Map::Border(Console& g_Console)
 {
 	COORD c; COORD d;
 	for (int col = 1; col < 79; col++)
@@ -163,7 +139,7 @@ void Map::House2(Console& g_Console, int x, int y)
 	}
 }
 
-void Map::townsquare(Console &g_Console)
+void Map::townsquare(Console& g_Console)
 {
 	Border(g_Console);
 	House(g_Console, 5, 3);
@@ -187,56 +163,28 @@ void Map::townsquare(Console &g_Console)
 	House(g_Console, 5, 11);
 }
 
-void Map::insideAbandonedFacility3(Console& g_Console)
-{
-	Border(g_Console);
-	//small box
-	j = 0; for (i = 30; i < 50; i++) { (Grid[i][j] = '-'); }
-	j = 10; for (i = 30; i < 50; i++) { (Grid[i][j] = '-'); }
-	j = 10; for (i = 39; i < 42; i++) { (Grid[i][j] = ' '); }
-	i = 30; for (j = 1; j < 10; j++) { (Grid[i][j] = '|'); }
-	i = 49; for (j = 1; j < 10; j++) { (Grid[i][j] = '|'); }
-	i = 38; for (j = 11; j < 25; j++) { (Grid[i][j] = '|'); }
-	i = 42; for (j = 11; j < 25; j++) { (Grid[i][j] = '|'); }
-	//door
-	j = 24; for (i = 39; i < 42; i++) { (Grid[i][j] = '@'); }
-}
-
-void Map::insideMedicalFacility(Console& g_Console)
-{
-	//door
-	i = 0; for (int j = 10; j < 15; j++) { (Grid[i][j] = '@'); }
-	//beds
-	//vertical
-	i = 75; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
-	i = 65; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
-	i = 60; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
-	i = 50; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
-	i = 45; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
-	i = 35; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
-	//horizontal
-	j = 0; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
-	j = 2; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
-	j = 6; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
-	j = 18; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
-	j = 22; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
-	j = 24; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
-	for (j = 0; j < 25; j++) { for (i = 61; i < 65; i++) { (Grid[i][j] = ' '); } }
-	for (j = 0; j < 25; j++) { for (i = 46; i < 50; i++) { (Grid[i][j] = ' '); } }
-	//front desk
-	i = 20; for (int j = 8; j < 18; j++) { (Grid[i][j] = '|'); }
-	i = 23; for (int j = 2; j < 23; j++) { (Grid[i][j] = '|'); }
-	for (j = 8; j < 18; j++) { for (i = 21; i < 26; i++) { (Grid[i][j] = ' '); } }
-	j = 7; for (i = 20; i < 26; i++) { (Grid[i][j] = '-'); }
-	j = 18; for (i = 20; i < 26; i++) { (Grid[i][j] = '-'); }
-}
-
-
-
-void Map::orphanage(Console &g_Console)
+void Map::orphanage(Console& g_Console)
 {
 	COORD c; COORD d; COORD e;
-	Border(g_Console);
+	for (int col = 1; col < 79; col++) // border
+	{
+		c.X = col;
+		c.Y = 1;
+		d.X = col;
+		d.Y = 23;
+		g_Console.writeToBuffer(c, "#");
+		g_Console.writeToBuffer(d, "#");
+		for (int row = 1; row < 24; row++)
+		{
+			c.X = 78;
+			c.Y = row;
+			d.X = 1;
+			d.Y = row;
+			g_Console.writeToBuffer(c, "#");
+			g_Console.writeToBuffer(d, "#");
+		}
+
+	}
 	for (int i = 0; i < 2; i++) // door
 	{
 		c.X = 76;
@@ -937,7 +885,6 @@ void Map::Road3(Console& g_Console, int x, int y, int count)
 	}
 }
 
-
 void Map::insideAbandonedFacility3(Console& g_Console)
 {
 	Border(g_Console);
@@ -1323,6 +1270,7 @@ void Map::protest_area(Console& g_Console)
 		g_Console.writeToBuffer(c, "_", 0x1A);
 	}
 
+	//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 	//podium
 	c.Y = 9;
 	c.X = 36;
@@ -1415,7 +1363,6 @@ void Map::protest_area(Console& g_Console)
 	g_Console.writeToBuffer(c, "r", 0x1A);
 	c.X = 71;
 	g_Console.writeToBuffer(c, "s", 0x1A);
-
 }
 
 void Map::dungeon_stealth1(Console& g_Console)
@@ -1466,4 +1413,3 @@ void Map::dungeon_stealth1(Console& g_Console)
 
 	Road3(g_Console, 2, 22, 8);
 	Road3(g_Console, 11, 22, 8);
-}
