@@ -1382,7 +1382,7 @@ void Map::dungeon_stealth3(Console& g_Console)
 	c.X = 10;
 	g_Console.writeToBuffer(c, "O", 0x1A);
 }
-
+//COCKROACH VErY YUMMY
 //AAAAAAAAAAAA cockroach yummy
 void Map::protest_area(Console& g_Console)
 {
