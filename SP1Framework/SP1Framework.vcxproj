@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cutscenes.cpp" />
     <ClCompile Include="Damage.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="TutEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cutscenes.h" />
     <ClInclude Include="Damage.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
