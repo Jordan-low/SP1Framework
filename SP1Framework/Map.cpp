@@ -1413,3 +1413,4 @@ void Map::dungeon_stealth1(Console& g_Console)
 
 	Road3(g_Console, 2, 22, 8);
 	Road3(g_Console, 11, 22, 8);
+}
