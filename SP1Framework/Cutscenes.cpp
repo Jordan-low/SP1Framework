@@ -7,6 +7,7 @@ void Cutscenes::animate()
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	system("cls");
 }
+//cockroach???
 
 void Cutscenes::nextdialogue()
 {
