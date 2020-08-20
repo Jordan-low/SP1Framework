@@ -17,13 +17,38 @@ void Enemy::setEnemy(const char n)
 	name = n;
 }
 
-short Enemy::getEnemy()
+int Enemy::getD()
+{
+	return this->GetD();
+}
+
+int Enemy::getH()
+{
+	return this->GetH();
+}
+
+int Enemy::getX()
 {
 	return this->GetX();
+}
+
+int Enemy::getY()
+{
 	return this->GetY();
-	return this->GetH();
-	return this->GetD();
+}
+
+char Enemy::getName()
+{
 	return this->GetName();
+}
+
+int Enemy::getEnemy()
+{
+	this->getD();
+	this->getH();
+	this->getX();
+	this->getY();
+	this->getName();
 }
 
 void Enemy::Hit()
