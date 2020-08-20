@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void Map::initialise(Console &g_Console)
+void Map::initialise(Console& g_Console)
 {
 	//initialise map
 	COORD c;
@@ -256,7 +256,7 @@ void Map::orphanage(Console& g_Console)
 	}
 	c.X = 21;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/' , 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
 	c.X = 22;
 	c.Y = 16;
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
