@@ -7,8 +7,6 @@
 #include <iomanip>
 #include <sstream>
 #include "Map.h"
-#include "Cutscenes.h"
-
 using namespace std;
 
 double  g_dElapsedTime;
@@ -21,12 +19,10 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(80, 30, "SP1 Framework");
+Console g_Console(80, 25, "SP1 Framework");
 //15 maps
 Map Townsquare;
 Map gameMap[15];
-
-Cutscenes Cutscene;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -112,6 +108,10 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_Townsquare: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
+    case S_Protest_Area: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
+        break;
+    case S_Path_Area: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
+        break;
     }
 }
 
@@ -140,6 +140,10 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     case S_Townsquare: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+        break;
+    case S_Protest_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+        break;
+    case S_Path_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     }
 }
@@ -223,6 +227,10 @@ void update(double dt)
         case S_GAME: updateGame(); // gameplay logic when we are in the game
             break;
         case S_Townsquare: updateGame(); // gameplay logic when we are in the game
+            break;
+        case S_Protest_Area: updateGame(); // gameplay logic when we are in the game
+            break;
+        case S_Path_Area: updateGame(); // gameplay logic when we are in the game
             break;
     }
 }
@@ -381,6 +389,10 @@ void render()
         break;
     case S_Townsquare: renderMap_Townsquare();
         break;
+    case S_Protest_Area: renderMap_Protest_Area();
+        break;
+    case S_Path_Area: renderMap_Path_Area();
+        break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
@@ -415,16 +427,16 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    //Townsquare.initialise(g_Console);
-    //Townsquare.printmap(g_Console);
-    //Townsquare.orphanage(g_Console);
-    
-    Cutscene.orphanageCaretakerCutscene(g_Console, 0, 0, ' ');
+    Townsquare.initialise(g_Console);
+    Townsquare.Border(g_Console);
+    Townsquare.orphanage(g_Console);
     renderCharacter();
     //renderMap(); // renders the character into the buffer
     if (Townsquare.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
         g_eGameState = S_Townsquare;
+        g_sChar.m_cLocation.X = 22;
+        g_sChar.m_cLocation.Y = 17;
     }
 
 }
@@ -432,8 +444,36 @@ void renderGame()
 void renderMap_Townsquare()
 {
     Townsquare.initialise(g_Console);
-    Townsquare.printmap(g_Console);
+    Townsquare.Border(g_Console);
     Townsquare.townsquare(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    if (Townsquare.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+    {
+        g_eGameState = S_Protest_Area;
+        g_sChar.m_cLocation.X = 40;
+        g_sChar.m_cLocation.Y = 15;
+    }
+}
+
+void renderMap_Protest_Area()
+{
+    Townsquare.initialise(g_Console);
+    Townsquare.Border(g_Console);
+    Townsquare.protest_area(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    if (Townsquare.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+    {
+        g_eGameState = S_Path_Area;
+        g_sChar.m_cLocation.X = 41;
+        g_sChar.m_cLocation.Y = 21;
+    }
+}
+
+void renderMap_Path_Area()
+{
+    Townsquare.initialise(g_Console);
+    Townsquare.Border(g_Console);
+    Townsquare.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
 }
 
