@@ -7,6 +7,8 @@
 #include <iomanip>
 #include <sstream>
 #include "Map.h"
+#include "Cutscenes.h"
+
 using namespace std;
 
 double  g_dElapsedTime;
@@ -19,10 +21,12 @@ SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(80, 30, "SP1 Framework");
 //15 maps
 Map Townsquare;
 Map gameMap[15];
+
+Cutscenes Cutscene;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -411,9 +415,11 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    Townsquare.initialise(g_Console);
-    Townsquare.printmap(g_Console);
-    Townsquare.orphanage(g_Console);
+    //Townsquare.initialise(g_Console);
+    //Townsquare.printmap(g_Console);
+    //Townsquare.orphanage(g_Console);
+    
+    Cutscene.orphanageCaretakerCutscene(g_Console, 0, 0, ' ');
     renderCharacter();
     //renderMap(); // renders the character into the buffer
     if (Townsquare.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')

@@ -197,7 +197,7 @@ void Map::orphanage(Console& g_Console)
 		d.X = col;
 		d.Y = 23;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#');
-		g_Console.writeToBuffer(d, Grid[c.Y][c.X] = '#');
+		g_Console.writeToBuffer(d, Grid[d.Y][d.X] = '#');
 		for (int row = 1; row < 24; row++)
 		{
 			c.X = 78;
@@ -205,7 +205,7 @@ void Map::orphanage(Console& g_Console)
 			d.X = 1;
 			d.Y = row;
 			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#');
-			g_Console.writeToBuffer(d, Grid[c.Y][c.X] = '#');
+			g_Console.writeToBuffer(d, Grid[d.Y][d.X] = '#');
 		}
 
 	}
@@ -218,8 +218,8 @@ void Map::orphanage(Console& g_Console)
 		e.X = 76 + i;
 		e.Y = 2 + i;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@');
-		g_Console.writeToBuffer(d, Grid[c.Y][c.X] = '@');
-		g_Console.writeToBuffer(e, Grid[c.Y][c.X] = '@');
+		g_Console.writeToBuffer(d, Grid[d.Y][d.X] = '@');
+		g_Console.writeToBuffer(e, Grid[e.Y][e.X] = '@');
 	}
 	c.X = 2;
 	c.Y = 22;

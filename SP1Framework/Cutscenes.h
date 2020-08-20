@@ -9,12 +9,13 @@
 class Cutscenes :
     public Map
 {
+public:
     char c;
     void animate(Console& g_Console);
     void nextdialogue(Console& g_Console);
-    char getgrid(Console& g_Console, int x, int y, char c);
+    char getgrid(Console& g_Console, int x, int y, char chara);
     char cleargrid(Console& g_Console, int x, int y);
 
-    void orphanageCaretakerCutscene(Console& g_Console, int x, int y, char c);
+    void orphanageCaretakerCutscene(Console& g_Console, int x, int y, char chara);
 };
 
