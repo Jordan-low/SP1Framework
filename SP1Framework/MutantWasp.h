@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "Poison.h"
 
 class MutantWasp : public Enemy
 {

@@ -91,7 +91,9 @@
     <ClCompile Include="MutantWasp.cpp" />
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Poison.cpp" />
     <ClCompile Include="Raymond.cpp" />
+    <ClCompile Include="Ally.cpp" />
     <ClCompile Include="TutEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -103,10 +105,12 @@
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Guard.h" />
+    <ClInclude Include="Ally.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MutantWasp.h" />
     <ClInclude Include="Pig.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Poison.h" />
     <ClInclude Include="Raymond.h" />
     <ClInclude Include="TutEnemy.h" />
   </ItemGroup>
