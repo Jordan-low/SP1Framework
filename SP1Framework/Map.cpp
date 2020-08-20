@@ -14,7 +14,7 @@ void Map::initialise()
 		}
 	}
 }
-
+//COCKROACH YUMMY
 void Map::printmap(Console& g_Console)
 {
 	//print first line
