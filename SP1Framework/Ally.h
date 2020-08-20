@@ -11,7 +11,7 @@ public:
 	int getXCoords();
 	int getYCoords();
 	char getNamed();
-	int getAlly();
+	//int getAlly();
 	~Ally();
 
 };

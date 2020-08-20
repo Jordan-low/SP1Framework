@@ -37,7 +37,10 @@ char Ally::getNamed()
 {
 	return this->GetName();
 }
-
+Ally::~Ally()
+{
+}
+/*
 int Ally::getAlly()
 {
 	this->getDmg();
@@ -45,4 +48,4 @@ int Ally::getAlly()
 	this->getXCoords();
 	this->getYCoords();
 	this->getNamed();
-}
+}*/
