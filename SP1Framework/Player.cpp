@@ -13,18 +13,41 @@ void Player::setPlayer()
 	this->SetY(0);
 }
 
-int Player::getPlayer()
+int Player::GetDmg()
 {
 	return this->GetD();
+}
+
+int Player::GetHealth()
+{
 	return this->GetH();
+}
+
+int Player::GetXcoord()
+{
 	return this->GetX();
+}
+
+int Player::GetYcoord()
+{
 	return this->GetY();
 }
 
-char Player::GetName()
+char Player::GetPlayerName()
 {
 	return this->GetName();
 }
+
+int Player::getPlayer()
+{
+	this->GetDmg();
+	this->GetHealth();
+	this->GetXcoord();
+	this->GetYcoord();
+	this->GetPlayerName();
+}
+
+
 
 void Player::Attack()
 {
