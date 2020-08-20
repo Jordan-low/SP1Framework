@@ -22,7 +22,9 @@ void MutantWasp::Debuff()
 	chance = (rand() % 100) + 1;
 	if (chance >= 0 && chance <= 20)
 	{
-		cout << "Poisoned";
+		Poison Poisons;
+		Poisons.setPoison();
+		Poisons.getPoison();
 	}
 }
 
