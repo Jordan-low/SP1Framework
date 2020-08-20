@@ -8,8 +8,12 @@ public:
 	Player();
 	~Player();
 	void setPlayer();
+	int GetDmg();
+	int GetHealth();
+	int GetXcoord();
+	int GetYcoord();
+	char GetPlayerName();
 	int getPlayer();
-	char GetName();
 	void Attack();
 };
 

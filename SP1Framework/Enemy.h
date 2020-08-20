@@ -7,7 +7,12 @@ public:
 	Enemy();
 	~Enemy();
 	void setEnemy(const char n);
-	short getEnemy();
+	int getD();
+	int getH();
+	int getX();
+	int getY();
+	char getName();
+	int getEnemy();
 	void Hit();
 	void beenHit();
 };
