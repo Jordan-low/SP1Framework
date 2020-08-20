@@ -10,4 +10,4 @@ private:
 	void Damaged();
 	~Pig();
 };
-
+//i
