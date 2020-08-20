@@ -14,5 +14,7 @@ class Cutscenes :
     void nextdialogue(Console& g_Console);
     char getgrid(Console& g_Console, int x, int y, char c);
     char cleargrid(Console& g_Console, int x, int y);
+
+    void orphanageCaretakerCutscene(Console& g_Console, int x, int y, char c);
 };
 
