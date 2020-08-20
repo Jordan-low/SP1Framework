@@ -38,8 +38,8 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+    g_sChar.m_cLocation.X = 22;//g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -106,6 +106,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
+    case S_Townsquare: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
+        break;
     }
 }
 
@@ -132,6 +134,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+        break;
+    case S_Townsquare: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     }
 }
@@ -214,6 +218,8 @@ void update(double dt)
             break;
         case S_GAME: updateGame(); // gameplay logic when we are in the game
             break;
+        case S_Townsquare: updateGame(); // gameplay logic when we are in the game
+            break;
     }
 }
 
@@ -235,32 +241,107 @@ void moveCharacter()
 {    
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
-    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 2)
+    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y--;       
+        int i = g_sChar.m_cLocation.X;
+        int j = g_sChar.m_cLocation.Y;
+        if (Townsquare.Grid[j - 1][i] != '|')
+        {
+            if (Townsquare.Grid[j - 1][i] != '#')
+            {
+                if (Townsquare.Grid[j - 1][i] != '-')
+                {
+                    if (Townsquare.Grid[j - 1][i] != '_')
+                    {
+                        if (Townsquare.Grid[j - 1][i] != 'O')
+                        {
+                            if (Townsquare.Grid[j - 1][i] != 'E')
+                            {
+                                g_sChar.m_cLocation.Y--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 2)
+    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X--;        
+        int i = g_sChar.m_cLocation.X;
+        int j = g_sChar.m_cLocation.Y;
+        if (Townsquare.Grid[j][i - 1] != '|')
+        {
+            if (Townsquare.Grid[j][i - 1] != '#')
+            {
+                if (Townsquare.Grid[j][i - 1] != '-')
+                {
+                    if (Townsquare.Grid[j][i - 1] != '_')
+                    {
+                        if (Townsquare.Grid[j][i - 1] != 'O')
+                        {
+                            if (Townsquare.Grid[j][i - 1] != 'E')
+                            {
+                                g_sChar.m_cLocation.X--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 3)
+    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.Y++;        
+        int i = g_sChar.m_cLocation.X;
+        int j = g_sChar.m_cLocation.Y;
+        if (Townsquare.Grid[j + 1][i] != '|')
+        {
+            if (Townsquare.Grid[j + 1][i] != '#')
+            {
+                if (Townsquare.Grid[j + 1][i] != '-')
+                {
+                    if (Townsquare.Grid[j + 1][i] != '_')
+                    {
+                        if (Townsquare.Grid[j + 1][i] != 'O')
+                        {
+                            if (Townsquare.Grid[j + 1][i] != 'E')
+                            {
+                                g_sChar.m_cLocation.Y++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
-    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 3)
+    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
     {
-        //Beep(1440, 30);
-        g_sChar.m_cLocation.X++;        
+        int i = g_sChar.m_cLocation.X;
+        int j = g_sChar.m_cLocation.Y;
+        if (Townsquare.Grid[j][i + 1] != '|')
+        {
+            if (Townsquare.Grid[j][i + 1] != '#')
+            {
+                if (Townsquare.Grid[j][i + 1] != '-')
+                {
+                    if (Townsquare.Grid[j][i + 1] != '_')
+                    {
+                        if (Townsquare.Grid[j][i + 1] != 'O')
+                        {
+                            if (Townsquare.Grid[j][i + 1] != 'E')
+                            {
+                                g_sChar.m_cLocation.X++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
         g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
-
-   
 }
 void processUserInput()
 {
@@ -293,6 +374,8 @@ void render()
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
     case S_GAME: renderGame();
+        break;
+    case S_Townsquare: renderMap_Townsquare();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
@@ -328,29 +411,24 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    Townsquare.boss_room(g_Console);
-    //renderMap();        // renders the map to the buffer first
-    renderCharacter();  // renders the character into the buffer
+    Townsquare.initialise(g_Console);
+    Townsquare.printmap(g_Console);
+    Townsquare.orphanage(g_Console);
+    renderCharacter();
+    //renderMap(); // renders the character into the buffer
+    if (Townsquare.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
+    {
+        g_eGameState = S_Townsquare;
+    }
+
 }
 
-void renderMap()
+void renderMap_Townsquare()
 {
-
-
-    // Set up sample colours, and output shadings
-    const WORD colors[] = {
-        0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-    };
-
-    COORD c;
-    for (int i = 0; i < 12; ++i)
-    {
-        c.X = 5 * i;
-        c.Y = i + 1;
-        colour(colors[i]);
-        g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-    }
+    Townsquare.initialise(g_Console);
+    Townsquare.printmap(g_Console);
+    Townsquare.townsquare(g_Console);
+    renderCharacter();  // renders the character into the buffer
 }
 
 void renderCharacter()
