@@ -1,6 +1,6 @@
 #pragma once
 #include "Enemy.h"
-#include "Damage.h"
+#include "Poison.h"
 
 class TutEnemy : public Enemy
 {

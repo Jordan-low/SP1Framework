@@ -21,7 +21,9 @@ void TutEnemy::Debuff()
 	chance = (rand() % 100) + 1;
 	if (chance >= 0 && chance <= 15)
 	{
-		cout << "Poisoned";
+		Poison Poisoned;
+		Poisoned.setPoison();
+		Poisoned.getPoison();
 	}
 }
 
