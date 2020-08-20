@@ -161,6 +161,144 @@ void Map::townsquare(Console &g_Console)
 	House(g_Console, 5, 3);
 	House(g_Console, 5, 7);
 	House(g_Console, 5, 11);
+
+	/*
+	//doors
+	j = 0; for (i = 8; i < 24; i++) { (Grid[i][j] = '@'); }
+	j = 0; for (i = 57; i < 73; i++) { (Grid[i][j] = '@'); }
+	//road lines
+	i = 7; for (int j = 0; j < 21; j++) { (Grid[i][j] = '|'); }i = 72; for (int j = 0; j < 21; j++) { (Grid[i][j] = '|'); }j = 22; for (int i = 7; i < 77; i++) { (Grid[i][j] = '-'); }
+	i = 24; for (int j = 0; j < 17; j++) { (Grid[i][j] = '|'); }i = 56; for (int j = 0; j < 17; j++) { (Grid[i][j] = '|'); }j = 17; for (int i = 24; i < 57; i++) { (Grid[i][j] = '-'); }
+	//road markings
+	i = 15; for (int j = 3; j < 7; j++) { (Grid[i][j] = 'I'); }i = 15; for (int j = 10; j < 14; j++) { (Grid[i][j] = 'I'); }i = 15; for (int j = 17; j < 20; j++) { (Grid[i][j] = 'I'); }
+	i = 64; for (int j = 3; j < 7; j++) { (Grid[i][j] = 'I'); }i = 64; for (int j = 10; j < 14; j++) { (Grid[i][j] = 'I'); }i = 64; for (int j = 17; j < 20; j++) { (Grid[i][j] = 'I'); }
+	j = 19; for (int i = 17; i < 22; i++) { (Grid[i][j] = '='); }j = 19; for (int i = 30; i < 36; i++) { (Grid[i][j] = '='); }j = 19; for (int i = 44; i < 50; i++) { (Grid[i][j] = '='); }j = 19; for (int i = 58; i < 63; i++) { (Grid[i][j] = '='); }
+	//houses on the sides
+	j = 1; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }Grid[3][2] = '|'; Grid[4][2] = ' '; Grid[5][2] = 'H'; Grid[6][2] = ' '; Grid[7][2] = '|'; j = 3; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }
+	j = 6; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }Grid[3][7] = '|'; Grid[4][7] = ' '; Grid[5][7] = 'H'; Grid[6][7] = ' '; Grid[7][7] = '|'; j = 8; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }
+	j = 11; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }Grid[3][12] = '|'; Grid[4][12] = ' '; Grid[5][12] = 'H'; Grid[6][12] = ' '; Grid[7][12] = '|'; j = 13; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }
+	j = 16; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }Grid[3][17] = '|'; Grid[4][17] = ' '; Grid[5][17] = 'H'; Grid[6][17] = ' '; Grid[7][17] = '|'; j = 18; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }
+	j = 21; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }Grid[3][22] = '|'; Grid[4][22] = ' '; Grid[5][22] = 'H'; Grid[6][22] = ' '; Grid[7][22] = '|'; j = 23; for (int i = 3; i < 8; i++) { (Grid[i][j] = '-'); }
+	j = 1; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }Grid[72][2] = '|'; Grid[73][2] = ' '; Grid[74][2] = 'H'; Grid[75][2] = ' '; Grid[76][2] = '|'; j = 3; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }
+	j = 6; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }Grid[72][7] = '|'; Grid[73][7] = ' '; Grid[74][7] = 'H'; Grid[75][7] = ' '; Grid[76][7] = '|'; j = 8; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }
+	j = 11; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }Grid[72][12] = '|'; Grid[73][12] = ' '; Grid[74][12] = 'H'; Grid[75][12] = ' '; Grid[76][12] = '|'; j = 13; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }
+	j = 16; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }Grid[72][17] = '|'; Grid[73][17] = ' '; Grid[74][17] = 'H'; Grid[75][17] = ' '; Grid[76][17] = '|'; j = 18; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }
+	j = 21; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }Grid[72][22] = '|'; Grid[73][22] = ' '; Grid[74][22] = 'H'; Grid[75][22] = ' '; Grid[76][22] = '|'; j = 23; for (int i = 72; i < 77; i++) { (Grid[i][j] = '-'); }
+	j = 21; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }Grid[54][22] = '|'; Grid[55][22] = ' '; Grid[56][22] = 'H'; Grid[57][22] = ' '; Grid[58][22] = '|'; j = 23; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }
+	j = 21; for (int i = 38; i < 43; i++) { (Grid[i][j] = '-'); }Grid[38][22] = '|'; Grid[39][22] = ' '; Grid[40][22] = 'H'; Grid[41][22] = ' '; Grid[42][22] = '|'; j = 23; for (int i = 38; i < 43; i++) { (Grid[i][j] = '-'); }
+	//houses in the middle
+	j = 1; for (int i = 22; i < 27; i++) { (Grid[i][j] = '-'); }Grid[22][2] = '|'; Grid[23][2] = ' '; Grid[24][2] = 'H'; Grid[25][2] = ' '; Grid[26][2] = '|'; j = 3; for (int i = 22; i < 27; i++) { (Grid[i][j] = '-'); }
+	j = 6; for (int i = 22; i < 27; i++) { (Grid[i][j] = '-'); }Grid[22][7] = '|'; Grid[23][7] = ' '; Grid[24][7] = 'H'; Grid[25][7] = ' '; Grid[26][7] = '|'; j = 8; for (int i = 22; i < 27; i++) { (Grid[i][j] = '-'); }
+	j = 11; for (int i = 22; i < 27; i++) { (Grid[i][j] = '-'); }Grid[22][12] = '|'; Grid[23][12] = ' '; Grid[24][12] = 'H'; Grid[25][12] = ' '; Grid[26][12] = '|'; j = 13; for (int i = 22; i < 27; i++) { (Grid[i][j] = '-'); }
+	j = 1; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }Grid[54][2] = '|'; Grid[55][2] = ' '; Grid[56][2] = 'H'; Grid[57][2] = ' '; Grid[58][2] = '|'; j = 3; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }
+	j = 6; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }Grid[54][7] = '|'; Grid[55][7] = ' '; Grid[56][7] = 'H'; Grid[57][7] = ' '; Grid[58][7] = '|'; j = 8; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }
+	j = 11; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }Grid[54][12] = '|'; Grid[55][12] = ' '; Grid[56][12] = 'H'; Grid[57][12] = ' '; Grid[58][12] = '|'; j = 13; for (int i = 54; i < 59; i++) { (Grid[i][j] = '-'); }
+	//Orphanage
+	j = 21; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }Grid[21][22] = '|'; Grid[22][22] = ' '; Grid[23][22] = 'â'; Grid[24][22] = ' '; Grid[25][22] = '|'; j = 23; for (int i = 21; i < 26; i++) { (Grid[i][j] = '-'); }
+	*/
+}
+
+void Map::insideAbandonedFacility3(Console& g_Console)
+{
+	Border(g_Console);
+	//small box
+	j = 0; for (i = 30; i < 50; i++) { (Grid[i][j] = '-'); }
+	j = 10; for (i = 30; i < 50; i++) { (Grid[i][j] = '-'); }
+	j = 10; for (i = 39; i < 42; i++) { (Grid[i][j] = ' '); }
+	i = 30; for (j = 1; j < 10; j++) { (Grid[i][j] = '|'); }
+	i = 49; for (j = 1; j < 10; j++) { (Grid[i][j] = '|'); }
+	i = 38; for (j = 11; j < 25; j++) { (Grid[i][j] = '|'); }
+	i = 42; for (j = 11; j < 25; j++) { (Grid[i][j] = '|'); }
+	//door
+	j = 24; for (i = 39; i < 42; i++) { (Grid[i][j] = '@'); }
+}
+
+void Map::insideMedicalFacility(Console& g_Console)
+{
+	//door
+	i = 0; for (int j = 10; j < 15; j++) { (Grid[i][j] = '@'); }
+	//beds
+	//vertical
+	i = 75; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 65; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 60; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 50; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 45; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	i = 35; for (int j = 0; j < 25; j++) { (Grid[i][j] = '|'); } for (int j = 6; j < 19; j++) { (Grid[i][j] = ' '); }
+	//horizontal
+	j = 0; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 2; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 6; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 18; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 22; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	j = 24; for (i = 35; i < 76; i++) { (Grid[i][j] = '-'); }
+	for (j = 0; j < 25; j++) { for (i = 61; i < 65; i++) { (Grid[i][j] = ' '); } }
+	for (j = 0; j < 25; j++) { for (i = 46; i < 50; i++) { (Grid[i][j] = ' '); } }
+	//front desk
+	i = 20; for (int j = 8; j < 18; j++) { (Grid[i][j] = '|'); }
+	i = 23; for (int j = 2; j < 23; j++) { (Grid[i][j] = '|'); }
+	for (j = 8; j < 18; j++) { for (i = 21; i < 26; i++) { (Grid[i][j] = ' '); } }
+	j = 7; for (i = 20; i < 26; i++) { (Grid[i][j] = '-'); }
+	j = 18; for (i = 20; i < 26; i++) { (Grid[i][j] = '-'); }
+}
+
+void Map::dungeon_stealth1(Console& g_Console)
+{
+	//door
+	j = 24; for (i = 0; i < 16; i++) { (Grid[i][j] = '@'); }
+	//maze generation
+	i = 7; for (j = 19; j < 25; j++) { (Grid[i][j] = '|'); }
+	j = 18; for (i = 7; i < 25; i++) { (Grid[i][j] = '-'); }
+	i = 25; for (j = 12; j < 22; j++) { (Grid[i][j] = '|'); }
+	j = 11; for (i = 12; i < 26; i++) { (Grid[i][j] = '-'); }
+	j = 16; for (i = 11; i < 25; i++) { (Grid[i][j] = '-'); }
+	i = 11; for (j = 5; j < 14; j++) { (Grid[i][j] = '|'); }
+	j = 4; for (i = 4; i < 37; i++) { (Grid[i][j] = '-'); }
+	i = 4; for (j = 5; j < 12; j++) { (Grid[i][j] = '|'); }
+	i = 36; for (j = 5; j < 12; j++) { (Grid[i][j] = '|'); }
+	j = 15; for (i = 26; i < 49; i++) { (Grid[i][j] = '-'); }
+	i = 48; for (j = 7; j < 15; j++) { (Grid[i][j] = '|'); }
+	j = 7; for (i = 48; i < 60; i++) { (Grid[i][j] = '-'); }
+	j = 11; for (i = 49; i < 70; i++) { (Grid[i][j] = '-'); }
+	i = 69; for (j = 0; j < 11; j++) { (Grid[i][j] = '|'); }
+	i = 55; for (j = 4; j < 7; j++) { (Grid[i][j] = '|'); }
+	j = 22; for (i = 25; i < 49; i++) { (Grid[i][j] = '-'); }
+	i = 48; for (j = 19; j < 22; j++) { (Grid[i][j] = '|'); }
+	j = 18; for (i = 48; i < 70; i++) { (Grid[i][j] = '-'); }
+	i = 59; for (j = 15; j < 18; j++) { (Grid[i][j] = '|'); }
+	j = 14; for (i = 59; i < 75; i++) { (Grid[i][j] = '-'); }
+	i = 69; for (j = 19; j < 22; j++) { (Grid[i][j] = '|'); }
+	j = 20; for (i = 49; i < 60; i++) { (Grid[i][j] = '-'); }
+	//locked door
+	j = 15; for (i = 34; i < 41; i++) { (Grid[i][j] = '&'); }
+	//barrel locations
+	j = 0; Grid[77][j] = '('; Grid[78][j] = 'B'; Grid[79][j] = ')';
+	j = 21; Grid[26][j] = '('; Grid[27][j] = 'B'; Grid[28][j] = ')';
+	j = 20; Grid[4][j] = '('; Grid[5][j] = 'B'; Grid[6][j] = ')';
+	//box locations
+	j = 21; Grid[4][j] = '|'; Grid[5][j] = 'B'; Grid[6][j] = '|';
+	j = 19; Grid[49][j] = '|'; Grid[50][j] = 'B'; Grid[51][j] = '|';
+	j = 6; Grid[56][j] = '|'; Grid[57][j] = 'B'; Grid[58][j] = '|';
+}
+
+void Map::dungeon_stealth3(Console& g_Console)
+{
+	//doors
+	j = 24; for (i = 0; i < 6; i++) { (Grid[i][j] = '@'); }
+	j = 0; for (i = 60; i < 80; i++) { (Grid[i][j] = '@'); }
+	//walls
+	j = 20; for (i = 0; i < 60; i++) { (Grid[i][j] = '-'); }
+	i = 59; for (j = 0; j < 20; j++) { (Grid[i][j] = '|'); }
+	i = 59; for (j = 8; j < 13; j++) { (Grid[i][j] = ' '); }
+	//elevator
+	j = 2; Grid[4][j] = '|'; Grid[5][j] = 'E'; Grid[6][j] = '|';
+	//statue
+	j = 9; for (i = 5; i < 15; i++) { (Grid[i][j] = '-'); }
+	j = 16; for (i = 5; i < 15; i++) { (Grid[i][j] = '-'); }
+	i = 5; for (j = 10; j < 16; j++) { (Grid[i][j] = '|'); }
+	i = 14; for (j = 10; j < 16; j++) { (Grid[i][j] = '|'); }
+	j = 12; Grid[9][j] = 'O'; Grid[10][j] = 'O';
+	j = 13; Grid[9][j] = 'O'; Grid[10][j] = 'O';
 }
 
 void Map::orphanage(Console &g_Console)
@@ -286,6 +424,48 @@ void Map::orphanage(Console &g_Console)
 	g_Console.writeToBuffer(c, "/", 0x1A);
 }
 
+void Map::protest_area(Console& g_Console)
+{
+	//doors
+	for (i = 69; i <= 79; i++) { Grid[i][0] = '@'; }
+
+	//barrels
+	Grid[4][2] = '('; Grid[5][2] = 'B'; Grid[6][2] = ')';
+	Grid[7][2] = '('; Grid[8][2] = 'B'; Grid[9][2] = ')';
+	Grid[2][3] = '('; Grid[3][3] = 'B'; Grid[4][3] = ')';
+	Grid[5][3] = '('; Grid[6][3] = 'B'; Grid[7][3] = ')';
+	Grid[8][3] = '('; Grid[9][3] = 'B'; Grid[10][3] = ')';
+	Grid[4][4] = '('; Grid[5][4] = 'B'; Grid[6][4] = ')';
+	Grid[7][4] = '('; Grid[8][4] = 'B'; Grid[9][4] = ')';
+
+	//Town Hall
+	for (i = 17; i <= 61; i++) { Grid[i][2] = '-'; }
+	for (j = 3; j <= 5; j++) { Grid[17][j] = '|'; }
+	for (j = 3; j <= 5; j++) { Grid[61][j] = '|'; }
+	for (i = 17; i <= 61; i++) { Grid[i][6] = '-'; }
+	for (j = 7; j <= 9; j++) { Grid[17][j] = '|'; }
+	for (j = 7; j <= 9; j++) { Grid[61][j] = '|'; }
+	for (i = 18; i <= 60; i++) { Grid[i][9] = '_'; }
+
+	//podium
+	Grid[36][9] = '|'; Grid[42][9] = '|';
+	for (i = 37; i <= 41; i++) { Grid[i][8] = '_'; }
+
+	//Taco stand
+	for (i = 8; i <= 14; i++) { Grid[i][12] = '-'; }
+	for (j = 13; j <= 17; j++) { Grid[7][j] = '|'; }
+	for (j = 13; j <= 17; j++) { Grid[15][j] = '|'; }
+	for (i = 8; i <= 14; i++) { Grid[i][18] = '-'; }
+	Grid[9][15] = 'T'; Grid[10][15] = 'a'; Grid[11][15] = 'c'; Grid[12][15] = 'o'; Grid[13][15] = 's';
+
+	//Burger stand
+	for (i = 65; i <= 71; i++) { Grid[i][12] = '-'; }
+	for (j = 13; j <= 17; j++) { Grid[64][j] = '|'; }
+	for (j = 13; j <= 17; j++) { Grid[72][j] = '|'; }
+	for (i = 65; i <= 71; i++) { Grid[i][18] = '-'; }
+	Grid[65][15] = 'B'; Grid[65][15] = 'B'; Grid[66][15] = 'u'; Grid[67][15] = 'r'; Grid[68][15] = 'g'; Grid[69][15] = 'e'; Grid[70][15] = 'r'; Grid[71][15] = 's';
+
+}
 
 void Map::outside_abandoned_facility(Console& g_Console)
 {
