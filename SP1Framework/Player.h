@@ -13,7 +13,6 @@ public:
 	int GetXcoord();
 	int GetYcoord();
 	char GetPlayerName();
-	int getPlayer();
 	void Attack();
 };
 

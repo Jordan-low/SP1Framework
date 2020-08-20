@@ -42,15 +42,6 @@ char Enemy::getName()
 	return this->GetName();
 }
 
-int Enemy::getEnemy()
-{
-	this->getD();
-	this->getH();
-	this->getX();
-	this->getY();
-	this->getName();
-}
-
 void Enemy::Hit()
 {
 	Player Attack;
