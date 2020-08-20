@@ -1270,6 +1270,7 @@ void Map::protest_area(Console& g_Console)
 		g_Console.writeToBuffer(c, "_", 0x1A);
 	}
 
+	//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 	//podium
 	c.Y = 9;
 	c.X = 36;
