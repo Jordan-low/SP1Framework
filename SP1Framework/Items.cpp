@@ -3,7 +3,12 @@
 
 Items::Items()
 {
-	item = " ";
+	Items = "";
+}
+
+int Items::GetHeal()
+{
+	return 0;
 }
 
 void Items::setItems(char* nameid)
