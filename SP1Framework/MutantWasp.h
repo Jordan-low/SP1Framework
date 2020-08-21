@@ -1,8 +1,7 @@
 #pragma once
-#include "Enemy.h"
 #include "Poison.h"
 
-class MutantWasp : public Enemy
+class MutantWasp : public Poison
 {
 private:
 	int chance;

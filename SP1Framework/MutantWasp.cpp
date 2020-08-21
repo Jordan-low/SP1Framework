@@ -1,5 +1,6 @@
 #include "MutantWasp.h"
 #include <iostream>
+#include "Poison.h"
 
 MutantWasp::MutantWasp()
 {
@@ -22,9 +23,8 @@ void MutantWasp::Debuff()
 	chance = (rand() % 100) + 1;
 	if (chance >= 0 && chance <= 20)
 	{
-		Poison Poisons;
-		Poisons.setPoison();
-		Poisons.getPoison();
+		this->setPoison();
+		this->getPoison();
 	}
 }
 

@@ -1,10 +1,10 @@
 #pragma once
 #include <iostream>
 #include "Windows.h"
-#include "Entity.h"
+#include "Enemy.h"
 using namespace std;
 
-class Poison : public Entity
+class Poison : public Enemy
 {
 private:
 	char Poisoned;

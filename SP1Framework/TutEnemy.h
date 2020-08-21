@@ -1,9 +1,7 @@
 #pragma once
-#include "Enemy.h"
 #include "Poison.h"
-#include "Damage.h"
 
-class TutEnemy : public Enemy
+class TutEnemy : public Poison
 {
 private:
 	int chance;
