@@ -12,7 +12,5 @@ public:
 	int getX();
 	int getY();
 	char getName();
-	void Hit();
-	void beenHit();
 };
 

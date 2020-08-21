@@ -41,16 +41,6 @@ char Enemy::getName()
 	return this->GetName();
 }
 
-void Enemy::Hit()
-{
-	
-}
-
-void Enemy::beenHit()
-{
-	
-}
-
 Enemy::~Enemy()
 {
 
