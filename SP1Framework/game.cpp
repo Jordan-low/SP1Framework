@@ -17,13 +17,13 @@ SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 SGameChar   g_sChar;
+SGameChar   g_sEnemy;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
 //15 maps
-Map Townsquare;
-Map gameMap[15];
+Map rMap;
 Cutscenes Cutscene;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -43,6 +43,10 @@ void init( void )
     g_sChar.m_cLocation.X = 22;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
+
+    g_sEnemy.m_cLocation.X = 10;
+    g_sEnemy.m_cLocation.Y = 10;
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -226,6 +230,8 @@ void update(double dt)
     {
         case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
             break;
+        case S_Orphanage_Animation: Update_Orphanage_Animation();
+            break;
         case S_GAME: updateGame(); // gameplay logic when we are in the game
             break;
         case S_Townsquare: updateGame(); // gameplay logic when we are in the game
@@ -234,21 +240,96 @@ void update(double dt)
             break;
         case S_Path_Area: updateGame(); // gameplay logic when we are in the game
             break;
+
     }
 }
 
+void Update_Orphanage_Animation()
+{
+    if (g_dElapsedTime > 10)
+    {
+        g_eGameState = S_GAME;
+    }
+}
+
+void Orphanage_Animation()
+{
+    rMap.initialise(g_Console);
+    rMap.printmap(g_Console);
+    rMap.orphanage(g_Console);
+
+    renderCharacter();
+    Cutscene.drawgrid(g_Console, 11, 5, '|');
+    if (g_dElapsedTime > 6.3)
+    {
+        Cutscene.cleargrid(g_Console, 11, 5);
+        Cutscene.drawgrid(g_Console, 11, 10, '|');
+         if (g_dElapsedTime > 6.9)
+        {
+            Cutscene.cleargrid(g_Console, 11, 10);
+            Cutscene.drawgrid(g_Console, 11, 4, '|');
+            if (g_dElapsedTime > 7.2)
+            {
+                Cutscene.cleargrid(g_Console, 11, 4);
+                Cutscene.drawgrid(g_Console, 11, 6, '|');
+                if (g_dElapsedTime > 7.5)
+                {
+                    Cutscene.cleargrid(g_Console, 11, 6);
+                    Cutscene.drawgrid(g_Console, 11, 7, 'O');
+                    if (g_dElapsedTime > 7.8)
+                    {
+                        Cutscene.cleargrid(g_Console, 11, 7);
+                        Cutscene.drawgrid(g_Console, 9, 7, 'O');
+                        if (g_dElapsedTime > 8.1)
+                        {
+                            Cutscene.cleargrid(g_Console, 9, 7);
+                            Cutscene.drawgrid(g_Console, 13, 7, 'O');
+                            if (g_dElapsedTime > 8.4)
+                            {
+                                Cutscene.cleargrid(g_Console, 13, 7);
+                                Cutscene.drawgrid(g_Console, 11, 7, 'O');
+                                int j = 6;
+                                for (int i = 9; i < 14; i++)
+                                {
+                                    Cutscene.drawgrid(g_Console, i, j, '-');
+                                }
+                                if (g_dElapsedTime > 8.7)
+                                {
+                                    j = 8;
+                                    for (int i = 9; i < 14; i++)
+                                    {
+                                        Cutscene.drawgrid(g_Console, i, j, '-');
+                                    }
+                                    if (g_dElapsedTime > 9.0)
+                                    {
+                                        Cutscene.drawgrid(g_Console, 9, 7, '|');
+                                        if (g_dElapsedTime > 9.3)
+                                        {
+                                            Cutscene.drawgrid(g_Console, 13, 7, '|');
+                                        }
+                                    }
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
-    if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
-        g_eGameState = S_GAME;
+    if (g_dElapsedTime > 6.0) // wait for 3 seconds to switch to game mode, else do nothing
+        g_eGameState = S_Orphanage_Animation;
 }
 
 void updateGame()       // gameplay logic
-{
+{   
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
-                        // sound can be played here too.
+                     // sound can be played here too.
 }
 
 void moveCharacter()
@@ -259,17 +340,17 @@ void moveCharacter()
     {
         int i = g_sChar.m_cLocation.X;
         int j = g_sChar.m_cLocation.Y;
-        if (Townsquare.Grid[j - 1][i] != '|')
+        if (rMap.Grid[j - 1][i] != '|')
         {
-            if (Townsquare.Grid[j - 1][i] != '#')
+            if (rMap.Grid[j - 1][i] != '#')
             {
-                if (Townsquare.Grid[j - 1][i] != '-')
+                if (rMap.Grid[j - 1][i] != '-')
                 {
-                    if (Townsquare.Grid[j - 1][i] != '_')
+                    if (rMap.Grid[j - 1][i] != '_')
                     {
-                        if (Townsquare.Grid[j - 1][i] != 'O')
+                        if (rMap.Grid[j - 1][i] != 'O')
                         {
-                            if (Townsquare.Grid[j - 1][i] != 'E')
+                            if (rMap.Grid[j - 1][i] != 'E')
                             {
                                 g_sChar.m_cLocation.Y--;
                             }
@@ -283,17 +364,17 @@ void moveCharacter()
     {
         int i = g_sChar.m_cLocation.X;
         int j = g_sChar.m_cLocation.Y;
-        if (Townsquare.Grid[j][i - 1] != '|')
+        if (rMap.Grid[j][i - 1] != '|')
         {
-            if (Townsquare.Grid[j][i - 1] != '#')
+            if (rMap.Grid[j][i - 1] != '#')
             {
-                if (Townsquare.Grid[j][i - 1] != '-')
+                if (rMap.Grid[j][i - 1] != '-')
                 {
-                    if (Townsquare.Grid[j][i - 1] != '_')
+                    if (rMap.Grid[j][i - 1] != '_')
                     {
-                        if (Townsquare.Grid[j][i - 1] != 'O')
+                        if (rMap.Grid[j][i - 1] != 'O')
                         {
-                            if (Townsquare.Grid[j][i - 1] != 'E')
+                            if (rMap.Grid[j][i - 1] != 'E')
                             {
                                 g_sChar.m_cLocation.X--;
                             }
@@ -307,17 +388,17 @@ void moveCharacter()
     {
         int i = g_sChar.m_cLocation.X;
         int j = g_sChar.m_cLocation.Y;
-        if (Townsquare.Grid[j + 1][i] != '|')
+        if (rMap.Grid[j + 1][i] != '|')
         {
-            if (Townsquare.Grid[j + 1][i] != '#')
+            if (rMap.Grid[j + 1][i] != '#')
             {
-                if (Townsquare.Grid[j + 1][i] != '-')
+                if (rMap.Grid[j + 1][i] != '-')
                 {
-                    if (Townsquare.Grid[j + 1][i] != '_')
+                    if (rMap.Grid[j + 1][i] != '_')
                     {
-                        if (Townsquare.Grid[j + 1][i] != 'O')
+                        if (rMap.Grid[j + 1][i] != 'O')
                         {
-                            if (Townsquare.Grid[j + 1][i] != 'E')
+                            if (rMap.Grid[j + 1][i] != 'E')
                             {
                                 g_sChar.m_cLocation.Y++;
                             }
@@ -332,17 +413,17 @@ void moveCharacter()
     {
         int i = g_sChar.m_cLocation.X;
         int j = g_sChar.m_cLocation.Y;
-        if (Townsquare.Grid[j][i + 1] != '|')
+        if (rMap.Grid[j][i + 1] != '|')
         {
-            if (Townsquare.Grid[j][i + 1] != '#')
+            if (rMap.Grid[j][i + 1] != '#')
             {
-                if (Townsquare.Grid[j][i + 1] != '-')
+                if (rMap.Grid[j][i + 1] != '-')
                 {
-                    if (Townsquare.Grid[j][i + 1] != '_')
+                    if (rMap.Grid[j][i + 1] != '_')
                     {
-                        if (Townsquare.Grid[j][i + 1] != 'O')
+                        if (rMap.Grid[j][i + 1] != 'O')
                         {
-                            if (Townsquare.Grid[j][i + 1] != 'E')
+                            if (rMap.Grid[j][i + 1] != 'E')
                             {
                                 g_sChar.m_cLocation.X++;
                             }
@@ -387,6 +468,8 @@ void render()
     {
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
+    case S_Orphanage_Animation: Orphanage_Animation();
+        break;
     case S_GAME: renderGame();
         break;
     case S_Townsquare: renderMap_Townsquare();
@@ -395,8 +478,8 @@ void render()
         break;
     case S_Path_Area: renderMap_Path_Area();
         break;
-    }
 
+    }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
     renderToScreen(); // dump the contents of the buffer to the screen, one frame worth of game
@@ -421,37 +504,74 @@ void renderSplashScreen()  // renders the splash screen
     c.Y /= 3;
     c.X = c.X / 2 - 9;
     g_Console.writeToBuffer(c, "A game in 3 seconds", 0x03);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 20;
-    g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 9;
-    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+    if (g_dElapsedTime > 3.0)
+    {
+        c.Y += 1;
+        c.X = g_Console.getConsoleSize().X / 2 - 20;
+        g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
+        c.Y += 1;
+        c.X = g_Console.getConsoleSize().X / 2 - 9;
+        g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+    }
+
 }
 
 void renderGame()
 {
-    Townsquare.initialise(g_Console);
-    Townsquare.Border(g_Console);
-    Townsquare.insideAbandonedFacility1(g_Console);
+    /*
+    rMap.initialise(g_Console);
+    rMap.printmap(g_Console);
+    rMap.orphanage(g_Console);
+    
     renderCharacter();
+    //Cutscene.orphanageCaretakerCutscene(g_Console);
+    */
+    rMap.initialise(g_Console);
+    Cutscene.drawgrid(g_Console, 11, 7, 'O');                   
+    Cutscene.drawgrid(g_Console, 9, 7, 'O');                     
+    Cutscene.drawgrid(g_Console, 13, 7, 'O');                          
+    Cutscene.drawgrid(g_Console, 11, 7, 'O');
+    int j = 6;
+    for (int i = 9; i < 14; i++)
+    {
+    Cutscene.drawgrid(g_Console, i, j, '-');
+    }                          
+    j = 8;
+    for (int i = 9; i < 14; i++)
+    {
+        Cutscene.drawgrid(g_Console, i, j, '-');
+    }                            
+    Cutscene.drawgrid(g_Console, 9, 7, '|');                                 
+    Cutscene.drawgrid(g_Console, 13, 7, '|');
+                                        
+    rMap.Border(g_Console);
+    rMap.orphanage(g_Console);
+    renderCharacter();
+    renderEnemy();
     //renderMap(); // renders the character into the buffer
-    if (Townsquare.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
         g_eGameState = S_Townsquare;
         g_sChar.m_cLocation.X = 22;
         g_sChar.m_cLocation.Y = 17;
     }
-
+    /*
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == rMap.Grid[g_sEnemy.m_cLocation.Y][g_sEnemy.m_cLocation.X])
+    {
+        g_sChar.m_cLocation.X = 22;
+        g_sChar.m_cLocation.Y = 17;
+    }
+    */
+    
 }
 
 void renderMap_Townsquare()
 {
-    Townsquare.initialise(g_Console);
-    Townsquare.Border(g_Console);
-    Townsquare.townsquare(g_Console);
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.townsquare(g_Console);
     renderCharacter();  // renders the character into the buffer
-    if (Townsquare.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
     {
         g_eGameState = S_Protest_Area;
         g_sChar.m_cLocation.X = 40;
@@ -461,11 +581,11 @@ void renderMap_Townsquare()
 
 void renderMap_Protest_Area()
 {
-    Townsquare.initialise(g_Console);
-    Townsquare.Border(g_Console);
-    Townsquare.protest_area(g_Console);
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.protest_area(g_Console);
     renderCharacter();  // renders the character into the buffer
-    if (Townsquare.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
     {
         g_eGameState = S_Path_Area;
         g_sChar.m_cLocation.X = 41;
@@ -475,9 +595,9 @@ void renderMap_Protest_Area()
 
 void renderMap_Path_Area()
 {
-    Townsquare.initialise(g_Console);
-    Townsquare.Border(g_Console);
-    Townsquare.patharea(g_Console);
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
 }
 
@@ -492,6 +612,11 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }
 
+void renderEnemy()
+{
+    WORD charColor = 0x0C;
+    g_Console.writeToBuffer(g_sEnemy.m_cLocation, (char)1, charColor);
+}
 void renderFramerate()
 {
     COORD c;

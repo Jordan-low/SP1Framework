@@ -1,5 +1,7 @@
 #pragma once
 #include "Framework\console.h"
+#include <chrono>
+#include <thread>
 class Map
 {
 public:
@@ -34,6 +36,9 @@ public:
 	void Road_I(Console& g_Console, int x, int y, int count);
 	void Road_Equals(Console& g_Console, int x, int y, int count);
 
+	void Map::Animation(Console &g_Console, int x, int y, char ch);
+	void Map::Animate(Console& g_Console);
+	void Map::ClearAnimation(Console &g_Console, int x, int y);
 
 
 	void Box(Console& g_Console, int x, int y);
