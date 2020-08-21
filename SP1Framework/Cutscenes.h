@@ -16,5 +16,7 @@ public:
     void drawgrid(Console& g_Console, int x, int y, char chara);
     void cleargrid(Console& g_Console, int x, int y);
     void orphanageCaretakerCutscene(Console& g_Console);
+
+    void medical_breakIn(Console& g_Console);
 };
 

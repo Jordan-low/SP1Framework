@@ -162,7 +162,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
 //            For Alphanumeric keys, the values are their ascii values (uppercase).
 // Input    : const KEY_EVENT_RECORD& keyboardEvent
 // Output   : void
-//--------------------------------------------------------------
+//---------------------------------------------------------------
 void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
 {
     // here, we map the key to our enums
