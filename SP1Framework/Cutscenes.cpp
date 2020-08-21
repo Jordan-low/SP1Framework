@@ -6,7 +6,7 @@ void Cutscenes::animate(Console& g_Console)
 {
 	Maps.printmap(g_Console); 
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
-	system("cls"); //this shows the press any key thing
+	system("cls"); 
 }
 
 void Cutscenes::nextdialogue(Console& g_Console)
@@ -16,44 +16,71 @@ void Cutscenes::nextdialogue(Console& g_Console)
 	Maps.printmap(g_Console);
 }
 
-char Cutscenes::getgrid(Console& g_Console, int x, int y, char chara)
+void Cutscenes::drawgrid(Console& g_Console, int x, int y, char chara)
 {
-	return (Grid[x][y] = chara);
-}
-
-char Cutscenes::cleargrid(Console& g_Console, int x, int y)
-{
-	return (Grid[x][y] = ' ');
-}
-
-void Cutscenes::orphanageCaretakerCutscene(Console& g_Console, int x, int y, char chara)
-{
-	
-	Maps.initialise(g_Console);
-	Maps.orphanage(g_Console);
-	Maps.printmap(g_Console);
 	COORD c;
 	c.X = x;
 	c.Y = y;
-	x = 11;
-	for (y = 0; y < 7; (y = y + 2))
-	{
-		(Grid[c.X][c.Y] = '|');
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
-		animate(g_Console); //here
-		
-		cleargrid(g_Console, x, y);
-	}
+	g_Console.writeToBuffer(c, chara, 0x1A);
+}
+
+void Cutscenes::cleargrid(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c,' ', 0x1A);
+}
+
+void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
+{
+	COORD c;
+	orphanage(g_Console);
+
+	//spike hitting caretaker
+	drawgrid(g_Console, 11, 0, '|');
+	animate(g_Console);
+	cleargrid(g_Console, 11, 0);
+	drawgrid(g_Console, 11, 2, '|');
+	animate(g_Console);
+	cleargrid(g_Console, 11, 2);
+	drawgrid(g_Console, 11, 4, '|');
+	animate(g_Console);
+	cleargrid(g_Console, 11, 4);
+	drawgrid(g_Console, 11, 6, '|');
+	animate(g_Console);
+	cleargrid(g_Console, 11, 6);
+
+	//caretaker stumbling
 	cleargrid(g_Console, 11, 7);
-	getgrid(g_Console, 9, 7, 'O');
+	drawgrid(g_Console, 9, 7, 'O');
 	animate(g_Console); 
 	cleargrid(g_Console, 9, 7);
-	getgrid(g_Console, 13, 7, 'O');
+	drawgrid(g_Console, 13, 7, 'O');
 	animate(g_Console); 
 	cleargrid(g_Console, 13, 7);
-	getgrid(g_Console, 11, 7, 'O');
+	drawgrid(g_Console, 11, 7, 'O');
 	Maps.printmap(g_Console);
 	
+	//fire appearing
+	//fire appearing
+	j = 6;
+	for (i = 9; i < 14; i++)
+	{
+		drawgrid(g_Console, i, j, '-');
+	}
+	animate(g_Console);
+	j = 8;
+	for (i = 9; i < 14; i++)
+	{
+		drawgrid(g_Console, i, j, '-');
+	}
+	animate(g_Console);
+	drawgrid(g_Console, 9, 7, '|');
+	animate(g_Console);
+	drawgrid(g_Console, 13, 7, '|');
+	printmap(g_Console);
+	//dialogue
 	c.X = 1;
 	c.Y = 25;
 	g_Console.writeToBuffer(c, "Caretaker: Argh!!");
@@ -63,4 +90,3 @@ void Cutscenes::orphanageCaretakerCutscene(Console& g_Console, int x, int y, cha
 	g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!");
 	system("pause");
 }
-

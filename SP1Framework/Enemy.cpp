@@ -47,8 +47,7 @@ void Enemy::Hit()
 	Player Attack;
 	if (attack == true)
 	{
-		Player* setPlayer();
-		setPlayer()->SetH(50 - d);
+		
 	}
 }
 
@@ -56,8 +55,7 @@ void Enemy::beenHit()
 {
 	if (attacked == true)
 	{
-		Enemy* setEnemy();
-		setEnemy()->SetH(h - 5);
+		
 	}
 }
 
