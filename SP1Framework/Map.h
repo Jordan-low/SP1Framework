@@ -2,12 +2,10 @@
 #include "Framework\console.h"
 class Map
 {
-	//aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbb
 public:
 	int i = 0;
 	int j = 0;
 	char Grid[25][80];
-	bool IsActive;
 	void initialise(Console &g_Console);
 	void printmap(Console &g_Console);
 	void townsquare(Console &g_Console);

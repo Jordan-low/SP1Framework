@@ -67,7 +67,6 @@ void clearScreen();         // clears the current screen and draw from scratch
 void renderSplashScreen();  // renders the splash screen
 void renderGame();          // renders the game stuff
 void renderMap();           // renders the map to the buffer first
-void renderMap_Orphanage();
 void renderMap_Townsquare();
 void renderMap_Protest_Area();
 void renderMap_Path_Area();
