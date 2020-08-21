@@ -1,6 +1,7 @@
 #include "Items.h"
 #include "Player.h"
 
+
 Items::Items()
 {
 	Items = "";
@@ -13,7 +14,7 @@ int Items::GetHeal()
 
 void Items::setItems(char* nameid)
 {
-	item = nameid;
+	Items = nameid;
 }
 
 char Items::getItems()
