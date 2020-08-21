@@ -16,12 +16,13 @@ void TutEnemy::Attack()
 	this->beenHit(50, 2);
 }
 
-void TutEnemy::Debuff()
+void TutEnemy::Debuff(Console& g_Console)
 {
 	chance = (rand() % 100) + 1;
 	if (chance >= 0 && chance <= 15)
 	{
-		this->getPoison();
+		setPoison(g_Console);
+		getPoison();
 	}
 }
 

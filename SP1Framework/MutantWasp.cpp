@@ -18,12 +18,13 @@ void MutantWasp::Attack()
 	this->beenHit(50, 5);
 }
 
-void MutantWasp::Debuff()
+void MutantWasp::Debuff(Console& g_Console)
 {
 	chance = (rand() % 100) + 1;
 	if (chance >= 0 && chance <= 20)
 	{
-		this->getPoison();
+		setPoison(g_Console);
+		getPoison();
 	}
 }
 

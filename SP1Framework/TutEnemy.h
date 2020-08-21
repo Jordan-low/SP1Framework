@@ -9,7 +9,7 @@ private:
 public:
 	TutEnemy();
 	void Attack();
-	void Debuff();
+	void Debuff(Console& g_Console);
 	void Damaged();
 	~TutEnemy();
 };
