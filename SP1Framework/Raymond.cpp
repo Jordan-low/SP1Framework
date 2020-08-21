@@ -26,28 +26,28 @@ void Raymond::Talk(Console& g_Console)
 	while (true)
 	{
 		g_Console.writeToBuffer(c, text[0], 0xF0);
-		Sleep(1000);
+		Sleep(3000);
 		seconds--;
 		if (seconds == 0)
 		{
 			delete text[0];
 			seconds = 0;
 			g_Console.writeToBuffer(c, text[1], 0xF0);
-			Sleep(1000);
+			Sleep(2000);
 			seconds--;
 			if (seconds == 0)
 			{
 				delete text[1];
 				seconds = 0;
 				g_Console.writeToBuffer(c, text[2], 0xF0);
-				Sleep(1000);
+				Sleep(2000);
 				seconds--;
 				if (seconds == 0)
 				{
 					delete text[2];
 					seconds = 0;
 					g_Console.writeToBuffer(c, text[3], 0xF0);
-					Sleep(1000);
+					Sleep(2000);
 					seconds--;
 					if (seconds == 0)
 					{
