@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include "Map.h"
+#include "Cutscenes.h"
 using namespace std;
 
 double  g_dElapsedTime;
@@ -23,6 +24,7 @@ Console g_Console(80, 25, "SP1 Framework");
 //15 maps
 Map Townsquare;
 Map gameMap[15];
+Cutscenes Cutscene;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -394,9 +396,11 @@ void render()
     case S_Path_Area: renderMap_Path_Area();
         break;
     }
+
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
     renderToScreen(); // dump the contents of the buffer to the screen, one frame worth of game
+    //Cutscene.orphanageCaretakerCutscene(g_Console,0,0,' ');
 }
 
 void clearScreen()
@@ -429,7 +433,7 @@ void renderGame()
 {
     Townsquare.initialise(g_Console);
     Townsquare.Border(g_Console);
-    Townsquare.orphanage(g_Console);
+    Townsquare.insideAbandonedFacility1(g_Console);
     renderCharacter();
     //renderMap(); // renders the character into the buffer
     if (Townsquare.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')

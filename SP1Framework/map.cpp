@@ -733,7 +733,6 @@ void Map::patharea(Console& g_Console)
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
 	}
-
 	j = 22;
 	for (int i = 37; i < 46; i++)
 	{
@@ -754,7 +753,8 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 {
 	COORD c;
 	Border(g_Console);
-	j = 25; for (int i = 34; i < 44; i++)
+	j = 22;
+	for (int i = 36; i < 46; i++)
 	{
 		c.X = i;
 		c.Y = j;
@@ -762,13 +762,15 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	}
 
 	//generator vertical
-	i = 20; for (int j = 2; j < 16; j++)
+	i = 20; 
+	for (int j = 2; j < 16; j++)
 	{
 		c.X = i;
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
 	}
-	i = 59; for (int j = 2; j < 16; j++)
+	i = 59; 
+	for (int j = 2; j < 16; j++)
 	{
 		c.X = i;
 		c.Y = j;
@@ -776,13 +778,15 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	}
 
 	//generator horizontal
-	j = 16; for (int i = 20; i < 60; i++)
+	j = 16; 
+	for (int i = 20; i < 60; i++)
 	{
 		c.X = i;
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
 	}
-	j = 2; for (int i = 20; i < 60; i++)
+	j = 2; 
+	for (int i = 20; i < 60; i++)
 	{
 		c.X = i;
 		c.Y = j;
@@ -790,7 +794,8 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	}
 
 	//opening
-	j = 16; for (int i = 36; i < 46; i++)
+	j = 16; 
+	for (int i = 36; i < 46; i++)
 	{
 		c.X = i;
 		c.Y = j;
@@ -809,13 +814,14 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x1A);
 	}
-
+	/*
 	j = 22; for (int i = 36; i < 46; i++)
 	{
 		c.X = i;
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x1A);
 	}
+	*/
 
 	//minigame
 	c.Y = 4;
