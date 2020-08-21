@@ -12,20 +12,23 @@ Pig::Pig()
 
 void Pig::Attack()
 {
-	this->beenHit();
+	this->beenHit(50, 3);
 }
 
-void Pig::Drop()
+void Pig::Drop(Console& g_Console)
 {
 	if (GetH() == 0)
 	{
-		cout << "Raw Meat" << endl;
+		COORD c;
+		c.X = GetX();
+		c.Y = GetY();
+		g_Console.writeToBuffer(c, "Raw Meat", 0xC4);
 	}
 }
 
 void Pig::Damaged()
 {
-	this->Hit();
+	this->Hit(15, 5);
 }
 
 Pig::~Pig()

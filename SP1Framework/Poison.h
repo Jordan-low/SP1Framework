@@ -1,17 +1,18 @@
 #pragma once
 #include <iostream>
 #include "Windows.h"
-#include "Entity.h"
+#include "Framework/console.h"
+#include "Enemy.h"
 using namespace std;
 
-class Poison : public Entity
+class Poison : public Enemy
 {
 private:
 	char Poisoned;
 
 public:
 	Poison();
-	void setPoison();
+	void setPoison(Console& g_Console);
 	char getPoison();
 	~Poison();
 };

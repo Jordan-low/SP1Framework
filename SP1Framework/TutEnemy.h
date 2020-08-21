@@ -1,8 +1,7 @@
 #pragma once
-#include "Enemy.h"
 #include "Poison.h"
 
-class TutEnemy : public Enemy
+class TutEnemy : public Poison
 {
 private:
 	int chance;
@@ -10,7 +9,7 @@ private:
 public:
 	TutEnemy();
 	void Attack();
-	void Debuff();
+	void Debuff(Console& g_Console);
 	void Damaged();
 	~TutEnemy();
 };

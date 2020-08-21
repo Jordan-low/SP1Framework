@@ -4,6 +4,8 @@
 class Enemy : public Entity
 {
 public:
+	bool attacked;
+	bool attack;
 	Enemy();
 	~Enemy();
 	void setEnemy(const char n);
@@ -12,7 +14,7 @@ public:
 	int getX();
 	int getY();
 	char getName();
-	void Hit();
-	void beenHit();
+	float Hit(float Eh, float Pd);
+	float beenHit(float Ph, float Ed);
 };
 

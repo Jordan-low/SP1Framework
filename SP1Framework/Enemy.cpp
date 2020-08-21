@@ -1,11 +1,11 @@
 #include "Enemy.h"
 #include "Entity.h"
-#include "Player.h"
-#include "Guard.h"
 
 Enemy::Enemy()
 {
 	name = 'E';
+	attack = false;
+	attacked = false;
 }
 
 void Enemy::setEnemy(const char n)
@@ -42,20 +42,19 @@ char Enemy::getName()
 	return this->GetName();
 }
 
-void Enemy::Hit()
+float Enemy::Hit(float Eh, float Pd)
 {
-	Player Attack;
 	if (attack == true)
 	{
-		
+		return (Eh - Pd);
 	}
 }
 
-void Enemy::beenHit()
+float Enemy::beenHit(float Ph, float Ed)
 {
 	if (attacked == true)
 	{
-		
+		return (Ph - Ed);
 	}
 }
 
