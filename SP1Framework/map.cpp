@@ -758,7 +758,7 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		//g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
 	}
 
 	//generator vertical
