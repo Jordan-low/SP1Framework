@@ -21,43 +21,7 @@ void Map::initialise(Console& g_Console)
 void Map::printmap(Console& g_Console)
 {
 	//print first line
-	COORD c; COORD d; COORD e;
-	j = 1;
-	for (i = 1; i < 78; i++)
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x1A);
-	}
-
-	for (int j = 2; j < 23; j++)
-	{
-		c.X = 1;
-		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x1A);
-		for (i = 2; i < 78; i++)
-		{
-			d.X = i;
-			d.Y = j;
-			g_Console.writeToBuffer(d, Grid[d.Y][d.X], 0x1A);
-		}
-		for (int k = 1; k < 23; k++)
-		{
-			e.X = 78;
-			e.Y = k;
-			g_Console.writeToBuffer(e, Grid[e.Y][e.X] = '#', 0x1A);
-		}
-		
-	}
-	j = 23;
-	for (i = 1; i < 79; i++)
-	{
-		c.X = i;
-		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x1A);
-	}
-
-	/*
+	COORD c; COORD d;
 	for (i = 1; i < 79; i++)
 	{
 		c.X = i;
@@ -77,7 +41,6 @@ void Map::printmap(Console& g_Console)
 		}
 
 	}
-	*/
 }
 
 void Map::Border(Console& g_Console)
@@ -105,46 +68,6 @@ void Map::Border(Console& g_Console)
 
 }
 
-void Map::Animation(Console &g_Console, int x, int y, char ch)
-{
-	COORD c;
-	c.X = x;
-	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x1A);
-	Border(g_Console);
-	orphanage(g_Console);
-}
-
-void Map::ClearAnimation(Console &g_Console, int x, int y)
-{
-	COORD c;
-	c.X = x;
-	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
-}
-
-void Map::Animate(Console& g_Console)
-{
-	initialise(g_Console);
-	orphanage(g_Console);
-
-	Animation(g_Console, 11, 3, '|');
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-	ClearAnimation(g_Console, 11, 3);
-
-	Animation(g_Console, 11, 5, '|');
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-	ClearAnimation(g_Console, 11, 5);
-
-	Animation(g_Console, 11, 7, '|');
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-	ClearAnimation(g_Console, 11, 7);
-
-	Animation(g_Console, 11, 9, '|');
-}
 void Map::House(Console& g_Console, int x, int y)
 {
 	COORD c;
