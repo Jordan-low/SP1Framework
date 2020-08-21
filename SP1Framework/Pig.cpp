@@ -12,7 +12,7 @@ Pig::Pig()
 
 void Pig::Attack()
 {
-	this->beenHit();
+	this->beenHit(50, 3);
 }
 
 void Pig::Drop()
@@ -25,7 +25,7 @@ void Pig::Drop()
 
 void Pig::Damaged()
 {
-	this->Hit();
+	this->Hit(15, 5);
 }
 
 Pig::~Pig()

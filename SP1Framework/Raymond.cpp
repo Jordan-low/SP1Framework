@@ -13,7 +13,7 @@ Raymond::Raymond()
 
 void Raymond::Attack()
 {
-	this->beenHit();
+	this->beenHit(75, 25);
 }
 
 void Raymond::Talk()
@@ -59,7 +59,7 @@ void Raymond::Talk()
 
 void Raymond::Damaged()
 {
-	this->Hit();
+	this->Hit(120, 5);
 }
 
 Raymond::~Raymond()

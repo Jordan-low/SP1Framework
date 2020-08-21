@@ -14,7 +14,7 @@ MutantWasp::MutantWasp()
 
 void MutantWasp::Attack()
 {
-	this->beenHit();
+	this->beenHit(50, 5);
 }
 
 void MutantWasp::Debuff()
@@ -38,7 +38,7 @@ void MutantWasp::Drop()
 
 void MutantWasp::Damaged()
 {
-	this->Hit();
+	this->Hit(25, 5);
 }
 
 MutantWasp::~MutantWasp()

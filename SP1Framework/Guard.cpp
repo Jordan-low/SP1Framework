@@ -1,6 +1,7 @@
 #include "Guard.h"
 #include "Enemy.h"
 #include <iostream>
+#include "Damage.h"
 
 Guard::Guard()
 {
@@ -13,12 +14,12 @@ Guard::Guard()
 
 void Guard::Attack()
 {
-	this->beenHit();
+	this->beenHit(50, 15);
 }
 
 void Guard::Damaged()
 {
-	this->Hit();
+	this->Hit(50, 5);
 }
 
 void Guard::Drop()

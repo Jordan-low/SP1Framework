@@ -4,6 +4,8 @@
 Enemy::Enemy()
 {
 	name = 'E';
+	attack = false;
+	attacked = false;
 }
 
 void Enemy::setEnemy(const char n)
@@ -38,6 +40,22 @@ int Enemy::getY()
 char Enemy::getName()
 {
 	return this->GetName();
+}
+
+float Enemy::Hit(float Eh, float Pd)
+{
+	if (attack == true)
+	{
+		return (Eh - Pd);
+	}
+}
+
+float Enemy::beenHit(float Ph, float Ed)
+{
+	if (attacked == true)
+	{
+		return (Ph - Ed);
+	}
 }
 
 Enemy::~Enemy()

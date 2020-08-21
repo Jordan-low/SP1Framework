@@ -13,7 +13,7 @@ TutEnemy::TutEnemy()
 
 void TutEnemy::Attack()
 {
-	this->beenHit();
+	this->beenHit(50, 2);
 }
 
 void TutEnemy::Debuff()
@@ -29,7 +29,7 @@ void TutEnemy::Debuff()
 
 void TutEnemy::Damaged()
 {
-	this->Hit();
+	this->Hit(10, 5);
 }
 
 TutEnemy::~TutEnemy()
