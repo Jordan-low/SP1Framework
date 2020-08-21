@@ -78,7 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Consumable.cpp" />
+    <ClCompile Include="Cutscenes.cpp" />
     <ClCompile Include="Damage.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -86,9 +86,6 @@
     <ClCompile Include="Framework\timer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Guard.cpp" />
-    <ClCompile Include="Inventory.cpp" />
-    <ClCompile Include="Item.cpp" />
-    <ClCompile Include="Items.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MutantWasp.cpp" />
@@ -100,7 +97,7 @@
     <ClCompile Include="TutEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Consumable.h" />
+    <ClInclude Include="Cutscenes.h" />
     <ClInclude Include="Damage.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
@@ -108,8 +105,7 @@
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Guard.h" />
-    <ClInclude Include="Inventory.h" />
-    <ClInclude Include="Items.h" />
+    <ClInclude Include="Ally.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MutantWasp.h" />
     <ClInclude Include="Pig.h" />
