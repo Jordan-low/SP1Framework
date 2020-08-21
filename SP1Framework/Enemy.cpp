@@ -1,7 +1,6 @@
 #include "Enemy.h"
 #include "Entity.h"
 #include "Player.h"
-#include "Guard.h"
 
 Enemy::Enemy()
 {
@@ -44,21 +43,12 @@ char Enemy::getName()
 
 void Enemy::Hit()
 {
-	Player Attack;
-	if (attack == true)
-	{
-		Player* setPlayer();
-		setPlayer()->SetH(50 - d);
-	}
+	
 }
 
 void Enemy::beenHit()
 {
-	if (attacked == true)
-	{
-		Enemy* setEnemy();
-		setEnemy()->SetH(h - 5);
-	}
+	
 }
 
 Enemy::~Enemy()
