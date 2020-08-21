@@ -1,6 +1,5 @@
 #include "Enemy.h"
 #include "Entity.h"
-#include "Player.h"
 
 Enemy::Enemy()
 {
