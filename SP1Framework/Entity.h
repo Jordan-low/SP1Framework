@@ -1,6 +1,5 @@
 #pragma once
 #include "Damage.h"
-#include <string>
 
 using namespace std;
 
@@ -9,8 +8,6 @@ class Entity
 protected:
 	int x, y, h, d;
 	char name;
-	bool attack;
-	bool attacked;
 public:
 	Entity();
 	~Entity();
@@ -23,4 +20,5 @@ public:
 	void SetH(int health);
 	void SetX(int x_coord);
 	void SetY(int y_coord);
+
 };

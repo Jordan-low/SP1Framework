@@ -38,17 +38,6 @@ char Player::GetPlayerName()
 	return this->GetName();
 }
 
-int Player::getPlayer()
-{
-	this->GetDmg();
-	this->GetHealth();
-	this->GetXcoord();
-	this->GetYcoord();
-	this->GetPlayerName();
-}
-
-
-
 void Player::Attack()
 {
 	Player player;

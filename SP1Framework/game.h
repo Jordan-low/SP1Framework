@@ -40,6 +40,9 @@ enum EGAMESTATES
 {
     S_SPLASHSCREEN,
     S_GAME,
+    S_Townsquare,
+    S_Protest_Area,
+    S_Path_Area,
     S_COUNT
 };
 
@@ -64,6 +67,9 @@ void clearScreen();         // clears the current screen and draw from scratch
 void renderSplashScreen();  // renders the splash screen
 void renderGame();          // renders the game stuff
 void renderMap();           // renders the map to the buffer first
+void renderMap_Townsquare();
+void renderMap_Protest_Area();
+void renderMap_Path_Area();
 void renderCharacter();     // renders the character into the buffer
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
@@ -77,4 +83,4 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyb
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
 
 
-#endif // _GAME_H
+#endif //_GAME_H

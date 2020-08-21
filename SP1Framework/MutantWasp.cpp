@@ -1,5 +1,6 @@
 #include "MutantWasp.h"
 #include <iostream>
+#include "Poison.h"
 
 MutantWasp::MutantWasp()
 {
@@ -14,29 +15,33 @@ MutantWasp::MutantWasp()
 
 void MutantWasp::Attack()
 {
-	this->beenHit();
+	this->beenHit(50, 5);
 }
 
-void MutantWasp::Debuff()
+void MutantWasp::Debuff(Console& g_Console)
 {
 	chance = (rand() % 100) + 1;
 	if (chance >= 0 && chance <= 20)
 	{
-		cout << "Poisoned";
+		setPoison(g_Console);
+		getPoison();
 	}
 }
 
-void MutantWasp::Drop()
+void MutantWasp::Drop(Console& g_Console)
 {
 	if (GetH() == 0)
 	{
-		cout << "Stinger" << endl;
+		COORD c;
+		c.X = GetX();
+		c.Y = GetY();
+		g_Console.writeToBuffer(c, "Stinger", 0x06);
 	}
 }
 
 void MutantWasp::Damaged()
 {
-	this->Hit();
+	this->Hit(25, 5);
 }
 
 MutantWasp::~MutantWasp()

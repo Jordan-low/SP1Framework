@@ -1,11 +1,11 @@
 #include "Enemy.h"
 #include "Entity.h"
-#include "Player.h"
-#include "Guard.h"
 
 Enemy::Enemy()
 {
 	name = 'E';
+	attack = false;
+	attacked = false;
 }
 
 void Enemy::setEnemy(const char n)
@@ -42,36 +42,19 @@ char Enemy::getName()
 	return this->GetName();
 }
 
-int Enemy::getEnemy()
+float Enemy::Hit(float Eh, float Pd)
 {
-	this->getD();
-	this->getH();
-	this->getX();
-	this->getY();
-	this->getName();
-}
-
-void Enemy::Hit()
-{
-	Player Attack;
 	if (attack == true)
 	{
-		this->SetH(x);
-		Attack.Attack();
-		this->SetH(x - 5);
-		this->GetH();
+		return (Eh - Pd);
 	}
 }
 
-void Enemy::beenHit()
+float Enemy::beenHit(float Ph, float Ed)
 {
-	Player Attacked;
 	if (attacked == true)
 	{
-		Attacked.SetH(50);
-		this->SetD(d);
-		Attacked.SetH(50 - d);
-		this->GetH();
+		return (Ph - Ed);
 	}
 }
 

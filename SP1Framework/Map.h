@@ -2,13 +2,11 @@
 #include "Framework\console.h"
 class Map
 {
-	//aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbb
 public:
 	int i = 0;
 	int j = 0;
-	char Grid[80][25];
-	bool IsActive;
-	void initialise();
+	char Grid[25][80];
+	void initialise(Console &g_Console);
 	void printmap(Console &g_Console);
 	void townsquare(Console &g_Console);
 	void patharea(Console& g_Console);
@@ -33,6 +31,9 @@ public:
 	void Road(Console& g_Console, int x, int y, int count);
 	void Road2(Console& g_Console, int x, int y, int count);
 	void Road3(Console& g_Console, int x, int y, int count);
+	void Road_I(Console& g_Console, int x, int y, int count);
+	void Road_Equals(Console& g_Console, int x, int y, int count);
+
 
 
 	void Box(Console& g_Console, int x, int y);
