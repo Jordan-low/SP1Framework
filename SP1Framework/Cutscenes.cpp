@@ -1,19 +1,17 @@
 #include "Cutscenes.h"
-#include "Map.h"
 
-Map Maps;
 void Cutscenes::animate(Console& g_Console)
 {
-	Maps.printmap(g_Console); 
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
-	system("cls"); 
+	printmap(g_Console); 
+	//std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	//system("cls"); 
 }
 
 void Cutscenes::nextdialogue(Console& g_Console)
 {
-	system("pause");
-	system("cls");
-	Maps.printmap(g_Console);
+	//system("pause");
+	//system("cls");
+	printmap(g_Console);
 }
 
 void Cutscenes::drawgrid(Console& g_Console, int x, int y, char chara)
@@ -21,7 +19,7 @@ void Cutscenes::drawgrid(Console& g_Console, int x, int y, char chara)
 	COORD c;
 	c.X = x;
 	c.Y = y;
-	g_Console.writeToBuffer(c, chara, 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = chara, 0x1A);
 }
 
 void Cutscenes::cleargrid(Console& g_Console, int x, int y)
@@ -29,7 +27,7 @@ void Cutscenes::cleargrid(Console& g_Console, int x, int y)
 	COORD c;
 	c.X = x;
 	c.Y = y;
-	g_Console.writeToBuffer(c,' ', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
 }
 
 void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
@@ -60,7 +58,7 @@ void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
 	animate(g_Console); 
 	cleargrid(g_Console, 13, 7);
 	drawgrid(g_Console, 11, 7, 'O');
-	Maps.printmap(g_Console);
+	printmap(g_Console);
 	
 	//fire appearing
 	//fire appearing
@@ -81,13 +79,13 @@ void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
 	drawgrid(g_Console, 13, 7, '|');
 	printmap(g_Console);
 	//dialogue
-	c.X = 1;
-	c.Y = 25;
+	c.X = 5;
+	c.Y = 24;
 	g_Console.writeToBuffer(c, "Caretaker: Argh!!");
 	nextdialogue(g_Console);
 	g_Console.writeToBuffer(c, "Caretaker: Save the children!! Take the fire extinguisher...");
 	nextdialogue(g_Console);
 	g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!");
-	system("pause");
+	//system("pause");
 }
 //aaaa

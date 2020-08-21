@@ -39,6 +39,7 @@ enum EKEYS
 enum EGAMESTATES
 {
     S_SPLASHSCREEN,
+    S_Orphanage_Animation,
     S_GAME,
     S_Townsquare,
     S_Protest_Area,
@@ -52,7 +53,6 @@ struct SGameChar
     COORD m_cLocation;
     bool  m_bActive;
 };
-
 void init        ( void );      // initialize your variables, allocate memory, etc
 void getInput    ( void );      // get input from player
 void update      ( double dt ); // update the game and the state of the game
@@ -71,6 +71,7 @@ void renderMap_Townsquare();
 void renderMap_Protest_Area();
 void renderMap_Path_Area();
 void renderCharacter();     // renders the character into the buffer
+void renderEnemy();
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 void renderInputEvents();   // renders the status of input events
@@ -82,5 +83,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this fun
 void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for gameplay 
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
 
+void Update_Orphanage_Animation();
+void Orphanage_Animation();
 
 #endif //_GAME_H
