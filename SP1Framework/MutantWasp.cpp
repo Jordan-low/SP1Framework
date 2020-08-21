@@ -23,16 +23,18 @@ void MutantWasp::Debuff()
 	chance = (rand() % 100) + 1;
 	if (chance >= 0 && chance <= 20)
 	{
-		this->setPoison();
 		this->getPoison();
 	}
 }
 
-void MutantWasp::Drop()
+void MutantWasp::Drop(Console& g_Console)
 {
 	if (GetH() == 0)
 	{
-		cout << "Stinger" << endl;
+		COORD c;
+		c.X = GetX();
+		c.Y = GetY();
+		g_Console.writeToBuffer(c, "Stinger", 0x06);
 	}
 }
 

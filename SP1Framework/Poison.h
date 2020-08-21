@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Windows.h"
+#include "Framework/console.h"
 #include "Enemy.h"
 using namespace std;
 
@@ -11,7 +12,7 @@ private:
 
 public:
 	Poison();
-	void setPoison();
+	void setPoison(Console& g_Console);
 	char getPoison();
 	~Poison();
 };

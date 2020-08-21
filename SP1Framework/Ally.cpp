@@ -39,6 +39,7 @@ char Ally::getNamed()
 }
 Ally::~Ally()
 {
+
 }
 /*
 int Ally::getAlly()

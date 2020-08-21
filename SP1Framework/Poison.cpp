@@ -10,51 +10,31 @@ Poison::Poison()
 	Poisoned = 'P';
 }
 
-void Poison::setPoison()
+void Poison::setPoison(Console& g_Console)
 {
+	COORD c;
+	c.X = GetX();
+	c.Y = GetY();
 	int seconds = 0;
-	while (true)
+	while (Poisoned)
 	{
-		Player Status;
-		cout << "Poisoned" << endl;
-		Status.SetH(h);
-		this->SetD(3);
-		Status.SetH(h - 3);
-		this->GetH();
-		break;
-		Sleep(1000);
-		seconds++;
-		if (seconds == 10)
+		g_Console.writeToBuffer(c, "Poisoned", 0xD2);
+		if (seconds == 10 || seconds == 20)
 		{
-			Status.SetH(h);
-			this->SetD(3);
-			Status.SetH(h - 3);
+			this->SetH(h - 3);
 			this->GetH();
-			break;
 			Sleep(1000);
 			seconds++;
-			if (seconds == 20)
-			{
-				Status.SetH(h);
-				this->SetD(3);
-				Status.SetH(h - 3);
-				this->GetH();
-				break;
-				Sleep(1000);
-				seconds++;
-				if (seconds == 30)
-				{
-					Status.SetH(h);
-					this->SetD(3);
-					Status.SetH(h - 3);
-					this->GetH();
-					break;
-					Sleep(1000);
-					seconds = 0;
-					break;
-				}
-			}
 		}
+		
+		if (seconds == 30)
+		{
+			this->SetH(h - 3);
+			this->GetH();
+			Sleep(1000);
+			seconds = 0;
+		}
+		break;
 	}
 }
 

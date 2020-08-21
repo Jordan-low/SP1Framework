@@ -22,11 +22,14 @@ void Guard::Damaged()
 	this->Hit(50, 5);
 }
 
-void Guard::Drop()
+void Guard::Drop(Console& g_Console)
 {
 	if (GetH() == 0)
 	{
-		cout << "Guard Armor" << endl;
+		COORD c;
+		c.X = GetX(); //idk what coord
+		c.Y = GetY(); //idk what coord
+		g_Console.writeToBuffer(c, "Guard Armor", 0x57);
 	}
 }
 

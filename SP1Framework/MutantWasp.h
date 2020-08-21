@@ -1,5 +1,6 @@
 #pragma once
 #include "Poison.h"
+#include "Framework/console.h"
 
 class MutantWasp : public Poison
 {
@@ -9,7 +10,7 @@ public:
 	MutantWasp();
 	void Attack();
 	void Debuff();
-	void Drop();
+	void Drop(Console& g_Console);
 	void Damaged();
 	~MutantWasp();
 };

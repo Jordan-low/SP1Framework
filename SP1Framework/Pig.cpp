@@ -15,11 +15,14 @@ void Pig::Attack()
 	this->beenHit(50, 3);
 }
 
-void Pig::Drop()
+void Pig::Drop(Console& g_Console)
 {
 	if (GetH() == 0)
 	{
-		cout << "Raw Meat" << endl;
+		COORD c;
+		c.X = GetX();
+		c.Y = GetY();
+		g_Console.writeToBuffer(c, "Raw Meat", 0xC4);
 	}
 }
 
