@@ -88,4 +88,7 @@ void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
 	g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!");
 	//system("pause");
 }
+void Cutscenes::medical_breakIn(Console& g_Console)
+{
+}
 //aaaa
