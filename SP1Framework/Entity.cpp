@@ -1,5 +1,5 @@
 #include "Entity.h"
-
+//j
 Entity::Entity()
 {
 	x = 1;

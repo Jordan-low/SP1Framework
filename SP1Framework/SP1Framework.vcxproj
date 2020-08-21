@@ -87,7 +87,6 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Guard.cpp" />
     <ClCompile Include="Inventory.cpp" />
-    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />

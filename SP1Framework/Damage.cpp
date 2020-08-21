@@ -1,5 +1,5 @@
 #include "Damage.h"
-
+//j
 Damage::Damage()
 {
 	dmg = 0;

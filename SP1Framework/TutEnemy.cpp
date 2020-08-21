@@ -1,6 +1,6 @@
 #include "TutEnemy.h"
 #include <iostream>
-
+//j
 TutEnemy::TutEnemy()
 {
 	chance = 0;

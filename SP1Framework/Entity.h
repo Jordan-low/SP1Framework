@@ -1,6 +1,6 @@
 #pragma once
 #include "Damage.h"
-
+//j
 using namespace std;
 
 class Entity

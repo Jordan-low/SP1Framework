@@ -1,5 +1,5 @@
 #include "Enemy.h"
-#include "Entity.h"
+#include "Entity.h"//j
 
 Enemy::Enemy()
 {

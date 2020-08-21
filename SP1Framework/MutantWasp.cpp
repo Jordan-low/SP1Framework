@@ -1,7 +1,7 @@
 #include "MutantWasp.h"
 #include <iostream>
 #include "Poison.h"
-
+//j
 MutantWasp::MutantWasp()
 {
 	chance = 0;

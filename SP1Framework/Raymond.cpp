@@ -1,7 +1,7 @@
 #include "Raymond.h"
 #include <stdlib.h> 
 #include <iostream>
-
+//h
 Raymond::Raymond()
 {
 	this->setEnemy('R');

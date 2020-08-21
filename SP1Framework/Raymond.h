@@ -3,7 +3,7 @@
 #include "Damage.h"
 #include "Windows.h"
 #include "Framework/console.h"
-
+//j
 class Raymond : public Enemy
 {
 	Raymond();

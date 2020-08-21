@@ -1,6 +1,6 @@
 #pragma once
 #include "Entity.h"
-
+//j
 class Player :
 	public Entity
 {

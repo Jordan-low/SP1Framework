@@ -1,6 +1,6 @@
 #ifndef _GAME_H
 #define _GAME_H
-
+//j
 #include "Framework\timer.h"
 
 extern CStopWatch g_swTimer;

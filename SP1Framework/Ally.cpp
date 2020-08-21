@@ -1,5 +1,5 @@
 #include "Ally.h"
-
+//j
 Ally::Ally()
 {
 	name = 'O';

@@ -1,5 +1,5 @@
 #pragma once
-
+//j
 class Damage
 {
 private:

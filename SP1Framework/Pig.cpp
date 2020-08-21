@@ -1,6 +1,6 @@
 #include "Pig.h"
 #include <iostream>
-
+//j
 Pig::Pig()
 {
 	this->setEnemy('P');

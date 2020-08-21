@@ -2,7 +2,7 @@
 #include "Framework\console.h"
 #include <chrono>
 #include <thread>
-class Map
+class Map//j
 {
 public:
 	int i = 0;

@@ -2,7 +2,7 @@
 #include "Enemy.h"
 #include <iostream>
 #include "Damage.h"
-
+//j
 Guard::Guard()
 {
 	this->setEnemy('G');

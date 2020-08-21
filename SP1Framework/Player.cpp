@@ -1,5 +1,5 @@
 #include "Player.h"
-
+//j
 Player::Player()
 {
 	name = 'O';
