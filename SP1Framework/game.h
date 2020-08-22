@@ -5,7 +5,6 @@
 
 extern CStopWatch g_swTimer;
 extern bool g_bQuitGame;
-
 // struct to store keyboard events
 // a small subset of KEY_EVENT_RECORD
 struct SKeyEvent
@@ -32,6 +31,7 @@ enum EKEYS
     K_RIGHT,
     K_ESCAPE,
     K_SPACE,
+    K_RETURN,
     K_COUNT
 };
 
@@ -44,6 +44,7 @@ enum EGAMESTATES
     S_Townsquare,
     S_Protest_Area,
     S_Path_Area,
+    S_Orphanage_Children_Animation,
     S_COUNT
 };
 
@@ -51,13 +52,17 @@ enum EGAMESTATES
 struct SGameChar
 {
     COORD m_cLocation;
+    COORD e_cLocation;
     bool  m_bActive;
+    bool fire;
+    bool fireOut;
 };
 void init        ( void );      // initialize your variables, allocate memory, etc
 void getInput    ( void );      // get input from player
 void update      ( double dt ); // update the game and the state of the game
 void render      ( void );      // renders the current state of the game to the console
 void shutdown    ( void );      // do clean up, free memory
+
 
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame();          // gameplay logic
@@ -66,7 +71,7 @@ void processUserInput();    // checks if you should change states or do somethin
 void clearScreen();         // clears the current screen and draw from scratch 
 void renderSplashScreen();  // renders the splash screen
 void renderGame();          // renders the game stuff
-void renderMap();           // renders the map to the buffer first
+//void renderMap();           // renders the map to the buffer first
 void renderMap_Townsquare();
 void renderMap_Protest_Area();
 void renderMap_Path_Area();

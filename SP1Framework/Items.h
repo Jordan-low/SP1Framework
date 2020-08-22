@@ -12,7 +12,7 @@ private:
     int Iint;
     ItemsType IType;
     string Name;
-    int Heal;
+    int addhealth;
 
 public:
     // Default Constructor

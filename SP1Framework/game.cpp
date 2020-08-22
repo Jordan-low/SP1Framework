@@ -18,12 +18,13 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 SGameChar   g_sEnemy;
-EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
+EGAMESTATES g_eGameState; // game states
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
-//15 maps
+Console g_Console(80, 30, "SP1 Framework");
+// Map object
 Map rMap;
+Map eMap;
 Cutscenes Cutscene;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
@@ -34,18 +35,20 @@ Cutscenes Cutscene;
 //--------------------------------------------------------------
 void init( void )
 {
+    g_sChar.fire = false;
+    g_sChar.fireOut = false;
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
     // sets the initial state for the game
-    g_eGameState = S_SPLASHSCREEN;
+    g_eGameState = S_GAME;
 
     g_sChar.m_cLocation.X = 22;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
 
-    g_sEnemy.m_cLocation.X = 10;
-    g_sEnemy.m_cLocation.Y = 10;
+    g_sEnemy.e_cLocation.X = 10;
+    g_sEnemy.e_cLocation.Y = 10;
 
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -118,6 +121,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_Path_Area: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
+    case S_Orphanage_Animation: gameplayKBHandler(keyboardEvent);
+        break;
     }
 }
 
@@ -151,6 +156,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
         break;
     case S_Path_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
+    case S_Orphanage_Animation: gameplayMouseHandler(mouseEvent);
+        break;
     }
 }
 
@@ -174,6 +181,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case VK_LEFT: key = K_LEFT; break; 
     case VK_RIGHT: key = K_RIGHT; break; 
     case VK_SPACE: key = K_SPACE; break;
+    case VK_RETURN: key = K_RETURN; break;
     case VK_ESCAPE: key = K_ESCAPE; break; 
     }
     // a key pressed event would be one with bKeyDown == true
@@ -240,16 +248,21 @@ void update(double dt)
             break;
         case S_Path_Area: updateGame(); // gameplay logic when we are in the game
             break;
-
     }
 }
 
 void Update_Orphanage_Animation()
 {
-    if (g_dElapsedTime > 10)
+    if (g_dElapsedTime > 36)
     {
         g_eGameState = S_GAME;
     }
+    processUserInput();
+}
+
+void Animation_Input()
+{
+    
 }
 
 void Orphanage_Animation()
@@ -257,34 +270,34 @@ void Orphanage_Animation()
     rMap.initialise(g_Console);
     rMap.printmap(g_Console);
     rMap.orphanage(g_Console);
-
+    COORD c;
     renderCharacter();
     Cutscene.drawgrid(g_Console, 11, 5, '|');
-    if (g_dElapsedTime > 6.3)
+    if (g_dElapsedTime > 1.3)
     {
         Cutscene.cleargrid(g_Console, 11, 5);
         Cutscene.drawgrid(g_Console, 11, 10, '|');
-         if (g_dElapsedTime > 6.9)
+         if (g_dElapsedTime > 1.6)
         {
             Cutscene.cleargrid(g_Console, 11, 10);
             Cutscene.drawgrid(g_Console, 11, 4, '|');
-            if (g_dElapsedTime > 7.2)
+            if (g_dElapsedTime > 1.9)
             {
                 Cutscene.cleargrid(g_Console, 11, 4);
                 Cutscene.drawgrid(g_Console, 11, 6, '|');
-                if (g_dElapsedTime > 7.5)
+                if (g_dElapsedTime > 2.1)
                 {
                     Cutscene.cleargrid(g_Console, 11, 6);
                     Cutscene.drawgrid(g_Console, 11, 7, 'O');
-                    if (g_dElapsedTime > 7.8)
+                    if (g_dElapsedTime > 2.4)
                     {
                         Cutscene.cleargrid(g_Console, 11, 7);
                         Cutscene.drawgrid(g_Console, 9, 7, 'O');
-                        if (g_dElapsedTime > 8.1)
+                        if (g_dElapsedTime > 2.7)
                         {
                             Cutscene.cleargrid(g_Console, 9, 7);
                             Cutscene.drawgrid(g_Console, 13, 7, 'O');
-                            if (g_dElapsedTime > 8.4)
+                            if (g_dElapsedTime > 3.0)
                             {
                                 Cutscene.cleargrid(g_Console, 13, 7);
                                 Cutscene.drawgrid(g_Console, 11, 7, 'O');
@@ -293,19 +306,62 @@ void Orphanage_Animation()
                                 {
                                     Cutscene.drawgrid(g_Console, i, j, '-');
                                 }
-                                if (g_dElapsedTime > 8.7)
+                                if (g_dElapsedTime > 3.3)
                                 {
                                     j = 8;
                                     for (int i = 9; i < 14; i++)
                                     {
                                         Cutscene.drawgrid(g_Console, i, j, '-');
                                     }
-                                    if (g_dElapsedTime > 9.0)
+                                    if (g_dElapsedTime > 3.6)
                                     {
                                         Cutscene.drawgrid(g_Console, 9, 7, '|');
-                                        if (g_dElapsedTime > 9.3)
+                                        if (g_dElapsedTime > 3.9)
                                         {
                                             Cutscene.drawgrid(g_Console, 13, 7, '|');
+                                            if (g_dElapsedTime > 4.2)
+                                            {
+                                                c.X = 5;
+                                                c.Y = 26;
+                                                g_Console.writeToBuffer(c, "Robert: ...", 0x1A, 10);
+                                                if (g_dElapsedTime > 10)
+                                                {
+                                                    c.X = 5;
+                                                    c.Y = 26;
+                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                                                    c.X = 5;
+                                                    c.Y = 26;
+                                                    g_Console.writeToBuffer(c, "Caretaker: Robert... Leave the Orphanage now!..", 0x1A, 100);
+                                                    if (g_dElapsedTime > 16)
+                                                    {
+                                                        c.X = 5;
+                                                        c.Y = 26;
+                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                                                        c.X = 5;
+                                                        c.Y = 26;
+                                                        g_Console.writeToBuffer(c, "It's better that at least one of us comes out alive..", 0x1A, 100);
+                                                        if (g_dElapsedTime > 24)
+                                                        {
+                                                            c.X = 5;
+                                                            c.Y = 26;
+                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                                                            c.X = 5;
+                                                            c.Y = 26;
+                                                            g_Console.writeToBuffer(c, "Take the backpack and leave... Don't look back Robert..", 0x1A, 100);
+                                                            if (g_dElapsedTime > 30)
+                                                            {
+                                                                c.X = 5;
+                                                                c.Y = 26;
+                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                                                                c.X = 5;
+                                                                c.Y = 26;
+                                                                g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x1A, 100);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
                                         }
                                     }
                                 }
@@ -355,6 +411,8 @@ void moveCharacter()
     {
         int i = g_sChar.m_cLocation.X;
         int j = g_sChar.m_cLocation.Y;
+        //int m = g_sEnemy.m_cLocation.X;
+        //int n = g_sEnemy.m_cLocation.Y;
         if (rMap.Grid[j - 1][i] != '|')
         {
             if (rMap.Grid[j - 1][i] != '#')
@@ -374,6 +432,13 @@ void moveCharacter()
                 }
             }
         }
+        /*
+        if (rMap.Grid[j - 1][i] == eMap.Grid[n][m])
+        {
+            g_sChar.m_cLocation.X = 10;
+            g_sChar.m_cLocation.Y = 20;
+        }
+        */
     }
     if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 1)
     {
@@ -542,25 +607,33 @@ void renderGame()
     //Cutscene.orphanageCaretakerCutscene(g_Console);
     */
     rMap.initialise(g_Console);
-    Cutscene.drawgrid(g_Console, 11, 7, 'O');                   
-    Cutscene.drawgrid(g_Console, 9, 7, 'O');                     
-    Cutscene.drawgrid(g_Console, 13, 7, 'O');                          
-    Cutscene.drawgrid(g_Console, 11, 7, 'O');
+
+    rMap.Animation(g_Console, 11, 7, 'O');                   
+    rMap.Animation(g_Console, 9, 7, 'O');
+    rMap.Animation(g_Console, 13, 7, 'O');
+    rMap.Animation(g_Console, 11, 7, 'O');
     int j = 6;
     for (int i = 9; i < 14; i++)
     {
-    Cutscene.drawgrid(g_Console, i, j, '-');
+    rMap.Animation(g_Console, i, j, '-');
     }                          
     j = 8;
     for (int i = 9; i < 14; i++)
     {
-        Cutscene.drawgrid(g_Console, i, j, '-');
+        rMap.Animation(g_Console, i, j, '-');
     }                            
-    Cutscene.drawgrid(g_Console, 9, 7, '|');                                 
-    Cutscene.drawgrid(g_Console, 13, 7, '|');
+    rMap.Animation(g_Console, 9, 7, '|');
+    rMap.Animation(g_Console, 13, 7, '|');
+
+    rMap.Animation(g_Console, 40, 7, 'F');
                                         
     rMap.Border(g_Console);
-    rMap.orphanage(g_Console);
+
+    if (g_sChar.fireOut == false)
+    {
+        rMap.orphanage(g_Console);
+    }
+
     renderCharacter();
     renderEnemy();
     //renderMap(); // renders the character into the buffer
@@ -570,14 +643,16 @@ void renderGame()
         g_sChar.m_cLocation.X = 22;
         g_sChar.m_cLocation.Y = 17;
     }
-    /*
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == rMap.Grid[g_sEnemy.m_cLocation.Y][g_sEnemy.m_cLocation.X])
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == 'F')
     {
-        g_sChar.m_cLocation.X = 22;
+        g_sChar.fire = true;
+    }
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == rMap.Grid[g_sEnemy.e_cLocation.Y][g_sEnemy.e_cLocation.X])
+    {
+        g_sChar.m_cLocation.X = 20;
         g_sChar.m_cLocation.Y = 17;
     }
-    */
-    
+
 }
 
 void renderMap_Townsquare()
@@ -624,13 +699,21 @@ void renderCharacter()
     {
         charColor = 0x0A;
     }
+    if (g_sChar.fire)
+    {
+        charColor = 0xDD;
+        rMap.Animation(g_Console, 40, 7, ' ');
+        if (g_skKeyEvent[K_RETURN].keyDown && ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y + 1][g_sChar.m_cLocation.X] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y - 1][g_sChar.m_cLocation.X] == '_')))
+        {
+            g_sChar.fireOut = true;
+        }
+    }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }
-
 void renderEnemy()
 {
     WORD charColor = 0x0C;
-    g_Console.writeToBuffer(g_sEnemy.m_cLocation, (char)1, charColor);
+    g_Console.writeToBuffer(g_sEnemy.e_cLocation, rMap.Grid[g_sEnemy.e_cLocation.Y][g_sEnemy.e_cLocation.X] = (char)1, charColor);
 }
 void renderFramerate()
 {

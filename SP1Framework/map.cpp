@@ -111,40 +111,8 @@ void Map::Animation(Console &g_Console, int x, int y, char ch)
 	c.X = x;
 	c.Y = y;
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x1A);
-	Border(g_Console);
-	orphanage(g_Console);
 }
 
-void Map::ClearAnimation(Console &g_Console, int x, int y)
-{
-	COORD c;
-	c.X = x;
-	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
-}
-
-void Map::Animate(Console& g_Console)
-{
-	initialise(g_Console);
-	orphanage(g_Console);
-
-	Animation(g_Console, 11, 3, '|');
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-	ClearAnimation(g_Console, 11, 3);
-
-	Animation(g_Console, 11, 5, '|');
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-	ClearAnimation(g_Console, 11, 5);
-
-	Animation(g_Console, 11, 7, '|');
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-	ClearAnimation(g_Console, 11, 7);
-
-	Animation(g_Console, 11, 9, '|');
-}
 void Map::House(Console& g_Console, int x, int y)
 {
 	COORD c;
