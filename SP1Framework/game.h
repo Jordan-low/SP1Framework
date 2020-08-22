@@ -45,6 +45,10 @@ enum EGAMESTATES
     S_Protest_Area,
     S_Path_Area,
     S_Orphanage_Children_Animation,
+    S_Protest_Area_Animation,
+    S_Dungeon_Cell_Animation,
+    S_Path_Area_Animation,
+    S_IAF3_Animation,
     S_COUNT
 };
 
@@ -92,5 +96,13 @@ void Update_Orphanage_Animation();
 void Orphanage_Animation();
 void Update_Orphanage_Animation2();
 void Orphanage_Children_Animation();
+void Update_Protest_Area();
+void Protest_Area_Animation();
+void Update_Dungeon_Cell();
+void Dungeon_Cell_Animation();
+void Update_Path_Area();
+void Path_Area_Animation();
+void Update_IAF3();
+void IAF3_Animation();
 
 #endif //_GAME_H
