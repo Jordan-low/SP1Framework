@@ -11,7 +11,3 @@ public:
 	virtual ~Inventory();
 };
 
-class Inventory
-{
-};
-

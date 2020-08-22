@@ -79,7 +79,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Consumable.cpp" />
-    <ClCompile Include="Consumables.cpp" />
     <ClCompile Include="Cutscenes.cpp" />
     <ClCompile Include="Damage.cpp" />
     <ClCompile Include="Dialogue.cpp" />
@@ -103,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Consumable.h" />
-    <ClInclude Include="Consumables.h" />
     <ClInclude Include="Cutscenes.h" />
     <ClInclude Include="Damage.h" />
     <ClInclude Include="Dialogue.h" />

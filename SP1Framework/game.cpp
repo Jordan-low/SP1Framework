@@ -583,7 +583,6 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    COORD c;
     /*
     rMap.initialise(g_Console);
     rMap.printmap(g_Console);
