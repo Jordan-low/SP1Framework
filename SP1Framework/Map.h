@@ -7,7 +7,7 @@ class Map//j
 public:
 	int i = 0;
 	int j = 0;
-	char Grid[25][80];
+	char Grid[30][80];
 	void initialise(Console &g_Console);
 	void printmap(Console &g_Console);
 	void townsquare(Console &g_Console);
