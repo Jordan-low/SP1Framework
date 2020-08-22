@@ -8,8 +8,8 @@ private:
 
 public:
 	TutEnemy();
-	void Attack();
+	/*void Attack();
 	void Debuff(Console& g_Console);
-	void Damaged();
+	void Damaged();*/
 	~TutEnemy();
 };

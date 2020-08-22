@@ -7,8 +7,8 @@
 class Raymond : public Enemy
 {
 	Raymond();
-	void Attack();
+	/*void Attack();
 	void Talk(Console& g_Console);
-	void Damaged();
+	void Damaged();*/
 	~Raymond();
 };

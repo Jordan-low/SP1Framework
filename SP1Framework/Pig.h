@@ -6,9 +6,9 @@ class Pig : public Enemy
 {
 private:
 	Pig();
-	void Attack();
+	/*void Attack();
 	void Drop(Console& g_Console);
-	void Damaged();
+	void Damaged();*/
 	~Pig();
 };
 //i

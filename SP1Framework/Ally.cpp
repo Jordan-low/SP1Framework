@@ -2,15 +2,16 @@
 //j
 Ally::Ally()
 {
-	name = 'O';
+	name = ' ';
 }
 
-void Ally::setAlly()
+void Ally::setAlly(float x, float y, float health, float dmg, const char n)
 {
 	this->SetD(x);
 	this->SetH(50);
 	this->SetX(0);
 	this->SetY(0);
+	name = n;
 }
 
 int Ally::getDmg()

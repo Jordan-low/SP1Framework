@@ -6,7 +6,7 @@ using namespace std;
 class Entity
 {
 protected:
-	int x, y, h, d;
+	float x, y, h, d;
 	char name;
 public:
 	Entity();

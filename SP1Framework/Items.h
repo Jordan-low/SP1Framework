@@ -8,6 +8,7 @@ enum ItemsType { Armour, Weapons };
 
 class Items {
 private:
+    char items;
     string IName;
     int Iint;
     ItemsType IType;
