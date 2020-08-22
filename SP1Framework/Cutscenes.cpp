@@ -103,7 +103,7 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	drawgrid(g_Console, 2, 13, 'O');
 	c.X = 5;
 	c.Y = 24;
-	g_Console.writeToBuffer(c, "Ell : The hornets have broken in!");
+	g_Console.writeToBuffer(c, "Ell: The hornets have broken in!");
 	nextdialogue(g_Console);
 	cleargrid(g_Console, 2, 12);
 	cleargrid(g_Console, 2, 13);
@@ -221,7 +221,7 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	drawgrid(g_Console, 28, 14, 'O');
 	c.X = 5;
 	c.Y = 24;
-	g_Console.writeToBuffer(c, "Ell : Oh no! We're surrounded!");
+	g_Console.writeToBuffer(c, "Ell: Oh no! We're surrounded!");
 	nextdialogue(g_Console);
 	cleargrid(g_Console, 28, 11);
 	cleargrid(g_Console, 28, 14);
@@ -244,7 +244,118 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	//cleargrid(34, 11);
 	//cleargrid(34, 14);
 }
+
 void Cutscenes::stealth3Dialogue(Console& g_Console)
 {
+	COORD c;
+	dungeon_stealth3(g_Console);
+	drawgrid(g_Console, 38, 12, 'O'); //Raymond
+	drawgrid(g_Console, 40, 12, 'L'); //Robot/Lackey
+
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Raymond: I want you to keep this secret between us, if anyone suspect or knows that");
+	c.Y = 25;
+	g_Console.writeToBuffer(c, "I am behind all this, I want you to eliminate them understand? ");
+	nextdialogue(g_Console);
+
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Raymond: This secret is a matter of life and death, it MUST not get exposed.");
+	nextdialogue(g_Console);
+
+	g_Console.writeToBuffer(c, "Raymond: If this ever gets out, my plans to rule the world will be ruined.");
+	nextdialogue(g_Console);
+
+	g_Console.writeToBuffer(c, "Raymond: Anyways, I thought that I managed to get rid of that idiot of a security");
+	c.Y = 25;
+	g_Console.writeToBuffer(c, "guard during that break out in the abandoned facility.");
+	nextdialogue(g_Console);
+
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Raymond: However, it seems like a young kid had saved him and now he has turned his back on us.");
+	nextdialogue(g_Console);
+
+	g_Console.writeToBuffer(c, "Raymond: I want you to find him and bring him to me. I want to show you what I do to traitors.");
+	nextdialogue(g_Console);
+
+	g_Console.writeToBuffer(c, "Raymond: I will get rid of anyone who stands in my way.");
+	nextdialogue(g_Console);
+
+	g_Console.writeToBuffer(c, "Raymond: I'll be waiting for your good news at the top floor of this building.");
+	nextdialogue(g_Console);
+
+	//walking away
+	cleargrid(g_Console, 38, 12);
+	cleargrid(g_Console, 40, 12);
+
+	drawgrid(g_Console, 33, 11, 'O'); //Raymond
+	drawgrid(g_Console, 43, 12, 'L'); //Robot/Lackey
+	animate(g_Console);
+	cleargrid(g_Console, 33, 11);
+	cleargrid(g_Console, 43, 12);
+
+	drawgrid(g_Console, 29, 10, 'O');
+	drawgrid(g_Console, 46, 12, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 29, 10);
+	cleargrid(g_Console, 46, 12);
+
+	drawgrid(g_Console, 24, 9, 'O');
+	drawgrid(g_Console, 49, 12, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 24, 9);
+	cleargrid(g_Console, 49, 12);
+
+	drawgrid(g_Console, 20, 8, 'O');
+	drawgrid(g_Console, 52, 12, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 20, 8);
+	cleargrid(g_Console, 52, 12);
+
+	drawgrid(g_Console, 16, 7, 'O');
+	drawgrid(g_Console, 55, 12, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 16, 7);
+	cleargrid(g_Console, 55, 12);
+
+	drawgrid(g_Console, 12, 6, 'O');
+	drawgrid(g_Console, 58, 12, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 12, 6);
+	cleargrid(g_Console, 58, 12);
+
+	drawgrid(g_Console, 9, 5, 'O');
+	drawgrid(g_Console, 61, 11, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 9, 5);
+	cleargrid(g_Console, 61, 11);
+
+	drawgrid(g_Console, 5, 4, 'O');
+	drawgrid(g_Console, 61, 9, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 5, 4);
+	cleargrid(g_Console, 61, 9);
+
+	drawgrid(g_Console, 61, 7, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 61, 7);
+
+	drawgrid(g_Console, 61, 5, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 61, 5);
+
+	drawgrid(g_Console, 61, 3, 'L');
+	animate(g_Console);
+	cleargrid(g_Console, 61, 3);
+
+	//drawgrid(63, 1, 'L');
+	//animate();
+	//cleargrid(63, 1);
+
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "It seems like mayor Raymond was the mastermind behind all these incidents.");
+	nextdialogue(g_Console);
+	g_Console.writeToBuffer(c, "I should prepare before confronting him.");
 }
 //aaaa
