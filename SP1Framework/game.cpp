@@ -366,7 +366,7 @@ void Orphanage_Children_Animation()
     renderCharacter();
     c.X = 5;
     c.Y = 26;
-    
+
     if (g_dElapsedTime > 1)
     {
         g_Console.writeToBuffer(c, "Robert: !!!", 0x1A, 100);

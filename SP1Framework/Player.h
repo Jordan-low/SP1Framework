@@ -7,7 +7,7 @@ class Player :
 public:
 	Player();
 	~Player();
-	void setPlayer();
+	void setPlayer(float x, float y, float health, float dmg, const char n);
 	int GetDmg();
 	int GetHealth();
 	int GetXcoord();

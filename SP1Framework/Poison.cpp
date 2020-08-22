@@ -10,7 +10,7 @@ Poison::Poison()
 	Poisoned = 'P';
 }
 
-void Poison::setPoison(Console& g_Console)
+/*void Poison::setPoison(Console& g_Console)
 {
 	COORD c;
 	c.X = GetX();
@@ -41,7 +41,7 @@ void Poison::setPoison(Console& g_Console)
 char Poison::getPoison()
 {
 	return Poisoned;
-}
+}*/
 
 Poison::~Poison()
 {

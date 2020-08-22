@@ -1,7 +1,7 @@
 #include "Pig.h"
 #include <iostream>
 //j
-Pig::Pig()
+/*Pig::Pig()
 {
 	this->setEnemy('P');
 	this->SetD(3);
@@ -34,4 +34,4 @@ void Pig::Damaged()
 Pig::~Pig()
 {
 
-}
+}*/

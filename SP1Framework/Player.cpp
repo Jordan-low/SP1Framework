@@ -2,15 +2,16 @@
 //j
 Player::Player()
 {
-	name = 'O';
+	name = ' ';
 }
 
-void Player::setPlayer()
+void Player::setPlayer(float x, float y, float health, float dmg, const char n)
 {
-	this->SetD(5);
-	this->SetH(50);
-	this->SetX(0);
-	this->SetY(0);
+	this->SetD(x);
+	this->SetH(y);
+	this->SetX(health);
+	this->SetY(dmg);
+	name = n;
 }
 
 int Player::GetDmg()

@@ -2,7 +2,7 @@
 #include <stdlib.h> 
 #include <iostream>
 //h
-Raymond::Raymond()
+/*Raymond::Raymond()
 {
 	this->setEnemy('R');
 	this->SetD(25);
@@ -68,4 +68,4 @@ void Raymond::Damaged()
 Raymond::~Raymond()
 {
 	
-}
+}*/
