@@ -5,12 +5,12 @@
 
 using namespace std;
 
-Poison::Poison()
+/*Poison::Poison()
 {
 	Poisoned = 'P';
 }
 
-/*void Poison::setPoison(Console& g_Console)
+void Poison::setPoison(Console& g_Console)
 {
 	COORD c;
 	c.X = GetX();
@@ -41,9 +41,9 @@ Poison::Poison()
 char Poison::getPoison()
 {
 	return Poisoned;
-}*/
+}
 
 Poison::~Poison()
 {
 
-}
+}*/

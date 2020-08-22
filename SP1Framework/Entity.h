@@ -1,12 +1,13 @@
 #pragma once
 #include "Damage.h"
+#include "Items.h"
 //j
 using namespace std;
 
 class Entity
 {
 protected:
-	float x, y, h, d;
+	int x, y, h, d;
 	char name;
 public:
 	Entity();

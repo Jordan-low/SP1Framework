@@ -5,15 +5,15 @@
 #include "Enemy.h"//j
 using namespace std;
 
-class Poison : public Enemy
+/*class Poison : public Enemy
 {
 private:
 	char Poisoned;
 
 public:
 	Poison();
-	//void setPoison(Console& g_Console);
-	//char getPoison();
+	void setPoison(Console& g_Console);
+	char getPoison();
 	~Poison();
-};
+};*/
 

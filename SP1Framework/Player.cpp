@@ -1,11 +1,12 @@
 #include "Player.h"
+#include "Entity.h"
 //j
 Player::Player()
 {
 	name = ' ';
 }
 
-void Player::setPlayer(float x, float y, float health, float dmg, const char n)
+void Player::setPlayer(int x, int y, int health, int dmg, const char n)
 {
 	this->SetD(x);
 	this->SetH(y);
@@ -50,7 +51,18 @@ void Player::Attack()
 	*/
 }
 
+void Player::Heal()
+{
+	//char* Healing[5] = { "Raw Meat", "Burger", "Taco", "Bread", "Cake" };
+}
+
+void Player::Equipment()
+{
+
+}
+
 Player::~Player()
 {
 
 }
+
