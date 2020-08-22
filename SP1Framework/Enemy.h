@@ -17,4 +17,3 @@ public:
 	float Hit(float Eh, float Pd);
 	float beenHit(float Ph, float Ed);
 };
-

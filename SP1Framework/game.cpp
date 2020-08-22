@@ -309,7 +309,6 @@ void Orphanage_Animation()
                                         }
                                     }
                                 }
-                                
                             }
                         }
                     }
@@ -318,6 +317,22 @@ void Orphanage_Animation()
         }
     }
 }
+
+void Update_Orphanage_Animation2()
+{
+    if (g_dElapsedTime > 10)
+    {
+        g_eGameState = S_GAME;
+        rMap.initialise(g_Console);
+        rMap.printmap(g_Console);
+        rMap.orphanage(g_Console);
+
+        renderCharacter();
+
+    }
+}
+
+
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
