@@ -95,7 +95,7 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	COORD c;
 	insideMedicalFacility(g_Console);
 
-	drawgrid(g_Console, 34, 12, 'R'); //Robert
+	drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
 	drawgrid(g_Console, 34, 13, 'E'); //Ell
 
 	//breaking in
@@ -249,7 +249,7 @@ void Cutscenes::stealth3Dialogue(Console& g_Console)
 {
 	COORD c;
 	dungeon_stealth3(g_Console);
-	drawgrid(g_Console, 38, 12, 'O'); //Raymond
+	drawgrid(g_Console, 38, 12, 'R'); //Raymond
 	drawgrid(g_Console, 40, 12, 'L'); //Robot/Lackey
 
 	c.X = 5;
@@ -288,49 +288,49 @@ void Cutscenes::stealth3Dialogue(Console& g_Console)
 	cleargrid(g_Console, 38, 12);
 	cleargrid(g_Console, 40, 12);
 
-	drawgrid(g_Console, 33, 11, 'O'); //Raymond
+	drawgrid(g_Console, 33, 11, 'R'); //Raymond
 	drawgrid(g_Console, 43, 12, 'L'); //Robot/Lackey
 	animate(g_Console);
 	cleargrid(g_Console, 33, 11);
 	cleargrid(g_Console, 43, 12);
 
-	drawgrid(g_Console, 29, 10, 'O');
+	drawgrid(g_Console, 29, 10, 'R');
 	drawgrid(g_Console, 46, 12, 'L');
 	animate(g_Console);
 	cleargrid(g_Console, 29, 10);
 	cleargrid(g_Console, 46, 12);
 
-	drawgrid(g_Console, 24, 9, 'O');
+	drawgrid(g_Console, 24, 9, 'R');
 	drawgrid(g_Console, 49, 12, 'L');
 	animate(g_Console);
 	cleargrid(g_Console, 24, 9);
 	cleargrid(g_Console, 49, 12);
 
-	drawgrid(g_Console, 20, 8, 'O');
+	drawgrid(g_Console, 20, 8, 'R');
 	drawgrid(g_Console, 52, 12, 'L');
 	animate(g_Console);
 	cleargrid(g_Console, 20, 8);
 	cleargrid(g_Console, 52, 12);
 
-	drawgrid(g_Console, 16, 7, 'O');
+	drawgrid(g_Console, 16, 7, 'R');
 	drawgrid(g_Console, 55, 12, 'L');
 	animate(g_Console);
 	cleargrid(g_Console, 16, 7);
 	cleargrid(g_Console, 55, 12);
 
-	drawgrid(g_Console, 12, 6, 'O');
+	drawgrid(g_Console, 12, 6, 'R');
 	drawgrid(g_Console, 58, 12, 'L');
 	animate(g_Console);
 	cleargrid(g_Console, 12, 6);
 	cleargrid(g_Console, 58, 12);
 
-	drawgrid(g_Console, 9, 5, 'O');
+	drawgrid(g_Console, 9, 5, 'R');
 	drawgrid(g_Console, 61, 11, 'L');
 	animate(g_Console);
 	cleargrid(g_Console, 9, 5);
 	cleargrid(g_Console, 61, 11);
 
-	drawgrid(g_Console, 5, 4, 'O');
+	drawgrid(g_Console, 5, 4, 'R');
 	drawgrid(g_Console, 61, 9, 'L');
 	animate(g_Console);
 	cleargrid(g_Console, 5, 4);
@@ -357,5 +357,64 @@ void Cutscenes::stealth3Dialogue(Console& g_Console)
 	g_Console.writeToBuffer(c, "It seems like mayor Raymond was the mastermind behind all these incidents.");
 	nextdialogue(g_Console);
 	g_Console.writeToBuffer(c, "I should prepare before confronting him.");
+}
+
+void Cutscenes::bossBattleDialogue(Console& g_Console)
+{
+	//Raymond walks to Hero while talking
+	COORD c;
+	boss_room(g_Console);
+	drawgrid(g_Console, 40, 21, 'H'); //Robert(Hero)
+
+	drawgrid(g_Console, 60, 14, 'R');
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Raymond: It seems that the person I have been searching for came to me instead.");
+	nextdialogue(g_Console);
+	cleargrid(g_Console, 60, 14);
+
+	drawgrid(g_Console, 57, 15, 'R');
+	animate(g_Console);
+	cleargrid(g_Console, 57, 15);
+
+	drawgrid(g_Console, 55, 16, 'R');
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Raymond: I should thank you for saving me the trouble.");
+	nextdialogue(g_Console);
+	cleargrid(g_Console, 55, 16);
+
+	drawgrid(g_Console, 52, 17, 'R');
+	animate(g_Console);
+	cleargrid(g_Console, 52, 17);
+
+	drawgrid(g_Console, 50, 18, 'R');
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Raymond: So... have you came here to surrender?");
+	nextdialogue(g_Console);
+	cleargrid(g_Console, 50, 18);
+
+	drawgrid(g_Console, 47, 19, 'R');
+	animate(g_Console);
+	cleargrid(g_Console, 47, 19);
+
+	drawgrid(g_Console, 45, 20, 'R');
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Raymond: Why don't you join me and we can rule the world together?");
+	nextdialogue(g_Console);
+	cleargrid(g_Console, 45, 20);
+
+	drawgrid(g_Console, 42, 21, 'R');
+	animate(g_Console);
+	cleargrid(g_Console, 42, 21);
+
+	drawgrid(g_Console, 40, 20, 'R');
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Raymond: Actually nah, that's a bad idea. Only I can rule the world!!");
+	nextdialogue(g_Console);
+	cleargrid(g_Console, 40, 20);
 }
 //aaaa

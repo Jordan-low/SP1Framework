@@ -19,5 +19,6 @@ public:
 
     void medical_breakIn(Console& g_Console);
     void stealth3Dialogue(Console& g_Console);
+    void bossBattleDialogue(Console& g_Console);
 };
 
