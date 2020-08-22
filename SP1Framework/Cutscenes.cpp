@@ -89,6 +89,7 @@ void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
 	//system("pause");
 }
 
+
 void Cutscenes::medical_breakIn(Console& g_Console)
 {
 	COORD c;
@@ -242,5 +243,8 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	//nextdialogue("Ell : Oh no! We're surrounded!");
 	//cleargrid(34, 11);
 	//cleargrid(34, 14);
+}
+void Cutscenes::stealth3Dialogue(Console& g_Console)
+{
 }
 //aaaa

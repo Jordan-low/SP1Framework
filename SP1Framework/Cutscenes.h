@@ -18,5 +18,6 @@ public:
     void orphanageCaretakerCutscene(Console& g_Console);
 
     void medical_breakIn(Console& g_Console);
+    void stealth3Dialogue(Console& g_Console);
 };
 
