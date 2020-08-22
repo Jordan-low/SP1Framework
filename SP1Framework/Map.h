@@ -19,6 +19,7 @@ public:
 	void dungeon_stealth3(Console& g_Console);
 
 	void orphanage(Console &g_Console);
+	void drawChildren(Console& g_Console);
 	void protest_area(Console& g_Console);
 	void outside_abandoned_facility(Console& g_Console);
 	void insideAbandonedFacility2(Console& g_Console);
@@ -36,9 +37,9 @@ public:
 	void Road_I(Console& g_Console, int x, int y, int count);
 	void Road_Equals(Console& g_Console, int x, int y, int count);
 
-	void Map::Animation(Console &g_Console, int x, int y, char ch);
-	void Map::Animate(Console& g_Console);
-	void Map::ClearAnimation(Console &g_Console, int x, int y);
+	void Animation(Console &g_Console, int x, int y, char ch);
+	void Animate(Console& g_Console);
+	void ClearAnimation(Console &g_Console, int x, int y);
 
 
 	void Box(Console& g_Console, int x, int y);
