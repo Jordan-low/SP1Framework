@@ -1,7 +1,7 @@
 #include "TutEnemy.h"
 #include <iostream>
 //j
-TutEnemy::TutEnemy()
+/*TutEnemy::TutEnemy()
 {
 	chance = 0;
 	this->setEnemy('T');
@@ -34,4 +34,4 @@ void TutEnemy::Damaged()
 TutEnemy::~TutEnemy()
 {
 	
-}
+}*/

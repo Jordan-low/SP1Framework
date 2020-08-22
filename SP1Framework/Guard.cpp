@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Damage.h"
 //j
-Guard::Guard()
+/*Guard::Guard()
 {
 	this->setEnemy('G');
 	this->SetD(15);
@@ -36,4 +36,4 @@ void Guard::Drop(Console& g_Console)
 Guard::~Guard()
 {
 	
-}
+}*/

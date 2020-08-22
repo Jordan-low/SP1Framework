@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Poison.h"
 //j
-MutantWasp::MutantWasp()
+/*MutantWasp::MutantWasp()
 {
 	chance = 0;
 	this->setEnemy('W');
@@ -18,7 +18,7 @@ void MutantWasp::Attack()
 	this->beenHit(50, 5);
 }
 
-void MutantWasp::Debuff(Console& g_Console)
+/*void MutantWasp::Debuff(Console& g_Console)
 {
 	chance = (rand() % 100) + 1;
 	if (chance >= 0 && chance <= 20)
@@ -47,4 +47,4 @@ void MutantWasp::Damaged()
 MutantWasp::~MutantWasp()
 {
 
-}
+}*/

@@ -4,7 +4,7 @@
 /*
 Items::Items()
 {
-	Items = "";
+	items = ' ';
 }
 
 int Items::GetHeal()

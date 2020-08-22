@@ -12,8 +12,8 @@ private:
 
 public:
 	Poison();
-	void setPoison(Console& g_Console);
-	char getPoison();
+	//void setPoison(Console& g_Console);
+	//char getPoison();
 	~Poison();
 };
 

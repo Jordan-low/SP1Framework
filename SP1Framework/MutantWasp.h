@@ -8,10 +8,10 @@ private:
 	int chance;
 public:
 	MutantWasp();
-	void Attack();
-	void Debuff(Console& g_Console);
-	void Drop(Console& g_Console);
-	void Damaged();
+	//void Attack();
+	//void Debuff(Console& g_Console);
+	//void Drop(Console& g_Console);
+	//void Damaged();
 	~MutantWasp();
 };
 
