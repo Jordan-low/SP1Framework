@@ -11,6 +11,7 @@
 using namespace std;
 
 double  g_dElapsedTime;
+double g_dChildrenTime;
 double  g_dDeltaTime;
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -41,7 +42,7 @@ void init( void )
     g_dElapsedTime = 0.0;    
 
     // sets the initial state for the game
-    g_eGameState = S_GAME;
+    g_eGameState = S_Orphanage_Animation;
 
     g_sChar.m_cLocation.X = 22;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
@@ -233,6 +234,7 @@ void update(double dt)
     // get the delta time
     g_dElapsedTime += dt;
     g_dDeltaTime = dt;
+    g_dChildrenTime += dt;
 
     switch (g_eGameState)
     {
@@ -255,7 +257,7 @@ void update(double dt)
 
 void Update_Orphanage_Animation()
 {
-    if (g_dElapsedTime > 24)
+    if (g_dElapsedTime > 22)
     {
         g_eGameState = S_GAME;
     }
@@ -270,7 +272,7 @@ void Animation_Input()
 void Orphanage_Animation()
 {
     rMap.initialise(g_Console);
-    rMap.printmap(g_Console);
+    rMap.Border(g_Console);
     rMap.orphanage(g_Console);
     COORD c;
     renderCharacter();
@@ -325,7 +327,7 @@ void Orphanage_Animation()
                                             Cutscene.drawgrid(g_Console, 13, 7, '|');
                                             if (g_dElapsedTime > 4.2)
                                             {
-                                                g_Console.writeToBuffer(c, "Caretaker: Argh!!!", 0x1A, 10);
+                                                g_Console.writeToBuffer(c, "Caretaker: Argh!!!", 0x1A, 100);
                                                 if (g_dElapsedTime > 10)
                                                 {
                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
@@ -351,7 +353,8 @@ void Orphanage_Animation()
 
 void Update_Orphanage_Animation2()
 {
-    if (g_dElapsedTime > 39)
+   
+    if (g_dChildrenTime > 39)
     {
         g_eGameState = S_GAME;
     }
@@ -361,151 +364,170 @@ void Update_Orphanage_Animation2()
 
 void Orphanage_Children_Animation()
 {
-    rMap.printmap(g_Console);
+    rMap.initialise(g_Console);
+    rMap.Animation(g_Console, 11, 7, 'O');
+    rMap.Animation(g_Console, 9, 7, 'O');
+    rMap.Animation(g_Console, 13, 7, 'O');
+    rMap.Animation(g_Console, 11, 7, 'O');
+    int j = 6;
+    for (int i = 9; i < 14; i++)
+    {
+        rMap.Animation(g_Console, i, j, '-');
+    }
+    j = 8;
+    for (int i = 9; i < 14; i++)
+    {
+        rMap.Animation(g_Console, i, j, '-');
+    }
+    rMap.Animation(g_Console, 9, 7, '|');
+    rMap.Animation(g_Console, 13, 7, '|');
+
+    rMap.drawChildren(g_Console);
+    rMap.Border(g_Console);
     COORD c;
     renderCharacter();
     c.X = 5;
     c.Y = 26;
-
-    if (g_dElapsedTime > 1)
+    //g_dDeltaTime = 0;
+    if (g_dChildrenTime > 1)
     {
         g_Console.writeToBuffer(c, "Robert: !!!", 0x1A, 100);
-        if (g_dElapsedTime > 5)
+        if (g_dChildrenTime > 5)
         {
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
             g_Console.writeToBuffer(c, "Robert: Nooooo!!!!", 0x1A, 100);
-            if (g_dElapsedTime > 9)
+            if (g_dChildrenTime > 9)
             {
                 Cutscene.drawgrid(g_Console, 52, 16, '_');
-                if (g_dElapsedTime > 9.3)
+                if (g_dChildrenTime > 9.3)
                 {
                     Cutscene.drawgrid(g_Console, 53, 16, '_');
-                    if (g_dElapsedTime > 9.6)
+                    if (g_dChildrenTime > 9.6)
                     {
                         Cutscene.drawgrid(g_Console, 54, 16, '_');
-                        if (g_dElapsedTime > 9.9)
+                        if (g_dChildrenTime > 9.9)
                         {
                             Cutscene.drawgrid(g_Console, 55, 16, '_');
-                            if (g_dElapsedTime > 10.2)
+                            if (g_dChildrenTime > 10.2)
                             {
                                 int j = 16;
                                 for (int i = 56; i < 64; i++)
                                 {
                                     Cutscene.drawgrid(g_Console, i, j, '_');
                                 }
-                                if (g_dElapsedTime > 10.5)
+                                if (g_dChildrenTime > 10.5)
                                 {
                                     Cutscene.drawgrid(g_Console, 51, 17, '|');
                                     Cutscene.drawgrid(g_Console, 64, 17, '|');
-                                    if (g_dElapsedTime > 10.8)
+                                    if (g_dChildrenTime > 10.8)
                                     {
                                         Cutscene.drawgrid(g_Console, 50, 17, '_');
                                         Cutscene.drawgrid(g_Console, 65, 17, '_');
-                                        if (g_dElapsedTime > 11.1)
+                                        if (g_dChildrenTime > 11.1)
                                         {
                                             Cutscene.drawgrid(g_Console, 49, 18, '|');
                                             Cutscene.drawgrid(g_Console, 66, 18, '|');
-                                            if (g_dElapsedTime > 11.4)
+                                            if (g_dChildrenTime > 11.4)
                                             {
                                                 Cutscene.drawgrid(g_Console, 48, 18, '_');
                                                 Cutscene.drawgrid(g_Console, 67, 18, '_');
-                                                if (g_dElapsedTime > 11.7)
+                                                if (g_dChildrenTime > 11.7)
                                                 {
                                                     int i = 47;
-                                                    for (int j = 19; i < 25; j++)
+                                                    for (int j = 19; j < 23; j++)
                                                     {
                                                         Cutscene.drawgrid(g_Console, i, j, '|');
                                                     }
                                                     i = 68;
-                                                    for (j = 19; i < 25; j++)
+                                                    for (j = 19; j < 23; j++)
                                                     {
                                                         Cutscene.drawgrid(g_Console, i, j, '|');
                                                     }
-                                                    if (g_dElapsedTime > 12)
+                                                    if (g_dChildrenTime > 12)
                                                     {
                                                         Cutscene.cleargrid(g_Console, 56, 22);
                                                         Cutscene.cleargrid(g_Console, 64, 20);
                                                         Cutscene.cleargrid(g_Console, 62, 17);
                                                         Cutscene.cleargrid(g_Console, 54, 17);
                                                         Cutscene.cleargrid(g_Console, 50, 20);
-                                                        Cutscene.drawgrid(g_Console, 56, 23, 'O');
+                                                        Cutscene.drawgrid(g_Console, 56, 22, 'O');
                                                         Cutscene.drawgrid(g_Console, 64, 21, 'O');
                                                         Cutscene.drawgrid(g_Console, 62, 18, 'O');
                                                         Cutscene.drawgrid(g_Console, 54, 18, 'O');
                                                         Cutscene.drawgrid(g_Console, 50, 21, 'O');
-                                                        if (g_dElapsedTime > 12.3)
+                                                        if (g_dChildrenTime > 12.3)
                                                         {
-                                                            Cutscene.cleargrid(g_Console, 56, 23);
+                                                            Cutscene.cleargrid(g_Console, 56, 22);
                                                             Cutscene.cleargrid(g_Console, 64, 21);
                                                             Cutscene.cleargrid(g_Console, 62, 18);
                                                             Cutscene.cleargrid(g_Console, 54, 18);
                                                             Cutscene.cleargrid(g_Console, 50, 21);
-                                                            Cutscene.drawgrid(g_Console, 56, 24, 'O');
+                                                            Cutscene.drawgrid(g_Console, 56, 22, 'O');
                                                             Cutscene.drawgrid(g_Console, 64, 22, 'O');
                                                             Cutscene.drawgrid(g_Console, 62, 19, 'O');
                                                             Cutscene.drawgrid(g_Console, 54, 19, 'O');
                                                             Cutscene.drawgrid(g_Console, 50, 22, 'O');
-                                                            if (g_dElapsedTime > 12.6)
+                                                            if (g_dChildrenTime > 12.6)
                                                             {
-                                                                Cutscene.cleargrid(g_Console, 56, 24);
+                                                                Cutscene.cleargrid(g_Console, 56, 22);
                                                                 Cutscene.cleargrid(g_Console, 64, 22);
                                                                 Cutscene.cleargrid(g_Console, 62, 19);
                                                                 Cutscene.cleargrid(g_Console, 54, 19);
                                                                 Cutscene.cleargrid(g_Console, 50, 22);
-                                                                Cutscene.drawgrid(g_Console, 64, 23, 'O');
+                                                                Cutscene.drawgrid(g_Console, 64, 22, 'O');
                                                                 Cutscene.drawgrid(g_Console, 62, 20, 'O');
                                                                 Cutscene.drawgrid(g_Console, 54, 20, 'O');
-                                                                Cutscene.drawgrid(g_Console, 50, 23, 'O');
-                                                                if (g_dElapsedTime > 12.9)
+                                                                Cutscene.drawgrid(g_Console, 50, 22, 'O');
+                                                                if (g_dChildrenTime > 12.9)
                                                                 {
-                                                                    Cutscene.cleargrid(g_Console, 64, 23);
+                                                                    Cutscene.cleargrid(g_Console, 64, 22);
                                                                     Cutscene.cleargrid(g_Console, 62, 20);
                                                                     Cutscene.cleargrid(g_Console, 54, 20);
-                                                                    Cutscene.cleargrid(g_Console, 50, 23);
-                                                                    Cutscene.drawgrid(g_Console, 64, 24, 'O');
+                                                                    Cutscene.cleargrid(g_Console, 50, 22);
+                                                                    Cutscene.drawgrid(g_Console, 64, 22, 'O');
                                                                     Cutscene.drawgrid(g_Console, 62, 21, 'O');
                                                                     Cutscene.drawgrid(g_Console, 54, 21, 'O');
-                                                                    Cutscene.drawgrid(g_Console, 50, 24, 'O');
-                                                                    if (g_dElapsedTime > 13.2)
+                                                                    Cutscene.drawgrid(g_Console, 50, 22, 'O');
+                                                                    if (g_dChildrenTime > 13.2)
                                                                     {
-                                                                        Cutscene.cleargrid(g_Console, 64, 24);
+                                                                        Cutscene.cleargrid(g_Console, 64, 22);
                                                                         Cutscene.cleargrid(g_Console, 62, 21);
                                                                         Cutscene.cleargrid(g_Console, 54, 21);
-                                                                        Cutscene.cleargrid(g_Console, 50, 24);
+                                                                        Cutscene.cleargrid(g_Console, 50, 22);
                                                                         Cutscene.drawgrid(g_Console, 62, 22, 'O');
                                                                         Cutscene.drawgrid(g_Console, 54, 22, 'O');
-                                                                        if (g_dElapsedTime > 13.5)
+                                                                        if (g_dChildrenTime > 13.5)
                                                                         {
                                                                             Cutscene.cleargrid(g_Console, 62, 22);
                                                                             Cutscene.cleargrid(g_Console, 54, 22);
-                                                                            Cutscene.drawgrid(g_Console, 62, 23, 'O');
-                                                                            Cutscene.drawgrid(g_Console, 54, 23, 'O');
-                                                                            if (g_dElapsedTime > 13.8)
+                                                                            Cutscene.drawgrid(g_Console, 62, 22, 'O');
+                                                                            Cutscene.drawgrid(g_Console, 54, 22, 'O');
+                                                                            if (g_dChildrenTime > 13.8)
                                                                             {
-                                                                                Cutscene.cleargrid(g_Console, 62, 23);
-                                                                                Cutscene.cleargrid(g_Console, 54, 23);
-                                                                                Cutscene.drawgrid(g_Console, 62, 24, 'O');
-                                                                                Cutscene.drawgrid(g_Console, 54, 24, 'O');
-                                                                                if (g_dElapsedTime > 14.1)
+                                                                                Cutscene.cleargrid(g_Console, 62, 22);
+                                                                                Cutscene.cleargrid(g_Console, 54, 22);
+                                                                                Cutscene.drawgrid(g_Console, 62, 22, 'O');
+                                                                                Cutscene.drawgrid(g_Console, 54, 22, 'O');
+                                                                                if (g_dChildrenTime > 14.1)
                                                                                 {
-                                                                                    Cutscene.cleargrid(g_Console, 62, 24);
-                                                                                    Cutscene.cleargrid(g_Console, 54, 24);
-                                                                                    if (g_dElapsedTime > 14.4)
+                                                                                    Cutscene.cleargrid(g_Console, 62, 22);
+                                                                                    Cutscene.cleargrid(g_Console, 54, 22);
+                                                                                    if (g_dChildrenTime > 14.4)
                                                                                     {
                                                                                         g_Console.writeToBuffer(c, "Robert: ...", 0x1A, 100);
-                                                                                        if (g_dElapsedTime > 15)
+                                                                                        if (g_dChildrenTime > 15)
                                                                                         {
                                                                                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
                                                                                             g_Console.writeToBuffer(c, "Caretaker: Robert... Leave the Orphanage now!..", 0x1A, 100);
-                                                                                            if (g_dElapsedTime > 21)
+                                                                                            if (g_dChildrenTime > 21)
                                                                                             {
                                                                                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
                                                                                                 g_Console.writeToBuffer(c, "Caretaker: It's better that at least one of us comes out alive..", 0x1A, 100);
-                                                                                                if (g_dElapsedTime > 27)
+                                                                                                if (g_dChildrenTime > 27)
                                                                                                 {
                                                                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
                                                                                                     g_Console.writeToBuffer(c, "Caretaker: Take the backpack and leave... Don't look back Robert..", 0x1A, 100);
-                                                                                                    if (g_dElapsedTime > 33)
+                                                                                                    if (g_dChildrenTime > 33)
                                                                                                     {
                                                                                                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
                                                                                                         g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x1A, 100);
@@ -779,12 +801,10 @@ void renderGame()
                                         
     rMap.Border(g_Console);
     
-    if (g_sChar.fireOut == false)
-    {
-        rMap.orphanage(g_Console);
-    }
+    rMap.orphanage(g_Console);
+  
 
-    rMap.drawChildren(g_Console);
+    //rMap.drawChildren(g_Console);
 
     renderCharacter();
     renderEnemy();
@@ -845,18 +865,20 @@ void renderMap_Path_Area()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0x0C;
+    WORD charColor = 0x04;
     if (g_sChar.m_bActive)
     {
-        charColor = 0x0A;
+        charColor = 0x0F;
     }
     if (g_sChar.fire)
     {
-        charColor = 0xDD;
+        charColor = 0x1A;
         rMap.Animation(g_Console, 40, 7, ' ');
         if (g_skKeyEvent[K_RETURN].keyDown && ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y + 1][g_sChar.m_cLocation.X] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y - 1][g_sChar.m_cLocation.X] == '_')))
         {
             g_sChar.fireOut = true;
+            g_dChildrenTime = 0.0;
+            g_eGameState = S_Orphanage_Children_Animation;
             
         }
     }
