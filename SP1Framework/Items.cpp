@@ -1,6 +1,7 @@
 #include "Items.h"
 #include "Player.h"
 //j
+/*
 Items::Items()
 {
 	items = ' ';
@@ -31,5 +32,4 @@ void Items::Heal(int h)
 	char* Healing[5] = { "Raw Meat", "Burger", "Taco", "Bread", "Cake" };
 	Healing[0] = HP + 
 }
-
-void 
+*/

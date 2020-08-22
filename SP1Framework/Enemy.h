@@ -22,4 +22,3 @@ public:
 	void Drop(Console& g_Console);
 	void Poison(Console& g_Console);
 };
-
