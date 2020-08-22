@@ -354,6 +354,29 @@ void Map::orphanage(Console& g_Console)
 	c.X = 77;
 	c.Y = 8;
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+
+	
+}
+
+void Map::drawChildren(Console& g_Console)
+{
+	COORD c;
+	//children
+	c.X = 56;
+	c.Y = 22;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	c.X = 64;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	c.X = 62;
+	c.Y = 17;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	c.X = 54;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	c.X = 50;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+
 }
 
 

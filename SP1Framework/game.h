@@ -90,5 +90,7 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mous
 
 void Update_Orphanage_Animation();
 void Orphanage_Animation();
+void Update_Orphanage_Animation2();
+void Orphanage_Children_Animation();
 
 #endif //_GAME_H
