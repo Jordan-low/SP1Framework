@@ -207,7 +207,6 @@ void Cutscenes::CrowdMoveRightclear(Console& g_Console)
 
 void Cutscenes::medical_breakIn(Console& g_Console)
 {
-	medical_fight(g_Console);
 	COORD c;
 	insideMedicalFacility(g_Console);
 	//ref
@@ -362,6 +361,8 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 void Cutscenes::medical_breakIn_part2(Console& g_Console)
 {
 	COORD c;
+	drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
+	drawgrid(g_Console, 34, 13, 'E'); //Ell
 	//after battle, more bees break in
 	drawgrid(g_Console, 32, 11, 'O');
 	drawgrid(g_Console, 32, 12, 'O');
@@ -392,8 +393,8 @@ void Cutscenes::medical_fight(Console& g_Console)
 {
 	COORD c;
 	//ref
-	//drawgrid(g_Console, 2, 12, 'H'); //Robert (Hero)
-	//drawgrid(g_Console, 2, 13, 'E'); //Ell
+	drawgrid(g_Console, 2, 12, 'H'); //Robert (Hero)
+	drawgrid(g_Console, 2, 13, 'E'); //Ell
 	drawgrid(g_Console, 35, 12, 'O'); //Patient 1
 	drawgrid(g_Console, 36, 9, 'O'); //Patient 2
 	drawgrid(g_Console, 36, 16, 'O'); //Patient 3
