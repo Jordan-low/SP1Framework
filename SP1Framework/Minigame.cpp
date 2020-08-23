@@ -3,6 +3,7 @@
 
 void Minigame::wire_game(Console& g_Console)
 {
+	//length is same, colour and thickness different
 	//A2
 	//B1
 	//C3
