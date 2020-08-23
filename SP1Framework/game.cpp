@@ -27,6 +27,7 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 SGameChar   g_sChar;
 SGameChar   g_sEnemy;
+SGameChar   Pig;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -42,12 +43,14 @@ Cutscenes Cutscene;
 // Input    : void
 // Output   : void
 //--------------------------------------------------------------
-void init( void )
+void init(void)
 {
+    Pig.SetD(5);
+    g_sChar.counter = false;
     g_sChar.fire = false;
     g_sChar.fireOut = false;
     // Set precision for floating point output
-    g_dElapsedTime = 0.0;    
+    g_dElapsedTime = 0.0;
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
@@ -75,7 +78,7 @@ void init( void )
 // Input    : Void
 // Output   : void
 //--------------------------------------------------------------
-void shutdown( void )
+void shutdown(void)
 {
     // Reset to white text on black background
     colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
@@ -96,12 +99,12 @@ void shutdown( void )
 // Input    : Void
 // Output   : void
 //--------------------------------------------------------------
-void getInput( void )
+void getInput(void)
 {
     // resets all the keyboard events
     memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
     // then call the console to detect input from user
-    g_Console.readConsoleInput();    
+    g_Console.readConsoleInput();
 }
 
 //--------------------------------------------------------------
@@ -118,9 +121,11 @@ void getInput( void )
 // Output   : void
 //--------------------------------------------------------------
 void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
-{    
+{
     switch (g_eGameState)
     {
+    case S_MENU_UI: gameplayKBHandler(keyboardEvent);
+        break;
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
@@ -153,9 +158,11 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
 // Output   : void
 //--------------------------------------------------------------
 void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
-{    
+{
     switch (g_eGameState)
     {
+    case S_MENU_UI: gameplayMouseHandler(mouseEvent);
+        break;
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
@@ -188,11 +195,11 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
     case VK_UP: key = K_UP; break;
     case VK_DOWN: key = K_DOWN; break;
-    case VK_LEFT: key = K_LEFT; break; 
-    case VK_RIGHT: key = K_RIGHT; break; 
+    case VK_LEFT: key = K_LEFT; break;
+    case VK_RIGHT: key = K_RIGHT; break;
     case VK_SPACE: key = K_SPACE; break;
     case VK_RETURN: key = K_RETURN; break;
-    case VK_ESCAPE: key = K_ESCAPE; break; 
+    case VK_ESCAPE: key = K_ESCAPE; break;
     }
     // a key pressed event would be one with bKeyDown == true
     // a key released event would be one with bKeyDown == false
@@ -202,7 +209,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
         g_skKeyEvent[key].keyDown = keyboardEvent.bKeyDown;
         g_skKeyEvent[key].keyReleased = !keyboardEvent.bKeyDown;
-    }    
+    }
 }
 
 //--------------------------------------------------------------
@@ -254,37 +261,42 @@ void update(double dt)
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
-            break;
-        case S_Orphanage_Animation: Update_Orphanage_Animation();
-            break;
-        case S_Orphanage_Children_Animation: Update_Orphanage_Animation2();
-            break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
-            break;
-        case S_Townsquare: updateGame(); // gameplay logic when we are in the game
-            break;
-        case S_Protest_Area: updateGame(); // gameplay logic when we are in the game
-            break;
-        case S_Protest_Area_Animation: Update_Protest_Area();
-            break;
-        case S_Path_Area: updateGame(); // gameplay logic when we are in the game
-            break;
-        case S_Path_Area_Animation: Update_Path_Area();
-            break;
-        case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
-            break;
-        case S_IAF3_Animation: Update_IAF3();
-            break;
-        case s_Medical_Facility_Animation: Update_Medical_Facility_Animation();
-            break;
-        case S_Dungeon_Stealth3_Animation: Update_Dungeon_Stealth3_Animation();
-            break;
-        case S_Boss_Room_Animation: Update_Boss_Room_Animation();
-            break;
+    case S_MENU_UI: Update_Menu();
+        break;
+    case S_SPLASHSCREEN: splashScreenWait(); // game logic for the splash screen
+        break;
+    case S_Orphanage_Animation: Update_Orphanage_Animation();
+        break;
+    case S_Orphanage_Children_Animation: Update_Orphanage_Animation2();
+        break;
+    case S_GAME: updateGame(); // gameplay logic when we are in the game
+        break;
+    case S_Townsquare: updateGame(); // gameplay logic when we are in the game
+        break;
+    case S_Protest_Area: updateGame(); // gameplay logic when we are in the game
+        break;
+    case S_Protest_Area_Animation: Update_Protest_Area();
+        break;
+    case S_Path_Area: updateGame(); // gameplay logic when we are in the game
+        break;
+    case S_Path_Area_Animation: Update_Path_Area();
+        break;
+    case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
+        break;
+    case S_IAF3_Animation: Update_IAF3();
+        break;
+    case s_Medical_Facility_Animation: Update_Medical_Facility_Animation();
+        break;
+    case S_Dungeon_Stealth3_Animation: Update_Dungeon_Stealth3_Animation();
+        break;
+    case S_Boss_Room_Animation: Update_Boss_Room_Animation();
+        break;
     }
 }
-
+void Update_Menu()
+{
+    g_sChar.counter = true;
+}
 void Update_Orphanage_Animation()
 {
     if (g_dElapsedTime > 22)
@@ -307,7 +319,7 @@ void Orphanage_Animation()
     {
         Cutscene.cleargrid(g_Console, 11, 5);
         Cutscene.drawgrid(g_Console, 11, 10, '|');
-         if (g_dElapsedTime > 1.6)
+        if (g_dElapsedTime > 1.6)
         {
             Cutscene.cleargrid(g_Console, 11, 10);
             Cutscene.drawgrid(g_Console, 11, 4, '|');
@@ -351,15 +363,15 @@ void Orphanage_Animation()
                                             Cutscene.drawgrid(g_Console, 13, 7, '|');
                                             if (g_dElapsedTime > 4.2)
                                             {
-                                                g_Console.writeToBuffer(c, "Caretaker: Argh!!!", 0x1A, 100);
+                                                g_Console.writeToBuffer(c, "Caretaker: Argh!!!", 0x0F, 100);
                                                 if (g_dElapsedTime > 10)
                                                 {
-                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                    g_Console.writeToBuffer(c, "Caretaker: Save the children!! Take the fire extinguisher...", 0x1A, 100);
+                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                    g_Console.writeToBuffer(c, "Caretaker: Save the children!! Take the fire extinguisher...", 0x0F, 100);
                                                     if (g_dElapsedTime > 16)
                                                     {
-                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                        g_Console.writeToBuffer(c,"Objective: Take the fire extinguisher and put out the fire!", 0x1A, 100);
+                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                        g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!", 0x0F, 100);
                                                     }
                                                 }
                                             }
@@ -377,7 +389,7 @@ void Orphanage_Animation()
 
 void Update_Orphanage_Animation2()
 {
-   
+
     if (g_dChildrenTime > 39)
     {
         g_eGameState = S_GAME;
@@ -413,11 +425,11 @@ void Orphanage_Children_Animation()
     //g_dDeltaTime = 0;
     if (g_dChildrenTime > 1)
     {
-        g_Console.writeToBuffer(c, "Robert: !!!", 0x1A, 100);
+        g_Console.writeToBuffer(c, "Robert: !!!", 0x0F, 100);
         if (g_dChildrenTime > 5)
         {
-            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-            g_Console.writeToBuffer(c, "Robert: Nooooo!!!!", 0x1A, 100);
+            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+            g_Console.writeToBuffer(c, "Robert: Nooooo!!!!", 0x0F, 100);
             if (g_dChildrenTime > 9)
             {
                 Cutscene.drawgrid(g_Console, 52, 16, '_');
@@ -536,23 +548,23 @@ void Orphanage_Children_Animation()
                                                                                     Cutscene.cleargrid(g_Console, 54, 22);
                                                                                     if (g_dChildrenTime > 14.4)
                                                                                     {
-                                                                                        g_Console.writeToBuffer(c, "Robert: ...", 0x1A, 100);
+                                                                                        g_Console.writeToBuffer(c, "Robert: ...", 0x0F, 100);
                                                                                         if (g_dChildrenTime > 15)
                                                                                         {
-                                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                            g_Console.writeToBuffer(c, "Caretaker: Robert... Leave the Orphanage now!..", 0x1A, 100);
+                                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                            g_Console.writeToBuffer(c, "Caretaker: Robert... Leave the Orphanage now!..", 0x0F, 100);
                                                                                             if (g_dChildrenTime > 21)
                                                                                             {
-                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                g_Console.writeToBuffer(c, "Caretaker: It's better that at least one of us comes out alive..", 0x1A, 100);
+                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                g_Console.writeToBuffer(c, "Caretaker: It's better that at least one of us comes out alive..", 0x0F, 100);
                                                                                                 if (g_dChildrenTime > 27)
                                                                                                 {
-                                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                    g_Console.writeToBuffer(c, "Caretaker: Take the backpack and leave... Don't look back Robert..", 0x1A, 100);
+                                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                    g_Console.writeToBuffer(c, "Caretaker: Take the backpack and leave... Don't look back Robert..", 0x0F, 100);
                                                                                                     if (g_dChildrenTime > 33)
                                                                                                     {
-                                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                        g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x1A, 100);
+                                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                        g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x0F, 100);
                                                                                                     }
                                                                                                 }
                                                                                             }
@@ -669,58 +681,58 @@ void Protest_Area_Animation()
                                                                     if (g_dProtestTime > 5.1)
                                                                     {
                                                                         //g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                        g_Console.writeToBuffer(c, "Raymond: Hello citizens of Harmonis,", 0x1A, 100);
+                                                                        g_Console.writeToBuffer(c, "Raymond: Hello citizens of Harmonis,", 0x0F, 100);
                                                                         if (g_dProtestTime > 11.0)
                                                                         {
-                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                            g_Console.writeToBuffer(c, "Raymond:  I know you guys are very worried about this situation.", 0x1A, 100);
+                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                            g_Console.writeToBuffer(c, "Raymond:  I know you guys are very worried about this situation.", 0x0F, 100);
                                                                             if (g_dProtestTime > 17.0)
                                                                             {
-                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                g_Console.writeToBuffer(c, "Raymond: We are trying our best to keep them contained. Please stay calm.", 0x1A, 100);
+                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                g_Console.writeToBuffer(c, "Raymond: We are trying our best to keep them contained. Please stay calm.", 0x0F, 100);
                                                                                 if (g_dProtestTime > 23.0)
                                                                                 {
-                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                    g_Console.writeToBuffer(c, "Raymond: But in the mean time you can have tacos from Bob on the left,", 0x1A, 100);
+                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                    g_Console.writeToBuffer(c, "Raymond: But in the mean time you can have tacos from Bob on the left,", 0x0F, 100);
                                                                                     if (g_dProtestTime > 29.0)
                                                                                     {
-                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                        g_Console.writeToBuffer(c, "Raymond: So just please calm down while we figure out what is going on.", 0x1A, 100);
+                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                        g_Console.writeToBuffer(c, "Raymond: So just please calm down while we figure out what is going on.", 0x0F, 100);
                                                                                         if (g_dProtestTime > 35.0)
                                                                                         {
-                                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                            g_Console.writeToBuffer(c, "Raymond: If you do not like tacos, ", 0x1A, 100);
-                                                                                            g_Console.writeToBuffer(d, "         you can get burgers from Tim on the right.", 0x1A, 100);
+                                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                            g_Console.writeToBuffer(c, "Raymond: If you do not like tacos, ", 0x0F, 100);
+                                                                                            g_Console.writeToBuffer(d, "         you can get burgers from Tim on the right.", 0x0F, 100);
                                                                                             if (g_dProtestTime > 41.0)
                                                                                             {
-                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                g_Console.writeToBuffer(d, "                                                                                                     ", 0x1A, 100);
-                                                                                                g_Console.writeToBuffer(c, "Raymond: Do not worry, we have plenty enough for everybody.", 0x1A, 100);
+                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
+                                                                                                g_Console.writeToBuffer(c, "Raymond: Do not worry, we have plenty enough for everybody.", 0x0F, 100);
                                                                                                 if (g_dProtestTime > 47.0)
                                                                                                 {
-                                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                    g_Console.writeToBuffer(c,  "Raymond: And that concludes my speech.", 0x1A, 100);
+                                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                    g_Console.writeToBuffer(c, "Raymond: And that concludes my speech.", 0x0F, 100);
                                                                                                     if (g_dProtestTime > 53.0)
                                                                                                     {
-                                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                        g_Console.writeToBuffer(c,  "Raymond: Ketchup and other condiments can be found in your fridges,", 0x1A, 100);
+                                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                        g_Console.writeToBuffer(c, "Raymond: Ketchup and other condiments can be found in your fridges,", 0x0F, 100);
                                                                                                         if (g_dProtestTime > 59.0)
                                                                                                         {
-                                                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                            g_Console.writeToBuffer(c, "Raymond: free from yours truly,", 0x1A, 100);
+                                                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                            g_Console.writeToBuffer(c, "Raymond: free from yours truly,", 0x0F, 100);
                                                                                                             if (g_dProtestTime > 62.0)
                                                                                                             {
-                                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                                g_Console.writeToBuffer(c, "Raymond: who asked secret FBI agents", 0x1A, 100);
-                                                                                                                g_Console.writeToBuffer(d, "         to break in to specially place these packets.", 0x1A, 100);
+                                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                                g_Console.writeToBuffer(c, "Raymond: who asked secret FBI agents", 0x0F, 100);
+                                                                                                                g_Console.writeToBuffer(d, "         to break in to specially place these packets.", 0x0F, 100);
                                                                                                                 if (g_dProtestTime > 68.0)
                                                                                                                 {
-                                                                                                                    g_Console.writeToBuffer(d, "                                                                                                     ", 0x1A, 100);
-                                                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                                    g_Console.writeToBuffer(c, "Raymond: Truly wonderful I know I know, so long citizens of Harmonis.", 0x1A, 100);
+                                                                                                                    g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
+                                                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                                    g_Console.writeToBuffer(c, "Raymond: Truly wonderful I know I know, so long citizens of Harmonis.", 0x0F, 100);
                                                                                                                     if (g_dProtestTime > 74.0)
                                                                                                                     {
-                                                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                                                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                                                                                         Cutscene.drawgrid(g_Console, 39, 8, '_');
                                                                                                                         Cutscene.drawgrid(g_Console, 42, 8, 'O');
                                                                                                                         if (g_dProtestTime > 74.3)
@@ -930,18 +942,18 @@ void Dungeon_Cell_Animation()
         Cutscene.drawgrid(g_Console, 4, 3, 'O');
         if (g_dDungeonTime > 0.6)
         {
-            g_Console.writeToBuffer(c, "Robert: ...Where am I?", 0x1A, 100);
+            g_Console.writeToBuffer(c, "Robert: ...Where am I?", 0x0F, 100);
             if (g_dDungeonTime > 3.6)
             {
                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                g_Console.writeToBuffer(c, "Robert: Wasn't I at the medical facility?", 0x1A, 100);
+                g_Console.writeToBuffer(c, "Robert: Wasn't I at the medical facility?", 0x0F, 100);
                 if (g_dDungeonTime > 7.6)
                 {
                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
                     Cutscene.drawgrid(g_Console, 41, 12, '!');
                     if (g_dDungeonTime > 8.0)
                     {
-                        g_Console.writeToBuffer(c, "Robert: ! Is that Ell?", 0x1A, 100);
+                        g_Console.writeToBuffer(c, "Robert: ! Is that Ell?", 0x0F, 100);
                         if (g_dDungeonTime > 8.3)
                         {
                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
@@ -1010,34 +1022,34 @@ void Dungeon_Cell_Animation()
                                                                             Cutscene.drawgrid(g_Console, 30, 9, 'O');
                                                                             if (g_dDungeonTime > 12.2)
                                                                             {
-                                                                                g_Console.writeToBuffer(c, "Ell: You're finally awake!!", 0x1A, 100);
+                                                                                g_Console.writeToBuffer(c, "Ell: You're finally awake!!", 0x0F, 100);
                                                                                 if (g_dDungeonTime > 15.2)
                                                                                 {
                                                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                    g_Console.writeToBuffer(c, "Ell: Take this piece of paper.", 0x1A, 100);
-                                                                                    g_Console.writeToBuffer(d, "     Read it and everything will become clear.", 0x1A, 100);
+                                                                                    g_Console.writeToBuffer(c, "Ell: Take this piece of paper.", 0x0F, 100);
+                                                                                    g_Console.writeToBuffer(d, "     Read it and everything will become clear.", 0x0F, 100);
                                                                                     if (g_dDungeonTime > 21.2)
                                                                                     {
                                                                                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
                                                                                         g_Console.writeToBuffer(d, "                                                                                                     ", 0x1A, 100);
-                                                                                        g_Console.writeToBuffer(c, "Ell: I need to leave now or they'll get suspicious.", 0x1A, 100);
+                                                                                        g_Console.writeToBuffer(c, "Ell: I need to leave now or they'll get suspicious.", 0x0F, 100);
                                                                                         if (g_dDungeonTime > 24.2)
                                                                                         {
                                                                                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                            g_Console.writeToBuffer(c, "Ell: I'll meet you after you pass the maze.", 0x1A, 100);
-                                                                                            g_Console.writeToBuffer(d, "     Make sure to sneak past the guards.", 0x1A, 100);
+                                                                                            g_Console.writeToBuffer(c, "Ell: I'll meet you after you pass the maze.", 0x0F, 100);
+                                                                                            g_Console.writeToBuffer(d, "     Make sure to sneak past the guards.", 0x0F, 100);
                                                                                             if (g_dDungeonTime > 27.2)
                                                                                             {
                                                                                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
                                                                                                 g_Console.writeToBuffer(d, "                                                                                                     ", 0x1A, 100);
-                                                                                                g_Console.writeToBuffer(c, "Ell: I'll meet you after you pass the maze.", 0x1A, 100);
+                                                                                                g_Console.writeToBuffer(c, "Ell: I'll meet you after you pass the maze.", 0x0F, 100);
                                                                                                 if (g_dDungeonTime > 30.2)
                                                                                                 {
-                                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                    g_Console.writeToBuffer(c, "Ell: Best of luck Robert!", 0x1A, 100);
+                                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                    g_Console.writeToBuffer(c, "Ell: Best of luck Robert!", 0x0F, 100);
                                                                                                     if (g_dDungeonTime > 33.2)
                                                                                                     {
-                                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                                                                         Cutscene.cleargrid(g_Console, 30, 7);
                                                                                                         Cutscene.drawgrid(g_Console, 30, 5, 'O');
 
@@ -1084,7 +1096,7 @@ void Dungeon_Cell_Animation()
                                                                                                                                                 if (g_dDungeonTime > 36.5)
                                                                                                                                                 {
                                                                                                                                                     Cutscene.cleargrid(g_Console, 4, 3);
-                                                                                                                                                    g_Console.writeToBuffer(c, "Objective: Escape the cell.", 0x1A, 100);
+                                                                                                                                                    g_Console.writeToBuffer(c, "Objective: Escape the cell.", 0x0F, 100);
                                                                                                                                                 }
                                                                                                                                             }
                                                                                                                                         }
@@ -1231,55 +1243,55 @@ void IAF3_Animation()
     if (g_dIAF3Time > 0.3)
     {
         //g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-        g_Console.writeToBuffer(c, "???: I owe my life to you stranger.", 0x1A, 100);
+        g_Console.writeToBuffer(c, "???: I owe my life to you stranger.", 0x0F, 100);
         if (g_dIAF3Time > 3.6)
         {
-            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-            g_Console.writeToBuffer(c, "???: Tell me what's your name!", 0x1A, 100);
+            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+            g_Console.writeToBuffer(c, "???: Tell me what's your name!", 0x0F, 100);
             if (g_dIAF3Time > 6.6)
             {
-                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                g_Console.writeToBuffer(c, "???: Ah so your name's Robert eh? Not bad for a name.", 0x1A, 100);
+                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                g_Console.writeToBuffer(c, "???: Ah so your name's Robert eh? Not bad for a name.", 0x0F, 100);
                 if (g_dIAF3Time > 11.6)
                 {
-                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                    g_Console.writeToBuffer(c, "???: My name is Ell,", 0x1A, 100);
-                    g_Console.writeToBuffer(d, "     the President threw me here to escape from those mutants..", 0x1A, 100);
+                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                    g_Console.writeToBuffer(c, "???: My name is Ell,", 0x0F, 100);
+                    g_Console.writeToBuffer(d, "     the President threw me here to escape from those mutants..", 0x0F, 100);
                     if (g_dIAF3Time > 18.6)
                     {
-                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                        g_Console.writeToBuffer(d, "                                                                                                     ", 0x1A, 100);
-                        g_Console.writeToBuffer(c, "Ell: What's that? You're heading to confront him?", 0x1A, 100);
+                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                        g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
+                        g_Console.writeToBuffer(c, "Ell: What's that? You're heading to confront him?", 0x0F, 100);
                         if (g_dIAF3Time > 22.6)
                         {
-                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                            g_Console.writeToBuffer(c, "Ell: ...", 0x1A, 100);
+                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                            g_Console.writeToBuffer(c, "Ell: ...", 0x0F, 100);
                             if (g_dIAF3Time > 23.6)
                             {
-                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                g_Console.writeToBuffer(c, "Ell: ..I see...", 0x1A, 100);
+                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                g_Console.writeToBuffer(c, "Ell: ..I see...", 0x0F, 100);
                                 if (g_dIAF3Time > 25.6)
                                 {
-                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                    g_Console.writeToBuffer(c, "Ell: Then let me join you on your journey!", 0x1A, 100);
+                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                    g_Console.writeToBuffer(c, "Ell: Then let me join you on your journey!", 0x0F, 100);
                                     if (g_dIAF3Time > 31.6)
                                     {
-                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                        g_Console.writeToBuffer(c, "Ell: I will be of use to you,", 0x1A, 100);
-                                        g_Console.writeToBuffer(d, "     since I have been trained in the police department.", 0x1A, 100);
+                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                        g_Console.writeToBuffer(c, "Ell: I will be of use to you,", 0x0F, 100);
+                                        g_Console.writeToBuffer(d, "     since I have been trained in the police department.", 0x0F, 100);
                                         if (g_dIAF3Time > 36.6)
                                         {
-                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                            g_Console.writeToBuffer(d, "                                                                                                     ", 0x1A, 100);
-                                            g_Console.writeToBuffer(c,  "Ell joined your party!", 0x1A, 100);
+                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                            g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
+                                            g_Console.writeToBuffer(c, "Ell joined your party!", 0x0F, 100);
                                             if (g_dIAF3Time > 39.6)
                                             {
-                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                g_Console.writeToBuffer(c, "Ell: Then let's get going, we've no time to waste!", 0x1A, 100);
+                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                g_Console.writeToBuffer(c, "Ell: Then let's get going, we've no time to waste!", 0x0F, 100);
                                                 if (g_dIAF3Time > 44.6)
                                                 {
-                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                    g_Console.writeToBuffer(c, "Medical Facilty route is now available.", 0x1A, 100);
+                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                    g_Console.writeToBuffer(c, "Medical Facilty route is now available.", 0x0F, 100);
                                                 }
                                             }
                                         }
@@ -1316,7 +1328,7 @@ void Medical_Facility_Animation()
     Cutscene.drawgrid(g_Console, 34, 13, 'O'); //Ell
 
     //Breaking in
-    Cutscene.drawgrid(g_Console, 2, 12, 'E'); 
+    Cutscene.drawgrid(g_Console, 2, 12, 'E');
     Cutscene.drawgrid(g_Console, 2, 13, 'E');
 
     if (g_dMedicalTime > 0.6)
@@ -1825,7 +1837,7 @@ void Boss_Room_Animation()
             }
         }
     }
-}   
+}
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
@@ -1834,14 +1846,14 @@ void splashScreenWait()    // waits for time to pass in splash screen
 }
 
 void updateGame()       // gameplay logic
-{   
+{
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                      // sound can be played here too.
 }
 
 void moveCharacter()
-{    
+{
     // Updating the location of the character based on the key release
     // providing a beep sound whenver we shift the character
     if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 1)
@@ -1952,7 +1964,7 @@ void moveCharacter()
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;        
+        g_sChar.m_bActive = !g_sChar.m_bActive;
     }
 }
 
@@ -1960,7 +1972,7 @@ void processUserInput()
 {
     // quits the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyDown)
-        g_bQuitGame = true;    
+        g_bQuitGame = true;
 }
 
 void renderMyGame()
@@ -1981,9 +1993,16 @@ void renderMyGame()
 //--------------------------------------------------------------
 void render()
 {
-    clearScreen();      // clears the current screen and draw from scratch 
+    clearScreen();
+    if (g_sChar.counter == true)
+    {
+        clearMenu();
+    }
+    // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
+    case S_MENU_UI: render_Main_Menu();
+        break;
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
     case S_Orphanage_Animation: Orphanage_Animation();
@@ -2025,6 +2044,11 @@ void clearScreen()
     g_Console.clearBuffer(0x1F);
 }
 
+void clearMenu()
+{
+    g_Console.clearBuffer(0x00);
+}
+
 void renderToScreen()
 {
     // Writes the buffer to the console, hence you will see what you have written
@@ -2055,35 +2079,35 @@ void renderGame()
     rMap.initialise(g_Console);
     rMap.printmap(g_Console);
     rMap.orphanage(g_Console);
-    
+
     renderCharacter();
     //Cutscene.orphanageCaretakerCutscene(g_Console);
     */
     rMap.initialise(g_Console);
 
-    rMap.Animation(g_Console, 11, 7, 'O');                   
+    rMap.Animation(g_Console, 11, 7, 'O');
     rMap.Animation(g_Console, 9, 7, 'O');
     rMap.Animation(g_Console, 13, 7, 'O');
     rMap.Animation(g_Console, 11, 7, 'O');
     int j = 6;
     for (int i = 9; i < 14; i++)
     {
-    rMap.Animation(g_Console, i, j, '-');
-    }                          
+        rMap.Animation(g_Console, i, j, '-');
+    }
     j = 8;
     for (int i = 9; i < 14; i++)
     {
         rMap.Animation(g_Console, i, j, '-');
-    }                            
+    }
     rMap.Animation(g_Console, 9, 7, '|');
     rMap.Animation(g_Console, 13, 7, '|');
 
     rMap.Animation(g_Console, 40, 7, 'F');
-                                        
+
     rMap.Border(g_Console);
-    
+
     rMap.orphanage(g_Console);
-  
+
 
     //rMap.drawChildren(g_Console);
 
@@ -2162,7 +2186,7 @@ void renderCharacter()
             g_sChar.fireOut = true;
             g_dChildrenTime = 0.0;
             g_eGameState = S_Orphanage_Children_Animation;
-            
+
         }
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
@@ -2195,7 +2219,7 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    COORD startPos = {50, 2};
+    COORD startPos = { 50, 2 };
     std::ostringstream ss;
     std::string key;
     for (int i = 0; i < K_COUNT; ++i)
@@ -2253,7 +2277,7 @@ void renderInputEvents()
     case DOUBLE_CLICK:
         ss.str("Double Clicked");
         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-        break;        
+        break;
     case MOUSE_WHEELED:
         if (g_mouseEvent.buttonState & 0xFF000000)
             ss.str("Mouse wheeled down");
@@ -2261,7 +2285,1310 @@ void renderInputEvents()
             ss.str("Mouse wheeled up");
         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
         break;
-    default:        
+    default:
         break;
-    }   
+    }
+}
+void render_Main_Menu()
+{
+    COORD c; COORD d;
+
+    //Print R (ROBERT)
+    int i;
+    int j;
+    j = 1;
+    for (int i = 7; i < 15; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 6;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 9;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 10;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 14;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 5;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 13;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+
+    j = 3;
+    for (int i = 9; i < 13; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 4;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 9;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+
+    c.X = 3;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 6;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 7;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 10;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 2;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 3;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 5;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 8;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 9;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 10;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 11;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    //Print O
+    j = 1;
+    for (int i = 18; i < 25; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    /*for (int j = 2; j < 7; j++)
+    {
+        for (int i = 17; i > 12; i--)
+        {
+            Grid[i][j] = '/';
+            break;
+        }
+    }
+
+    for (int j = 2; j < 7; j++)
+    {
+        for (int i = 24; i > 19; i--)
+        {
+            Grid[i][j] = '/';
+            break;
+        }
+    }*/
+    c.X = 17;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 20;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 24;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 16;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 19;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 20;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 23;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 15;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 18;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 19;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 22;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 14;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 17;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 18;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 21;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 13;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 16;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 17;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 20;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 6;
+    for (int i = 14; i < 20; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    //Print B
+    j = 1;
+    for (int i = 28; i < 35; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 27;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 30;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 34;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 26;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 29;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 30;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 31;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 32;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 33;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 25;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 28;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 32;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 24;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 27;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 28;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 31;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 6;
+    for (int i = 24; i < 30; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 23;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 30;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print E
+    j = 1;
+    for (int i = 37; i < 45; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 36;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 2;
+    for (int i = 39; i < 44; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 44;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 35;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 38;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 3;
+    for (int i = 39; i < 43; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 34;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 4;
+    for (int i = 37; i < 42; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 42;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 33;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 36;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 5;
+    for (int i = 37; i < 41; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 32;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 6;
+    for (int i = 33; i < 40; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 40;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print R
+    j = 1;
+    for (int i = 47; i < 55; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 46;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 49;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 50;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 54;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 45;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 53;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 3;
+    for (int i = 49; i < 53; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 44;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 49;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 43;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 46;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 47;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 50;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 42;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 43;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 44;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 45;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 48;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 49;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 50;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 51;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    //Print T
+    j = 1;
+    for (int i = 57; i < 65; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 56;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 64;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 2;
+    for (int i = 57; i < 64; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 59;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ');
+
+    c.X = 60;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ');
+
+    c.X = 56;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 58;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 60;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 57;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 59;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 56;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 58;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 55;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 58;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 55;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 57;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    // '
+    c.X = 68;
+    c.Y = 0;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 67;
+    c.Y = 1;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 66;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 67;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 69;
+    c.Y = 1;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 68;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    // S
+    j = 1;
+    for (int i = 71; i < 79; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 70;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 78;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 2;
+    for (int i = 72; i < 78; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 69;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 71;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 3;
+    for (int i = 72; i < 77; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 70;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 78;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 4;
+    for (int i = 69; i < 74; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 68;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 76;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 75;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 74;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 5;
+    for (int i = 67; i < 73; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 70;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 78;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 6;
+    for (int i = 67; i < 74; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 66;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 73;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print R (RESCUE)
+    j = 8;
+    for (int i = 7; i < 15; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 6;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 9;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 10;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 14;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 5;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 13;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 10;
+    for (int i = 9; i < 13; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 4;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 9;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 3;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 6;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 7;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 10;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 2;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 3;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 4;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 5;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 8;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 9;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 10;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 11;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    //Print E
+    j = 8;
+    for (int i = 18; i < 26; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 17;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 9;
+    for (int i = 20; i < 25; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 25;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 16;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 19;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 10;
+    for (int i = 20; i < 24; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 15;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 11;
+    for (int i = 18; i < 23; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 23;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 14;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 17;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 18; i < 22; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 14;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 13;
+    for (int i = 14; i < 22; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 21;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 13;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print S
+    j = 8;
+    for (int i = 29; i < 37; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 28;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 36;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 9;
+    for (int i = 30; i < 36; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 27;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 29;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    j = 10;
+    for (int i = 30; i < 35; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 26;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 34;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 11;
+    for (int i = 27; i < 32; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 31;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 33;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 25; i < 31; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 24;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 13;
+    for (int i = 25; i < 32; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 32;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print C
+    j = 8;
+    for (int i = 40; i < 48; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 39;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 47;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 9;
+    for (int i = 41; i < 47; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 38;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 40;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 37;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 39;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 36;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 38;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 39; i < 44; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 35;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 43;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 13;
+    for (int i = 36; i < 43; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    //Print U
+    c.X = 51;
+    c.Y = 8;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 52;
+    c.Y = 8;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 57;
+    c.Y = 8;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 58;
+    c.Y = 8;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 50;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 52;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 56;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 58;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 49;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 51;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 55;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 57;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 48;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 50;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 54;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 56;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 47;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 49;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 53;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 55;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 50; i < 53; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    j = 13;
+    for (int i = 46; i < 54; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 46;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 54;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print E
+    j = 8;
+    for (int i = 62; i < 70; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 61;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 9;
+    for (int i = 64; i < 69; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 69;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 60;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 63;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 10;
+    for (int i = 64; i < 68; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 59;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 11;
+
+    for (int i = 62; i < 67; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 67;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 58;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 61;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 62; i < 66; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 57;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 13;
+    for (int i = 58; i < 65; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 65;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 35;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O', 0x0B);
+
+    c.X = 37;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'S', 0x0B);
+
+    c.X = 38;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T', 0x0B);
+
+    c.X = 39;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'A', 0x0B);
+
+    c.X = 40;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'R', 0x0B);
+
+    c.X = 41;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T', 0x0B);
+
+    j = 19;
+    for (int i = 34; i < 43; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '=', 0x0B);
+    }
+
+    c.X = 35;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O', 0x07);
+
+    c.X = 37;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'Q', 0x07);
+
+    c.X = 38;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'U', 0x07);
+
+    c.X = 39;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'I', 0x07);
+
+    c.X = 40;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T', 0x07);
+
+    j = 22;
+    for (int i = 34; i < 43; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '=', 0x0F);
+    }
+
+    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
+    {
+        g_eGameState = S_Orphanage_Animation;
+    }
+
+    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 21)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
+    {
+        g_bQuitGame = true;
+    }
 }
