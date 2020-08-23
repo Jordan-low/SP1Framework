@@ -49,6 +49,9 @@ enum EGAMESTATES
     S_Dungeon_Cell_Animation,
     S_Path_Area_Animation,
     S_IAF3_Animation,
+    s_Medical_Facility_Animation,
+    S_Dungeon_Stealth3_Animation,
+    S_Boss_Room_Animation,
     S_COUNT
 };
 
@@ -104,5 +107,11 @@ void Update_Path_Area();
 void Path_Area_Animation();
 void Update_IAF3();
 void IAF3_Animation();
+void Update_Medical_Facility_Animation();
+void Medical_Facility_Animation();
+void Update_Dungeon_Stealth3_Animation();
+void Dungeon_Stealth3_Animation();
+void Update_Boss_Room_Animation();
+void Boss_Room_Animation();
 
 #endif //_GAME_H
