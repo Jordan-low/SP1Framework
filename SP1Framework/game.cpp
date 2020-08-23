@@ -36,13 +36,14 @@ Cutscenes Cutscene;
 //--------------------------------------------------------------
 void init( void )
 {
+    g_sChar.counter = false;
     g_sChar.fire = false;
     g_sChar.fireOut = false;
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
     // sets the initial state for the game
-    g_eGameState = S_Orphanage_Animation;
+    g_eGameState = S_MENU_UI;
 
     g_sChar.m_cLocation.X = 22;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
@@ -124,6 +125,7 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_Orphanage_Animation: gameplayKBHandler(keyboardEvent);
         break;
+    case S_MENU_UI: gameplayKBHandler(keyboardEvent);
     }
 }
 
@@ -159,6 +161,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
         break;
     case S_Orphanage_Animation: gameplayMouseHandler(mouseEvent);
         break;
+    case S_MENU_UI: gameplayMouseHandler(mouseEvent);
     }
 }
 
@@ -252,9 +255,14 @@ void update(double dt)
             break;
         case S_Path_Area: updateGame(); // gameplay logic when we are in the game
             break;
+        case S_MENU_UI: Update_Menu();
     }
 }
+void Update_Menu()
+{
+    g_sChar.counter = true;
 
+}
 void Update_Orphanage_Animation()
 {
     if (g_dElapsedTime > 22)
@@ -713,7 +721,12 @@ void renderMyGame()
 //--------------------------------------------------------------
 void render()
 {
-    clearScreen();      // clears the current screen and draw from scratch 
+    clearScreen();
+    if (g_sChar.counter == true)
+    {
+        clearMenu();
+    }
+         // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
     case S_SPLASHSCREEN: renderSplashScreen();
@@ -730,6 +743,7 @@ void render()
         break;
     case S_Path_Area: renderMap_Path_Area();
         break;
+    case S_MENU_UI: render_Main_Menu();
 
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
@@ -743,7 +757,10 @@ void clearScreen()
     // Clears the buffer with this colour attribute
     g_Console.clearBuffer(0x1F);
 }
-
+void clearMenu()
+{
+    g_Console.clearBuffer(0x00);
+}
 void renderToScreen()
 {
     // Writes the buffer to the console, hence you will see what you have written
@@ -912,7 +929,7 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    COORD startPos = {50, 2};
+    COORD startPos = { 50, 2 };
     std::ostringstream ss;
     std::string key;
     for (int i = 0; i < K_COUNT; ++i)
@@ -970,7 +987,7 @@ void renderInputEvents()
     case DOUBLE_CLICK:
         ss.str("Double Clicked");
         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
-        break;        
+        break;
     case MOUSE_WHEELED:
         if (g_mouseEvent.buttonState & 0xFF000000)
             ss.str("Mouse wheeled down");
@@ -978,11 +995,1311 @@ void renderInputEvents()
             ss.str("Mouse wheeled up");
         g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
         break;
-    default:        
+    default:
         break;
     }
-    
 }
+void render_Main_Menu()
+{
+    COORD c; COORD d;
+    //Print R (ROBERT)
+    int i;
+    int j;
+    j = 1;
+    for (int i = 7; i < 15; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 6;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 9;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    
+    c.X = 10;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    
+    c.X = 14;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+    
+    c.X = 5;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 13;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
 
 
+    j = 3;
+    for (int i = 9; i < 13; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_'); 
+    }
 
+    c.X = 4;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 9;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+
+    c.X = 3;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 6;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 7;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+    
+    c.X = 10;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+    
+    c.X = 2;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+    
+    c.X = 3;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 5;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 8;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+    
+    c.X = 9;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 10;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 11;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    //Print O
+    j = 1;
+    for (int i = 18; i < 25; i++)
+    {
+        c.X = i;
+        c.Y = j; 
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_'); 
+    }
+
+    /*for (int j = 2; j < 7; j++)
+    {
+        for (int i = 17; i > 12; i--)
+        {
+            Grid[i][j] = '/';
+            break;
+        }
+    }
+
+    for (int j = 2; j < 7; j++)
+    {
+        for (int i = 24; i > 19; i--)
+        {
+            Grid[i][j] = '/';
+            break;
+        }
+    }*/
+    c.X = 17;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 20;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 24;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 16;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 19;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 20;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 23;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 15;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 18;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 19;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 22;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 14;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 17;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 18;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 21;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 13;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 16;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 17;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 20;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 6;
+    for (int i = 14; i < 20; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    //Print B
+    j = 1;
+    for (int i = 28; i < 35; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 27;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 30;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 34;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 26;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 29;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 30;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 31;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 32;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 33;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 25;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 28;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 32;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 24;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 27;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 28;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 31;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 6;
+    for (int i = 24; i < 30; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 23;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 30;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print E
+    j = 1;
+    for (int i = 37; i < 45; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 36;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/'); 
+
+    j = 2;
+    for (int i = 39; i < 44; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 44;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 35;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 38;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 3;
+    for (int i = 39; i < 43; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 34;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 4;
+    for (int i = 37; i < 42; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 42;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 33;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 36;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 5;
+    for (int i = 37; i < 41; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 32;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 6;
+    for (int i = 33; i < 40; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 40;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print R
+    j = 1;
+    for (int i = 47; i < 55; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 46;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 49;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 50;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 54;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 45;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 53;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 3;
+    for (int i = 49; i < 53; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 44;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 49;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 43;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 46;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 47;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 50;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 42;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 43;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 44;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 45;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 48;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 49;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 50;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 51;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    //Print T
+    j = 1;
+    for (int i = 57; i < 65; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 56;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 64;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 2;
+    for (int i = 57; i < 64; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 59;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ');
+
+    c.X = 60;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ');
+
+    c.X = 56;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 58;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 60;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 57;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 59;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 56;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 58;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 55;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 58;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 55;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 57;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    // '
+    c.X = 68;
+    c.Y = 0;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 67;
+    c.Y = 1;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 66;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 67;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 69;
+    c.Y = 1;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 68;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    // S
+    j = 1;
+    for (int i = 71; i < 79; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 70;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 78;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 2;
+    for (int i = 72; i < 78; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 69;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 71;
+    c.Y = 3;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 3;
+    for (int i = 72; i < 77; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 70;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 78;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 4;
+    for (int i = 69; i < 74; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 68;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 76;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 75;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 74;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 5;
+    for (int i = 67; i < 73; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 70;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 78;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 6;
+    for (int i = 67; i < 74; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 66;
+    c.Y = 6;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+    
+    c.X = 73;
+    c.Y = 5;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print R (RESCUE)
+    j = 8;
+    for (int i = 7; i < 15; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 6;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 9;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 10;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 14;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 5;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 13;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 10;
+    for (int i = 9; i < 13; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 4;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 9;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 3;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 6;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 7;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 10;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 2;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 3;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 4;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 5;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 8;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    c.X = 9;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 10;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 11;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\');
+
+    //Print E
+    j = 8;
+    for (int i = 18; i < 26; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 17;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 9;
+    for (int i = 20; i < 25; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 25;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 16;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 19;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 10;
+    for (int i = 20; i < 24; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 15;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 11;
+    for (int i = 18; i < 23; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 23;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 14;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 17;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 18; i < 22; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 14;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 13;
+    for (int i = 14; i < 22; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 21;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 13;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print S
+    j = 8;
+    for (int i = 29; i < 37; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 28;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 36;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+    
+    j = 9;
+    for (int i = 30; i < 36; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_'); 
+    }
+
+    c.X = 27;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 29;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    j = 10;
+    for (int i = 30; i < 35; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 26;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 34;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 11;
+    for (int i = 27; i < 32; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    
+    c.X = 31;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/'); 
+    
+    c.X = 33;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 25; i < 31; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 24;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 13;
+    for (int i = 25; i < 32; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+   
+    c.X = 32;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print C
+    j = 8;
+    for (int i = 40; i < 48; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 39;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 47;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 9;
+    for (int i = 41; i < 47; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 38;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 40;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 37;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 39;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 36;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 38;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 39; i < 44; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 35;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 43;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 13;
+    for (int i = 36; i < 43; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    //Print U
+    c.X = 51;
+    c.Y = 8;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 52;
+    c.Y = 8;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 57;
+    c.Y = 8;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 58;
+    c.Y = 8;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+
+    c.X = 50;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 52;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 56;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 58;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 49;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 51;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 55;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 57;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 48;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 50;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 54;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 56;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 47;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 49;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 53;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 55;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 50; i < 53; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    j = 13;
+    for (int i = 46; i < 54; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 46;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 54;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    //Print E
+    j = 8;
+    for (int i = 62; i < 70; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 61;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 9;
+    for (int i = 64; i < 69; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 69;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 60;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 63;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 10;
+    for (int i = 64; i < 68; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 59;
+    c.Y = 11;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 11;
+
+    for (int i = 62; i < 67; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 67;
+    c.Y = j;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 58;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 61;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 12;
+    for (int i = 62; i < 66; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+
+    c.X = 57;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    j = 13;
+    for (int i = 58; i < 65; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    }
+    c.X = 65;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
+
+    c.X = 35;
+    c.Y = 17;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O');
+
+    c.X = 37;
+    c.Y = 17;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'S');
+
+    c.X = 38;
+    c.Y = 17;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T');
+
+    c.X = 39;
+    c.Y = 17;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'A');
+
+    c.X = 40;
+    c.Y = 17;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'R');
+
+    c.X = 41;
+    c.Y = 17;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T');
+
+    j = 18;
+    for (int i = 34; i < 43; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '=');
+    }
+
+    c.X = 35;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O');
+
+    c.X = 37;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'Q');
+
+    c.X = 38;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'U');
+
+    c.X = 39;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'I');
+
+    c.X = 40;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T');
+
+    j = 21;
+    for (int i = 34; i < 43; i++)
+    {
+        c.X = i;
+        c.Y = j;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '=');
+    }
+
+    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 17)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
+    {
+        g_eGameState = S_Orphanage_Animation;
+    }
+
+    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 20)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
+    {
+        g_bQuitGame = true;
+    }
+    // do stars(blocks) in the sky that randomly moves around.
+    // make enemies work and randomly move around.
+}

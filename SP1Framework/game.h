@@ -38,6 +38,7 @@ enum EKEYS
 // Enumeration for the different screen states
 enum EGAMESTATES
 {
+    S_MENU_UI,
     S_SPLASHSCREEN,
     S_Orphanage_Animation,
     S_GAME,
@@ -56,6 +57,8 @@ struct SGameChar
     bool  m_bActive;
     bool fire;
     bool fireOut;
+    bool counter;
+
 };
 void init        ( void );      // initialize your variables, allocate memory, etc
 void getInput    ( void );      // get input from player
@@ -63,7 +66,8 @@ void update      ( double dt ); // update the game and the state of the game
 void render      ( void );      // renders the current state of the game to the console
 void shutdown    ( void );      // do clean up, free memory
 
-
+void Update_Menu();
+void clearMenu();
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame();          // gameplay logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
@@ -92,5 +96,7 @@ void Update_Orphanage_Animation();
 void Orphanage_Animation();
 void Update_Orphanage_Animation2();
 void Orphanage_Children_Animation();
+void render_Main_Menu();
+
 
 #endif //_GAME_H
