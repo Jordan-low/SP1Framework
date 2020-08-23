@@ -1,6 +1,4 @@
 #include "Enemy.h"
-#include "Player.h"
-#include "Poison.h"
 #include "Entity.h"//j
 
 Enemy::Enemy()

@@ -84,6 +84,15 @@
     <ClCompile Include="Dialogue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Minigame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Andrew%27s Inventory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Andrew%27s Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h">
@@ -144,6 +153,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dialogue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Andrew%27s Inventory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Andrew%27s Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

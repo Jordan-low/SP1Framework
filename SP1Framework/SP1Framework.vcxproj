@@ -78,6 +78,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Andrew%27s Inventory.cpp" />
+    <ClCompile Include="Andrew%27s Item.cpp" />
     <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="Cutscenes.cpp" />
     <ClCompile Include="Damage.cpp" />
@@ -92,6 +94,7 @@
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Minigame.cpp" />
     <ClCompile Include="MutantWasp.cpp" />
     <ClCompile Include="Pig.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -101,6 +104,8 @@
     <ClCompile Include="TutEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Andrew%27s Inventory.h" />
+    <ClInclude Include="Andrew%27s Item.h" />
     <ClInclude Include="Consumable.h" />
     <ClInclude Include="Cutscenes.h" />
     <ClInclude Include="Damage.h" />
@@ -115,6 +120,7 @@
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Minigame.h" />
     <ClInclude Include="MutantWasp.h" />
     <ClInclude Include="Pig.h" />
     <ClInclude Include="Player.h" />
