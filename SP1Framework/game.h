@@ -1,10 +1,10 @@
 #ifndef _GAME_H
 #define _GAME_H
-//j
-#include "Framework\timer.h"
-
+#include "Entity.h"
 extern CStopWatch g_swTimer;
 extern bool g_bQuitGame;
+//j
+#include "Framework\timer.h"
 // struct to store keyboard events
 // a small subset of KEY_EVENT_RECORD
 struct SKeyEvent
@@ -18,7 +18,7 @@ struct SKeyEvent
 struct SMouseEvent
 {
     COORD mousePosition;
-    DWORD buttonState;
+    DWORD buttonState
     DWORD eventFlags;
 };
 
@@ -38,6 +38,7 @@ enum EKEYS
 // Enumeration for the different screen states
 enum EGAMESTATES
 {
+    S_MENU_UI,
     S_SPLASHSCREEN,
     S_Orphanage_Animation,
     S_GAME,
@@ -53,21 +54,23 @@ enum EGAMESTATES
 };
 
 // struct for the game character
-struct SGameChar
+struct SGameChar : public Entity
 {
     COORD m_cLocation;
     COORD e_cLocation;
     bool  m_bActive;
     bool fire;
     bool fireOut;
+    bool counter;
 };
-void init        ( void );      // initialize your variables, allocate memory, etc
-void getInput    ( void );      // get input from player
-void update      ( double dt ); // update the game and the state of the game
-void render      ( void );      // renders the current state of the game to the console
-void shutdown    ( void );      // do clean up, free memory
+void init(void);      // initialize your variables, allocate memory, etc
+void getInput(void);      // get input from player
+void update(double dt); // update the game and the state of the game
+void render(void);      // renders the current state of the game to the console
+void shutdown(void);      // do clean up, free memory
 
-
+void Update_Menu();
+void clearMenu();
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame();          // gameplay logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
@@ -104,5 +107,6 @@ void Update_Path_Area();
 void Path_Area_Animation();
 void Update_IAF3();
 void IAF3_Animation();
+void render_Main_Menu();
 
 #endif //_GAME_H
