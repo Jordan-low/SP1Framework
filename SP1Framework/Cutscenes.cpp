@@ -361,6 +361,7 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	//cleargrid(34, 14);
 }
 //medical_fight cutscene was added to medical_breakIn cutscene
+
 void Cutscenes::medical_fight(Console& g_Console)
 {
 	COORD c;
