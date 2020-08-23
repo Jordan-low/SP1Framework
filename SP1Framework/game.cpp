@@ -41,7 +41,7 @@ Cutscenes Cutscene;
 //--------------------------------------------------------------
 void init( void )
 {
-    Pig.SetD();
+    Pig.SetD(5);
     g_sChar.counter = false;
     g_sChar.fire = false;
     g_sChar.fireOut = false;
