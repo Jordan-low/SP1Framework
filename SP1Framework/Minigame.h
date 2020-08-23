@@ -3,6 +3,6 @@
 class Minigame :
     public Cutscenes
 {
-    void wire_game();
+    void wire_game(Console& g_Console);
 };
 
