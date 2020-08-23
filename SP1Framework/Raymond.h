@@ -4,11 +4,11 @@
 #include "Windows.h"
 #include "Framework/console.h"
 //j
-class Raymond : public Enemy
+/*class Raymond : public Enemy
 {
-	/*Raymond();
+	Raymond();
 	void Attack();
 	void Talk(Console& g_Console);
 	void Damaged();
-	~Raymond();*/
-};
+	~Raymond();
+};*/

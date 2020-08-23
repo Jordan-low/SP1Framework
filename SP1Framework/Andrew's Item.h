@@ -3,12 +3,12 @@
 class Item
 {
 private:
-	char* items[8];
+	char* items[9];
 public:
 	Item();
 	void setItem(const char i);
 	char getItem();
-	char Healing();
-	char Defence();
+	void Healing();
+	void Defence();
 	~Item();
 };

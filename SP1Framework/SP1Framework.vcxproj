@@ -78,6 +78,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Andrew%27s Inventory.cpp" />
+    <ClCompile Include="Andrew%27s Item.cpp" />
     <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="Cutscenes.cpp" />
     <ClCompile Include="Damage.cpp" />
@@ -102,6 +104,8 @@
     <ClCompile Include="TutEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Andrew%27s Inventory.h" />
+    <ClInclude Include="Andrew%27s Item.h" />
     <ClInclude Include="Consumable.h" />
     <ClInclude Include="Cutscenes.h" />
     <ClInclude Include="Damage.h" />

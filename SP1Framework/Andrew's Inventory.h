@@ -1,12 +1,11 @@
 #pragma once
 #include "Andrew's Item.h"
-#include <iostream>
 #include "string"
 
 class Inventory : public Item
 {
 private:
-	Item** items;
+	const char** items;
 	int Quantity;
 	std::string name;
 	bool pickup;
@@ -17,5 +16,6 @@ public:
 	std::string getNameID();
 	int getQuantity();
 	void updateInventory();
+	void checkInventory();
 	~Inventory();
 };
