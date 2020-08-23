@@ -6,9 +6,9 @@
 //j
 class Raymond : public Enemy
 {
-	Raymond();
-	/*void Attack();
+	/*Raymond();
+	void Attack();
 	void Talk(Console& g_Console);
-	void Damaged();*/
-	~Raymond();
+	void Damaged();
+	~Raymond();*/
 };

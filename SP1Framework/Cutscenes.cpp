@@ -89,6 +89,121 @@ void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
 	//system("pause");
 }
 
+void Cutscenes::CrowdStandstill(Console& g_Console)
+{
+	for (j = 11; j < 22; (j = j + 2))
+	{
+		for (i = 19; i < 60; (i = i + 2))
+		{
+			drawgrid(g_Console, i, j, 'O');
+		}
+	}
+	//even rows
+	for (j = 12; j < 21; (j = j + 2))
+	{
+		for (i = 18; i < 61; (i = i + 2))
+		{
+			drawgrid(g_Console, i, j, 'O');
+		}
+	}
+}
+
+void Cutscenes::CrowdStandstillclear(Console& g_Console)
+{
+	for (j = 11; j < 22; (j = j + 2))
+	{
+		for (i = 19; i < 60; (i = i + 2))
+		{
+			cleargrid(g_Console, i, j);
+		}
+	}
+	//even rows
+	for (j = 12; j < 21; (j = j + 2))
+	{
+		for (i = 18; i < 61; (i = i + 2))
+		{
+			cleargrid(g_Console, i, j);
+		}
+	}
+}
+
+void Cutscenes::CrowdMoveLeft(Console& g_Console)
+{
+	for (j = 11; j < 22; (j = j + 2))
+	{
+		for (i = 18; i < 59; (i = i + 2))
+		{
+			drawgrid(g_Console, i, j, 'O');
+		}
+	}
+	//even rows
+	for (j = 12; j < 21; (j = j + 2))
+	{
+		for (i = 19; i < 62; (i = i + 2))
+		{
+			drawgrid(g_Console, i, j, 'O');
+		}
+	}
+}
+
+void Cutscenes::CrowdMoveLeftclear(Console& g_Console)
+{
+	for (j = 11; j < 22; (j = j + 2))
+	{
+		for (i = 18; i < 59; (i = i + 2))
+		{
+			cleargrid(g_Console, i, j);
+		}
+	}
+	//even rows
+	for (j = 12; j < 21; (j = j + 2))
+	{
+		for (i = 19; i < 62; (i = i + 2))
+		{
+			cleargrid(g_Console, i, j);
+		}
+	}
+}
+
+void Cutscenes::CrowdMoveRight(Console& g_Console)
+{
+	for (j = 11; j < 22; (j = j + 2))
+	{
+		for (i = 20; i < 61; (i = i + 2))
+		{
+			drawgrid(g_Console, i, j, 'O');
+		}
+	}
+	//even rows
+	for (j = 12; j < 21; (j = j + 2))
+	{
+		for (i = 17; i < 60; (i = i + 2))
+		{
+			drawgrid(g_Console, i, j, 'O');
+		}
+	}
+}
+
+void Cutscenes::CrowdMoveRightclear(Console& g_Console)
+{
+	for (j = 11; j < 22; (j = j + 2))
+	{
+		for (i = 20; i < 61; (i = i + 2))
+		{
+			cleargrid(g_Console, i, j);
+		}
+	}
+	//even rows
+	for (j = 12; j < 21; (j = j + 2))
+	{
+		for (i = 17; i < 60; (i = i + 2))
+		{
+			cleargrid(g_Console, i, j);
+		}
+	}
+}
+
+
 
 void Cutscenes::medical_breakIn(Console& g_Console)
 {

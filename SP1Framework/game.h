@@ -38,7 +38,6 @@ enum EKEYS
 // Enumeration for the different screen states
 enum EGAMESTATES
 {
-    S_MENU_UI,
     S_SPLASHSCREEN,
     S_Orphanage_Animation,
     S_GAME,
@@ -46,6 +45,10 @@ enum EGAMESTATES
     S_Protest_Area,
     S_Path_Area,
     S_Orphanage_Children_Animation,
+    S_Protest_Area_Animation,
+    S_Dungeon_Cell_Animation,
+    S_Path_Area_Animation,
+    S_IAF3_Animation,
     S_COUNT
 };
 
@@ -57,8 +60,6 @@ struct SGameChar
     bool  m_bActive;
     bool fire;
     bool fireOut;
-    bool counter;
-
 };
 void init        ( void );      // initialize your variables, allocate memory, etc
 void getInput    ( void );      // get input from player
@@ -66,8 +67,7 @@ void update      ( double dt ); // update the game and the state of the game
 void render      ( void );      // renders the current state of the game to the console
 void shutdown    ( void );      // do clean up, free memory
 
-void Update_Menu();
-void clearMenu();
+
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame();          // gameplay logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
@@ -96,7 +96,13 @@ void Update_Orphanage_Animation();
 void Orphanage_Animation();
 void Update_Orphanage_Animation2();
 void Orphanage_Children_Animation();
-void render_Main_Menu();
-
+void Update_Protest_Area();
+void Protest_Area_Animation();
+void Update_Dungeon_Cell();
+void Dungeon_Cell_Animation();
+void Update_Path_Area();
+void Path_Area_Animation();
+void Update_IAF3();
+void IAF3_Animation();
 
 #endif //_GAME_H

@@ -5,7 +5,7 @@ Ally::Ally()
 	name = ' ';
 }
 
-void Ally::setAlly(float x, float y, float health, float dmg, const char n)
+void Ally::setAlly(int x, int y, int health, int dmg, const char n)
 {
 	this->SetD(x);
 	this->SetH(50);
