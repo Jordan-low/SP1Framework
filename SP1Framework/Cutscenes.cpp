@@ -211,8 +211,8 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	COORD c;
 	insideMedicalFacility(g_Console);
 	//ref
-	//drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
-	//drawgrid(g_Console, 34, 13, 'E'); //Ell
+	drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
+	drawgrid(g_Console, 34, 13, 'E'); //Ell
 
 	//breaking in
 	drawgrid(g_Console, 2, 12, 'O');
@@ -321,44 +321,71 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	cleargrid(g_Console, 25, 8);
 	cleargrid(g_Console, 25, 17);
 
-	drawgrid(g_Console, 26, 9, 'O');
+	drawgrid(g_Console, 27, 9, 'O');
 	drawgrid(g_Console, 26, 16, 'O');
 	animate(g_Console);
-	cleargrid(g_Console, 26, 9);
+	cleargrid(g_Console, 27, 9);
 	cleargrid(g_Console, 26, 16);
 
-	drawgrid(g_Console, 27, 10, 'O');
-	drawgrid(g_Console, 27, 15, 'O');
+	drawgrid(g_Console, 29, 10, 'O');
+	drawgrid(g_Console, 29, 15, 'O');
 	animate(g_Console);
-	cleargrid(g_Console, 27, 10);
-	cleargrid(g_Console, 27, 15);
+	cleargrid(g_Console, 29, 10);
+	cleargrid(g_Console, 29, 15);
 
-	drawgrid(g_Console, 28, 11, 'O');
-	drawgrid(g_Console, 28, 14, 'O');
+	drawgrid(g_Console, 31, 11, 'O');
+	drawgrid(g_Console, 31, 14, 'O');
+	animate(g_Console);
+	cleargrid(g_Console, 31, 11);
+	cleargrid(g_Console, 31, 14);
+
+	drawgrid(g_Console, 33, 12, 'O');
+	drawgrid(g_Console, 33, 13, 'O');
+	g_Console.writeToBuffer(c, "Robert: We have no choice but to fight them and buy some time for the patients to escape.");
+	nextdialogue(g_Console);
+
+	//battle screen
+
+	//assume patients ran during battle
+	cleargrid(g_Console, 33, 10); //bee 1
+	cleargrid(g_Console, 33, 14); //bee 2
+	cleargrid(g_Console, 35, 12); //1
+	drawgrid(g_Console, 36, 12, 'O'); //change position for 1
+	cleargrid(g_Console, 34, 11); //patient 2
+	cleargrid(g_Console, 34, 14); //3
+	cleargrid(g_Console, 35, 11); //4
+	cleargrid(g_Console, 35, 14); //5
+	cleargrid(g_Console, 35, 10); //6
+	cleargrid(g_Console, 35, 15); //7
+	cleargrid(g_Console, 35, 16); //Nurse
+}
+void Cutscenes::medical_breakIn_part2(Console& g_Console)
+{
+	COORD c;
+	//after battle, more bees break in
+	drawgrid(g_Console, 32, 11, 'O');
+	drawgrid(g_Console, 32, 12, 'O');
+	drawgrid(g_Console, 32, 13, 'O');
+	drawgrid(g_Console, 32, 14, 'O');
 	c.X = 5;
 	c.Y = 24;
-	g_Console.writeToBuffer(c, "Ell: Oh no! We're surrounded!");
+	g_Console.writeToBuffer(c, "Ell: There's more! They must have came while we were fighting!");
 	nextdialogue(g_Console);
-	cleargrid(g_Console, 28, 11);
-	cleargrid(g_Console, 28, 14);
 
-	//drawgrid(32, 9, 'O');
-	//drawgrid(32, 15, 'O');
-	//animate();
-	//cleargrid(32, 9);
-	//cleargrid(32, 15);
+	//patient 1 push robert
+	cleargrid(g_Console, 36, 12);
+	drawgrid(g_Console, 35, 12, 'O');
+	cleargrid(g_Console, 34, 12);
+	drawgrid(g_Console, 35, 12, 'H');
+	animate(g_Console);
 
-	//drawgrid(33, 10, 'O');
-	//drawgrid(33, 14, 'O');
-	//animate();
-	//cleargrid(33, 10);
-	//cleargrid(33, 14);
-
-	//drawgrid(34, 11, 'O');
-	//drawgrid(34, 14, 'O');
-	//nextdialogue("Ell : Oh no! We're surrounded!");
-	//cleargrid(34, 11);
-	//cleargrid(34, 14);
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Ell: Robert!");
+	nextdialogue(g_Console);
+	//battle screen
+	//assume patient 1 ran away
+	//duibuqimafannile
 }
 //medical_fight cutscene was added to medical_breakIn cutscene
 void Cutscenes::medical_fight(Console& g_Console)

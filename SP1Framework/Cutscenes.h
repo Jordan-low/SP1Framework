@@ -25,7 +25,8 @@ public:
     void CrowdMoveRight(Console& g_Console);
     void CrowdMoveRightclear(Console& g_Console);
 
-    void medical_breakIn(Console& g_Console);
+    void medical_breakIn(Console& g_Console); //2 bees break in
+    void medical_breakIn_part2(Console& g_Console); //more bees break in, robert pushed by patient 1
     void medical_fight(Console& g_Console);
     void stealth3Dialogue(Console& g_Console);
     void bossBattleDialogue(Console& g_Console);
