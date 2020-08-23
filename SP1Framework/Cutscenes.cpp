@@ -374,6 +374,7 @@ void Cutscenes::medical_fight(Console& g_Console)
 	drawgrid(g_Console, 46, 16, 'O'); //Patient 5
 	drawgrid(g_Console, 56, 9, 'O'); //Patient 6
 	drawgrid(g_Console, 56, 16, 'O'); //Patient 7
+	drawgrid(g_Console, 23, 13, 'O'); //nurse
 	animate(g_Console);
 
 	//Robert walks to a patient 1 and gives medicine
@@ -495,7 +496,22 @@ void Cutscenes::medical_fight(Console& g_Console)
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Patient 7: Thief! Give it back!");
+
+	//nurse tries to stop fight (35,16)
+	cleargrid(g_Console, 23, 13);
+	drawgrid(g_Console, 27, 14, 'O');
+	animate(g_Console);
+	cleargrid(g_Console, 27, 14);
+
+	drawgrid(g_Console, 31, 15, 'O');
+	animate(g_Console);
+	cleargrid(g_Console, 31, 15);
 	
+	drawgrid(g_Console, 35, 16, 'O');
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Nurse: Everyone, please calm down!");
+
 	//Oh no!! bees break in!! time to die
 }
 
