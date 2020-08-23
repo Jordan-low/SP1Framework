@@ -1,6 +1,5 @@
 #pragma once
 #include "Entity.h"
-#include "Player.h"
 #include "Framework/console.h"
 //j
 class Enemy : public Entity

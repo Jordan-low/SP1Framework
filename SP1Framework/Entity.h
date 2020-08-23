@@ -5,7 +5,7 @@
 //j
 using namespace std;
 
-class Entity
+class Entity : public Damage
 {
 protected:
 	int x, y, h, d;
