@@ -47,6 +47,7 @@ enum EGAMESTATES
     S_Townsquare,
     S_Protest_Area,
     S_Path_Area,
+    S_Dungeon_Stealth_1,
     S_Orphanage_Children_Animation,
     S_Protest_Area_Animation,
     S_Dungeon_Cell_Animation,
@@ -63,10 +64,16 @@ struct SGameChar : public Entity
 {
     COORD m_cLocation;
     COORD e_cLocation;
+    COORD f_cLocation;
+    COORD g_cLocation;
     bool  m_bActive;
     bool fire;
     bool fireOut;
     bool counter;
+    bool xLeft;
+    bool xRight;
+    bool xUp;
+    bool xDown;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
@@ -87,6 +94,7 @@ void renderGame();          // renders the game stuff
 void renderMap_Townsquare();
 void renderMap_Protest_Area();
 void renderMap_Path_Area();
+void render_DS1();
 void renderCharacter();     // renders the character into the buffer
 void renderEnemy();
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
