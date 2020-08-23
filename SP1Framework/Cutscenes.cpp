@@ -207,11 +207,12 @@ void Cutscenes::CrowdMoveRightclear(Console& g_Console)
 
 void Cutscenes::medical_breakIn(Console& g_Console)
 {
+	medical_fight(g_Console);
 	COORD c;
 	insideMedicalFacility(g_Console);
-
-	drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
-	drawgrid(g_Console, 34, 13, 'E'); //Ell
+	//ref
+	//drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
+	//drawgrid(g_Console, 34, 13, 'E'); //Ell
 
 	//breaking in
 	drawgrid(g_Console, 2, 12, 'O');
@@ -358,6 +359,160 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	//nextdialogue("Ell : Oh no! We're surrounded!");
 	//cleargrid(34, 11);
 	//cleargrid(34, 14);
+}
+//medical_fight cutscene was added to medical_breakIn cutscene
+void Cutscenes::medical_fight(Console& g_Console)
+{
+	COORD c;
+	//ref
+	//drawgrid(g_Console, 2, 12, 'H'); //Robert (Hero)
+	//drawgrid(g_Console, 2, 13, 'E'); //Ell
+	drawgrid(g_Console, 35, 12, 'O'); //Patient 1
+	drawgrid(g_Console, 36, 9, 'O'); //Patient 2
+	drawgrid(g_Console, 36, 16, 'O'); //Patient 3
+	drawgrid(g_Console, 46, 9, 'O'); //Patient 4
+	drawgrid(g_Console, 46, 16, 'O'); //Patient 5
+	drawgrid(g_Console, 56, 9, 'O'); //Patient 6
+	drawgrid(g_Console, 56, 16, 'O'); //Patient 7
+	drawgrid(g_Console, 23, 13, 'O'); //nurse
+	animate(g_Console);
+
+	//Robert walks to a patient 1 and gives medicine
+	
+	//drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
+	//drawgrid(g_Console, 34, 13, 'E'); //Ell
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Patient 1: Thank you so much!");
+	nextdialogue(g_Console);
+
+	//Patient 2 walks to Hero (34,11)
+	cleargrid(g_Console, 36, 9);
+	drawgrid(g_Console, 35, 10, 'O'); //Patient 2
+	animate(g_Console);
+	cleargrid(g_Console, 35, 10);
+
+	drawgrid(g_Console, 34, 11, 'O'); //Patient 2
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Patient 2: You have so much medicine and you kept it from us? How shameless of you!");
+	nextdialogue(g_Console);
+
+	g_Console.writeToBuffer(c, "Patient 2: Give it to me! I'm obviously need it more than that bastard!");
+	nextdialogue(g_Console);
+
+	//Patient 3 walks to Hero (34,14)
+	cleargrid(g_Console, 36, 16);
+	drawgrid(g_Console, 35, 15, 'O'); //Patient 3
+	animate(g_Console);
+	cleargrid(g_Console, 35, 15);
+
+	drawgrid(g_Console, 34, 14, 'O'); //Patient 3
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Patient 3: Please! I beg you, please give my daughter some medicine or she'll die!");
+	nextdialogue(g_Console);
+
+	//Patient 4 walks to Patient 1 (35,11)
+	//Patient 1 (35,12)
+	cleargrid(g_Console, 46, 9);
+	drawgrid(g_Console, 42, 9, 'O'); //Patient 4
+	animate(g_Console);
+	cleargrid(g_Console, 42, 9);
+
+	drawgrid(g_Console, 38, 10, 'O'); //Patient 4
+	animate(g_Console);
+	cleargrid(g_Console, 38, 10);
+
+	drawgrid(g_Console, 35, 11, 'O'); //Patient 4
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Patient 4: Give that to me! I deserve that more than you!");
+	nextdialogue(g_Console);
+
+	g_Console.writeToBuffer(c, "Patient 1: Hands off! They're mine!");
+	nextdialogue(g_Console);
+
+	//Patient 5 walks to patient 1 / Hero (35,14)
+	cleargrid(g_Console, 46, 16);
+	drawgrid(g_Console, 42, 16, 'O'); //Patient 5
+	animate(g_Console);
+	cleargrid(g_Console, 42, 16);
+
+	drawgrid(g_Console, 38, 15, 'O'); //Patient 5
+	animate(g_Console);
+	cleargrid(g_Console, 38, 15);
+
+	drawgrid(g_Console, 35, 14, 'O'); //Patient 5
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Patient 5: You selfish prick, you are in such a healthy condition but you hog all the meds for yourself?");
+	c.Y = 25;
+	g_Console.writeToBuffer(c, "You don't even need it!");
+	nextdialogue(g_Console);
+
+	//Patient 6 walks to Hero (35,10)
+	cleargrid(g_Console, 56, 9);
+	drawgrid(g_Console, 52, 9, 'O'); //Patient 6
+	animate(g_Console);
+	cleargrid(g_Console, 52, 9);
+
+	drawgrid(g_Console, 48, 9, 'O'); //Patient 6
+	animate(g_Console);
+	cleargrid(g_Console, 48, 9);
+
+	drawgrid(g_Console, 44, 9, 'O'); //Patient 6
+	animate(g_Console);
+	cleargrid(g_Console, 44, 9);
+
+	drawgrid(g_Console, 40, 9, 'O'); //Patient 6
+	animate(g_Console);
+	cleargrid(g_Console, 40, 9);
+
+	drawgrid(g_Console, 35, 10, 'O'); //Patient 6
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Patient 6: Why do you have som muc medicine? You must have stolen it from us!");
+
+	//Patient 7 walks to Hero (35,15)
+	cleargrid(g_Console, 56, 16);
+	drawgrid(g_Console, 52, 16, 'O'); //Patient 7
+	animate(g_Console);
+	cleargrid(g_Console, 52, 16);
+
+	drawgrid(g_Console, 48, 16, 'O'); //Patient 7
+	animate(g_Console);
+	cleargrid(g_Console, 48, 16);
+
+	drawgrid(g_Console, 44, 16, 'O'); //Patient 7
+	animate(g_Console);
+	cleargrid(g_Console, 44, 16);
+
+	drawgrid(g_Console, 40, 16, 'O'); //Patient 7
+	animate(g_Console);
+	cleargrid(g_Console, 40, 16);
+
+	drawgrid(g_Console, 35, 15, 'O'); //Patient 7
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Patient 7: Thief! Give it back!");
+
+	//nurse tries to stop fight (35,16)
+	cleargrid(g_Console, 23, 13);
+	drawgrid(g_Console, 27, 14, 'O');
+	animate(g_Console);
+	cleargrid(g_Console, 27, 14);
+
+	drawgrid(g_Console, 31, 15, 'O');
+	animate(g_Console);
+	cleargrid(g_Console, 31, 15);
+	
+	drawgrid(g_Console, 35, 16, 'O');
+	c.X = 5;
+	c.Y = 24;
+	g_Console.writeToBuffer(c, "Nurse: Everyone, please calm down!");
+
+	//Oh no!! bees break in!! time to die
 }
 
 void Cutscenes::stealth3Dialogue(Console& g_Console)

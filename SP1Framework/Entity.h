@@ -1,10 +1,11 @@
 #pragma once
 #include "Damage.h"
 #include "Items.h"
+//#include "game.h"
 //j
 using namespace std;
 
-class Entity
+class Entity : public Damage
 {
 protected:
 	int x, y, h, d;

@@ -1,7 +1,7 @@
 #pragma once
 #include "Items.h"
 //j
-class Inventory
+/*class Inventory
 {
 private:
 	Items **items;
@@ -9,5 +9,5 @@ private:
 public:
 	Inventory();
 	virtual ~Inventory();
-};
+};*/
 
