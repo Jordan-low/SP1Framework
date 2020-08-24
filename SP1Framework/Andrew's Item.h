@@ -1,9 +1,11 @@
 #pragma once
+#include "Framework\console.h"
 
 class Item
 {
 private:
-	char* items[9];
+	char** items;
+	int itemChance;
 public:
 	Item();
 	void setItem(const char i);
@@ -11,4 +13,6 @@ public:
 	void Healing();
 	void Defence();
 	~Item();
+	void Barrel(Console& g_Console);
+	void Box(Console& g_Console);
 };
