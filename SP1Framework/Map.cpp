@@ -1574,3 +1574,21 @@ void Map::dungeon_stealth1(Console& g_Console)
 	Road3(g_Console, 2, 22, 8);
 	Road3(g_Console, 11, 22, 8);
 }
+
+void Map::Battle_Screen(Console& g_Console)
+{
+	COORD c;
+	Road2(g_Console, 5, 16, 70);
+	Road2(g_Console, 5, 21, 70);
+	Road(g_Console, 4, 17, 5);
+	Road(g_Console, 75, 17, 5);
+	c.Y = 19;
+	c.X = 15;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	c.X = 17;
+	g_Console.writeToBuffer(c, "Inventory", 0x1A);
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	c.X = 60;
+	g_Console.writeToBuffer(c, "Fight", 0x1A);
+}

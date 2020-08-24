@@ -81,7 +81,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Townsquare;
+    g_eGameState = S_BattleScreen;
 
     g_sChar.m_cLocation.X = 22;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 17;//g_Console.getConsoleSize().Y / 2;
@@ -173,6 +173,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_Dungeon_Stealth_1: gameplayKBHandler(keyboardEvent);
         break;
+    case S_BattleScreen: gameplayKBHandler(keyboardEvent);
+        break;
     }
 }
 
@@ -211,6 +213,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_Orphanage_Animation: gameplayMouseHandler(mouseEvent);
         break;
     case S_Dungeon_Stealth_1: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_BattleScreen: gameplayMouseHandler(mouseEvent);
         break;
     }
 }
@@ -329,6 +333,8 @@ void update(double dt)
     case S_Dungeon_Stealth3_Animation: Update_Dungeon_Stealth3_Animation();
         break;
     case S_Boss_Room_Animation: Update_Boss_Room_Animation();
+        break;
+    case S_BattleScreen: UpdateBattleScreen();
         break;
     }
 }
@@ -2366,6 +2372,8 @@ void render()
         break;
     case S_Boss_Room_Animation: Boss_Room_Animation();
         break;
+    case S_BattleScreen: RenderBattleScreen();
+        break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
@@ -2852,6 +2860,20 @@ void render_DS1()
         }
     }
 }
+
+void RenderBattleScreen()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.Battle_Screen(g_Console);
+    renderCharacter();  // renders the character into the buffer
+}
+
+void UpdateBattleScreen()
+{
+    processUserInput();
+}
+
 void renderCharacter()
 {
     // Draw the location of the character
@@ -4277,3 +4299,4 @@ void render_Main_Menu()
         g_bQuitGame = true;
     }
 }
+

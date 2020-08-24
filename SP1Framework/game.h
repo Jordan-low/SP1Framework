@@ -56,6 +56,7 @@ enum EGAMESTATES
     s_Medical_Facility_Animation,
     S_Dungeon_Stealth3_Animation,
     S_Boss_Room_Animation,
+    S_BattleScreen,
     S_COUNT
 };
 
@@ -102,6 +103,8 @@ void renderMap_Townsquare();
 void renderMap_Protest_Area();
 void renderMap_Path_Area();
 void render_DS1();
+void RenderBattleScreen();
+
 void renderCharacter();     // renders the character into the buffer
 void renderEnemy();
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
@@ -134,5 +137,6 @@ void Dungeon_Stealth3_Animation();
 void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
 void render_Main_Menu();
+void UpdateBattleScreen();
 
 #endif //_GAME_H
