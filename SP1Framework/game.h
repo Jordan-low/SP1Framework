@@ -52,6 +52,7 @@ enum EGAMESTATES
     S_Protest_Area_Animation,
     S_Dungeon_Cell_Animation,
     S_Path_Area_Animation,
+    S_OAF,
     S_IAF3_Animation,
     s_Medical_Facility_Animation,
     S_Dungeon_Stealth3_Animation,
@@ -70,6 +71,11 @@ struct SGameChar : public Enemy
     bool  m_bActive;
     bool fire;
     bool fireOut;
+    bool Orp_Obj1;
+    bool Orp_Obj2;
+    bool Orp_Dialogue;
+    bool takenBackpack;
+    bool takenExtinguisher;
     bool counter;
     bool xLeft;
     bool xRight;
@@ -102,6 +108,7 @@ void renderGame();          // renders the game stuff
 void renderMap_Townsquare();
 void renderMap_Protest_Area();
 void renderMap_Path_Area();
+void renderMap_OAF();
 void render_DS1();
 void RenderBattleScreen();
 

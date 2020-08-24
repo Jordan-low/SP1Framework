@@ -56,7 +56,7 @@ void Map::printmap(Console& g_Console)
 			e.Y = k;
 			g_Console.writeToBuffer(e, Grid[e.Y][e.X] = '#', 0x1A);
 		}
-		
+
 	}
 	j = 23;
 	for (i = 1; i < 79; i++)
@@ -114,7 +114,7 @@ void Map::Border(Console& g_Console)
 
 }
 
-void Map::Animation(Console &g_Console, int x, int y, char ch)
+void Map::Animation(Console& g_Console, int x, int y, char ch)
 {
 	COORD c;
 	c.X = x;
@@ -269,8 +269,7 @@ void Map::townsquare(Console& g_Console)
 	c.Y = 17;
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
 }
-
-void Map::orphanage(Console& g_Console)
+void Map::orphanageDoor(Console& g_Console)
 {
 	COORD c; COORD d; COORD e;
 	for (int i = 0; i < 2; i++) // door
@@ -285,6 +284,10 @@ void Map::orphanage(Console& g_Console)
 		g_Console.writeToBuffer(d, Grid[d.Y][d.X] = '@', 0x1B);
 		g_Console.writeToBuffer(e, Grid[e.Y][e.X] = '@', 0x1B);
 	}
+}
+void Map::orphanage(Console& g_Console)
+{
+	COORD c;
 	c.X = 2;
 	c.Y = 22;
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
@@ -388,7 +391,7 @@ void Map::orphanage(Console& g_Console)
 	c.X = 50;
 	c.Y = 20;
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
-	
+
 }
 
 void Map::drawChildren(Console& g_Console)
@@ -815,7 +818,7 @@ void Map::patharea(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-' , 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
 	}
 
 	i = 46;
@@ -863,14 +866,14 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	}
 
 	//generator vertical
-	i = 20; 
+	i = 20;
 	for (int j = 2; j < 16; j++)
 	{
 		c.X = i;
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
 	}
-	i = 59; 
+	i = 59;
 	for (int j = 2; j < 16; j++)
 	{
 		c.X = i;
@@ -879,14 +882,14 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	}
 
 	//generator horizontal
-	j = 16; 
+	j = 16;
 	for (int i = 20; i < 60; i++)
 	{
 		c.X = i;
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
 	}
-	j = 2; 
+	j = 2;
 	for (int i = 20; i < 60; i++)
 	{
 		c.X = i;
@@ -895,7 +898,7 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	}
 
 	//opening
-	j = 16; 
+	j = 16;
 	for (int i = 36; i < 46; i++)
 	{
 		c.X = i;
@@ -1591,4 +1594,838 @@ void Map::Battle_Screen(Console& g_Console)
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
 	c.X = 60;
 	g_Console.writeToBuffer(c, "Fight", 0x1A);
+}
+
+void Map::drawGuard(Console& g_Console)
+{
+	Battle_Screen(g_Console);
+	drawRobert(g_Console);
+	//head
+	Road2(g_Console, 56, 3, 7);
+	Road2(g_Console, 56, 6, 7);
+	Road2(g_Console, 54, 2, 12);
+	Road(g_Console, 55, 4, 3);
+	Road(g_Console, 63, 4, 3);
+
+	//helmet
+	COORD c;
+	c.Y = 4;
+	c.X = 54;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 5;
+	c.X = 53;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	for (int i = 0; i < 2; i++)
+	{
+		c.Y = 4 + i;
+		c.X = 52;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	}
+	c.Y = 3;
+	c.X = 65;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 4;
+	c.X = 64;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+
+	//left hand
+	Road(g_Console, 57, 7, 2);
+	Road(g_Console, 61, 7, 2);
+	Road2(g_Console, 52, 8, 5);
+	Road(g_Console, 51, 9, 2);
+	Road2(g_Console, 52, 10, 5);
+
+
+	//right hand
+	Road2(g_Console, 62, 8, 5);
+	Road(g_Console, 67, 9, 2);
+	Road2(g_Console, 62, 10, 5);
+
+
+	//left leg
+	Road(g_Console, 57, 11, 3);
+	c.Y = 14;
+	c.X = 56;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 15;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+
+	//right leg
+	Road(g_Console, 61, 11, 3);
+	Road2(g_Console, 56, 15, 3);
+	Road2(g_Console, 62, 15, 3);
+	c.Y = 14;
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 15;
+	c.X = 64;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 14;
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 14;
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+
+	c.Y = 15;
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 15;
+	c.X = 61;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+
+	//eyes
+	c.Y = 5;
+	c.X = 57;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	c.Y = 5;
+	c.X = 61;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	c.Y = 4;
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 4;
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 5;
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '<', 0x1A);
+
+	//sword
+	//right side
+	c.Y = 8;
+	c.X = 51;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 7;
+	c.X = 50;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+
+	c.Y = 10;
+	c.X = 50;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 9;
+	c.X = 49;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 6;
+	c.X = 50;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 5;
+	c.X = 50;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 5;
+	c.X = 49;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 5;
+	c.X = 48;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 4;
+	c.X = 47;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 3;
+	c.X = 46;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+
+	//tip of sword
+	c.Y = 2;
+	c.X = 43;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 2;
+	c.X = 45;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+
+
+	// left side
+	c.Y = 9;
+	c.X = 48;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 9;
+	c.X = 47;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 8;
+	c.X = 47;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 7;
+	c.X = 47;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 6;
+	c.X = 46;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 5;
+	c.X = 45;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 4;
+	c.X = 44;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 3;
+	c.X = 43;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+}
+void Map::drawRobert(Console& g_Console)
+{
+	Road2(g_Console, 12, 3, 6);
+	Road2(g_Console, 11, 6, 7);
+	Road(g_Console, 11, 4, 3);
+	Road(g_Console, 18, 4, 3);
+	COORD c;
+	c.Y = 6;
+	c.X = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 6;
+	c.X = 17;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 7;
+	c.X = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 8;
+	c.X = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 9;
+	c.X = 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 10;
+	c.X = 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 10;
+	c.X = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 9;
+	c.X = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 10;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+
+	//eyes
+	c.Y = 5;
+	c.X = 16;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+
+	c.Y = 5;
+	c.X = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+
+	c.Y = 4;
+	c.X = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+
+	c.Y = 4;
+	c.X = 16;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+
+	//left legs
+	c.Y = 13;
+	c.X = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 14;
+	c.X = 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 14;
+	c.X = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.Y = 14;
+	c.X = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.Y = 13;
+	c.X = 14;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 14;
+	c.X = 14;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+
+
+
+	//right body
+	c.Y = 7;
+	c.X = 16;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 8;
+	c.X = 17;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 9;
+	c.X = 18;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 10;
+	c.X = 18;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 10;
+	c.X = 17;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 9;
+	c.X = 16;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 10;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+
+
+	//right leg
+	c.Y = 13;
+	c.X = 17;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 14;
+	c.X = 18;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 14;
+	c.X = 17;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.Y = 14;
+	c.X = 16;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.Y = 13;
+	c.X = 15;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 14;
+	c.X = 15;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+
+	c.Y = 12;
+	c.X = 14;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.Y = 12;
+	c.X = 15;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+}
+
+void Map::Battle_Wasp(Console & g_Console)
+{
+	Battle_Screen(g_Console);
+	COORD c;
+	c.X = 3;
+	c.Y = 2;
+	g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x1A);
+
+	//head
+	Road2(g_Console, 56, 3, 7);
+	Road(g_Console, 55, 4, 3);
+	Road(g_Console, 63, 4, 3);
+	Road2(g_Console, 56, 6, 7);
+
+	//Left eye
+	c.X = 56;
+	c.Y = 5;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 57;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 56;
+	c.Y = 4;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+
+	//right eye
+	c.X = 62;
+	c.Y = 5;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 61;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 62;
+	c.Y = 4;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+
+	//feelers
+	c.X = 57;
+	c.Y = 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 61;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	Road2(g_Console, 54, 2, 3);
+	c.X = 53;
+	c.Y = 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.Y = 4;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	Road2(g_Console, 62, 2, 3);
+	c.X = 65;
+	c.Y = 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 4;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+
+	//body middle
+	Road(g_Console, 55, 8, 1);
+	Road(g_Console, 63, 8, 1);
+	Road2(g_Console, 56, 8, 7);
+	c.X = 55;
+	c.Y = 7;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 55;
+	c.Y = 9;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 56;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 62;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+
+	//body end
+	c.X = 55;
+	c.Y = 10;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	Road(g_Console, 55, 11, 1);
+	Road(g_Console, 63, 11, 1);
+	Road2(g_Console, 56, 10, 7);
+	Road2(g_Console, 56, 11, 7);
+	c.X = 55;
+	c.Y = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 56;
+	c.Y = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 62;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	Road2(g_Console, 57, 13, 5);
+	// stinger
+
+	c.Y = 14;
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 59;
+	c.Y = 15;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'V', 0x1A);
+
+	//mandibles
+	c.X = 57;
+	c.Y = 7;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 61;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+
+	//Left leg 1
+	c.X = 54;
+	c.Y = 7;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	Road2(g_Console, 50, 6, 4);
+
+	//Right leg 1
+	c.X = 64;
+	c.Y = 7;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	Road2(g_Console, 65, 6, 4);
+
+	//Left leg 2
+	c.X = 54;
+	c.Y = 9;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 53;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 52;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 51;
+	c.Y = 7;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 50;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	Road2(g_Console, 48, 8, 2);
+
+	//Right leg 2
+	c.X = 64;
+	c.Y = 9;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 65;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 66;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 67;
+	c.Y = 7;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 68;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	Road2(g_Console, 69, 8, 2);
+
+	//Left leg 3
+	Road2(g_Console, 53, 10, 2);
+	c.X = 52;
+	c.Y = 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 51;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 50;
+	c.Y = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 50;
+	c.Y = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 50;
+	c.Y = 14;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	//Right leg 3
+	Road2(g_Console, 64, 10, 2);
+	c.X = 66;
+	c.Y = 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 67;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 68;
+	c.Y = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 68;
+	c.Y = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 68;
+	c.Y = 14;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+}
+
+void Map::Battle_Raymond(Console & g_Console)
+{
+	Battle_Screen(g_Console);
+	COORD c;
+
+	//Name
+	c.X = 3;
+	c.Y = 2;
+	g_Console.writeToBuffer(c, "=Raymond=", 0x1A);
+	//face shape
+	Road(g_Console, 55, 5, 1);
+	Road(g_Console, 63, 5, 1);
+	Road2(g_Console, 57, 6, 5);
+	c.X = 56;
+	c.Y = 6;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 62;
+	c.Y = 6;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	//glasses
+	Road2(g_Console, 56, 5, 2);
+	Road(g_Console, 58, 5, 1);
+	c.Y = 5;
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	Road(g_Console, 60, 5, 1);
+	Road2(g_Console, 61, 5, 2);
+	Road2(g_Console, 56, 4, 2);
+	Road2(g_Console, 61, 4, 2);
+	//hair + ear things
+	c.X = 56;
+	c.Y = 4;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 57;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 61;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 62;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	Road2(g_Console, 57, 2, 5);
+	c.Y = 2;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 56;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 62;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 3;
+	c.X = 54;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 64;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 4;
+	c.X = 54;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 64;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	//body
+	Road2(g_Console, 43, 7, 4);
+	c.Y = 7;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 56;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 57;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'v', 0x1A);
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 61;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 62;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 64;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.X = 65;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	c.Y = 8;
+	Road2(g_Console, 50, 8, 4);
+	Road2(g_Console, 44, 8, 4);
+	c.X = 42;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 47;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 48;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 49;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 54;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 66;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 9;
+	c.X = 46;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 47;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 48;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 49;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	Road2(g_Console, 50, 9, 5);
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 64;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.X = 67;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	c.Y = 10;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'Y', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 64;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 67;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 11;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	Road2(g_Console, 56, 11, 3);
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	Road2(g_Console, 60, 11, 3);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 64;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 65;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.X = 66;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	c.Y = 12;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	Road2(g_Console, 56, 12, 7);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 13;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 14;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 15;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.Y = 16;
+	c.X = 55;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 59;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	c.X = 63;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+}
+
+void Map::pig(Console & g_Console)
+{
+	Battle_Screen(g_Console);
+	COORD c;
+
+	//tail
+	c.X = 75;
+	c.Y = 9;
+	g_Console.writeToBuffer(c, '\\', 0x1A);
+	c.X = 74;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 73;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+
+	//body
+	for (j = 5; j <= 12; j++)
+	{
+		c.X = 72;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 56; i <= 71; i++)
+	{
+		c.X = i;
+		c.Y = 4;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	for (i = 56; i <= 71; i++)
+	{
+		c.X = i;
+		c.Y = 12;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	c.X = 55;
+	c.Y = 5;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+	c.Y = 6;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+	c.Y = 12;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+
+	//head
+	c.X = 56;
+	c.Y = 6;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 57;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 58;
+	g_Console.writeToBuffer(c, '/', 0x1A);  //right ear
+	c.X = 59;								//right ear
+	g_Console.writeToBuffer(c, '\\', 0x1A); //right ear
+	c.X = 54;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 53;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 52;
+	g_Console.writeToBuffer(c, '\\', 0x1A); //left ear
+	c.X = 51;							    //left ear
+	g_Console.writeToBuffer(c, '/', 0x1A);  //left ear
+	for (j = 7; j <= 11; j++)
+	{
+		c.X = 60;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 7; j <= 11; j++)
+	{
+		c.X = 50;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 51; i <= 59; i++)
+	{
+		c.X = i;
+		c.Y = 11;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	//eye
+	c.X = 53;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, ' ', 0xFF); //right eye
+	c.X = 57;
+	g_Console.writeToBuffer(c, ' ', 0xFF); //left eye
+	//nose
+	for (i = 53; i <= 57; i++)
+	{
+		c.X = i;
+		c.Y = 9;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	for (j = 10; j <= 11; j++)
+	{
+		c.X = 52;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 10; j <= 11; j++)
+	{
+		c.X = 58;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	//nose hole
+	c.X = 54;
+	c.Y = 10;
+	g_Console.writeToBuffer(c, ' ');
+	c.X = 56;
+	g_Console.writeToBuffer(c, ' ');
+
+	//legs
+	for (j = 13; j <= 15; j++)
+	{
+		c.X = 58;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 13; j <= 15; j++)
+	{
+		c.X = 60;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	c.X = 59;
+	c.Y = 15;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	for (j = 13; j <= 15; j++)
+	{
+		c.X = 67;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 13; j <= 15; j++)
+	{
+		c.X = 69;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	c.X = 68;
+	c.Y = 15;
+	g_Console.writeToBuffer(c, '_', 0x1A);
 }

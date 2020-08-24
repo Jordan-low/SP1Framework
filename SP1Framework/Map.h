@@ -8,9 +8,15 @@ public:
 	int i = 0;
 	int j = 0;
 	char Grid[30][80];
+
 	void initialise(Console& g_Console);
 	void printmap(Console& g_Console);
 	void townsquare(Console& g_Console);
+	void initialise(Console& g_Console);
+	void printmap(Console& g_Console);
+	void townsquare(Console& g_Console);
+	void orphanageDoor(Console& g_Console);
+	void orphanage(Console& g_Console);
 	void patharea(Console& g_Console);
 	void insideAbandonedFacility1(Console& g_Console);
 	void insideAbandonedFacility3(Console& g_Console);
@@ -47,6 +53,13 @@ public:
 	void Barrel(Console& g_Console, int x, int y);
 
 	void Battle_Screen(Console& g_Console);
+	void drawGuard(Console& g_Console);
+	void drawRobert(Console& g_Console);
+
+	void Battle_Wasp(Console& g_Console);
+	void Battle_Raymond(Console& g_Console);
+
+	void pig(Console& g_Console);
 
 };
 
