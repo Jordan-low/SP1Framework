@@ -8,6 +8,7 @@
 #include <sstream>
 #include "Map.h"
 #include "Cutscenes.h"
+#include "Dialogue.h"
 using namespace std;
 
 double  g_dElapsedTime;
@@ -38,6 +39,7 @@ Console g_Console(80, 30, "SP1 Framework");
 Map rMap;
 Map eMap;
 Cutscenes Cutscene;
+Dialogue Dialogues;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -47,6 +49,14 @@ Cutscenes Cutscene;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sChar.Jerry = false;
+    g_sChar.Tom = false;
+    g_sChar.Charles = false;
+    g_sChar.Bobby = false;
+    g_sChar.Emmanuel = false;
+    g_sChar.Harry = false;
+    g_sChar.Sam = false;
+
     Pig.SetD(5);
     g_sGuard.xLeft = false;
     g_sGuard.xRight = false;
@@ -71,10 +81,10 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_1;
+    g_eGameState = S_Townsquare;
 
-    g_sChar.m_cLocation.X = 58;//g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = 20;//g_Console.getConsoleSize().Y / 2;
+    g_sChar.m_cLocation.X = 22;//g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.Y = 17;//g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
 
     g_sGuard.e_cLocation.X = 40;
@@ -2463,7 +2473,44 @@ void renderMap_Townsquare()
     rMap.Border(g_Console);
     rMap.townsquare(g_Console);
     renderCharacter();  // renders the character into the buffer
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+
+    if ((g_sChar.m_cLocation.X == 43 && g_sChar.m_cLocation.Y == 16 || g_sChar.m_cLocation.X == 41 && g_sChar.m_cLocation.Y == 16) || (g_sChar.m_cLocation.X == 42 && g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.X == 42 && g_sChar.m_cLocation.Y == 15))
+    {
+        g_sChar.Jerry = true;
+        Dialogues.Jerry(g_Console);
+    }
+    if ((g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == 13) || (g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 12))
+    {
+        g_sChar.Tom = true;
+        Dialogues.Tom(g_Console);
+    }
+    if ((g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 6 || g_sChar.m_cLocation.X == 63 && g_sChar.m_cLocation.Y == 6) || (g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == 7 || g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == 5))
+    {
+        g_sChar.Bobby = true;
+        Dialogues.Bobby(g_Console);
+    }
+    if ((g_sChar.m_cLocation.X == 53 && g_sChar.m_cLocation.Y == 8 || g_sChar.m_cLocation.X == 51 && g_sChar.m_cLocation.Y == 8) || (g_sChar.m_cLocation.X == 52 && g_sChar.m_cLocation.Y == 9 || g_sChar.m_cLocation.X == 52 && g_sChar.m_cLocation.Y == 7))
+    {
+        g_sChar.Harry = true;
+        Dialogues.Harry(g_Console);
+    }
+    if ((g_sChar.m_cLocation.X == 20 && g_sChar.m_cLocation.Y == 9 || g_sChar.m_cLocation.X == 18 && g_sChar.m_cLocation.Y == 9) || (g_sChar.m_cLocation.X == 19 && g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.X == 19 && g_sChar.m_cLocation.Y == 8))
+    {
+        g_sChar.Sam = true;
+        Dialogues.Sam(g_Console);
+    }
+    if ((g_sChar.m_cLocation.X == 62 && g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.X == 60 && g_sChar.m_cLocation.Y == 17) || (g_sChar.m_cLocation.X == 61 && g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.X == 61 && g_sChar.m_cLocation.Y == 16))
+    {
+        g_sChar.Emmanuel = true;
+        Dialogues.Emmanuel(g_Console);
+    }
+    if ((g_sChar.m_cLocation.X == 11 && g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.X == 13 && g_sChar.m_cLocation.Y == 13) || (g_sChar.m_cLocation.X == 12 && g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.X == 12 && g_sChar.m_cLocation.Y == 11))
+    {
+        g_sChar.Charles = true;
+        Dialogues.Charles(g_Console);
+    }
+
+    if ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@') && (g_sChar.Jerry == true) && (g_sChar.Tom == true) && (g_sChar.Bobby == true) && (g_sChar.Harry == true) && (g_sChar.Sam == true) && (g_sChar.Emmanuel == true) && (g_sChar.Charles == true))
     {
         g_dProtestTime = 0.0;
         g_eGameState = S_Protest_Area;

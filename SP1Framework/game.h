@@ -74,6 +74,13 @@ struct SGameChar : public Entity
     bool xRight;
     bool xUp;
     bool xDown;
+    bool Jerry;
+    bool Tom;
+    bool Charles;
+    bool Bobby;
+    bool Emmanuel;
+    bool Harry;
+    bool Sam;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
