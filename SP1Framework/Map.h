@@ -11,6 +11,8 @@ public:
 	void initialise(Console &g_Console);
 	void printmap(Console &g_Console);
 	void townsquare(Console &g_Console);
+	void orphanageDoor(Console& g_Console);
+	void orphanage(Console& g_Console);
 	void patharea(Console& g_Console);
 	void insideAbandonedFacility1(Console& g_Console);
 	void insideAbandonedFacility3(Console& g_Console);
@@ -18,7 +20,6 @@ public:
 	void dungeon_stealth1(Console& g_Console);
 	void dungeon_stealth3(Console& g_Console);
 
-	void orphanage(Console &g_Console);
 	void drawChildren(Console& g_Console);
 	void protest_area(Console& g_Console);
 	void outside_abandoned_facility(Console& g_Console);
@@ -47,6 +48,8 @@ public:
 	void Barrel(Console& g_Console, int x, int y);
 
 	void Battle_Screen(Console& g_Console);
+	void drawGuard(Console& g_Console);
+	void drawRobert(Console& g_Console);
 
 };
 

@@ -70,6 +70,11 @@ struct SGameChar : public Enemy
     bool  m_bActive;
     bool fire;
     bool fireOut;
+    bool Orp_Obj1;
+    bool Orp_Obj2;
+    bool Orp_Dialogue;
+    bool takenBackpack;
+    bool takenExtinguisher;
     bool counter;
     bool xLeft;
     bool xRight;
