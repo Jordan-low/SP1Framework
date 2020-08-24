@@ -47,6 +47,7 @@ public:
 	void Barrel(Console& g_Console, int x, int y);
 
 	void Battle_Screen(Console& g_Console);
-
+	void Battle_Wasp(Console& g_Console);
+	void Battle_Raymond(Console& g_Console);
 };
 
