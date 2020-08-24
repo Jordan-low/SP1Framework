@@ -4,8 +4,8 @@ Entity::Entity()
 {
 	x = 1;
 	y = 1;
-	h = 0;
-	d = 0;
+	h = 100;
+	d = 10;
 	name = ' ';
 }
 

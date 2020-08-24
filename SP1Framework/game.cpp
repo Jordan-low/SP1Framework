@@ -23,6 +23,8 @@ double  g_dDeltaTime;
 double g_dMedicalTime;
 double g_dDungeonStealth3Time;
 double g_dBossTime;
+double startTime;
+double resetTime;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -46,6 +48,7 @@ Map rMap;
 Map eMap;
 Cutscenes Cutscene;
 Dialogue Dialogues;
+Enemy Guardz;
 //--------------------------------------------------------------
 // Purpose  : Initialisation function
 //            Initialize variables, allocate memory, load data from file, etc. 
@@ -55,6 +58,12 @@ Dialogue Dialogues;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sChar.startTimer = true;
+    g_sChar.resetTimer = false;
+    g_sChar.SetH(19);
+    g_sChar.SetD(10);
+    g_sGuard.SetD(5);
+    g_sGuard.SetH(20);
     Inventory PlayerInv;
     Item* Item1 = new Item;
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
@@ -99,7 +108,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_MENU_UI;
+    g_eGameState = S_BattleScreen;
 
     g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
@@ -321,7 +330,8 @@ void update(double dt)
     g_dMedicalTime += dt;
     g_dDungeonStealth3Time += dt;
     g_dBossTime += dt;
-
+    startTime += dt;
+    resetTime += dt;
     switch (g_eGameState)
     {
     case S_MENU_UI: Update_Menu();
@@ -2988,7 +2998,12 @@ void render_DS1()
 
 void RenderBattleScreen()
 {
+
     Inventory PlayerInv;
+    Item RawMeat;
+
+    RawMeat.setItemName("Raw Meat");
+
     Item* item1 = new Item;
     if (PlayerInv.pickup(item1))
     {
@@ -3010,26 +3025,66 @@ void RenderBattleScreen()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.drawGuard(g_Console);
-    rMap.pig(g_Console);
+    //rMap.pig(g_Console);
+    //rMap.Battle_Wasp(g_Console);
+    //rMap.Battle_Raymond(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    c.X = 5;
+    c.Y = 28;
+    string str_charhealth = to_string(g_sChar.GetH());
+    g_Console.writeToBuffer(c, str_charhealth, 0x0F, 100);
+
+    c.X = 5;
+    c.Y = 29;
+    string str_guardhealth = to_string(g_sGuard.GetH());
+    g_Console.writeToBuffer(c, str_guardhealth, 0x0F, 100);
+
 
     //change g_eGameState to inventory
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 15) || (g_mouseEvent.mousePosition.X == 16) || (g_mouseEvent.mousePosition.X == 17) || (g_mouseEvent.mousePosition.X == 18) || (g_mouseEvent.mousePosition.X == 19) || (g_mouseEvent.mousePosition.X == 20) || (g_mouseEvent.mousePosition.X == 21) || (g_mouseEvent.mousePosition.X == 22) || (g_mouseEvent.mousePosition.X == 23) || (g_mouseEvent.mousePosition.X == 24) || (g_mouseEvent.mousePosition.X == 25))))
     {
         //g_eGameState = S_Townsquare;
     }
-
-    //change g_eGameState to fight 
-    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+    if (g_sChar.startTimer == true)
     {
-        //g_bQuitGame = true;
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+        {
+            int charhealth = g_sChar.GetH() - g_sGuard.GetD();
+            string str_charhealth = to_string(charhealth);
+
+
+            int guardhealth = g_sGuard.GetH() - g_sChar.GetD();
+            string str_guardhealth = to_string(guardhealth);
+
+
+            g_sChar.SetH(charhealth);
+            g_sGuard.SetH(guardhealth);
+
+
+            if (g_sChar.GetH() < 0)
+            {
+                //g_eGameState = S_Path_Area;
+            }
+            startTime = 0.0;
+            g_sChar.resetTimer = true;
+            g_sChar.startTimer = false;
+        }
     }
+    //change g_eGameState to fight 
+
 }
 
 void UpdateBattleScreen()
 {
     processUserInput();
-
+    if (g_sChar.resetTimer == true)
+    {
+        if (startTime > 5)
+        {
+            g_sChar.startTimer = true;
+        }
+    }
 }
 
 void renderCharacter()

@@ -88,6 +88,8 @@ struct SGameChar : public Enemy
     bool Emmanuel;
     bool Harry;
     bool Sam;
+    bool startTimer;
+    bool resetTimer;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
