@@ -351,3 +351,15 @@ void Minigame::skull_game(Console& g_Console)
 		i++;
 	}
 }
+
+void Minigame::trueSkull(Console& g_Console)
+{
+	skull_game(g_Console);
+	COORD c;
+	for (i = 38; i <= 42; i++)
+	{
+		c.X = i;
+		c.Y = 17;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+}

@@ -5,5 +5,6 @@ class Minigame :
 {
     void wire_game(Console& g_Console);
     void skull_game(Console& g_Console);
+    void trueSkull(Console& g_Console);
 };
 
