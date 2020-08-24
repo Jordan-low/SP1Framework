@@ -91,7 +91,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_MENU_UI;
+    g_eGameState = S_BattleScreen;
 
     g_sChar.m_cLocation.X = 22;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 17;//g_Console.getConsoleSize().Y / 2;
@@ -2898,7 +2898,7 @@ void RenderBattleScreen()
 {
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
-    rMap.Battle_Wasp(g_Console);
+    rMap.pig(g_Console);
     renderCharacter();  // renders the character into the buffer
 
     //change g_eGameState to inventory
