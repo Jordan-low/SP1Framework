@@ -86,15 +86,19 @@ void init(void)
     g_sChar.counter = false;
     g_sChar.fire = false;
     g_sChar.fireOut = false;
+    g_sChar.Orp_Obj1 = false;
+    g_sChar.Orp_Obj2 = false;
+    g_sChar.takenBackpack = false;
+    g_sChar.takenExtinguisher = false;
+    g_sChar.Orp_Dialogue = false;
     // Set precision for floating point output
-    g_dElapsedTime = 0.0;
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_BattleScreen;
+    g_eGameState = S_MENU_UI;
 
-    g_sChar.m_cLocation.X = 22;//g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = 17;//g_Console.getConsoleSize().Y / 2;
+    g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
 
     g_sGuard.e_cLocation.X = 40;
@@ -424,7 +428,7 @@ void Orphanage_Animation()
                                             Cutscene.drawgrid(g_Console, 13, 7, '|');
                                             if (g_dElapsedTime > 4.2)
                                             {
-                                                g_Console.writeToBuffer(c, "Caretaker: Argh!!!", 0x0D, 100);
+                                                g_Console.writeToBuffer(c, "Caretaker: Argh!!!", 0x0F, 100);
                                                 if (g_dElapsedTime > 10)
                                                 {
                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -433,6 +437,7 @@ void Orphanage_Animation()
                                                     {
                                                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                         g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!", 0x0F, 100);
+                                                        g_sChar.Orp_Obj1 = true;
                                                     }
                                                 }
                                             }
@@ -447,12 +452,14 @@ void Orphanage_Animation()
         }
     }
 }
-
 void Update_Orphanage_Animation2()
 {
 
     if (g_dChildrenTime > 39)
     {
+        g_sChar.Orp_Dialogue = true;
+        g_sChar.fire = false;
+        g_sChar.Orp_Obj2 = true;
         g_eGameState = S_GAME;
     }
     processUserInput();
@@ -460,6 +467,7 @@ void Update_Orphanage_Animation2()
 void Orphanage_Children_Animation()
 {
     rMap.initialise(g_Console);
+    rMap.Animation(g_Console, 33, 22, 'B');
     rMap.Animation(g_Console, 11, 7, 'O');
     rMap.Animation(g_Console, 9, 7, 'O');
     rMap.Animation(g_Console, 13, 7, 'O');
@@ -479,11 +487,18 @@ void Orphanage_Children_Animation()
 
     rMap.drawChildren(g_Console);
     rMap.Border(g_Console);
-    COORD c;
     renderCharacter();
+    COORD c; COORD d; COORD e;
     c.X = 5;
     c.Y = 26;
-    //g_dDeltaTime = 0;
+    d.X = 5;
+    d.Y = 27;
+    e.X = 5;
+    e.Y = 28;
+    g_Console.writeToBuffer(c, "                                                                                                               ", 0x00, 100);
+    g_Console.writeToBuffer(d, "                                                                                                               ", 0x00, 100);
+    g_Console.writeToBuffer(e, "                                                                                                                ", 0x00, 100);
+    //g_dDeltaTime = 0;  
     if (g_dChildrenTime > 1)
     {
         g_Console.writeToBuffer(c, "Robert: !!!", 0x0F, 100);
@@ -1950,14 +1965,17 @@ void moveCharacter()
                         {
                             if (rMap.Grid[j - 1][i] != 'E')
                             {
-                                g_sChar.m_cLocation.Y--;
+                                if (rMap.Grid[j - 1][i] != '/')
+                                {
+                                    g_sChar.m_cLocation.Y--;
+                                }
                             }
                         }
                     }
                 }
             }
         }
-       
+
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -2041,7 +2059,10 @@ void moveCharacter()
                         {
                             if (rMap.Grid[j][i - 1] != 'E')
                             {
-                                g_sChar.m_cLocation.X--;
+                                if (rMap.Grid[j][i - 1] != '/')
+                                {
+                                    g_sChar.m_cLocation.X--;
+                                }
                             }
                         }
                     }
@@ -2052,8 +2073,8 @@ void moveCharacter()
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
-            {   
-                
+            {
+
                 // enemy on left side
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.e_cLocation.Y][g_sGuard.e_cLocation.X])
                 {
@@ -2069,7 +2090,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard.e_cLocation.Y][g_sGuard.e_cLocation.X])
                 {
-                   g_sGuard.xLeft = true;
+                    g_sGuard.xLeft = true;
                 }
             }
         }
@@ -2138,7 +2159,10 @@ void moveCharacter()
                         {
                             if (rMap.Grid[j + 1][i] != 'E')
                             {
-                                g_sChar.m_cLocation.Y++;
+                                if (rMap.Grid[j + 1][i] != '/')
+                                {
+                                    g_sChar.m_cLocation.Y++;
+                                }
                             }
                         }
                     }
@@ -2166,7 +2190,7 @@ void moveCharacter()
                     g_sGuard.xDown = true;
                 }
             }
-        } 
+        }
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -2228,7 +2252,10 @@ void moveCharacter()
                         {
                             if (rMap.Grid[j][i + 1] != 'E')
                             {
-                                g_sChar.m_cLocation.X++;
+                                if (rMap.Grid[j][i + 1] != '/')
+                                {
+                                    g_sChar.m_cLocation.X++;
+                                }
                             }
                         }
                     }
@@ -2254,7 +2281,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - j][g_sChar.m_cLocation.X] == rMap.Grid[g_sGuard.e_cLocation.Y][g_sGuard.e_cLocation.X]) // works?
                 {
-                    
+
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard.e_cLocation.Y][g_sGuard.e_cLocation.X]) // works
                 {
@@ -2436,39 +2463,83 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
-    
+    if (g_sChar.Orp_Obj2 == false)
+    {
+        rMap.initialise(g_Console);
+
+        rMap.Animation(g_Console, 11, 7, 'O');
+        rMap.Animation(g_Console, 9, 7, 'O');
+        rMap.Animation(g_Console, 13, 7, 'O');
+        rMap.Animation(g_Console, 11, 7, 'O');
+        int j = 6;
+        for (int i = 9; i < 14; i++)
+        {
+            rMap.Animation(g_Console, i, j, '-');
+        }
+        j = 8;
+        for (int i = 9; i < 14; i++)
+        {
+            rMap.Animation(g_Console, i, j, '-');
+        }
+        rMap.Animation(g_Console, 9, 7, '|');
+        rMap.Animation(g_Console, 13, 7, '|');
+
+        rMap.Animation(g_Console, 40, 7, 'F');
+        rMap.Animation(g_Console, 33, 22, 'B');
+
+        rMap.initialise(g_Console);
+
+        rMap.Border(g_Console);
+        rMap.orphanageDoor(g_Console);
+        rMap.orphanage(g_Console);
+    }
+    else
+    {
+        rMap.initialise(g_Console);
+        rMap.Border(g_Console);
+        rMap.Animation(g_Console, 11, 7, 'O');
+        rMap.Animation(g_Console, 9, 7, 'O');
+        rMap.Animation(g_Console, 13, 7, 'O');
+        rMap.Animation(g_Console, 11, 7, 'O');
+        int j = 6;
+        for (int i = 9; i < 14; i++)
+        {
+            rMap.Animation(g_Console, i, j, '-');
+        }
+        j = 8;
+        for (int i = 9; i < 14; i++)
+        {
+            rMap.Animation(g_Console, i, j, '-');
+        }
+        rMap.Animation(g_Console, 9, 7, '|');
+        rMap.Animation(g_Console, 13, 7, '|');
+        rMap.Animation(g_Console, 33, 22, 'B');
+        rMap.orphanageDoor(g_Console);
+        if (g_sChar.Orp_Dialogue == true)
+        {
+            COORD c;  COORD d;
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x0F, 100);
+            d.X = 5;
+            d.Y = 28;
+            g_Console.writeToBuffer(d, "B = Backpack", 0x0F, 100);
+        }
+    }
+    /*
     rMap.initialise(g_Console);
-
-    rMap.Animation(g_Console, 11, 7, 'O');
-    rMap.Animation(g_Console, 9, 7, 'O');
-    rMap.Animation(g_Console, 13, 7, 'O');
-    rMap.Animation(g_Console, 11, 7, 'O');
-    int j = 6;
-    for (int i = 9; i < 14; i++)
-    {
-        rMap.Animation(g_Console, i, j, '-');
-    }
-    j = 8;
-    for (int i = 9; i < 14; i++)
-    {
-        rMap.Animation(g_Console, i, j, '-');
-    }
-    rMap.Animation(g_Console, 9, 7, '|');
-    rMap.Animation(g_Console, 13, 7, '|');
-
-    rMap.Animation(g_Console, 40, 7, 'F');
-
-    rMap.Border(g_Console);
-
+    rMap.printmap(g_Console);
     rMap.orphanage(g_Console);
 
-
-    //rMap.drawChildren(g_Console);
-
     renderCharacter();
-    renderEnemy();
+    //Cutscene.orphanageCaretakerCutscene(g_Console);
+    */
+
+    //renderEnemy();
     //renderMap(); // renders the character into the buffer
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
+    renderCharacter();
+
+    if ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@') && (g_sChar.takenBackpack == true) && (g_sChar.takenExtinguisher == true))
     {
         g_eGameState = S_Townsquare;
         g_sChar.m_cLocation.X = 22;
@@ -2477,6 +2548,23 @@ void renderGame()
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == 'F')
     {
         g_sChar.fire = true;
+        g_sChar.Orp_Obj1 = false;
+        g_sChar.takenExtinguisher = true;
+    }
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == 'B')
+    {
+        g_sChar.takenBackpack = true;
+    }
+    if (g_sChar.Orp_Obj1 == true)
+    {
+        COORD c; COORD d;
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!", 0x0F, 100);
+        d.X = 5;
+        d.Y = 28;
+        g_Console.writeToBuffer(d, "F = Fire Extinguisher", 0x0F, 100);
+
     }
     /*
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == rMap.Grid[g_sEnemy.e_cLocation.Y][g_sEnemy.e_cLocation.X])
@@ -2615,7 +2703,7 @@ void render_DS1()
                 }
             }
         }
-       
+
 
     }
     if (g_sGuard.xRight == true)
@@ -2898,6 +2986,7 @@ void RenderBattleScreen()
 {
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
+    rMap.drawGuard(g_Console);
     rMap.pig(g_Console);
     renderCharacter();  // renders the character into the buffer
 
@@ -2906,9 +2995,9 @@ void RenderBattleScreen()
     {
         //g_eGameState = S_Townsquare;
     }
-    
+
     //change g_eGameState to fight 
-    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64) )))
+    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
     {
         //g_bQuitGame = true;
     }
@@ -2930,7 +3019,17 @@ void renderCharacter()
     }
     if (g_sChar.fire)
     {
-        charColor = 0x1A;
+        COORD c; COORD d; COORD e;
+        c.X = 5;
+        c.Y = 26;
+        d.X = 5;
+        d.Y = 27;
+        e.X = 5;
+        e.Y = 28;
+        g_Console.writeToBuffer(c, "Got it!", 0x0F, 100);
+        g_Console.writeToBuffer(d, "Press the ENTER key to extinguish the fire!", 0x0F, 100);
+        g_Console.writeToBuffer(e, "Ensure that you are close to the fire first.", 0x0F, 100);
+
         rMap.Animation(g_Console, 40, 7, ' ');
         if (g_skKeyEvent[K_RETURN].keyDown && ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y + 1][g_sChar.m_cLocation.X] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y - 1][g_sChar.m_cLocation.X] == '_')))
         {
@@ -2939,6 +3038,23 @@ void renderCharacter()
             g_eGameState = S_Orphanage_Children_Animation;
 
         }
+    }
+    if (g_sChar.takenBackpack == true)
+    {
+        rMap.Animation(g_Console, 33, 22, ' ');
+        COORD c; COORD d; COORD e; COORD f;
+        d.X = 5;
+        d.Y = 26;
+        g_Console.writeToBuffer(d, "                                                                                                                                   ", 0x00, 100);
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Gotcha!", 0x0F, 100);
+        e.X = 5;
+        e.Y = 27;
+        g_Console.writeToBuffer(e, "Hurry! Get out of here now!", 0x0F, 100);
+        f.X = 5;
+        f.Y = 28;
+        g_Console.writeToBuffer(f, "@ = Unlocked Door", 0x0F, 100);
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }
@@ -4337,6 +4453,7 @@ void render_Main_Menu()
 
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
     {
+        g_dElapsedTime = 0.0;
         g_eGameState = S_Orphanage_Animation;
     }
 

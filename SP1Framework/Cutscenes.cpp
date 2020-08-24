@@ -19,7 +19,7 @@ void Cutscenes::drawgrid(Console& g_Console, int x, int y, char chara)
 	COORD c;
 	c.X = x;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = chara, 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = chara, 0x14);
 }
 
 void Cutscenes::cleargrid(Console& g_Console, int x, int y)
