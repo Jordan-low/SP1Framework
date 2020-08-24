@@ -183,8 +183,6 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_Path_Area: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
-    case S_OAF: gameplayKBHandler(keyboardEvent);
-        break;
     case S_Orphanage_Animation: gameplayKBHandler(keyboardEvent);
         break;
     case S_Dungeon_Stealth_1: gameplayKBHandler(keyboardEvent);
@@ -225,8 +223,6 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_Protest_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     case S_Path_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
-        break;
-    case S_OAF: gameplayMouseHandler(mouseEvent);
         break;
     case S_Orphanage_Animation: gameplayMouseHandler(mouseEvent);
         break;
@@ -339,8 +335,6 @@ void update(double dt)
     case S_Path_Area: updateGame(); // gameplay logic when we are in the game
         break;
     case S_Path_Area_Animation: Update_Path_Area();
-        break;
-    case S_OAF: updateGame();
         break;
     case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
         break;
@@ -674,7 +668,7 @@ void Update_Protest_Area()
 
     if (g_dProtestTime > 83.6)
     {
-        g_eGameState = S_Protest_Area;
+        g_eGameState = S_GAME;
     }
     processUserInput();
 }
@@ -1215,7 +1209,7 @@ void Update_Path_Area()
 {
     if (g_dPathTime > 4.5)
     {
-        g_eGameState = S_Path_Area;
+        g_eGameState = S_GAME;
     }
     processUserInput();
 }
@@ -2401,8 +2395,6 @@ void render()
         break;
     case S_Path_Area: renderMap_Path_Area();
         break;
-    case S_OAF: renderMap_OAF();
-        break;
     case S_Dungeon_Stealth_1: render_DS1();
         break;
     case S_Dungeon_Cell_Animation: Dungeon_Cell_Animation();
@@ -2486,8 +2478,6 @@ void renderGame()
 
         rMap.Animation(g_Console, 40, 7, 'F');
         rMap.Animation(g_Console, 33, 22, 'B');
-
-        rMap.initialise(g_Console);
 
         rMap.Border(g_Console);
         rMap.orphanageDoor(g_Console);
@@ -2620,7 +2610,7 @@ void renderMap_Townsquare()
     if ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@') && (g_sChar.Jerry == true) && (g_sChar.Tom == true) && (g_sChar.Bobby == true) && (g_sChar.Harry == true) && (g_sChar.Sam == true) && (g_sChar.Emmanuel == true) && (g_sChar.Charles == true))
     {
         g_dProtestTime = 0.0;
-        g_eGameState = S_Protest_Area_Animation;
+        g_eGameState = S_Protest_Area;
         g_sChar.m_cLocation.X = 40;
         g_sChar.m_cLocation.Y = 15;
     }
@@ -2635,7 +2625,7 @@ void renderMap_Protest_Area()
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
     {
         g_dPathTime = 0.0;
-        g_eGameState = S_Path_Area_Animation;
+        g_eGameState = S_Path_Area;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
@@ -2647,28 +2637,6 @@ void renderMap_Path_Area()
     rMap.Border(g_Console);
     rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_OAF;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 21;
-    }
-}
-
-void renderMap_OAF()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.outside_abandoned_facility(g_Console);
-    renderCharacter();  // renders the character into the buffer
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_OAF;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 21;
-    }
 }
 
 void render_DS1()
@@ -2987,7 +2955,6 @@ void RenderBattleScreen()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.drawGuard(g_Console);
-    rMap.pig(g_Console);
     renderCharacter();  // renders the character into the buffer
 
     //change g_eGameState to inventory
@@ -4462,3 +4429,4 @@ void render_Main_Menu()
         g_bQuitGame = true;
     }
 }
+
