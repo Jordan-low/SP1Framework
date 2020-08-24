@@ -4345,4 +4345,3 @@ void render_Main_Menu()
         g_bQuitGame = true;
     }
 }
-
