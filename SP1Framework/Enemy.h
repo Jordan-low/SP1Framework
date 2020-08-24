@@ -4,10 +4,11 @@
 //j
 class Enemy : public Entity
 {
-public:
+private:
 	bool attacked;
 	bool attack;
 	int Chance;
+public:
 	Enemy();
 	~Enemy();
 	void setEnemy(int x, int y, int health, int dmg, const char n);
@@ -19,5 +20,5 @@ public:
 	//float Hit(float Eh, float Pd);
 	//float beenHit(float Ph, float Ed);
 	void Drop(Console& g_Console);
-	void Poison(Console& g_Console);
+	bool Poison(Console& g_Console);
 };

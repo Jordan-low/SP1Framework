@@ -1,32 +1,67 @@
 #include "Andrew's Inventory.h"
+#include "Andrew's Item.h"
 
 Inventory::Inventory()
 {
-	items = new const char* [300];
+	for (int i = 0; i < 8; i++)
+	{
+		playerItems[i] = nullptr;
+	}
 	Quantity = 0;
-	name = " ";
-	pickup = false;
 }
 
-void Inventory::setInventory(std::string n, int q)
+bool Inventory::pickup(Item* add)
 {
-	name = n;
+	if (Quantity < 0)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			if (playerItems[i] == nullptr)
+			{
+				playerItems[i] = add;
+				Quantity++;
+				break;
+			}
+		}
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+/*void Inventory::setInventory(std::string n, int q)
+{
+	
 	Quantity = q;
 }
 
 std::string Inventory::getNameID()
 {
-	return name;
+	
 }
 
 int Inventory::getQuantity()
 {
 	return Quantity;
-}
+}*/
 
-void Inventory::checkInventory()
+int Inventory::checkInventory(std::string n)
 {
-	if ("Raw Meat" && Quantity == 0)
+	for (int i = 0; i < MAX; i++)
+	{
+		if (playerItems[i] == nullptr)
+		{
+			if (playerItems[i]->getItemName() == n)
+			{
+				Quantity++;
+			}
+		}
+	}
+	return Quantity; 
+
+	/*if ("Raw Meat" && Quantity == 0)
 	{
 		items[0] = "Raw Meat";
 		Quantity = 1;
@@ -80,11 +115,12 @@ void Inventory::checkInventory()
 		items[7] = "Medicine";
 		Quantity = 1;
 		getQuantity();
-	}
+	}*/
 }
 
-void Inventory::updateInventory()
+/*void Inventory::updateInventory()
 {
+
 	while (pickup == true)
 	{
 		if (name == "Raw Meat")
@@ -152,7 +188,7 @@ void Inventory::updateInventory()
 		}
 
 	}
-}
+}*/
 
 
 Inventory::~Inventory()
