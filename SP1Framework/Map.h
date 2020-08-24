@@ -48,5 +48,7 @@ public:
 
 	void Battle_Screen(Console& g_Console);
 
+	void pig(Console& g_Console);
+
 };
 

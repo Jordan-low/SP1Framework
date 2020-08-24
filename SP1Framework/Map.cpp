@@ -1592,3 +1592,146 @@ void Map::Battle_Screen(Console& g_Console)
 	c.X = 60;
 	g_Console.writeToBuffer(c, "Fight", 0x1A);
 }
+
+void Map::pig(Console& g_Console)
+{
+	Battle_Screen(g_Console);
+	COORD c;
+
+	//tail
+	c.X = 75;
+	c.Y = 9;
+	g_Console.writeToBuffer(c, '\\', 0x1A);
+	c.X = 74;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 73;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+
+	//body
+	for (j = 5; j <= 12; j++)
+	{
+		c.X = 72;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 56; i <= 71; i++)
+	{
+		c.X = i;
+		c.Y = 4;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	for (i = 56; i <= 71; i++)
+	{
+		c.X = i;
+		c.Y = 12;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	c.X = 55;
+	c.Y = 5;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+	c.Y = 6;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+	c.Y = 12;
+	g_Console.writeToBuffer(c, '|', 0x1A);
+
+	//head
+	c.X = 56;
+	c.Y = 6;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 57;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 58;
+	g_Console.writeToBuffer(c, '/', 0x1A);  //right ear
+	c.X = 59;								//right ear
+	g_Console.writeToBuffer(c, '\\', 0x1A); //right ear
+	c.X = 54;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 53;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	c.X = 52;
+	g_Console.writeToBuffer(c, '\\', 0x1A); //left ear
+	c.X = 51;							    //left ear
+	g_Console.writeToBuffer(c, '/', 0x1A);  //left ear
+	for (j = 7; j <= 11; j++)
+	{
+		c.X = 60;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 7; j <= 11; j++)
+	{
+		c.X = 50;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (i = 51; i <= 59; i++)
+	{
+		c.X = i;
+		c.Y = 11;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	//eye
+	c.X = 53;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, ' ', 0xFF); //right eye
+	c.X = 57;
+	g_Console.writeToBuffer(c, ' ', 0xFF); //left eye
+	//nose
+	for (i = 53; i <= 57; i++)
+	{
+		c.X = i;
+		c.Y = 9;
+		g_Console.writeToBuffer(c, '_', 0x1A);
+	}
+	for (j = 10; j <= 11; j++)
+	{
+		c.X = 52;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 10; j <= 11; j++)
+	{
+		c.X = 58;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	//nose hole
+	c.X = 54;
+	c.Y = 10;
+	g_Console.writeToBuffer(c, ' ');
+	c.X = 56;
+	g_Console.writeToBuffer(c, ' ');
+
+	//legs
+	for (j = 13; j <= 15; j++)
+	{
+		c.X = 58;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 13; j <= 15; j++)
+	{
+		c.X = 60;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	c.X = 59;
+	c.Y = 15;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+	for (j = 13; j <= 15; j++)
+	{
+		c.X = 67;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	for (j = 13; j <= 15; j++)
+	{
+		c.X = 69;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|', 0x1A);
+	}
+	c.X = 68;
+	c.Y = 15;
+	g_Console.writeToBuffer(c, '_', 0x1A);
+}
