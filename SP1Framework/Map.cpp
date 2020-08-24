@@ -119,7 +119,7 @@ void Map::Animation(Console& g_Console, int x, int y, char ch)
 	COORD c;
 	c.X = x;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x14);
 }
 
 void Map::House(Console& g_Console, int x, int y)
