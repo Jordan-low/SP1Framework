@@ -31,6 +31,10 @@ SGameChar   g_sGuard;
 SGameChar   g_sGuard2;
 SGameChar   g_sGuard3;
 SGameChar   Pig;
+SGameChar   Guard;
+SGameChar   MutantWasp;
+SGameChar   TutEnemy;
+SGameChar   Raymond;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -49,6 +53,12 @@ Dialogue Dialogues;
 //--------------------------------------------------------------
 void init(void)
 {
+    TutEnemy.setEnemy(1, 1, 10, 2, 'E');
+    Pig.setEnemy(1, 1, 15, 3, 'E');
+    MutantWasp.setEnemy(1, 1, 25, 5, 'E');
+    Guard.setEnemy(1, 1, 40, 15, 'E');
+    Raymond.setEnemy(1, 1, 120, 25, 'E');
+
     g_sChar.Jerry = false;
     g_sChar.Tom = false;
     g_sChar.Charles = false;
