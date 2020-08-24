@@ -16,6 +16,15 @@ void Map::initialise(Console& g_Console)
 			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
 		}
 	}
+	for (j = 25; j < 31; j++)
+	{
+		for (i = 0; i < 80; i++)
+		{
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x00);
+		}
+	}
 }
 
 void Map::printmap(Console& g_Console)
@@ -231,6 +240,34 @@ void Map::townsquare(Console& g_Console)
 
 	Road3(g_Console, 11, 2, 13);
 	Road3(g_Console, 51, 2, 18);
+	COORD c;
+	c.X = 42;
+	c.Y = 16;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+
+	c.X = 65;
+	c.Y = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+
+	c.X = 64;
+	c.Y = 6;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+
+	c.X = 52;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+
+	c.X = 19;
+	c.Y = 9;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+
+	c.X = 12;
+	c.Y = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+
+	c.X = 61;
+	c.Y = 17;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
 }
 
 void Map::orphanage(Console& g_Console)
