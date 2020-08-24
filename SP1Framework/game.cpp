@@ -183,6 +183,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_Path_Area: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
+    case S_OAF: gameplayKBHandler(keyboardEvent);
+        break;
     case S_Orphanage_Animation: gameplayKBHandler(keyboardEvent);
         break;
     case S_Dungeon_Stealth_1: gameplayKBHandler(keyboardEvent);
@@ -223,6 +225,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_Protest_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     case S_Path_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+        break;
+    case S_OAF: gameplayMouseHandler(mouseEvent);
         break;
     case S_Orphanage_Animation: gameplayMouseHandler(mouseEvent);
         break;
@@ -335,6 +339,8 @@ void update(double dt)
     case S_Path_Area: updateGame(); // gameplay logic when we are in the game
         break;
     case S_Path_Area_Animation: Update_Path_Area();
+        break;
+    case S_OAF: updateGame();
         break;
     case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
         break;
@@ -668,7 +674,7 @@ void Update_Protest_Area()
 
     if (g_dProtestTime > 83.6)
     {
-        g_eGameState = S_GAME;
+        g_eGameState = S_Protest_Area;
     }
     processUserInput();
 }
@@ -1209,7 +1215,7 @@ void Update_Path_Area()
 {
     if (g_dPathTime > 4.5)
     {
-        g_eGameState = S_GAME;
+        g_eGameState = S_Path_Area;
     }
     processUserInput();
 }
@@ -1969,7 +1975,7 @@ void moveCharacter()
                 }
             }
         }
-       
+
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -2067,8 +2073,8 @@ void moveCharacter()
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
-            {   
-                
+            {
+
                 // enemy on left side
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.e_cLocation.Y][g_sGuard.e_cLocation.X])
                 {
@@ -2084,7 +2090,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard.e_cLocation.Y][g_sGuard.e_cLocation.X])
                 {
-                   g_sGuard.xLeft = true;
+                    g_sGuard.xLeft = true;
                 }
             }
         }
@@ -2184,7 +2190,7 @@ void moveCharacter()
                     g_sGuard.xDown = true;
                 }
             }
-        } 
+        }
         for (int i = 0; i < 10; i++)
         {
             for (int j = 0; j < 10; j++)
@@ -2275,7 +2281,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - j][g_sChar.m_cLocation.X] == rMap.Grid[g_sGuard.e_cLocation.Y][g_sGuard.e_cLocation.X]) // works?
                 {
-                    
+
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard.e_cLocation.Y][g_sGuard.e_cLocation.X]) // works
                 {
@@ -2395,6 +2401,8 @@ void render()
         break;
     case S_Path_Area: renderMap_Path_Area();
         break;
+    case S_OAF: renderMap_OAF();
+        break;
     case S_Dungeon_Stealth_1: render_DS1();
         break;
     case S_Dungeon_Cell_Animation: Dungeon_Cell_Animation();
@@ -2479,6 +2487,8 @@ void renderGame()
         rMap.Animation(g_Console, 40, 7, 'F');
         rMap.Animation(g_Console, 33, 22, 'B');
 
+        rMap.initialise(g_Console);
+
         rMap.Border(g_Console);
         rMap.orphanageDoor(g_Console);
         rMap.orphanage(g_Console);
@@ -2524,7 +2534,7 @@ void renderGame()
     renderCharacter();
     //Cutscene.orphanageCaretakerCutscene(g_Console);
     */
-    
+
     //renderEnemy();
     //renderMap(); // renders the character into the buffer
     renderCharacter();
@@ -2610,7 +2620,7 @@ void renderMap_Townsquare()
     if ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@') && (g_sChar.Jerry == true) && (g_sChar.Tom == true) && (g_sChar.Bobby == true) && (g_sChar.Harry == true) && (g_sChar.Sam == true) && (g_sChar.Emmanuel == true) && (g_sChar.Charles == true))
     {
         g_dProtestTime = 0.0;
-        g_eGameState = S_Protest_Area;
+        g_eGameState = S_Protest_Area_Animation;
         g_sChar.m_cLocation.X = 40;
         g_sChar.m_cLocation.Y = 15;
     }
@@ -2625,7 +2635,7 @@ void renderMap_Protest_Area()
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
     {
         g_dPathTime = 0.0;
-        g_eGameState = S_Path_Area;
+        g_eGameState = S_Path_Area_Animation;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
@@ -2637,6 +2647,28 @@ void renderMap_Path_Area()
     rMap.Border(g_Console);
     rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_OAF;
+        g_sChar.m_cLocation.X = 41;
+        g_sChar.m_cLocation.Y = 21;
+    }
+}
+
+void renderMap_OAF()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.outside_abandoned_facility(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_OAF;
+        g_sChar.m_cLocation.X = 41;
+        g_sChar.m_cLocation.Y = 21;
+    }
 }
 
 void render_DS1()
@@ -2671,7 +2703,7 @@ void render_DS1()
                 }
             }
         }
-       
+
 
     }
     if (g_sGuard.xRight == true)
@@ -2955,6 +2987,7 @@ void RenderBattleScreen()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.drawGuard(g_Console);
+    rMap.pig(g_Console);
     renderCharacter();  // renders the character into the buffer
 
     //change g_eGameState to inventory
@@ -2962,9 +2995,9 @@ void RenderBattleScreen()
     {
         //g_eGameState = S_Townsquare;
     }
-    
+
     //change g_eGameState to fight 
-    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64) )))
+    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
     {
         //g_bQuitGame = true;
     }

@@ -51,5 +51,10 @@ public:
 	void drawGuard(Console& g_Console);
 	void drawRobert(Console& g_Console);
 
+	void Battle_Wasp(Console& g_Console);
+	void Battle_Raymond(Console& g_Console);
+
+	void pig(Console& g_Console);
+
 };
 
