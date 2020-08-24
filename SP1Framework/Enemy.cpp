@@ -70,11 +70,12 @@ void Enemy::Drop(Console& g_Console)
 	}
 }
 
-void Enemy::Poison(Console& g_Console) 
+bool Enemy::Poison(Console& g_Console) 
 {
 	Chance = (rand() % 100) + 1;
 	if (Chance >= 0 && Chance <= 15)
 	{
+		return true;
 		COORD c;
 		c.X = GetX();
 		c.Y = GetY();
@@ -99,6 +100,10 @@ void Enemy::Poison(Console& g_Console)
 			}
 			break;
 		}
+	}
+	else
+	{
+		return false;
 	}
 }
 

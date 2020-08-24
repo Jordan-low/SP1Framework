@@ -1,30 +1,66 @@
 #include "Andrew's Item.h"
 #include <iostream>
+#include "Enemy.h"
 
 Item::Item()
 {
-	items = new char *[8];
+	name = " ";
 	itemChance = 0;
+	Heal = 0;
+	addDmg = 0;
+	Status = " ";
+	for (int i = 0; i < 2; i++)
+	{
+		Drops[i] = nullptr;
+	}
 }
 
-void Item::setItem(const char i)
+void Item::setItemName(std::string n)
 {
-	*items[8] = i;
+	name = n;
 }
 
-char Item::getItem()
+std::string Item::getItemName()
 {
-	return *items[8];
+	return name;
 }
 
-void Item::Healing()
+void Item::setHealing(int h)
 {
-	const char* Healing[5] = { "Raw Meat",  "Bread", "Burger", "Taco", "Cake" };
+	Heal = 0;
 }
 
-void Item::Defence()
+int Item::getHealing()
 {
-	const char* Defence[2] = { "Stinger", "Guard Armor" };
+	return Heal;
+}
+
+void Item::setDmgBoost(int a)
+{
+	addDmg = a;
+}
+
+int Item::getDmgBoost()
+{
+	return addDmg;
+}
+
+void Item::setNoStatus(std::string s)
+{
+	Status = s;
+}
+
+std::string Item::getNoStatus()
+{
+	return Status;
+}
+
+void Item::itemDrops(Enemy* d)
+{
+	for (int i = 0; i < 2; i++)
+	{
+		Drops[i] = d;
+	}
 }
 
 void Item::Barrel(Console& g_Console)
@@ -48,7 +84,7 @@ void Item::Barrel(Console& g_Console)
 
 void Item::Box(Console& g_Console)
 {
-	itemChance = (rand() % 5) + 1;
+	itemChance = (rand() % 6) + 1;
 	if (itemChance == 1)
 	{
 		COORD c;
@@ -83,6 +119,13 @@ void Item::Box(Console& g_Console)
 		c.X = 5;
 		c.Y = 26;
 		g_Console.writeToBuffer(c, "Cake", 0x0F);
+	}
+	if (itemChance == 6)
+	{
+		COORD c;
+		c.X = 5;
+		c.Y = 26;
+		g_Console.writeToBuffer(c, "Medicine", 0x0F);
 	}
 }
 
