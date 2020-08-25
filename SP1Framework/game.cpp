@@ -2743,7 +2743,11 @@ void render()
         break;
     case S_IAF3_Animation: IAF3_Animation();
         break;
+    case S_Medical_Fight_Animation: Medical_Fight_Animation();
+        break;
     case S_Medical_Facility_Animation: Medical_Facility_Animation();
+        break;
+    case S_Medical_Facility_Part2_Animation: Medical_Facility_Part2_Animation();
         break;
     case S_Dungeon_Stealth3_Animation: Dungeon_Stealth3_Animation();
         break;
