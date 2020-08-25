@@ -3,12 +3,11 @@
 
 Inventory::Inventory()
 {
-	Quantity = 0;
 	for (int i = 0; i < 8; i++)
 	{
 		playerItems[i] = nullptr;
 	}
-	
+	Quantity = 0;
 }
 
 bool Inventory::pickup(Item* add)

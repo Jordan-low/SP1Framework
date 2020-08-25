@@ -138,6 +138,7 @@ void renderMap_DS2();
 void renderMap_DS3();
 void renderMap_Boss_Battle_Room();
 void RenderBattleScreen();
+void render_DS1();
 
 void renderCharacter();     // renders the character into the buffer
 void renderEnemy();
