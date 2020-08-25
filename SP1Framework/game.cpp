@@ -396,7 +396,11 @@ void update(double dt)
         break;
     case S_IAF3_Animation: Update_IAF3();
         break;
+    case S_Medical_Fight_Animation: Update_Medical_Fight_Animation();
+        break;
     case S_Medical_Facility_Animation: Update_Medical_Facility_Animation();
+        break;
+    case  S_Medical_Facility_Part2_Animation: Update_Medical_Facility_Part2_Animation();
         break;
     case S_Dungeon_Stealth3_Animation: Update_Dungeon_Stealth3_Animation();
         break;
