@@ -138,7 +138,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_1;
+    g_eGameState = S_Protest_Area;
 
     g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
@@ -220,17 +220,35 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
-    case S_Townsquare: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
+    case S_Townsquare: gameplayKBHandler(keyboardEvent);
         break;
-    case S_Protest_Area: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
+    case S_Protest_Area: gameplayKBHandler(keyboardEvent);
         break;
-    case S_Path_Area: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
+    case S_Path_Area: gameplayKBHandler(keyboardEvent);
         break;
     case S_OAF: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_IAF1: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_IAF2: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_IAF3: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_IAF4: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_Inside_Medical_Facility: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_Dungeon_Cell: gameplayKBHandler(keyboardEvent);
         break;
     case S_Orphanage_Animation: gameplayKBHandler(keyboardEvent);
         break;
     case S_Dungeon_Stealth_1: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_Dungeon_Stealth_2: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_Dungeon_Stealth_3: gameplayKBHandler(keyboardEvent);
+        break;
+    case S_Boss_Battle_Room: gameplayKBHandler(keyboardEvent);
         break;
     case S_BattleScreen: gameplayKBHandler(keyboardEvent);
         break;
@@ -263,17 +281,35 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
-    case S_Townsquare: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+    case S_Townsquare: gameplayMouseHandler(mouseEvent);
         break;
-    case S_Protest_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+    case S_Protest_Area: gameplayMouseHandler(mouseEvent);
         break;
-    case S_Path_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
+    case S_Path_Area: gameplayMouseHandler(mouseEvent);
         break;
     case S_OAF: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_IAF1: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_IAF2: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_IAF3: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_IAF4: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_Inside_Medical_Facility: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_Dungeon_Cell: gameplayMouseHandler(mouseEvent);
         break;
     case S_Orphanage_Animation: gameplayMouseHandler(mouseEvent);
         break;
     case S_Dungeon_Stealth_1: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_Dungeon_Stealth_2: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_Dungeon_Stealth_3: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_Boss_Battle_Room: gameplayMouseHandler(mouseEvent);
         break;
     case S_BattleScreen: gameplayMouseHandler(mouseEvent);
         break;
@@ -366,6 +402,7 @@ void update(double dt)
     resetTime += dt;
     playerDMGTime += dt;
     enemyDMGTime += dt;
+
     switch (g_eGameState)
     {
     case S_MENU_UI: Update_Menu();
@@ -376,23 +413,43 @@ void update(double dt)
         break;
     case S_Orphanage_Children_Animation: Update_Orphanage_Animation2();
         break;
-    case S_GAME: updateGame(); // gameplay logic when we are in the game
+    case S_GAME: updateGame();
         break;
-    case S_Townsquare: updateGame(); // gameplay logic when we are in the game
+    //Areas of the game
+    case S_Townsquare: updateGame();
         break;
-    case S_Protest_Area: updateGame(); // gameplay logic when we are in the game
+    case S_Protest_Area: updateGame();
         break;
-    case S_Protest_Area_Animation: Update_Protest_Area();
-        break;
-    case S_Path_Area: updateGame(); // gameplay logic when we are in the game
-        break;
-    case S_Path_Area_Animation: Update_Path_Area();
+    case S_Path_Area: updateGame();
         break;
     case S_OAF: updateGame();
         break;
-    case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
+    case S_IAF1: updateGame();
+        break;
+    case S_IAF2: updateGame();
+        break;
+    case S_IAF3: updateGame();
+        break;
+    case S_IAF4: updateGame();
+        break;
+    case S_Inside_Medical_Facility: updateGame();
+        break;
+    case S_Dungeon_Cell: updateGame();
         break;
     case S_Dungeon_Stealth_1: updateGame();
+        break;
+    case S_Dungeon_Stealth_2: updateGame();
+        break;
+    case S_Dungeon_Stealth_3: updateGame();
+        break;
+    case S_Boss_Battle_Room: updateGame();
+        break;
+
+
+    //Animations
+    case S_Path_Area_Animation: Update_Path_Area();
+        break;
+    case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
         break;
     case S_IAF3_Animation: Update_IAF3();
         break;
@@ -1778,7 +1835,6 @@ void Update_Medical_Facility_Part2_Animation()
     }
     processUserInput();
 }
-
 void Medical_Facility_Part2_Animation()
 //gg
 {
@@ -1876,7 +1932,6 @@ void Medical_Facility_Part2_Animation()
         }
     }
 }
-
 
 //HAVE NOT PUT DTTIME INTO RENDERED AREA
 void Update_Dungeon_Stealth3_Animation()
@@ -2719,6 +2774,8 @@ void render()
     // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
+    case S_GAME: renderGame();
+        break;
     case S_MENU_UI: render_Main_Menu();
         break;
     case S_SPLASHSCREEN: renderSplashScreen();
@@ -2727,10 +2784,8 @@ void render()
         break;
     case S_Orphanage_Children_Animation: Orphanage_Children_Animation();
         break;
-    case S_Protest_Area_Animation: Protest_Area_Animation();
-        break;
-    case S_GAME: renderGame();
-        break;
+
+        //Areas of the game
     case S_Townsquare: renderMap_Townsquare();
         break;
     case S_Protest_Area: renderMap_Protest_Area();
@@ -2739,7 +2794,29 @@ void render()
         break;
     case S_OAF: renderMap_OAF();
         break;
-    case S_Dungeon_Stealth_1: render_DS1();
+    case S_IAF1: renderMap_IAF1();
+        break;
+    case S_IAF2: renderMap_IAF2();
+        break;
+    case S_IAF3: renderMap_IAF3();
+        break;
+    case S_IAF4: renderMap_IAF4();
+        break;
+    case S_Inside_Medical_Facility: renderMap_Inside_Medical_Facility();
+        break;
+    case S_Dungeon_Cell: renderMap_Dungeon_Cell();
+        break;
+    case S_Dungeon_Stealth_1: renderMap_DS1();
+        break;
+    case S_Dungeon_Stealth_2: renderMap_DS2();
+        break;
+    case S_Dungeon_Stealth_3: renderMap_DS3();
+        break;
+    case S_Boss_Battle_Room: renderMap_Boss_Battle_Room();
+        break;
+
+    //Animations
+    case S_Protest_Area_Animation: Protest_Area_Animation();
         break;
     case S_Dungeon_Cell_Animation: Dungeon_Cell_Animation();
         break;
@@ -2971,10 +3048,17 @@ void renderMap_Protest_Area()
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
     renderCharacter();  // renders the character into the buffer
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
         g_dPathTime = 0.0;
         g_eGameState = S_Path_Area_Animation;
+        g_sChar.m_cLocation.X = 41;
+        g_sChar.m_cLocation.Y = 21;
+    }
+    if (g_sChar.m_cLocation.Y == 62 && g_sChar.m_cLocation.X == 4)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
@@ -2986,31 +3070,174 @@ void renderMap_Path_Area()
     rMap.Border(g_Console);
     rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+
+    //to OAF area
+    if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44 || g_sChar.m_cLocation.X == 45))
     {
         g_dPathTime = 0.0;
         g_eGameState = S_OAF;
-        g_sChar.m_cLocation.X = 41;
+        g_sChar.m_cLocation.X = 7;
         g_sChar.m_cLocation.Y = 21;
+    }
+
+    //to inside medical facility
+    if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 77)
+    {
+        g_eGameState = S_Inside_Medical_Facility;
+        g_sChar.m_cLocation.X = 3;
+        g_sChar.m_cLocation.Y = 12;
+    }
+
+    //to protest area
+    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44 || g_sChar.m_cLocation.X == 45))
+    {
+        g_eGameState = S_Protest_Area;
+        g_sChar.m_cLocation.X = 72;
+        g_sChar.m_cLocation.Y = 3;
     }
 }
 
+//change this gamestate
 void renderMap_OAF()
 {
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.outside_abandoned_facility(g_Console);
     renderCharacter();  // renders the character into the buffer
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
+    //back to path area
+    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8 || g_sChar.m_cLocation.X == 9 || g_sChar.m_cLocation.X == 10 || g_sChar.m_cLocation.X == 11))
     {
         g_dPathTime = 0.0;
-        g_eGameState = S_OAF;
+        g_eGameState = S_Path_Area;
+        g_sChar.m_cLocation.X = 41;
+        g_sChar.m_cLocation.Y = 3;
+    }
+    //to IAF1
+    if ((g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.Y == 19 || g_sChar.m_cLocation.Y == 20) && g_sChar.m_cLocation.X == 58)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_IAF1;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
 }
 
-void render_DS1()
+void renderMap_IAF1()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.insideAbandonedFacility1(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    //IAF2
+    if ((g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.Y == 19 || g_sChar.m_cLocation.Y == 20 || g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 2)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_IAF2;
+        g_sChar.m_cLocation.X = 75;
+        g_sChar.m_cLocation.Y = 13;
+    }
+    //IAF4
+    if ((g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.Y == 19 || g_sChar.m_cLocation.Y == 20 || g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 77)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_IAF4;
+        g_sChar.m_cLocation.X = 3;
+        g_sChar.m_cLocation.Y = 12;
+    }
+    //OAF
+    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44))
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_OAF;
+        g_sChar.m_cLocation.X = 57;
+        g_sChar.m_cLocation.Y = 18;
+    }
+}
+
+void renderMap_IAF2()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.insideAbandonedFacility2(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    //IAF1
+    if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.Y == 15) && g_sChar.m_cLocation.X == 76)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_IAF1;
+        g_sChar.m_cLocation.X = 3;
+        g_sChar.m_cLocation.Y = 20;
+    }
+    //IA3
+    if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 32 || g_sChar.m_cLocation.X == 33 || g_sChar.m_cLocation.X == 34 || g_sChar.m_cLocation.X == 35 || g_sChar.m_cLocation.X == 36 || g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44))
+    {
+        g_dIAF3Time = 0.0;
+        g_eGameState = S_IAF3_Animation;
+        g_sChar.m_cLocation.X = 40;
+        g_sChar.m_cLocation.Y = 21;
+    }
+}
+void renderMap_IAF3()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.insideAbandonedFacility3(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    //Back to IAF 2
+    if ((g_sChar.m_cLocation.Y == 22) && (g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41))
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_IAF2;
+        g_sChar.m_cLocation.X = 38;
+        g_sChar.m_cLocation.Y = 3;
+    }
+}
+void renderMap_IAF4()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.insideAbandonedFacility4(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    //Back to IAF1
+    if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_IAF1;
+        g_sChar.m_cLocation.X = 76;
+        g_sChar.m_cLocation.Y = 20;
+    }
+}
+void renderMap_Inside_Medical_Facility()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.insideMedicalFacility(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    if ((g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Path_Area;
+        g_sChar.m_cLocation.X = 76;
+        g_sChar.m_cLocation.Y = 12;
+    }
+}
+//change this gamestate
+void renderMap_Dungeon_Cell()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.dungeon_cell(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    //to DS1
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Stealth_1;
+        g_sChar.m_cLocation.X = 5;
+        g_sChar.m_cLocation.Y = 21;
+    }
+}
+void renderMap_DS1()
 {
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -3020,7 +3247,23 @@ void render_DS1()
     //g_sChar.m_cLocation.Y = 18;
     //g_sChar.m_cLocation.X = 4;
     renderEnemy();
+    //To DS2
+    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 11 || g_sChar.m_cLocation.X == 12 || g_sChar.m_cLocation.X == 13 || g_sChar.m_cLocation.X == 14 || g_sChar.m_cLocation.X == 15 || g_sChar.m_cLocation.X == 16 || g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18))
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Stealth_2;
+        g_sChar.m_cLocation.X = 5;
+        g_sChar.m_cLocation.Y = 21;
+    }
 
+    //to Dungeon Cell
+    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8 || g_sChar.m_cLocation.X == 9))
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Cell;
+        g_sChar.m_cLocation.X = 6;
+        g_sChar.m_cLocation.Y = 3;
+    }
     if (g_sChar.unlockDoorDS1 == true)
     {
         COORD c;
@@ -3346,6 +3589,77 @@ void render_DS1()
         g_sChar.m_cLocation.X = 37;
     }
 
+}
+
+void renderMap_DS2()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.dungeon_stealth2(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    //back to DS1
+    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8))
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Stealth_1;
+        g_sChar.m_cLocation.X = 14;
+        g_sChar.m_cLocation.Y = 21;
+    }
+    //To DS3
+    if (g_sChar.m_cLocation.Y == 18 && (g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18 || g_sChar.m_cLocation.X == 19 || g_sChar.m_cLocation.X == 20 || g_sChar.m_cLocation.X == 21 || g_sChar.m_cLocation.X == 22 || g_sChar.m_cLocation.X == 23 || g_sChar.m_cLocation.X == 24 || g_sChar.m_cLocation.X == 25 || g_sChar.m_cLocation.X == 26))
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Stealth_3;
+        g_sChar.m_cLocation.X = 5;
+        g_sChar.m_cLocation.Y = 21;
+    }
+}
+
+void renderMap_DS3()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.dungeon_stealth3(g_Console);
+    renderCharacter();  // renders the character into the buffer
+    //back to DS2
+    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7))
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Stealth_2;
+        g_sChar.m_cLocation.X = 21;
+        g_sChar.m_cLocation.Y = 19;
+    }
+    //trigger animation
+    /*if ((g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 57)
+    {
+        g_dDungeonTime = 0.0;
+        //must do count here, must get character to move after animation
+        g_eGameState = S_Dungeon_Stealth3_Animation;
+        g_sChar.m_cLocation.X = 57;
+        g_sChar.m_cLocation.Y = 22;
+    }*/
+    if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 5)
+    {
+        //ask if user wants to enter battle area
+        g_eGameState = S_Boss_Room_Animation;
+        g_sChar.m_cLocation.X = 40;
+        g_sChar.m_cLocation.Y = 21;
+    }
+    if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 60 || g_sChar.m_cLocation.X == 61 || g_sChar.m_cLocation.X == 62 || g_sChar.m_cLocation.X == 63 || g_sChar.m_cLocation.X == 64 || g_sChar.m_cLocation.X == 65 || g_sChar.m_cLocation.X == 66 || g_sChar.m_cLocation.X == 67 || g_sChar.m_cLocation.X == 68 || g_sChar.m_cLocation.X == 69 || g_sChar.m_cLocation.X == 70 || g_sChar.m_cLocation.X == 71 || g_sChar.m_cLocation.X == 72 || g_sChar.m_cLocation.X == 73 || g_sChar.m_cLocation.X == 74 || g_sChar.m_cLocation.X == 75 || g_sChar.m_cLocation.X == 76 || g_sChar.m_cLocation.X == 77))
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Protest_Area;
+        g_sChar.m_cLocation.X = 63;
+        g_sChar.m_cLocation.Y = 4;
+    }
+}
+
+void renderMap_Boss_Battle_Room()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.boss_room(g_Console);
+    renderCharacter();  // renders the character into the buffer
 }
 
 void RenderBattleScreen()
