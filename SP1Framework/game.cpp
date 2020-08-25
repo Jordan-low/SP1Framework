@@ -31,14 +31,17 @@ SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 SGameChar   g_sChar;
+SGameChar   g_sTutEnemy;
+SGameChar   g_sPig;
+SGameChar   g_sPig2; 
+SGameChar   g_sPig3;
 SGameChar   g_sGuard;
 SGameChar   g_sGuard2;
 SGameChar   g_sGuard3;
-SGameChar   Pig;
-SGameChar   Guard;
-SGameChar   MutantWasp;
-SGameChar   TutEnemy;
-SGameChar   Raymond;
+SGameChar   g_sMutantWasp;
+SGameChar   g_sMutantWasp2;
+SGameChar   g_sMutantWasp3;
+SGameChar   g_sRaymond;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -60,17 +63,24 @@ void init(void)
 {
     g_sChar.startTimer = true;
     g_sChar.resetTimer = false;
-    g_sChar.SetH(19);
+    g_sChar.SetH(50);
     g_sChar.SetD(10);
     g_sGuard.SetD(5);
     g_sGuard.SetH(20);
-    Inventory PlayerInv;
-    Item* Item1 = new Item;
-    TutEnemy.setEnemy(1, 1, 10, 2, 'E');
-    Pig.setEnemy(1, 1, 15, 3, 'E');
-    MutantWasp.setEnemy(1, 1, 25, 5, 'E');
-    Guard.setEnemy(1, 1, 40, 15, 'E');
-    Raymond.setEnemy(1, 1, 120, 25, 'E');
+    g_sPig.SetH(15);
+    g_sPig.SetD(3);
+    g_sTutEnemy.SetH(10);
+    g_sTutEnemy.SetD(2);
+    g_sMutantWasp.SetH(25);
+    g_sMutantWasp.SetD(5);
+    g_sChar.Poison = false;
+    g_sRaymond.SetH(120);
+    g_sRaymond.SetD(25);
+    /*g_sTutEnemy.setEnemy(10, 2, 'E');
+    g_sPig.setEnemy(15, 3, 'E');
+    g_sMutantWasp.setEnemy(25, 5, 'E');
+    g_sGuard.setEnemy(40, 15, 'E');
+    g_sRaymond.setEnemy(120, 25, 'E');*/
 
     g_sChar.Jerry = false;
     g_sChar.Tom = false;
@@ -80,7 +90,6 @@ void init(void)
     g_sChar.Harry = false;
     g_sChar.Sam = false;
 
-    Pig.SetD(5);
     g_sGuard.xLeft = false;
     g_sGuard.xRight = false;
     g_sGuard.xDown = false;
@@ -2998,30 +3007,58 @@ void render_DS1()
 
 void RenderBattleScreen()
 {
-
     Inventory PlayerInv;
-    Item RawMeat;
-
-    RawMeat.setItemName("Raw Meat");
-
-    Item* item1 = new Item;
-    if (PlayerInv.pickup(item1))
-    {
-        COORD c;
-        c.X = 5;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "Item Added", 100);
-    }
-    else {
-        COORD c;
-        c.X = 5;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "Not enough space.", 100);
-    }
     COORD c;
-    c.X = 5;
-    c.Y = 27;
-    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+    int UpdateDmg = 0;
+    int UpdateHealth = 0;
+    if (g_sTutEnemy.GetH() == 0 || g_sMutantWasp.GetH() == 0)
+    {
+        Item Stinger;
+
+        Stinger.setItemName("Stinger");
+
+        Item* item1 = new Item;
+        if (PlayerInv.pickup(item1))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item Added", 100);
+            Stinger.getItemName();
+        }
+        else {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Not enough space.", 100);
+        }
+
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Stinger"), 100);
+    }
+    else if (g_sPig.GetH() == 0)
+    {
+        Item RawMeat;
+
+        RawMeat.setItemName("Raw Meat");
+
+        Item* item2 = new Item;
+        if (PlayerInv.pickup(item2))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item Added", 100);
+            RawMeat.getItemName();
+        }
+        else {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Not enough space.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+    }
+    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.drawGuard(g_Console);
@@ -3044,6 +3081,137 @@ void RenderBattleScreen()
     //change g_eGameState to inventory
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 15) || (g_mouseEvent.mousePosition.X == 16) || (g_mouseEvent.mousePosition.X == 17) || (g_mouseEvent.mousePosition.X == 18) || (g_mouseEvent.mousePosition.X == 19) || (g_mouseEvent.mousePosition.X == 20) || (g_mouseEvent.mousePosition.X == 21) || (g_mouseEvent.mousePosition.X == 22) || (g_mouseEvent.mousePosition.X == 23) || (g_mouseEvent.mousePosition.X == 24) || (g_mouseEvent.mousePosition.X == 25))))
     {
+        Item* item1; 
+        Item* item2; 
+        Item* item3;
+        if (PlayerInv.Consumed(item1))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 5;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Stinger"), 100);
+
+        if (PlayerInv.Consumed(item2))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateHealth = g_sChar.GetH() + 5;
+            g_sChar.SetH(UpdateHealth);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+       
         //g_eGameState = S_Townsquare;
     }
     if (g_sChar.startTimer == true)
@@ -3061,6 +3229,29 @@ void RenderBattleScreen()
             g_sChar.SetH(charhealth);
             g_sGuard.SetH(guardhealth);
 
+            if (g_sGuard.GetH() == 0)
+            {
+                Item GuardArmor;
+
+                GuardArmor.setItemName("Guard Armor");
+
+                Item* item3 = new Item;
+                if (PlayerInv.pickup(item3))
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "Item Added", 100);
+                }
+                else {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "Not enough space.", 100);
+                }
+
+                c.X = 5;
+                c.Y = 27;
+                g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+            }
 
             if (g_sChar.GetH() < 0)
             {
