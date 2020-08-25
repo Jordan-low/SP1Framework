@@ -1766,6 +1766,113 @@ void Medical_Facility_Animation()
     }
 }
 
+void Update_Medical_Facility_Part2_Animation()
+{
+    if (g_dMedical2Time > 15.9)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+
+void Medical_Facility_Part2_Animation()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.insideMedicalFacility(g_Console);
+    COORD c;
+    renderCharacter();
+    c.X = 5;
+    c.Y = 26;
+    Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
+    Cutscene.drawgrid(g_Console, 34, 13, 'O'); //Ell
+
+    Cutscene.drawgrid(g_Console, 32, 11, 'E');
+    Cutscene.drawgrid(g_Console, 32, 12, 'E');
+    Cutscene.drawgrid(g_Console, 32, 13, 'E');
+    Cutscene.drawgrid(g_Console, 32, 14, 'E');
+
+    Cutscene.drawgrid(g_Console, 36, 12, 'O'); //Patient 1
+
+    if (g_dMedical2Time > 0.6)
+    {
+        if (g_dMedical2Time > 0.9)
+        {
+            g_Console.writeToBuffer(c, "Ell: More came in during our fight!", 0x0F, 100);
+            if (g_dMedical2Time > 3.9)
+            {
+                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                g_Console.writeToBuffer(c, "Ell: There's still someone here! We have to protect him!", 0x0F, 100);
+                if (g_dMedical2Time > 6.9)
+                {
+                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                    g_Console.writeToBuffer(c, "Patient 1: I'm sorry!", 0x0F, 100);
+                    if (g_dMedical2Time > 9.9)
+                    {
+                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                        //oofus doofus robert gets pushed
+                        Cutscene.cleargrid(g_Console, 36, 12);
+                        Cutscene.drawgrid(g_Console, 35, 12, 'O');
+                        if (g_dMedical2Time > 10.2)
+                        {
+                            Cutscene.cleargrid(g_Console, 34, 12);
+                            Cutscene.drawgrid(g_Console, 33, 12, 'H');
+                            if (g_dMedical2Time > 10.5)
+                            {
+                                //run patient run
+                                Cutscene.cleargrid(g_Console, 35, 12);
+                                Cutscene.drawgrid(g_Console, 31, 10, 'O');
+                                if (g_dMedical2Time > 10.8)
+                                {
+                                    Cutscene.cleargrid(g_Console, 31, 10);
+                                    Cutscene.drawgrid(g_Console, 27, 7, 'O');
+                                    if (g_dMedical2Time > 11.1)
+                                    {
+                                        Cutscene.cleargrid(g_Console, 27, 7);
+                                        Cutscene.drawgrid(g_Console, 23, 4, 'O');
+                                        if (g_dMedical2Time > 11.4)
+                                        {
+                                            Cutscene.cleargrid(g_Console, 23, 4);
+                                            Cutscene.drawgrid(g_Console, 20, 4, 'O');
+                                            if (g_dMedical2Time > 11.7)
+                                            {
+                                                Cutscene.cleargrid(g_Console, 20, 4);
+                                                Cutscene.drawgrid(g_Console, 16, 7, 'O');
+                                                if (g_dMedical2Time > 12.0)
+                                                {
+                                                    Cutscene.cleargrid(g_Console, 16, 7);
+                                                    Cutscene.drawgrid(g_Console, 12, 9, 'O');
+                                                    if (g_dMedical2Time > 12.3)
+                                                    {
+                                                        Cutscene.cleargrid(g_Console, 12, 9);
+                                                        Cutscene.drawgrid(g_Console, 8, 9, 'O');
+                                                        if (g_dMedical2Time > 12.6)
+                                                        {
+                                                            Cutscene.cleargrid(g_Console, 8, 9);
+                                                            Cutscene.drawgrid(g_Console, 3, 12, 'O');
+                                                            if (g_dMedical2Time > 12.9)
+                                                            {
+                                                                Cutscene.cleargrid(g_Console, 3, 11);
+                                                                g_Console.writeToBuffer(c, "Ell: Robert!", 0x0F, 100);
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 //HAVE NOT PUT DTTIME INTO RENDERED AREA
 void Update_Dungeon_Stealth3_Animation()
 {
