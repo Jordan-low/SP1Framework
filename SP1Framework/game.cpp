@@ -1776,6 +1776,7 @@ void Update_Medical_Facility_Part2_Animation()
 }
 
 void Medical_Facility_Part2_Animation()
+//gg
 {
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
