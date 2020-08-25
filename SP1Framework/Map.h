@@ -40,6 +40,7 @@ public:
 	void Road_Equals(Console& g_Console, int x, int y, int count);
 
 	void Animation(Console& g_Console, int x, int y, char ch);
+	void drawAnimation(Console& g_Console, int x, int y, char ch);
 	void Animate(Console& g_Console);
 	void ClearAnimation(Console& g_Console, int x, int y);
 

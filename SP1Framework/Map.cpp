@@ -16,6 +16,7 @@ void Map::initialise(Console& g_Console)
 			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
 		}
 	}
+	
 	for (j = 25; j < 31; j++)
 	{
 		for (i = 0; i < 80; i++)
@@ -25,6 +26,7 @@ void Map::initialise(Console& g_Console)
 			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x00);
 		}
 	}
+	
 }
 
 void Map::printmap(Console& g_Console)
@@ -66,7 +68,6 @@ void Map::printmap(Console& g_Console)
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x1A);
 	}
 
-	/*
 	for (i = 1; i < 79; i++)
 	{
 		c.X = i;
@@ -86,7 +87,7 @@ void Map::printmap(Console& g_Console)
 		}
 
 	}
-	*/
+	
 }
 
 void Map::Border(Console& g_Console)
@@ -120,6 +121,14 @@ void Map::Animation(Console& g_Console, int x, int y, char ch)
 	c.X = x;
 	c.Y = y;
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x14);
+}
+
+void Map::drawAnimation(Console& g_Console, int x, int y, char ch)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x1A);
 }
 
 void Map::House(Console& g_Console, int x, int y)
