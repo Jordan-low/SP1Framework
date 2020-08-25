@@ -20,27 +20,30 @@ double g_dDungeonTime;
 double g_dPathTime;
 double g_dIAF3Time;
 double  g_dDeltaTime;
-double g_dMedicalFightTime;
 double g_dMedicalTime;
-double g_dMedical2Time;
 double g_dDungeonStealth3Time;
 double g_dBossTime;
 double startTime;
 double resetTime;
+double playerDMGTime;
+double enemyDMGTime;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 SGameChar   g_sChar;
+SGameChar   g_sTutEnemy;
+SGameChar   g_sPig;
+SGameChar   g_sPig2;
+SGameChar   g_sPig3;
 SGameChar   g_sGuard;
 SGameChar   g_sGuard2;
 SGameChar   g_sGuard3;
-SGameChar   Pig;
-SGameChar   Guard;
-SGameChar   MutantWasp;
-SGameChar   TutEnemy;
-SGameChar   Raymond;
+SGameChar   g_sMutantWasp;
+SGameChar   g_sMutantWasp2;
+SGameChar   g_sMutantWasp3;
+SGameChar   g_sRaymond;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -60,19 +63,43 @@ Enemy Guardz;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sChar.count = 0;
+    g_sChar.unlockDoorDS1 = false;
+    g_sChar.showEnemyDMG = false;
+    g_sChar.showPlayerDMG = false;
     g_sChar.startTimer = true;
     g_sChar.resetTimer = false;
-    g_sChar.SetH(19);
-    g_sChar.SetD(10);
-    g_sGuard.SetD(5);
-    g_sGuard.SetH(20);
+    g_sChar.SetH(50);
+    g_sChar.SetD(5);
+    g_sGuard.SetD(15);
+    g_sGuard.SetH(40);
     Inventory PlayerInv;
     Item* Item1 = new Item;
+    /*
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
     Pig.setEnemy(1, 1, 15, 3, 'E');
     MutantWasp.setEnemy(1, 1, 25, 5, 'E');
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
+    */
+    g_sChar.SetH(50);
+    g_sChar.SetD(5);
+    g_sGuard.SetD(15);
+    g_sGuard.SetH(40);
+    g_sPig.SetH(15);
+    g_sPig.SetD(3);
+    g_sTutEnemy.SetH(10);
+    g_sTutEnemy.SetD(2);
+    g_sMutantWasp.SetH(25);
+    g_sMutantWasp.SetD(5);
+    g_sChar.Poison = false;
+    g_sRaymond.SetH(120);
+    g_sRaymond.SetD(25);
+    /*g_sTutEnemy.setEnemy(10, 2, 'E');
+    g_sPig.setEnemy(15, 3, 'E');
+    g_sMutantWasp.setEnemy(25, 5, 'E');
+    g_sGuard.setEnemy(40, 15, 'E');
+    g_sRaymond.setEnemy(120, 25, 'E');*/
 
     g_sChar.Jerry = false;
     g_sChar.Tom = false;
@@ -82,7 +109,6 @@ void init(void)
     g_sChar.Harry = false;
     g_sChar.Sam = false;
 
-    Pig.SetD(5);
     g_sGuard.xLeft = false;
     g_sGuard.xRight = false;
     g_sGuard.xDown = false;
@@ -110,13 +136,9 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    <<<<<< < HEAD
-        g_eGameState = S_Medical_Facility_Part2_Animation;
-    ====== =
-        g_eGameState = S_Dungeon_Stealth_2;
-    >>>>>> > 812dbdc66f26d31b4a225c0c36008aa0a7859462
+    g_eGameState = S_Dungeon_Stealth_1;
 
-        g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
 
@@ -196,35 +218,17 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
-    case S_Townsquare: gameplayKBHandler(keyboardEvent);
+    case S_Townsquare: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
-    case S_Protest_Area: gameplayKBHandler(keyboardEvent);
+    case S_Protest_Area: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
-    case S_Path_Area: gameplayKBHandler(keyboardEvent);
+    case S_Path_Area: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
     case S_OAF: gameplayKBHandler(keyboardEvent);
-        break;
-    case S_IAF1: gameplayKBHandler(keyboardEvent);
-        break;
-    case S_IAF2: gameplayKBHandler(keyboardEvent);
-        break;
-    case S_IAF3: gameplayKBHandler(keyboardEvent);
-        break;
-    case S_IAF4: gameplayKBHandler(keyboardEvent);
-        break;
-    case S_Inside_Medical_Facility: gameplayKBHandler(keyboardEvent);
-        break;
-    case S_Dungeon_Cell: gameplayKBHandler(keyboardEvent);
         break;
     case S_Orphanage_Animation: gameplayKBHandler(keyboardEvent);
         break;
     case S_Dungeon_Stealth_1: gameplayKBHandler(keyboardEvent);
-        break;
-    case S_Dungeon_Stealth_2: gameplayKBHandler(keyboardEvent);
-        break;
-    case S_Dungeon_Stealth_3: gameplayKBHandler(keyboardEvent);
-        break;
-    case S_Boss_Battle_Room: gameplayKBHandler(keyboardEvent);
         break;
     case S_BattleScreen: gameplayKBHandler(keyboardEvent);
         break;
@@ -257,35 +261,17 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
-    case S_Townsquare: gameplayMouseHandler(mouseEvent);
+    case S_Townsquare: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
-    case S_Protest_Area: gameplayMouseHandler(mouseEvent);
+    case S_Protest_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
-    case S_Path_Area: gameplayMouseHandler(mouseEvent);
+    case S_Path_Area: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     case S_OAF: gameplayMouseHandler(mouseEvent);
-        break;
-    case S_IAF1: gameplayMouseHandler(mouseEvent);
-        break;
-    case S_IAF2: gameplayMouseHandler(mouseEvent);
-        break;
-    case S_IAF3: gameplayMouseHandler(mouseEvent);
-        break;
-    case S_IAF4: gameplayMouseHandler(mouseEvent);
-        break;
-    case S_Inside_Medical_Facility: gameplayMouseHandler(mouseEvent);
-        break;
-    case S_Dungeon_Cell: gameplayMouseHandler(mouseEvent);
         break;
     case S_Orphanage_Animation: gameplayMouseHandler(mouseEvent);
         break;
     case S_Dungeon_Stealth_1: gameplayMouseHandler(mouseEvent);
-        break;
-    case S_Dungeon_Stealth_2: gameplayMouseHandler(mouseEvent);
-        break;
-    case S_Dungeon_Stealth_3: gameplayMouseHandler(mouseEvent);
-        break;
-    case S_Boss_Battle_Room: gameplayMouseHandler(mouseEvent);
         break;
     case S_BattleScreen: gameplayMouseHandler(mouseEvent);
         break;
@@ -369,14 +355,13 @@ void update(double dt)
     g_dDungeonTime += dt;
     g_dPathTime += dt;
     g_dIAF3Time += dt;
-    g_dMedicalFightTime += dt;
     g_dMedicalTime += dt;
-    g_dMedical2Time += dt;
     g_dDungeonStealth3Time += dt;
     g_dBossTime += dt;
-
     startTime += dt;
     resetTime += dt;
+    playerDMGTime += dt;
+    enemyDMGTime += dt;
     switch (g_eGameState)
     {
     case S_MENU_UI: Update_Menu();
@@ -387,52 +372,27 @@ void update(double dt)
         break;
     case S_Orphanage_Children_Animation: Update_Orphanage_Animation2();
         break;
-    case S_GAME: updateGame();
+    case S_GAME: updateGame(); // gameplay logic when we are in the game
         break;
-        //Areas of the game
-    case S_Townsquare: updateGame();
+    case S_Townsquare: updateGame(); // gameplay logic when we are in the game
         break;
-    case S_Protest_Area: updateGame();
+    case S_Protest_Area: updateGame(); // gameplay logic when we are in the game
         break;
-    case S_Path_Area: updateGame();
-        break;
-    case S_OAF: updateGame();
-        break;
-    case S_IAF1: updateGame();
-        break;
-    case S_IAF2: updateGame();
-        break;
-    case S_IAF3: updateGame();
-        break;
-    case S_IAF4: updateGame();
-        break;
-    case S_Inside_Medical_Facility: updateGame();
-        break;
-    case S_Dungeon_Cell: updateGame();
-        break;
-    case S_Dungeon_Stealth_1: updateGame();
-        break;
-    case S_Dungeon_Stealth_2: updateGame();
-        break;
-    case S_Dungeon_Stealth_3: updateGame();
-        break;
-    case S_Boss_Battle_Room: updateGame();
-        break;
-
-        //Animations
     case S_Protest_Area_Animation: Update_Protest_Area();
+        break;
+    case S_Path_Area: updateGame(); // gameplay logic when we are in the game
         break;
     case S_Path_Area_Animation: Update_Path_Area();
         break;
+    case S_OAF: updateGame();
+        break;
     case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
+        break;
+    case S_Dungeon_Stealth_1: updateGame();
         break;
     case S_IAF3_Animation: Update_IAF3();
         break;
-    case S_Medical_Fight_Animation: Update_Medical_Fight_Animation();
-        break;
     case S_Medical_Facility_Animation: Update_Medical_Facility_Animation();
-        break;
-    case S_Medical_Facility_Part2_Animation: Update_Medical_Facility_Part2_Animation();
         break;
     case S_Dungeon_Stealth3_Animation: Update_Dungeon_Stealth3_Animation();
         break;
@@ -551,7 +511,7 @@ void Update_Orphanage_Animation2()
 void Orphanage_Children_Animation()
 {
     rMap.initialise(g_Console);
-    rMap.Animation(g_Console, 33, 22, 'B');
+    rMap.drawAnimation(g_Console, 33, 22, 'B');
     rMap.Animation(g_Console, 11, 7, 'O');
     rMap.Animation(g_Console, 9, 7, 'O');
     rMap.Animation(g_Console, 13, 7, 'O');
@@ -840,7 +800,7 @@ void Protest_Area_Animation()
                                                                     Cutscene.drawgrid(g_Console, 39, 8, 'O');
                                                                     if (g_dProtestTime > 5.1)
                                                                     {
-                                                                        //g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                                                                        //g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
                                                                         g_Console.writeToBuffer(c, "Raymond: Hello citizens of Harmonis,", 0x0F, 100);
                                                                         if (g_dProtestTime > 11.0)
                                                                         {
@@ -1078,7 +1038,7 @@ void Update_Dungeon_Cell()
 {
     if (g_dDungeonTime > 38.7)
     {
-        g_eGameState = S_Dungeon_Cell;
+        g_eGameState = S_GAME;
     }
     processUserInput();
 }
@@ -1105,18 +1065,18 @@ void Dungeon_Cell_Animation()
             g_Console.writeToBuffer(c, "Robert: ...Where am I?", 0x0F, 100);
             if (g_dDungeonTime > 3.6)
             {
-                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
                 g_Console.writeToBuffer(c, "Robert: Wasn't I at the medical facility?", 0x0F, 100);
                 if (g_dDungeonTime > 7.6)
                 {
-                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
                     Cutscene.drawgrid(g_Console, 41, 12, '!');
                     if (g_dDungeonTime > 8.0)
                     {
                         g_Console.writeToBuffer(c, "Robert: ! Is that Ell?", 0x0F, 100);
                         if (g_dDungeonTime > 8.3)
                         {
-                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
                             Cutscene.cleargrid(g_Console, 41, 12);
                             Cutscene.cleargrid(g_Console, 4, 1);
                             Cutscene.drawgrid(g_Console, 4, 3, 'O');
@@ -1185,23 +1145,23 @@ void Dungeon_Cell_Animation()
                                                                                 g_Console.writeToBuffer(c, "Ell: You're finally awake!!", 0x0F, 100);
                                                                                 if (g_dDungeonTime > 15.2)
                                                                                 {
-                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                                                                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
                                                                                     g_Console.writeToBuffer(c, "Ell: Take this piece of paper.", 0x0F, 100);
                                                                                     g_Console.writeToBuffer(d, "     Read it and everything will become clear.", 0x0F, 100);
                                                                                     if (g_dDungeonTime > 21.2)
                                                                                     {
-                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                        g_Console.writeToBuffer(d, "                                                                                                     ", 0x1A, 100);
+                                                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
+                                                                                        g_Console.writeToBuffer(d, "                                                                                                     ", 0x0A, 100);
                                                                                         g_Console.writeToBuffer(c, "Ell: I need to leave now or they'll get suspicious.", 0x0F, 100);
                                                                                         if (g_dDungeonTime > 24.2)
                                                                                         {
-                                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+                                                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
                                                                                             g_Console.writeToBuffer(c, "Ell: I'll meet you after you pass the maze.", 0x0F, 100);
                                                                                             g_Console.writeToBuffer(d, "     Make sure to sneak past the guards.", 0x0F, 100);
                                                                                             if (g_dDungeonTime > 27.2)
                                                                                             {
-                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
-                                                                                                g_Console.writeToBuffer(d, "                                                                                                     ", 0x1A, 100);
+                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
+                                                                                                g_Console.writeToBuffer(d, "                                                                                                     ", 0x0A, 100);
                                                                                                 g_Console.writeToBuffer(c, "Ell: I'll meet you after you pass the maze.", 0x0F, 100);
                                                                                                 if (g_dDungeonTime > 30.2)
                                                                                                 {
@@ -1299,7 +1259,7 @@ void Update_Path_Area()
 {
     if (g_dPathTime > 4.5)
     {
-        g_eGameState = S_Path_Area;
+        g_eGameState = S_Dungeon_Stealth_1;
     }
     processUserInput();
 }
@@ -1402,7 +1362,7 @@ void IAF3_Animation()
     Cutscene.drawgrid(g_Console, 40, 6, 'E');
     if (g_dIAF3Time > 0.3)
     {
-        //g_Console.writeToBuffer(c, "                                                                                                     ", 0x1A, 100);
+        //g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
         g_Console.writeToBuffer(c, "???: I owe my life to you stranger.", 0x0F, 100);
         if (g_dIAF3Time > 3.6)
         {
@@ -1452,182 +1412,6 @@ void IAF3_Animation()
                                                 {
                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                     g_Console.writeToBuffer(c, "Medical Facilty route is now available.", 0x0F, 100);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-void Update_Medical_Fight_Animation()
-{
-    if (g_dMedicalFightTime > 31.8)
-    {
-        g_eGameState = S_GAME;
-    }
-    processUserInput();
-}
-
-void Medical_Fight_Animation()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.insideMedicalFacility(g_Console);
-    COORD c;
-    renderCharacter();
-    c.X = 5;
-    c.Y = 26;
-    Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
-    Cutscene.drawgrid(g_Console, 34, 13, 'O'); //Ell
-
-    Cutscene.drawgrid(g_Console, 36, 12, 'O'); //Patient 1
-    Cutscene.drawgrid(g_Console, 36, 9, 'O'); //Patient 2
-    Cutscene.drawgrid(g_Console, 36, 15, 'O'); //Patient 3
-    Cutscene.drawgrid(g_Console, 46, 15, 'O'); //Patient 4
-    Cutscene.drawgrid(g_Console, 46, 9, 'O'); //Patient 5
-    Cutscene.drawgrid(g_Console, 56, 15, 'O'); //Patient 6
-    Cutscene.drawgrid(g_Console, 56, 9, 'O'); //Patient 7
-    Cutscene.drawgrid(g_Console, 23, 13, 'O'); //nurse
-
-    if (g_dMedicalFightTime > 0.6)
-    {
-        g_Console.writeToBuffer(c, "Patient 1: Thank you so much for the medicine!", 0x0F, 100);
-        if (g_dMedicalFightTime > 3.6)
-        {
-            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-            //patient 2 walks to hero
-            Cutscene.cleargrid(g_Console, 36, 9);
-            Cutscene.drawgrid(g_Console, 36, 10, 'O'); //Patient 2
-            if (g_dMedicalFightTime > 3.9)
-            {
-                Cutscene.cleargrid(g_Console, 36, 10);
-                Cutscene.drawgrid(g_Console, 35, 11, 'O');
-                if (g_dMedicalFightTime > 4.2)
-                {
-                    g_Console.writeToBuffer(c, "Patient 2: You have so much medicine and you kept it from us?", 0x0F, 100);
-                    c.Y = 27;
-                    g_Console.writeToBuffer(c, "           How shameless of you!", 0x0F, 100);
-                    if (g_dMedicalFightTime > 7.2)
-                    {
-                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                        c.Y = 26;
-                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                        //patient 3 walks to hero ( ally side )
-                        Cutscene.cleargrid(g_Console, 36, 15);
-                        Cutscene.drawgrid(g_Console, 35, 14, 'O');
-                        if (g_dMedicalFightTime > 7.5)
-                        {
-                            g_Console.writeToBuffer(c, "Patient 3: Give it to me! Can't you see that you're healthier than me?", 0x0F, 100);
-                            c.Y = 27;
-                            g_Console.writeToBuffer(c, "           I obviously need it more than you!", 0x0F, 100);
-                            if (g_dMedicalFightTime > 10.5)
-                            {
-                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                                c.Y = 26;
-                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                                //patient 4 walks (in front of ally)
-                                Cutscene.cleargrid(g_Console, 46, 15);
-                                Cutscene.drawgrid(g_Console, 41, 14, 'O');
-                                if (g_dMedicalFightTime > 10.8)
-                                {
-                                    Cutscene.cleargrid(g_Console, 41, 14);
-                                    Cutscene.drawgrid(g_Console, 36, 13, 'O');
-                                    if (g_dMedicalFightTime > 11.1)
-                                    {
-                                        g_Console.writeToBuffer(c, "Patient 4: Please! I beg you, please give my daughter", 0x0F, 100);
-                                        c.Y = 27;
-                                        g_Console.writeToBuffer(c, "           some medicine or she'll die!", 0x0F, 100);
-                                        if (g_dMedicalFightTime > 14.1)
-                                        {
-                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                                            c.Y = 26;
-                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                                            // Patient 5 walks to Patient 1
-                                            Cutscene.cleargrid(g_Console, 46, 9);
-                                            Cutscene.drawgrid(g_Console, 41, 10, 'O');
-                                            if (g_dMedicalFightTime > 14.4)
-                                            {
-                                                Cutscene.cleargrid(g_Console, 41, 10);
-                                                Cutscene.drawgrid(g_Console, 37, 11, 'O');
-                                                if (g_dMedicalFightTime > 14.7)
-                                                {
-                                                    g_Console.writeToBuffer(c, "Patient 5: Give that to me! I deserve that more than you!", 0x0F, 100);
-                                                    if (g_dMedicalFightTime > 17.7)
-                                                    {
-                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                                                        g_Console.writeToBuffer(c, "Patient 1: Hands off! They're mine!", 0x0F, 100);
-                                                        if (g_dMedicalFightTime > 20.7)
-                                                        {
-                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                                                            //patient 6 & 7 walking 
-                                                            Cutscene.cleargrid(g_Console, 56, 15);
-                                                            Cutscene.cleargrid(g_Console, 56, 9);
-                                                            Cutscene.drawgrid(g_Console, 51, 14, 'O');
-                                                            Cutscene.drawgrid(g_Console, 51, 10, 'O');
-                                                            if (g_dMedicalFightTime > 21.0)
-                                                            {
-                                                                Cutscene.cleargrid(g_Console, 51, 14);
-                                                                Cutscene.cleargrid(g_Console, 51, 10);
-                                                                Cutscene.drawgrid(g_Console, 46, 14, 'O');
-                                                                Cutscene.drawgrid(g_Console, 46, 11, 'O');
-                                                                if (g_dMedicalFightTime > 21.3)
-                                                                {
-                                                                    Cutscene.cleargrid(g_Console, 46, 14);
-                                                                    Cutscene.cleargrid(g_Console, 46, 11);
-                                                                    Cutscene.drawgrid(g_Console, 41, 14, 'O');
-                                                                    Cutscene.drawgrid(g_Console, 41, 12, 'O');
-                                                                    if (g_dMedicalFightTime > 21.6)
-                                                                    {
-                                                                        Cutscene.cleargrid(g_Console, 41, 14);
-                                                                        Cutscene.cleargrid(g_Console, 41, 12);
-                                                                        Cutscene.drawgrid(g_Console, 37, 14, 'O');
-                                                                        Cutscene.drawgrid(g_Console, 38, 12, 'O');
-                                                                        if (g_dMedicalFightTime > 21.9)
-                                                                        {
-                                                                            g_Console.writeToBuffer(c, "Patient 6: Why do you have som much medicine?", 0x0F, 100);
-                                                                            c.Y = 27;
-                                                                            g_Console.writeToBuffer(c, "           You must have stolen it from us!", 0x0F, 100);
-                                                                            if (g_dMedicalFightTime > 24.9)
-                                                                            {
-                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                                                                                c.Y = 26;
-                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                                                                                g_Console.writeToBuffer(c, "Patient 7: You thief! Give them back!", 0x0F, 100);
-                                                                                if (g_dMedicalFightTime > 27.9)
-                                                                                {
-                                                                                    //nurse walks
-                                                                                    Cutscene.cleargrid(g_Console, 23, 13);
-                                                                                    Cutscene.drawgrid(g_Console, 27, 14, 'O');
-                                                                                    if (g_dMedicalFightTime > 28.2)
-                                                                                    {
-                                                                                        Cutscene.cleargrid(g_Console, 27, 14);
-                                                                                        Cutscene.drawgrid(g_Console, 30, 15, 'O');
-                                                                                        if (g_dMedicalFightTime > 28.5)
-                                                                                        {
-                                                                                            Cutscene.cleargrid(g_Console, 30, 15);
-                                                                                            Cutscene.drawgrid(g_Console, 33, 15, 'O');
-                                                                                            if (g_dMedicalFightTime > 28.8)
-                                                                                            {
-                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                                                                                                g_Console.writeToBuffer(c, "Nurse: Everyone! Please calm down!", 0x0F, 100);
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
                                                 }
                                             }
                                         }
@@ -1802,118 +1586,12 @@ void Medical_Facility_Animation()
     }
 }
 
-void Update_Medical_Facility_Part2_Animation()
-{
-    if (g_dMedical2Time > 15.9)
-    {
-        g_eGameState = S_GAME;
-    }
-    processUserInput();
-}
-
-void Medical_Facility_Part2_Animation()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.insideMedicalFacility(g_Console);
-    COORD c;
-    renderCharacter();
-    c.X = 5;
-    c.Y = 26;
-    Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
-    Cutscene.drawgrid(g_Console, 34, 13, 'O'); //Ell
-
-    Cutscene.drawgrid(g_Console, 32, 11, 'E');
-    Cutscene.drawgrid(g_Console, 32, 12, 'E');
-    Cutscene.drawgrid(g_Console, 32, 13, 'E');
-    Cutscene.drawgrid(g_Console, 32, 14, 'E');
-
-    Cutscene.drawgrid(g_Console, 36, 12, 'O'); //Patient 1
-
-    if (g_dMedical2Time > 0.6)
-    {
-        if (g_dMedical2Time > 0.9)
-        {
-            g_Console.writeToBuffer(c, "Ell: More came in during our fight!", 0x0F, 100);
-            if (g_dMedical2Time > 3.9)
-            {
-                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                g_Console.writeToBuffer(c, "Ell: There's still someone here! We have to protect him!", 0x0F, 100);
-                if (g_dMedical2Time > 6.9)
-                {
-                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                    g_Console.writeToBuffer(c, "Patient 1: I'm sorry!", 0x0F, 100);
-                    if (g_dMedical2Time > 9.9)
-                    {
-                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                        //oofus doofus robert gets pushed
-                        Cutscene.cleargrid(g_Console, 36, 12);
-                        Cutscene.drawgrid(g_Console, 35, 12, 'O');
-                        if (g_dMedical2Time > 10.2)
-                        {
-                            Cutscene.cleargrid(g_Console, 34, 12);
-                            Cutscene.drawgrid(g_Console, 33, 12, 'H');
-                            if (g_dMedical2Time > 10.5)
-                            {
-                                //run patient run
-                                Cutscene.cleargrid(g_Console, 35, 12);
-                                Cutscene.drawgrid(g_Console, 31, 10, 'O');
-                                if (g_dMedical2Time > 10.8)
-                                {
-                                    Cutscene.cleargrid(g_Console, 31, 10);
-                                    Cutscene.drawgrid(g_Console, 27, 7, 'O');
-                                    if (g_dMedical2Time > 11.1)
-                                    {
-                                        Cutscene.cleargrid(g_Console, 27, 7);
-                                        Cutscene.drawgrid(g_Console, 23, 4, 'O');
-                                        if (g_dMedical2Time > 11.4)
-                                        {
-                                            Cutscene.cleargrid(g_Console, 23, 4);
-                                            Cutscene.drawgrid(g_Console, 20, 4, 'O');
-                                            if (g_dMedical2Time > 11.7)
-                                            {
-                                                Cutscene.cleargrid(g_Console, 20, 4);
-                                                Cutscene.drawgrid(g_Console, 16, 7, 'O');
-                                                if (g_dMedical2Time > 12.0)
-                                                {
-                                                    Cutscene.cleargrid(g_Console, 16, 7);
-                                                    Cutscene.drawgrid(g_Console, 12, 9, 'O');
-                                                    if (g_dMedical2Time > 12.3)
-                                                    {
-                                                        Cutscene.cleargrid(g_Console, 12, 9);
-                                                        Cutscene.drawgrid(g_Console, 8, 9, 'O');
-                                                        if (g_dMedical2Time > 12.6)
-                                                        {
-                                                            Cutscene.cleargrid(g_Console, 8, 9);
-                                                            Cutscene.drawgrid(g_Console, 3, 12, 'O');
-                                                            if (g_dMedical2Time > 12.9)
-                                                            {
-                                                                Cutscene.cleargrid(g_Console, 3, 11);
-                                                                g_Console.writeToBuffer(c, "Ell: Robert!", 0x0F, 100);
-                                                            }
-                                                        }
-
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 //HAVE NOT PUT DTTIME INTO RENDERED AREA
 void Update_Dungeon_Stealth3_Animation()
 {
     if (g_dDungeonStealth3Time > 61.7)
     {
-        g_eGameState = S_Dungeon_Stealth_3;
+        g_eGameState = S_GAME;
     }
     processUserInput();
 }
@@ -2094,7 +1772,7 @@ void Update_Boss_Room_Animation()
 {
     if (g_dBossTime > 48.3)
     {
-        g_eGameState = S_Boss_Battle_Room;
+        g_eGameState = S_GAME;
     }
     processUserInput();
 }
@@ -2195,7 +1873,7 @@ void Boss_Room_Animation()
                                                                                 g_Console.writeToBuffer(c, "Raymond: Wouldn't that be wonderful?", 0x0F);
                                                                                 g_Console.writeToBuffer(d, "         It's a fantastic idea!!", 0x0F);
                                                                                 Cutscene.cleargrid(g_Console, 55, 21);
-                                                                                Cutscene.drawgrid(g_Console, 53, 21, 'R');
+                                                                                Cutscene.drawgrid(g_Console, 53, 21, 'R');//hi
                                                                                 if (g_dBossTime > 26.5)
                                                                                 {
                                                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -2749,8 +2427,6 @@ void render()
     // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
-    case S_GAME: renderGame();
-        break;
     case S_MENU_UI: render_Main_Menu();
         break;
     case S_SPLASHSCREEN: renderSplashScreen();
@@ -2759,8 +2435,10 @@ void render()
         break;
     case S_Orphanage_Children_Animation: Orphanage_Children_Animation();
         break;
-
-        //Areas of the game
+    case S_Protest_Area_Animation: Protest_Area_Animation();
+        break;
+    case S_GAME: renderGame();
+        break;
     case S_Townsquare: renderMap_Townsquare();
         break;
     case S_Protest_Area: renderMap_Protest_Area();
@@ -2769,29 +2447,7 @@ void render()
         break;
     case S_OAF: renderMap_OAF();
         break;
-    case S_IAF1: renderMap_IAF1();
-        break;
-    case S_IAF2: renderMap_IAF2();
-        break;
-    case S_IAF3: renderMap_IAF3();
-        break;
-    case S_IAF4: renderMap_IAF4();
-        break;
-    case S_Inside_Medical_Facility: renderMap_Inside_Medical_Facility();
-        break;
-    case S_Dungeon_Cell: renderMap_Dungeon_Cell();
-        break;
-    case S_Dungeon_Stealth_1: renderMap_DS1();
-        break;
-    case S_Dungeon_Stealth_2: renderMap_DS2();
-        break;
-    case S_Dungeon_Stealth_3: renderMap_DS3();
-        break;
-    case S_Boss_Battle_Room: renderMap_Boss_Battle_Room();
-        break;
-
-        //Animations of the game
-    case S_Protest_Area_Animation: Protest_Area_Animation();
+    case S_Dungeon_Stealth_1: render_DS1();
         break;
     case S_Dungeon_Cell_Animation: Dungeon_Cell_Animation();
         break;
@@ -2799,11 +2455,7 @@ void render()
         break;
     case S_IAF3_Animation: IAF3_Animation();
         break;
-    case S_Medical_Fight_Animation: Medical_Fight_Animation();
-        break;
     case S_Medical_Facility_Animation: Medical_Facility_Animation();
-        break;
-    case S_Medical_Facility_Part2_Animation: Medical_Facility_Part2_Animation();
         break;
     case S_Dungeon_Stealth3_Animation: Dungeon_Stealth3_Animation();
         break;
@@ -2876,10 +2528,8 @@ void renderGame()
         rMap.Animation(g_Console, 9, 7, '|');
         rMap.Animation(g_Console, 13, 7, '|');
 
-        rMap.Animation(g_Console, 40, 7, 'F');
-        rMap.Animation(g_Console, 33, 22, 'B');
-
-        rMap.initialise(g_Console);
+        rMap.drawAnimation(g_Console, 40, 7, 'F');
+        rMap.drawAnimation(g_Console, 33, 22, 'B');
 
         rMap.Border(g_Console);
         rMap.orphanageDoor(g_Console);
@@ -2905,7 +2555,7 @@ void renderGame()
         }
         rMap.Animation(g_Console, 9, 7, '|');
         rMap.Animation(g_Console, 13, 7, '|');
-        rMap.Animation(g_Console, 33, 22, 'B');
+        rMap.drawAnimation(g_Console, 33, 22, 'B');
         rMap.orphanageDoor(g_Console);
         if (g_sChar.Orp_Dialogue == true)
         {
@@ -2968,6 +2618,7 @@ void renderGame()
 
 void renderMap_Townsquare()
 {
+    g_sChar.takenBackpack = false;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.townsquare(g_Console);
@@ -3024,17 +2675,10 @@ void renderMap_Protest_Area()
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
     renderCharacter();  // renders the character into the buffer
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
     {
         g_dPathTime = 0.0;
         g_eGameState = S_Path_Area_Animation;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 21;
-    }
-    if (g_sChar.m_cLocation.Y == 62 && g_sChar.m_cLocation.X == 4)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
@@ -3046,198 +2690,52 @@ void renderMap_Path_Area()
     rMap.Border(g_Console);
     rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
-
-    //to OAF area
-    if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44 || g_sChar.m_cLocation.X == 45))
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
     {
         g_dPathTime = 0.0;
         g_eGameState = S_OAF;
-        g_sChar.m_cLocation.X = 7;
+        g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
-
-    //to inside medical facility
-    if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 77)
-    {
-        g_eGameState = S_Inside_Medical_Facility;
-        g_sChar.m_cLocation.X = 3;
-        g_sChar.m_cLocation.Y = 12;
-    }
-
-    //to protest area
-    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44 || g_sChar.m_cLocation.X == 45))
-    {
-        g_eGameState = S_Protest_Area;
-        g_sChar.m_cLocation.X = 72;
-        g_sChar.m_cLocation.Y = 3;
-    }
 }
-//change this gamestate
+
 void renderMap_OAF()
 {
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.outside_abandoned_facility(g_Console);
     renderCharacter();  // renders the character into the buffer
-    //back to path area
-    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8 || g_sChar.m_cLocation.X == 9 || g_sChar.m_cLocation.X == 10 || g_sChar.m_cLocation.X == 11))
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Path_Area;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 3;
-    }
-    //to IAF1
-    if ((g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.Y == 19 || g_sChar.m_cLocation.Y == 20) && g_sChar.m_cLocation.X == 58)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_IAF1;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 21;
-    }
-}
-void renderMap_IAF1()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.insideAbandonedFacility1(g_Console);
-    renderCharacter();  // renders the character into the buffer
-    //IAF2
-    if ((g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.Y == 19 || g_sChar.m_cLocation.Y == 20 || g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 2)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_IAF2;
-        g_sChar.m_cLocation.X = 75;
-        g_sChar.m_cLocation.Y = 13;
-    }
-    //IAF4
-    if ((g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.Y == 19 || g_sChar.m_cLocation.Y == 20 || g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 77)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_IAF4;
-        g_sChar.m_cLocation.X = 3;
-        g_sChar.m_cLocation.Y = 12;
-    }
-    //OAF
-    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44))
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')//talkCount = 7)
     {
         g_dPathTime = 0.0;
         g_eGameState = S_OAF;
-        g_sChar.m_cLocation.X = 57;
-        g_sChar.m_cLocation.Y = 18;
-    }
-}
-void renderMap_IAF2()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.insideAbandonedFacility2(g_Console);
-    renderCharacter();  // renders the character into the buffer
-    //IAF1
-    if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.Y == 15) && g_sChar.m_cLocation.X == 76)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_IAF1;
-        g_sChar.m_cLocation.X = 3;
-        g_sChar.m_cLocation.Y = 20;
-    }
-    //IA3
-    if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 32 || g_sChar.m_cLocation.X == 33 || g_sChar.m_cLocation.X == 34 || g_sChar.m_cLocation.X == 35 || g_sChar.m_cLocation.X == 36 || g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44))
-    {
-        g_dIAF3Time = 0.0;
-        g_eGameState = S_IAF3_Animation;
-        g_sChar.m_cLocation.X = 40;
-        g_sChar.m_cLocation.Y = 21;
-    }
-}
-void renderMap_IAF3()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.insideAbandonedFacility3(g_Console);
-    renderCharacter();  // renders the character into the buffer
-    //Back to IAF 2
-    if ((g_sChar.m_cLocation.Y == 22) && (g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41))
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_IAF2;
-        g_sChar.m_cLocation.X = 38;
-        g_sChar.m_cLocation.Y = 3;
-    }
-}
-void renderMap_IAF4()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.insideAbandonedFacility4(g_Console);
-    renderCharacter();  // renders the character into the buffer
-    //Back to IAF1
-    if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_IAF1;
-        g_sChar.m_cLocation.X = 76;
-        g_sChar.m_cLocation.Y = 20;
-    }
-}
-
-void renderMap_Inside_Medical_Facility()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.insideMedicalFacility(g_Console);
-    renderCharacter();  // renders the character into the buffer
-    if ((g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Path_Area;
-        g_sChar.m_cLocation.X = 76;
-        g_sChar.m_cLocation.Y = 12;
-    }
-}
-//change this gamestate
-void renderMap_Dungeon_Cell()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.dungeon_cell(g_Console);
-    renderCharacter();  // renders the character into the buffer
-    //to DS1
-    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Stealth_1;
-        g_sChar.m_cLocation.X = 5;
+        g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
 }
 
-void renderMap_DS1()
+void render_DS1()
 {
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth1(g_Console);
 
-    //To DS2
-    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 11 || g_sChar.m_cLocation.X == 12 || g_sChar.m_cLocation.X == 13 || g_sChar.m_cLocation.X == 14 || g_sChar.m_cLocation.X == 15 || g_sChar.m_cLocation.X == 16 || g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18))
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Stealth_2;
-        g_sChar.m_cLocation.X = 5;
-        g_sChar.m_cLocation.Y = 21;
-    }
-
-    //to Dungeon Cell
-    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8 || g_sChar.m_cLocation.X == 9))
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Cell;
-        g_sChar.m_cLocation.X = 6;
-        g_sChar.m_cLocation.Y = 3;
-    }
     renderCharacter();
+    //g_sChar.m_cLocation.Y = 18;
+    //g_sChar.m_cLocation.X = 4;
     renderEnemy();
 
+    if (g_sChar.unlockDoorDS1 == true)
+    {
+        COORD c;
+
+        for (int i = 0; i < 10; i++)
+        {
+            c.X = 27 + i;
+            c.Y = 14;
+            rMap.Animation(g_Console, c.X, c.Y, ' ');
+        }
+    }
     if (g_sGuard.xLeft == true)
     {
         int i = g_sGuard.e_cLocation.X;
@@ -3538,155 +3036,328 @@ void renderMap_DS1()
             }
         }
     }
-}
+    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard3.g_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.g_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.g_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.g_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.g_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.g_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.g_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.g_cLocation.X))
+    {
+        g_eGameState = S_BattleScreen;
+        g_sChar.m_cLocation.Y = 5;
+        g_sChar.m_cLocation.X = 37;
+    }
+    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard2.f_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.f_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.f_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.f_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.f_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.f_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.f_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.f_cLocation.X))
+    {
+        g_sChar.count = 0;
+        g_eGameState = S_BattleScreen;
+        g_sChar.m_cLocation.Y = 5;
+        g_sChar.m_cLocation.X = 37;
+    }
 
-void renderMap_DS2()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.dungeon_stealth2(g_Console);
-    renderCharacter();  // renders the character into the buffer
-    //back to DS1
-    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8))
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Stealth_1;
-        g_sChar.m_cLocation.X = 14;
-        g_sChar.m_cLocation.Y = 21;
-    }
-    //To DS3
-    if (g_sChar.m_cLocation.Y == 18 && (g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18 || g_sChar.m_cLocation.X == 19 || g_sChar.m_cLocation.X == 20 || g_sChar.m_cLocation.X == 21 || g_sChar.m_cLocation.X == 22 || g_sChar.m_cLocation.X == 23 || g_sChar.m_cLocation.X == 24 || g_sChar.m_cLocation.X == 25 || g_sChar.m_cLocation.X == 26))
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Stealth_3;
-        g_sChar.m_cLocation.X = 5;
-        g_sChar.m_cLocation.Y = 21;
-    }
-}
-
-void renderMap_DS3()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.dungeon_stealth3(g_Console);
-    renderCharacter();  // renders the character into the buffer
-    //back to DS2
-    if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7))
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Stealth_2;
-        g_sChar.m_cLocation.X = 21;
-        g_sChar.m_cLocation.Y = 19;
-    }
-    //trigger animation
-    /*if ((g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 57)
-    {
-        g_dDungeonTime = 0.0;
-        //must do count here, must get character to move after animation
-        g_eGameState = S_Dungeon_Stealth3_Animation;
-        g_sChar.m_cLocation.X = 57;
-        g_sChar.m_cLocation.Y = 22;
-    }*/
-    if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 5)
-    {
-        //ask if user wants to enter battle area
-        g_eGameState = S_Boss_Room_Animation;
-        g_sChar.m_cLocation.X = 40;
-        g_sChar.m_cLocation.Y = 21;
-    }
-    if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 60 || g_sChar.m_cLocation.X == 61 || g_sChar.m_cLocation.X == 62 || g_sChar.m_cLocation.X == 63 || g_sChar.m_cLocation.X == 64 || g_sChar.m_cLocation.X == 65 || g_sChar.m_cLocation.X == 66 || g_sChar.m_cLocation.X == 67 || g_sChar.m_cLocation.X == 68 || g_sChar.m_cLocation.X == 69 || g_sChar.m_cLocation.X == 70 || g_sChar.m_cLocation.X == 71 || g_sChar.m_cLocation.X == 72 || g_sChar.m_cLocation.X == 73 || g_sChar.m_cLocation.X == 74 || g_sChar.m_cLocation.X == 75 || g_sChar.m_cLocation.X == 76 || g_sChar.m_cLocation.X == 77))
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Protest_Area;
-        g_sChar.m_cLocation.X = 63;
-        g_sChar.m_cLocation.Y = 4;
-    }
-}
-
-void renderMap_Boss_Battle_Room()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.boss_room(g_Console);
-    renderCharacter();  // renders the character into the buffer
 }
 
 void RenderBattleScreen()
 {
     Inventory PlayerInv;
-    Item RawMeat;
-
-    RawMeat.setItemName("Raw Meat");
-
-    Item* item1 = new Item;
-    if (PlayerInv.pickup(item1))
-    {
-        COORD c;
-        c.X = 5;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "Item Added", 100);
-    }
-    else {
-        COORD c;
-        c.X = 5;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "Not enough space.", 100);
-    }
     COORD c;
+    int UpdateDmg = 0;
+    int UpdateHealth = 0;
+    if (g_sTutEnemy.GetH() == 0 || g_sMutantWasp.GetH() == 0)
+    {
+        Item Stinger;
+
+        Stinger.setItemName("Stinger");
+
+        Item* item1 = new Item;
+        if (PlayerInv.pickup(item1))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item Added", 100);
+            Stinger.getItemName();
+        }
+        else {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Not enough space.", 100);
+        }
+
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Stinger"), 100);
+    }
+    else if (g_sPig.GetH() == 0)
+    {
+        Item RawMeat;
+
+        RawMeat.setItemName("Raw Meat");
+
+        Item* item2 = new Item;
+        if (PlayerInv.pickup(item2))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item Added", 100);
+            RawMeat.getItemName();
+        }
+        else {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Not enough space.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+    }
     c.X = 5;
     c.Y = 27;
     g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+       
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.drawGuard(g_Console);
     //rMap.pig(g_Console);
     //rMap.Battle_Wasp(g_Console);
     //rMap.Battle_Raymond(g_Console);
-    renderCharacter();  // renders the character into the buffer
+    //renderCharacter();  // renders the character into the buffer
 
-    c.X = 5;
-    c.Y = 28;
+    c.X = 11;
+    c.Y = 0;
     string str_charhealth = to_string(g_sChar.GetH());
-    g_Console.writeToBuffer(c, str_charhealth, 0x0F, 100);
+    g_Console.writeToBuffer(c, "Your Health: " + str_charhealth, 0x0A, 100);
 
-    c.X = 5;
-    c.Y = 29;
+    c.X = 53;
+    c.Y = 0;
     string str_guardhealth = to_string(g_sGuard.GetH());
-    g_Console.writeToBuffer(c, str_guardhealth, 0x0F, 100);
+    g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x0A, 100);
 
 
     //change g_eGameState to inventory
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 15) || (g_mouseEvent.mousePosition.X == 16) || (g_mouseEvent.mousePosition.X == 17) || (g_mouseEvent.mousePosition.X == 18) || (g_mouseEvent.mousePosition.X == 19) || (g_mouseEvent.mousePosition.X == 20) || (g_mouseEvent.mousePosition.X == 21) || (g_mouseEvent.mousePosition.X == 22) || (g_mouseEvent.mousePosition.X == 23) || (g_mouseEvent.mousePosition.X == 24) || (g_mouseEvent.mousePosition.X == 25))))
     {
+        Item* item1;
+        Item* item2;
+        Item* item3;
+        if (PlayerInv.Consumed(item1))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 5;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Stinger"), 100);
+
+        if (PlayerInv.Consumed(item2))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateHealth = g_sChar.GetH() + 5;
+            g_sChar.SetH(UpdateHealth);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
         //g_eGameState = S_Townsquare;
     }
+
+    // if click on fight
     if (g_sChar.startTimer == true)
     {
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
         {
-            int charhealth = g_sChar.GetH() - g_sGuard.GetD();
-            string str_charhealth = to_string(charhealth);
-
-
-            int guardhealth = g_sGuard.GetH() - g_sChar.GetD();
-            string str_guardhealth = to_string(guardhealth);
-
-
-            g_sChar.SetH(charhealth);
-            g_sGuard.SetH(guardhealth);
-
-
-            if (g_sChar.GetH() < 0)
+            int randHit = rand() % 100 + 1;
+            if (randHit >= 0 && randHit <= 50) // player gets hit
             {
-                //g_eGameState = S_Path_Area;
+                int charhealth = g_sChar.GetH() - g_sGuard.GetD(); // get player health
+                string str_charhealth = to_string(charhealth);
+
+                g_sChar.SetH(charhealth); // set player health to new health
+
+                g_sChar.showEnemyDMG = true;
+                enemyDMGTime = 0.0;
+
             }
+
+            int guardhealth = g_sGuard.GetH() - g_sChar.GetD(); // get enemy health
+            //string str_guardhealth = to_string(guardhealth);
+
+
+            g_sGuard.SetH(guardhealth); // set enemy health to new health
+            if (g_sGuard.GetH() == 0)
+            {
+                Item GuardArmor;
+
+                GuardArmor.setItemName("Guard Armor");
+
+                Item* item3 = new Item;
+                if (PlayerInv.pickup(item3))
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "Item Added", 100);
+                }
+                else {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "Not enough space.", 100);
+                }
+
+                c.X = 5;
+                c.Y = 27;
+                g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+            }
+
+
+
             startTime = 0.0;
             g_sChar.resetTimer = true;
             g_sChar.startTimer = false;
+            g_sChar.showPlayerDMG = true;
+            playerDMGTime = 0.0;
+            g_sChar.count = 1;
+
         }
     }
-    //change g_eGameState to fight 
 
+    if (g_sChar.GetH() <= 0)
+    {
+        g_eGameState = S_Dungeon_Stealth_1; // if guard kills player
+    }
+    if (g_sChar.count == 1)
+    {
+        if (g_sGuard.GetH() <= 0)
+        {
+            g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+            g_sChar.unlockDoorDS1 = true;
+        }
+    }
+
+
+
+    if (g_sChar.showPlayerDMG == true)
+    {
+        COORD c;
+        c.X = 3;
+        c.Y = 25;
+        string str_charDMG = to_string(g_sChar.GetD());
+
+        g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+
+    }
+    if (g_sChar.showEnemyDMG == true)
+    {
+        COORD c;
+        c.X = 3;
+        c.Y = 26;
+        string str_guardDMG = to_string(g_sGuard.GetD());
+
+        g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
+    }
 }
 
 void UpdateBattleScreen()
@@ -3698,6 +3369,29 @@ void UpdateBattleScreen()
         {
             g_sChar.startTimer = true;
         }
+    }
+    if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
+    {
+        //g_eGameState = S_Townsquare;
+        g_sChar.showPlayerDMG = false;
+        COORD c;
+        c.X = 3;
+        c.Y = 25;
+
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        playerDMGTime = 0.0;
+
+    }
+    if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
+    {
+        g_sChar.showEnemyDMG = false;
+        enemyDMGTime = 0.0;
+        COORD c;
+        c.X = 3;
+        c.Y = 26;
+
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
     }
 }
 

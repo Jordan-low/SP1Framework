@@ -1,15 +1,15 @@
 #include "Player.h"
 #include "Entity.h"
 //j
-Player::Player()
+/*Player::Player()
 {
 	name = ' ';
 }
 
-void Player::setPlayer(int x, int y, int health, int dmg, const char n)
+void Player::setPlayer(int health, int dmg, const char n)
 {
-	this->SetD(x);
-	this->SetH(y);
+	this->SetD(dmg);
+	this->SetH(health);
 	this->SetX(health);
 	this->SetY(dmg);
 	name = n;
@@ -44,11 +44,11 @@ void Player::Attack()
 {
 	Player player;
 	player.SetD(5);
-	/*
+	
 	Damage Melee;
 	Melee.setDamage(5);
 	Melee.getDamage();
-	*/
+	
 }
 
 void Player::Heal()
@@ -64,5 +64,5 @@ void Player::Equipment()
 Player::~Player()
 {
 
-}
+}*/
 

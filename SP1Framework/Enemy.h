@@ -5,20 +5,20 @@
 class Enemy : public Entity
 {
 private:
-	bool attacked;
-	bool attack;
+	//bool attacked;
+	//bool attack;
 	int Chance;
 public:
 	Enemy();
 	~Enemy();
-	void setEnemy(int x, int y, int health, int dmg, const char n);
+	/*void setEnemy(int health, int dmg, const char n);
 	int getD();
 	int getH();
 	int getX();
 	int getY();
 	char getName();
-	//float Hit(float Eh, float Pd);
-	//float beenHit(float Ph, float Ed);
-	void Drop(Console& g_Console);
+	int Hit(int Eh, int Pd);
+	int beenHit(int Ph, int Ed);
+	void Drop(Console& g_Console);*/
 	bool Poison(Console& g_Console);
 };

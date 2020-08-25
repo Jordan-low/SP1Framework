@@ -1,14 +1,14 @@
 #include "Ally.h"
 //j
-Ally::Ally()
+/*Ally::Ally()
 {
 	name = ' ';
 }
 
-void Ally::setAlly(int x, int y, int health, int dmg, const char n)
+void Ally::setAlly(int health, int dmg, const char n)
 {
-	this->SetD(x);
-	this->SetH(50);
+	this->SetD(dmg);
+	this->SetH(health);
 	this->SetX(0);
 	this->SetY(0);
 	name = n;
@@ -42,7 +42,7 @@ Ally::~Ally()
 {
 
 }
-/*
+
 int Ally::getAlly()
 {
 	this->getDmg();

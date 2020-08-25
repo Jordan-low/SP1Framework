@@ -18,4 +18,5 @@ public:
 	int checkInventory(std::string n);
 	~Inventory();
 	bool pickup(Item* add);
+	bool Consumed(Item* use);
 };

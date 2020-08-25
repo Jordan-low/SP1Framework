@@ -29,7 +29,7 @@ public:
 	void dungeon_cell(Console& g_Console);
 	void dungeon_stealth2(Console& g_Console);
 	void boss_room(Console& g_Console);
-
+	//hi
 	void Border(Console& g_Console);
 	void House(Console& g_Console, int x, int y);
 	void House2(Console& g_Console, int x, int y);
@@ -40,6 +40,7 @@ public:
 	void Road_Equals(Console& g_Console, int x, int y, int count);
 
 	void Animation(Console& g_Console, int x, int y, char ch);
+	void drawAnimation(Console& g_Console, int x, int y, char ch);
 	void Animate(Console& g_Console);
 	void ClearAnimation(Console& g_Console, int x, int y);
 
