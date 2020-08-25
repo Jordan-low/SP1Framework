@@ -3,11 +3,12 @@
 
 Inventory::Inventory()
 {
+	Quantity = 0;
 	for (int i = 0; i < 8; i++)
 	{
 		playerItems[i] = nullptr;
 	}
-	Quantity = 0;
+	
 }
 
 bool Inventory::pickup(Item* add)
@@ -20,6 +21,27 @@ bool Inventory::pickup(Item* add)
 			{
 				playerItems[i] = add;
 				Quantity++;
+				break;
+			}
+		}
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool Inventory::Consumed(Item* use)
+{
+	if (Quantity > 0)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			if (playerItems[i] != nullptr)
+			{
+				playerItems[i] = use;
+				Quantity--;
 				break;
 			}
 		}
@@ -189,7 +211,6 @@ int Inventory::checkInventory(std::string n)
 
 	}
 }*/
-
 
 Inventory::~Inventory()
 {

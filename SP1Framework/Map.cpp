@@ -867,11 +867,11 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	COORD c;
 	Border(g_Console);
 	j = 22;
-	for (int i = 36; i < 46; i++)
+	for (int i = 37; i < 45; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		//g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
 	}
 
 	//generator vertical

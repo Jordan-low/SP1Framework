@@ -42,19 +42,32 @@ enum EGAMESTATES
 {
     S_MENU_UI,
     S_SPLASHSCREEN,
-    S_Orphanage_Animation,
     S_GAME,
+    //Areas
     S_Townsquare,
     S_Protest_Area,
     S_Path_Area,
+    S_OAF,
+    S_IAF1,
+    S_IAF2,
+    S_IAF3,
+    S_IAF4,
+    S_Inside_Medical_Facility,
+    S_Dungeon_Cell,
     S_Dungeon_Stealth_1,
+    S_Dungeon_Stealth_2,
+    S_Dungeon_Stealth_3,
+    S_Boss_Battle_Room,
+    //Animations
+    S_Orphanage_Animation,
     S_Orphanage_Children_Animation,
     S_Protest_Area_Animation,
     S_Dungeon_Cell_Animation,
     S_Path_Area_Animation,
-    S_OAF,
     S_IAF3_Animation,
-    s_Medical_Facility_Animation,
+    S_Medical_Fight_Animation,
+    S_Medical_Facility_Animation,
+    S_Medical_Facility_Part2_Animation,
     S_Dungeon_Stealth3_Animation,
     S_Boss_Room_Animation,
     S_BattleScreen,
@@ -64,7 +77,6 @@ enum EGAMESTATES
 // struct for the game character
 struct SGameChar : public Enemy
 {
-    int count;
     COORD m_cLocation;
     COORD e_cLocation;
     COORD f_cLocation;
@@ -91,9 +103,7 @@ struct SGameChar : public Enemy
     bool Sam;
     bool startTimer;
     bool resetTimer;
-    bool showPlayerDMG;
-    bool showEnemyDMG;
-    bool unlockDoorDS1;
+    bool Poison;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
@@ -110,12 +120,23 @@ void processUserInput();    // checks if you should change states or do somethin
 void clearScreen();         // clears the current screen and draw from scratch 
 void renderSplashScreen();  // renders the splash screen
 void renderGame();          // renders the game stuff
-//void renderMap();           // renders the map to the buffer first
+//void renderMap();  // renders the map to the buffer first
+
+//Render areas + Battle screens
 void renderMap_Townsquare();
 void renderMap_Protest_Area();
 void renderMap_Path_Area();
 void renderMap_OAF();
-void render_DS1();
+void renderMap_IAF1();
+void renderMap_IAF2();
+void renderMap_IAF3();
+void renderMap_IAF4();
+void renderMap_Inside_Medical_Facility();
+void renderMap_Dungeon_Cell();
+void renderMap_DS1();
+void renderMap_DS2();
+void renderMap_DS3();
+void renderMap_Boss_Battle_Room();
 void RenderBattleScreen();
 
 void renderCharacter();     // renders the character into the buffer
@@ -131,6 +152,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this fun
 void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for gameplay 
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
 
+//Animations + Menu AI
 void Update_Orphanage_Animation();
 void Orphanage_Animation();
 void Update_Orphanage_Animation2();
@@ -143,8 +165,12 @@ void Update_Path_Area();
 void Path_Area_Animation();
 void Update_IAF3();
 void IAF3_Animation();
+void Update_Medical_Fight_Animation();
+void Medical_Fight_Animation();
 void Update_Medical_Facility_Animation();
 void Medical_Facility_Animation();
+void Update_Medical_Facility_Part2_Animation();
+void Medical_Facility_Part2_Animation();
 void Update_Dungeon_Stealth3_Animation();
 void Dungeon_Stealth3_Animation();
 void Update_Boss_Room_Animation();

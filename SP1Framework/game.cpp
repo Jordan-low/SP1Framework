@@ -25,22 +25,23 @@ double g_dDungeonStealth3Time;
 double g_dBossTime;
 double startTime;
 double resetTime;
-double playerDMGTime;
-double enemyDMGTime;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 SGameChar   g_sChar;
+SGameChar   g_sTutEnemy;
+SGameChar   g_sPig;
+SGameChar   g_sPig2; 
+SGameChar   g_sPig3;
 SGameChar   g_sGuard;
 SGameChar   g_sGuard2;
 SGameChar   g_sGuard3;
-SGameChar   Pig;
-SGameChar   Guard;
-SGameChar   MutantWasp;
-SGameChar   TutEnemy;
-SGameChar   Raymond;
+SGameChar   g_sMutantWasp;
+SGameChar   g_sMutantWasp2;
+SGameChar   g_sMutantWasp3;
+SGameChar   g_sRaymond;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -60,23 +61,26 @@ Enemy Guardz;
 //--------------------------------------------------------------
 void init(void)
 {
-    g_sChar.count = 0;
-    g_sChar.unlockDoorDS1 = false;
-    g_sChar.showEnemyDMG = false;
-    g_sChar.showPlayerDMG = false;
     g_sChar.startTimer = true;
     g_sChar.resetTimer = false;
     g_sChar.SetH(50);
-    g_sChar.SetD(5);
-    g_sGuard.SetD(15);
-    g_sGuard.SetH(40);
-    Inventory PlayerInv;
-    Item* Item1 = new Item;
-    TutEnemy.setEnemy(1, 1, 10, 2, 'E');
-    Pig.setEnemy(1, 1, 15, 3, 'E');
-    MutantWasp.setEnemy(1, 1, 25, 5, 'E');
-    Guard.setEnemy(1, 1, 40, 15, 'E');
-    Raymond.setEnemy(1, 1, 120, 25, 'E');
+    g_sChar.SetD(10);
+    g_sGuard.SetD(5);
+    g_sGuard.SetH(20);
+    g_sPig.SetH(15);
+    g_sPig.SetD(3);
+    g_sTutEnemy.SetH(10);
+    g_sTutEnemy.SetD(2);
+    g_sMutantWasp.SetH(25);
+    g_sMutantWasp.SetD(5);
+    g_sChar.Poison = false;
+    g_sRaymond.SetH(120);
+    g_sRaymond.SetD(25);
+    /*g_sTutEnemy.setEnemy(10, 2, 'E');
+    g_sPig.setEnemy(15, 3, 'E');
+    g_sMutantWasp.setEnemy(25, 5, 'E');
+    g_sGuard.setEnemy(40, 15, 'E');
+    g_sRaymond.setEnemy(120, 25, 'E');*/
 
     g_sChar.Jerry = false;
     g_sChar.Tom = false;
@@ -86,7 +90,6 @@ void init(void)
     g_sChar.Harry = false;
     g_sChar.Sam = false;
 
-    Pig.SetD(5);
     g_sGuard.xLeft = false;
     g_sGuard.xRight = false;
     g_sGuard.xDown = false;
@@ -114,7 +117,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_1;
+    g_eGameState = S_BattleScreen;
 
     g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
@@ -338,8 +341,6 @@ void update(double dt)
     g_dBossTime += dt;
     startTime += dt;
     resetTime += dt;
-    playerDMGTime += dt;
-    enemyDMGTime += dt;
     switch (g_eGameState)
     {
     case S_MENU_UI: Update_Menu();
@@ -489,7 +490,7 @@ void Update_Orphanage_Animation2()
 void Orphanage_Children_Animation()
 {
     rMap.initialise(g_Console);
-    rMap.drawAnimation(g_Console, 33, 22, 'B');
+    rMap.Animation(g_Console, 33, 22, 'B');
     rMap.Animation(g_Console, 11, 7, 'O');
     rMap.Animation(g_Console, 9, 7, 'O');
     rMap.Animation(g_Console, 13, 7, 'O');
@@ -2506,8 +2507,10 @@ void renderGame()
         rMap.Animation(g_Console, 9, 7, '|');
         rMap.Animation(g_Console, 13, 7, '|');
 
-        rMap.drawAnimation(g_Console, 40, 7, 'F');
-        rMap.drawAnimation(g_Console, 33, 22, 'B');
+        rMap.Animation(g_Console, 40, 7, 'F');
+        rMap.Animation(g_Console, 33, 22, 'B');
+
+        rMap.initialise(g_Console);
 
         rMap.Border(g_Console);
         rMap.orphanageDoor(g_Console);
@@ -2533,7 +2536,7 @@ void renderGame()
         }
         rMap.Animation(g_Console, 9, 7, '|');
         rMap.Animation(g_Console, 13, 7, '|');
-        rMap.drawAnimation(g_Console, 33, 22, 'B');
+        rMap.Animation(g_Console, 33, 22, 'B');
         rMap.orphanageDoor(g_Console);
         if (g_sChar.Orp_Dialogue == true)
         {
@@ -2700,17 +2703,6 @@ void render_DS1()
     renderCharacter();
     renderEnemy();
 
-    if (g_sChar.unlockDoorDS1 == true)
-    {
-        COORD c;
-
-        for (int i = 0; i < 10; i++)
-        {
-            c.X = 27 + i;
-            c.Y = 14;
-            rMap.Animation(g_Console, c.X, c.Y, ' ');
-        }
-    }
     if (g_sGuard.xLeft == true)
     {
         int i = g_sGuard.e_cLocation.X;
@@ -3011,145 +3003,267 @@ void render_DS1()
             }
         }
     }
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard3.g_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.g_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.g_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.g_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.g_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.g_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.g_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.g_cLocation.X))
-    {
-        g_eGameState = S_BattleScreen;
-        g_sChar.m_cLocation.Y = 5;
-        g_sChar.m_cLocation.X = 37;
-    }
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard2.f_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.f_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.f_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.f_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.f_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.f_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.f_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.f_cLocation.X))
-    {
-        g_sChar.count = 0;
-        g_eGameState = S_BattleScreen;
-        g_sChar.m_cLocation.Y = 5;
-        g_sChar.m_cLocation.X = 37;
-    }
-
 }
 
 void RenderBattleScreen()
 {
-    /*
     Inventory PlayerInv;
-    Item RawMeat;
-
-    RawMeat.setItemName("Raw Meat");
-
-    Item* item1 = new Item;
-    if (PlayerInv.pickup(item1))
-    {
-        COORD c;
-        c.X = 5;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "Item Added", 100);
-    }
-    else {
-        COORD c;
-        c.X = 5;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "Not enough space.", 100);
-    }
-    c.X = 5;
-    c.Y = 27;
-    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
-    */
     COORD c;
+    int UpdateDmg = 0;
+    int UpdateHealth = 0;
+    if (g_sTutEnemy.GetH() == 0 || g_sMutantWasp.GetH() == 0)
+    {
+        Item Stinger;
 
+        Stinger.setItemName("Stinger");
+
+        Item* item1 = new Item;
+        if (PlayerInv.pickup(item1))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item Added", 100);
+            Stinger.getItemName();
+        }
+        else {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Not enough space.", 100);
+        }
+
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Stinger"), 100);
+    }
+    else if (g_sPig.GetH() == 0)
+    {
+        Item RawMeat;
+
+        RawMeat.setItemName("Raw Meat");
+
+        Item* item2 = new Item;
+        if (PlayerInv.pickup(item2))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item Added", 100);
+            RawMeat.getItemName();
+        }
+        else {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Not enough space.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+    }
+    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.drawGuard(g_Console);
     //rMap.pig(g_Console);
     //rMap.Battle_Wasp(g_Console);
     //rMap.Battle_Raymond(g_Console);
-    //renderCharacter();  // renders the character into the buffer
+    renderCharacter();  // renders the character into the buffer
 
-    c.X = 11;
-    c.Y = 0;
+    c.X = 5;
+    c.Y = 28;
     string str_charhealth = to_string(g_sChar.GetH());
-    g_Console.writeToBuffer(c, "Your Health: " + str_charhealth, 0x1A, 100);
+    g_Console.writeToBuffer(c, str_charhealth, 0x0F, 100);
 
-    c.X = 53;
-    c.Y = 0;
+    c.X = 5;
+    c.Y = 29;
     string str_guardhealth = to_string(g_sGuard.GetH());
-    g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x1A, 100);
+    g_Console.writeToBuffer(c, str_guardhealth, 0x0F, 100);
 
 
     //change g_eGameState to inventory
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 15) || (g_mouseEvent.mousePosition.X == 16) || (g_mouseEvent.mousePosition.X == 17) || (g_mouseEvent.mousePosition.X == 18) || (g_mouseEvent.mousePosition.X == 19) || (g_mouseEvent.mousePosition.X == 20) || (g_mouseEvent.mousePosition.X == 21) || (g_mouseEvent.mousePosition.X == 22) || (g_mouseEvent.mousePosition.X == 23) || (g_mouseEvent.mousePosition.X == 24) || (g_mouseEvent.mousePosition.X == 25))))
     {
+        Item* item1; 
+        Item* item2; 
+        Item* item3;
+        if (PlayerInv.Consumed(item1))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 5;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Stinger"), 100);
+
+        if (PlayerInv.Consumed(item2))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateHealth = g_sChar.GetH() + 5;
+            g_sChar.SetH(UpdateHealth);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+
+        if (PlayerInv.Consumed(item3))
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Item used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+        }
+        else
+        {
+            g_Console.writeToBuffer(c, "Item was not used.", 100);
+        }
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+       
         //g_eGameState = S_Townsquare;
     }
-
-    // if click on fight
-    if (g_sChar.startTimer == true) 
+    if (g_sChar.startTimer == true)
     {
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
         {
-            int randHit = rand() % 100 + 1;
-            if (randHit >= 0 && randHit <= 50) // player gets hit
+            int charhealth = g_sChar.GetH() - g_sGuard.GetD();
+            string str_charhealth = to_string(charhealth);
+
+
+            int guardhealth = g_sGuard.GetH() - g_sChar.GetD();
+            string str_guardhealth = to_string(guardhealth);
+
+
+            g_sChar.SetH(charhealth);
+            g_sGuard.SetH(guardhealth);
+
+            if (g_sGuard.GetH() == 0)
             {
-                int charhealth = g_sChar.GetH() - g_sGuard.GetD(); // get player health
-                string str_charhealth = to_string(charhealth);
+                Item GuardArmor;
 
-                g_sChar.SetH(charhealth); // set player health to new health
+                GuardArmor.setItemName("Guard Armor");
 
-                g_sChar.showEnemyDMG = true;
-                enemyDMGTime = 0.0;
+                Item* item3 = new Item;
+                if (PlayerInv.pickup(item3))
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "Item Added", 100);
+                }
+                else {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "Not enough space.", 100);
+                }
 
+                c.X = 5;
+                c.Y = 27;
+                g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
             }
-            
-            int guardhealth = g_sGuard.GetH() - g_sChar.GetD(); // get enemy health
-            //string str_guardhealth = to_string(guardhealth);
 
-
-            g_sGuard.SetH(guardhealth); // set enemy health to new health
-
-
-            
+            if (g_sChar.GetH() < 0)
+            {
+                //g_eGameState = S_Path_Area;
+            }
             startTime = 0.0;
             g_sChar.resetTimer = true;
             g_sChar.startTimer = false;
-            g_sChar.showPlayerDMG = true;
-            playerDMGTime = 0.0;
-            g_sChar.count = 1;
-            
         }
     }
+    //change g_eGameState to fight 
 
-    if (g_sChar.GetH() <= 0)
-    {
-        g_eGameState = S_Dungeon_Stealth_1; // if guard kills player
-    }
-    if (g_sChar.count == 1)
-    {
-        if (g_sGuard.GetH() <= 0)
-        {
-            g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-            g_sChar.unlockDoorDS1 = true;
-        }
-    }
-    
-
-
-    if (g_sChar.showPlayerDMG == true)
-    {
-        COORD c;
-        c.X = 3;
-        c.Y = 25;
-        string str_charDMG = to_string(g_sChar.GetD());
-
-        g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
-
-    }
-    if (g_sChar.showEnemyDMG == true)
-    {
-        COORD c;
-        c.X = 3;
-        c.Y = 26;
-        string str_guardDMG = to_string(g_sGuard.GetD());
-
-        g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
-    }
 }
 
 void UpdateBattleScreen()
@@ -3161,29 +3275,6 @@ void UpdateBattleScreen()
         {
             g_sChar.startTimer = true;
         }
-    }
-    if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
-    {
-        //g_eGameState = S_Townsquare;
-        g_sChar.showPlayerDMG = false;
-        COORD c;
-        c.X = 3;
-        c.Y = 25;
-
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-        playerDMGTime = 0.0;
-
-    }
-    if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
-    {
-        g_sChar.showEnemyDMG = false;
-        enemyDMGTime = 0.0;
-        COORD c;
-        c.X = 3;
-        c.Y = 26;
-
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
     }
 }
 
