@@ -1873,7 +1873,7 @@ void Boss_Room_Animation()
                                                                                 g_Console.writeToBuffer(c, "Raymond: Wouldn't that be wonderful?", 0x0F);
                                                                                 g_Console.writeToBuffer(d, "         It's a fantastic idea!!", 0x0F);
                                                                                 Cutscene.cleargrid(g_Console, 55, 21);
-                                                                                Cutscene.drawgrid(g_Console, 53, 21, 'R');
+                                                                                Cutscene.drawgrid(g_Console, 53, 21, 'R');//hi
                                                                                 if (g_dBossTime > 26.5)
                                                                                 {
                                                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);

@@ -181,6 +181,6 @@ void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
-void render_DS1();
+void render_DS1();//hi
 
 #endif //_GAME_H

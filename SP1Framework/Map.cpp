@@ -13,7 +13,7 @@ void Map::initialise(Console& g_Console)
 		{
 			c.X = i;
 			c.Y = j;
-			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x00);
 		}
 	}
 	
@@ -38,25 +38,25 @@ void Map::printmap(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x0A);
 	}
 
 	for (int j = 2; j < 23; j++)
 	{
 		c.X = 1;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x0A);
 		for (i = 2; i < 78; i++)
 		{
 			d.X = i;
 			d.Y = j;
-			g_Console.writeToBuffer(d, Grid[d.Y][d.X], 0x1A);
+			g_Console.writeToBuffer(d, Grid[d.Y][d.X], 0x0A);
 		}
 		for (int k = 1; k < 23; k++)
 		{
 			e.X = 78;
 			e.Y = k;
-			g_Console.writeToBuffer(e, Grid[e.Y][e.X] = '#', 0x1A);
+			g_Console.writeToBuffer(e, Grid[e.Y][e.X] = '#', 0x0A);
 		}
 
 	}
@@ -65,7 +65,7 @@ void Map::printmap(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x0A);
 	}
 
 	for (i = 1; i < 79; i++)
@@ -99,16 +99,16 @@ void Map::Border(Console& g_Console)
 		c.Y = 1;
 		d.X = i;
 		d.Y = 23;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x10);
-		g_Console.writeToBuffer(d, Grid[d.Y][d.X] = '#', 0x10);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '#', 0x0F);
+		g_Console.writeToBuffer(d, Grid[d.Y][d.X] = '#', 0x0F);
 		for (int j = 1; j < 24; j++)
 		{
 			c.X = 78;
 			c.Y = j;
 			d.X = 1;
 			d.Y = j;
-			g_Console.writeToBuffer(c, Grid[c.Y][78] = '#', 0x10);
-			g_Console.writeToBuffer(d, Grid[d.Y][1] = '#', 0x10);
+			g_Console.writeToBuffer(c, Grid[c.Y][78] = '#', 0x0F);
+			g_Console.writeToBuffer(d, Grid[d.Y][1] = '#', 0x0F);
 		}
 
 	}
@@ -120,7 +120,7 @@ void Map::Animation(Console& g_Console, int x, int y, char ch)
 	COORD c;
 	c.X = x;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x14);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x04);
 }
 
 void Map::drawAnimation(Console& g_Console, int x, int y, char ch)
@@ -128,7 +128,7 @@ void Map::drawAnimation(Console& g_Console, int x, int y, char ch)
 	COORD c;
 	c.X = x;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ch, 0x0A);
 }
 
 void Map::House(Console& g_Console, int x, int y)
@@ -140,31 +140,31 @@ void Map::House(Console& g_Console, int x, int y)
 	{
 		c.X = xLoc + i;
 		c.Y = yLoc;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (i = 0; i < 5; i++)
 	{
 		c.X = xLoc + i;
 		c.Y = yLoc + 2;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (i = 0; i < 1; i++)
 	{
 		c.X = xLoc + 2;
 		c.Y = yLoc + 1;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'H', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'H', 0x0A);
 	}
 	for (i = 0; i < 1; i++)
 	{
 		c.X = xLoc;
 		c.Y = yLoc + 1;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (i = 0; i < 1; i++)
 	{
 		c.X = xLoc + 4;
 		c.Y = yLoc + 1;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 }
 
@@ -177,31 +177,31 @@ void Map::House2(Console& g_Console, int x, int y)
 	{
 		c.X = xLoc + i;
 		c.Y = yLoc;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (int i = 0; i < 5; i++)
 	{
 		c.X = xLoc + i;
 		c.Y = yLoc + 2;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (int i = 0; i < 1; i++)
 	{
 		c.X = xLoc + 2;
 		c.Y = yLoc + 1;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	}
 	for (int i = 0; i < 1; i++)
 	{
 		c.X = xLoc;
 		c.Y = yLoc + 1;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (int i = 0; i < 1; i++)
 	{
 		c.X = xLoc + 4;
 		c.Y = yLoc + 1;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 }
 
@@ -252,31 +252,31 @@ void Map::townsquare(Console& g_Console)
 	COORD c;
 	c.X = 42;
 	c.Y = 16;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.X = 65;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.X = 64;
 	c.Y = 6;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.X = 52;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.X = 19;
 	c.Y = 9;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.X = 12;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.X = 61;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 }
 void Map::orphanageDoor(Console& g_Console)
 {
@@ -299,107 +299,107 @@ void Map::orphanage(Console& g_Console)
 	COORD c;
 	c.X = 2;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	c.X = 3;
 	c.Y = 21;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	c.X = 4;
 	c.Y = 20;
 	for (int i = 0; i < 4; i++)
 	{
 		c.X = 4 + i;
 		c.Y = 20;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1C);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0C);
 	}
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	for (int i = 0; i < 5; i++)
 	{
 		c.X = 8 + i;
 		c.Y = 19;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1C);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0C);
 	}
 	for (int i = 0; i < 2; i++)
 	{
 		c.X = 13 + i;
 		c.Y = 19 - i;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	}
 	for (int i = 0; i < 6; i++)
 	{
 		c.X = 15 + i;
 		c.Y = 17;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1C);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0C);
 	}
 	c.X = 21;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	c.X = 22;
 	c.Y = 16;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	c.X = 23;
 	c.Y = 15;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	for (int i = 0; i < 10; i++)
 	{
 		c.X = 24 + i;
 		c.Y = 14;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1C);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0C);
 	}
 	c.X = 34;
 	c.Y = 14;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	c.X = 35;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	for (int i = 0; i < 15; i++)
 	{
 		c.X = 36 + i;
 		c.Y = 12;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1C);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0C);
 	}
 	c.X = 51;
 	c.Y = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	for (int i = 0; i < 7; i++)
 	{
 		c.X = 52 + i;
 		c.Y = 11;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1C);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0C);
 	}
 	c.X = 59;
 	c.Y = 11;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	c.X = 60;
 	c.Y = 10;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	c.X = 61;
 	c.Y = 9;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 	for (int i = 0; i < 15; i++)
 	{
 		c.X = 62 + i;
 		c.Y = 8;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1C);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0C);
 	}
 	c.X = 77;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1C);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0C);
 
 	//children
 	c.X = 56;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 64;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 62;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 50;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 }
 
@@ -409,18 +409,18 @@ void Map::drawChildren(Console& g_Console)
 	//children
 	c.X = 56;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 64;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 62;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 50;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 }
 
@@ -434,13 +434,13 @@ void Map::outside_abandoned_facility(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 22;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 	for (j = 17; j <= 20; j++)
 	{
 		c.X = 58;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 
 	//Building
@@ -448,25 +448,25 @@ void Map::outside_abandoned_facility(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 3;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (j = 4; j <= 16; j++)
 	{
 		c.X = 58;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (j = 4; j <= 20; j++)
 	{
 		c.X = 76;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (i = 58; i <= 76; i++)
 	{
 		c.X = i;
 		c.Y = 21;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 
 	//camera
@@ -474,19 +474,19 @@ void Map::outside_abandoned_facility(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 3;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
 	c.X = 39;
 	c.Y = 4;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 42;
 	c.Y = 4;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	for (i = 40; i <= 41; i++)
 	{
 		c.X = i;
 		c.Y = 4;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
 }
 
@@ -499,13 +499,13 @@ void Map::insideAbandonedFacility2(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 2;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 	for (j = 11; j <= 15; j++)
 	{
 		c.X = 76;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 
 	//boxes
@@ -524,7 +524,7 @@ void Map::insideAbandonedFacility2(Console& g_Console)
 		{
 			c.X = i;
 			c.Y = j;
-			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 		}
 	}
 }
@@ -538,7 +538,7 @@ void Map::insideAbandonedFacility4(Console& g_Console)
 	{
 		c.X = 2;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 
 	//box thing for defense items
@@ -546,25 +546,25 @@ void Map::insideAbandonedFacility4(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 4;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (j = 5; j <= 7; j++)
 	{
 		c.X = 34;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (j = 5; j <= 7; j++)
 	{
 		c.X = 46;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (i = 34; i <= 46; i++)
 	{
 		c.X = i;
 		c.Y = 8;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 }
 
@@ -577,7 +577,7 @@ void Map::dungeon_cell(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 2;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 
 	//cell bars
@@ -585,7 +585,7 @@ void Map::dungeon_cell(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 8;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 
 	//locked doors
@@ -593,7 +593,7 @@ void Map::dungeon_cell(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 8;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x1C);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x0C);
 	}
 }
 
@@ -606,13 +606,13 @@ void Map::dungeon_stealth2(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 22;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 	for (i = 17; i <= 25; i++)
 	{
 		c.X = i;
 		c.Y = 18;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 
 	//walls
@@ -620,31 +620,31 @@ void Map::dungeon_stealth2(Console& g_Console)
 	{
 		c.X = 9;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (j = 6; j <= 22; j++)
 	{
 		c.X = 16;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (j = 6; j <= 17; j++)
 	{
 		c.X = 69;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (i = 9; i <= 69; i++)
 	{
 		c.X = i;
 		c.Y = 5;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (i = 27; i <= 69; i++)
 	{
 		c.X = i;
 		c.Y = 18;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 }
 
@@ -657,7 +657,7 @@ void Map::boss_room(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 22;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 
 	//long table
@@ -665,25 +665,25 @@ void Map::boss_room(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 4;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (j = 5; j <= 7; j++)
 	{
 		c.X = 26;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (j = 5; j <= 7; j++)
 	{
 		c.X = 54;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (i = 26; i <= 54; i++)
 	{
 		c.X = i;
 		c.Y = 8;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 
 	//chairs
@@ -691,50 +691,50 @@ void Map::boss_room(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 9;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
 	for (j = 10; j <= 11; j++)
 	{
 		c.X = 30;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (j = 10; j <= 11; j++)
 	{
 		c.X = 36;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (i = 31; i <= 35; i++)
 	{
 		c.X = i;
 		c.Y = 11;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
 
 	for (i = 45; i <= 49; i++)
 	{
 		c.X = i;
 		c.Y = 9;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
 	for (j = 10; j <= 11; j++)
 	{
 		c.X = 44;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (j = 10; j <= 11; j++)
 	{
 		c.X = 50;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (i = 45; i <= 49; i++)
 	{
 		c.X = i;
 		c.Y = 11;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
 
 	//coffee table
@@ -742,25 +742,25 @@ void Map::boss_room(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = 13;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (j = 14; j <= 15; j++)
 	{
 		c.X = 33;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (j = 14; j <= 15; j++)
 	{
 		c.X = 47;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (i = 33; i <= 47; i++)
 	{
 		c.X = i;
 		c.Y = 16;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 }
 
@@ -769,13 +769,13 @@ void Map::Box(Console& g_Console, int x, int y)
 	COORD c;
 	c.X = x;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = x + 1;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'B', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'B', 0x0A);
 	c.X = x + 2;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 }
 
 void Map::Barrel(Console& g_Console, int x, int y)
@@ -783,13 +783,13 @@ void Map::Barrel(Console& g_Console, int x, int y)
 	COORD c;
 	c.X = x;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '(', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '(', 0x0A);
 	c.X = x + 1;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'B', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'B', 0x0A);
 	c.X = x + 2;
 	c.Y = y;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ')', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ')', 0x0A);
 }
 
 void Map::patharea(Console& g_Console)
@@ -803,7 +803,7 @@ void Map::patharea(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 
 	i = 46;
@@ -811,7 +811,7 @@ void Map::patharea(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 
 	j = 10;
@@ -819,7 +819,7 @@ void Map::patharea(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 
 	j = 15;
@@ -827,7 +827,7 @@ void Map::patharea(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 
 	i = 46;
@@ -835,7 +835,7 @@ void Map::patharea(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 
 	//door
@@ -844,21 +844,21 @@ void Map::patharea(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 	j = 22;
 	for (int i = 37; i < 46; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 	i = 77;
 	for (int j = 11; j < 15; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 }
 
@@ -871,7 +871,7 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 
 	//generator vertical
@@ -880,14 +880,14 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 59;
 	for (int j = 2; j < 16; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 
 	//generator horizontal
@@ -896,14 +896,14 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 2;
 	for (int i = 20; i < 60; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 
 	//opening
@@ -912,63 +912,63 @@ void Map::insideAbandonedFacility1(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 	//locked doors
 	i = 2; for (int j = 17; j < 23; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x0A);
 	}
 	i = 77; for (int j = 17; j < 23; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x0A);
 	}
 	/*
 	j = 22; for (int i = 36; i < 46; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x0A);
 	}
 	*/
 
 	//minigame
 	c.Y = 4;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 56;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '!', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '!', 0x0A);
 	c.X = 57;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 
 	//Control Room
 	c.Y = 7;
 	c.X = 32;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'C', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'C', 0x0A);
 	c.X = 33;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x0A);
 	c.X = 34;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'n', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'n', 0x0A);
 	c.X = 35;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 't', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 't', 0x0A);
 	c.X = 36;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'r', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'r', 0x0A);
 	c.X = 37;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x0A);
 	c.X = 38;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'l', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'l', 0x0A);
 	c.X = 42;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'R', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'R', 0x0A);
 	c.X = 43;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x0A);
 	c.X = 44;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x0A);
 	c.X = 45;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'm', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'm', 0x0A);
 
 
 	//barrel locations
@@ -997,7 +997,7 @@ void Map::Road(Console& g_Console, int x, int y, int count)
 	{
 		c.X = xLoc;
 		c.Y = yLoc + i;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 }
 
@@ -1011,7 +1011,7 @@ void Map::Road2(Console& g_Console, int x, int y, int count)
 	{
 		c.X = xLoc + i;
 		c.Y = yLoc;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
 }
 
@@ -1026,7 +1026,7 @@ void Map::Road3(Console& g_Console, int x, int y, int count)
 	{
 		c.X = xLoc + i;
 		c.Y = yLoc;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 }
 
@@ -1040,7 +1040,7 @@ void Map::Road_I(Console& g_Console, int x, int y, int count)
 	{
 		c.X = xLoc;
 		c.Y = yLoc + 1;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'I', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'I', 0x0A);
 	}
 }
 
@@ -1054,7 +1054,7 @@ void Map::Road_Equals(Console& g_Console, int x, int y, int count)
 	{
 		c.X = xLoc + 1;
 		c.Y = yLoc;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '=', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '=', 0x0A);
 	}
 }
 void Map::insideAbandonedFacility3(Console& g_Console)
@@ -1066,50 +1066,50 @@ void Map::insideAbandonedFacility3(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 10; for (i = 30; i < 50; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 10; for (i = 39; i < 42; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 	i = 30; for (j = 3; j < 10; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 49; for (j = 3; j < 10; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 38; for (j = 11; j < 23; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 42; for (j = 11; j < 23; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	//door
 	j = 22; for (i = 39; i < 42; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 }
 
@@ -1122,7 +1122,7 @@ void Map::insideMedicalFacility(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 
 	//beds
@@ -1132,111 +1132,111 @@ void Map::insideMedicalFacility(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (int j = 8; j < 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 	i = 65;
 	for (int j = 2; j < 23; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (int j = 8; j < 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 	i = 60; for (int j = 2; j < 23; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (int j = 8; j < 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 	i = 50; for (int j = 2; j < 23; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (int j = 8; j < 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 	i = 45; for (int j = 2; j < 23; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (int j = 8; j < 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 	i = 35; for (int j = 2; j < 23; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (int j = 8; j < 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 	//horizontal
 	j = 2; for (i = 35; i < 76; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 4; for (i = 35; i < 76; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 8; for (i = 35; i < 76; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 16; for (i = 35; i < 76; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 20; for (i = 35; i < 76; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 22; for (i = 35; i < 76; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (j = 2; j < 23; j++)
 	{
@@ -1244,7 +1244,7 @@ void Map::insideMedicalFacility(Console& g_Console)
 		{
 			c.X = i;
 			c.Y = j;
-			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 		}
 	}
 	for (j = 2; j < 23; j++)
@@ -1253,7 +1253,7 @@ void Map::insideMedicalFacility(Console& g_Console)
 		{
 			c.X = i;
 			c.Y = j;
-			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 		}
 	}
 	//front desk
@@ -1261,13 +1261,13 @@ void Map::insideMedicalFacility(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 23; for (int j = 4; j < 21; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	for (j = 8; j < 18; j++)
 	{
@@ -1275,20 +1275,20 @@ void Map::insideMedicalFacility(Console& g_Console)
 		{
 			c.X = i;
 			c.Y = j;
-			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 		}
 	}
 	j = 7; for (i = 20; i < 26; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 18; for (i = 20; i < 26; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 }
 
@@ -1301,78 +1301,78 @@ void Map::dungeon_stealth3(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 	j = 2; for (i = 60; i < 78; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 	//walls
 	j = 20; for (i = 0; i < 60; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	i = 59; for (j = 2; j < 20; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 59; for (j = 8; j < 13; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 	}
 	//elevator
 	c.Y = 2;
 	c.X = 4;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 5;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'E', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'E', 0x0A);
 	c.X = 6;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 
 	//statue
 	j = 9; for (i = 5; i < 15; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	j = 16; for (i = 5; i < 15; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	i = 5; for (j = 10; j < 16; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 14; for (j = 10; j < 16; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	c.Y = 12;
 	c.X = 9;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 10;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.Y = 13;
 	c.X = 9;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 10;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 }
 
 //AAAAAAAAAAAA cockroach yummy
@@ -1386,7 +1386,7 @@ void Map::protest_area(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
 
 	//barrels
@@ -1403,58 +1403,58 @@ void Map::protest_area(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	i = 17;  for (j = 3; j <= 5; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 61; for (j = 3; j <= 5; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	j = 6;  for (i = 17; i <= 61; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	i = 17; for (j = 7; j <= 9; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 61;  for (j = 7; j <= 9; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	j = 9; for (i = 18; i <= 60; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
 
 	//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 	//podium
 	c.Y = 9;
 	c.X = 36;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 42;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 
 	j = 8; for (i = 37; i <= 41; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
 
 	//Taco stand
@@ -1462,79 +1462,79 @@ void Map::protest_area(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	i = 7; for (j = 13; j <= 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 15; for (j = 13; j <= 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	j = 18; for (i = 8; i <= 14; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 
 	c.Y = 15;
 	c.X = 9;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'T', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'T', 0x0A);
 	c.X = 10;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'a', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'a', 0x0A);
 	c.X = 11;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'c', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'c', 0x0A);
 	c.X = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'o', 0x0A);
 	c.X = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 's', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 's', 0x0A);
 
 	//Burger stand
 	j = 12; for (i = 65; i <= 71; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	i = 64; for (j = 13; j <= 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	i = 72; for (j = 13; j <= 17; j++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	j = 18; for (i = 65; i <= 71; i++)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	c.Y = 15;
 	c.X = 65;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'B', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'B', 0x0A);
 	c.X = 66;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'u', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'u', 0x0A);
 	c.X = 67;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'r', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'r', 0x0A);
 	c.X = 68;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'g', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'g', 0x0A);
 	c.X = 69;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'e', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'e', 0x0A);
 	c.X = 70;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'r', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'r', 0x0A);
 	c.X = 71;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 's', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 's', 0x0A);
 }
 
 void Map::dungeon_stealth1(Console& g_Console)
@@ -1581,7 +1581,7 @@ void Map::dungeon_stealth1(Console& g_Console)
 
 	c.X = 27;
 	c.Y = 14;
-	g_Console.writeToBuffer(c, "&&&&&&&&&", 0x1A);
+	g_Console.writeToBuffer(c, "&&&&&&&&&", 0x0A);
 
 	Road3(g_Console, 2, 22, 8);
 	Road3(g_Console, 11, 22, 8);
@@ -1596,13 +1596,13 @@ void Map::Battle_Screen(Console& g_Console)
 	Road(g_Console, 75, 17, 5);
 	c.Y = 19;
 	c.X = 15;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 17;
-	g_Console.writeToBuffer(c, "Inventory", 0x1A);
+	g_Console.writeToBuffer(c, "Inventory", 0x0A);
 	c.X = 58;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 60;
-	g_Console.writeToBuffer(c, "Fight", 0x1A);
+	g_Console.writeToBuffer(c, "Fight", 0x0A);
 }
 
 void Map::drawGuard(Console& g_Console)
@@ -1620,24 +1620,24 @@ void Map::drawGuard(Console& g_Console)
 	COORD c;
 	c.Y = 4;
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 5;
 	c.X = 53;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 3;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	for (int i = 0; i < 2; i++)
 	{
 		c.Y = 4 + i;
 		c.X = 52;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
 	c.Y = 3;
 	c.X = 65;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 4;
 	c.X = 64;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 
 	//left hand
 	Road(g_Console, 57, 7, 2);
@@ -1657,10 +1657,10 @@ void Map::drawGuard(Console& g_Console)
 	Road(g_Console, 57, 11, 3);
 	c.Y = 14;
 	c.X = 56;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 15;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 
 	//right leg
 	Road(g_Console, 61, 11, 3);
@@ -1668,109 +1668,109 @@ void Map::drawGuard(Console& g_Console)
 	Road2(g_Console, 62, 15, 3);
 	c.Y = 14;
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 15;
 	c.X = 64;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 14;
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 14;
 	c.X = 60;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 
 	c.Y = 15;
 	c.X = 58;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 15;
 	c.X = 61;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 
 	//eyes
 	c.Y = 5;
 	c.X = 57;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.Y = 5;
 	c.X = 61;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.Y = 4;
 	c.X = 58;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 4;
 	c.X = 60;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 5;
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '<', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '<', 0x0A);
 
 	//sword
 	//right side
 	c.Y = 8;
 	c.X = 51;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 7;
 	c.X = 50;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 
 	c.Y = 10;
 	c.X = 50;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 9;
 	c.X = 49;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 6;
 	c.X = 50;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 5;
 	c.X = 50;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 5;
 	c.X = 49;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 5;
 	c.X = 48;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 4;
 	c.X = 47;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 3;
 	c.X = 46;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 
 	//tip of sword
 	c.Y = 2;
 	c.X = 43;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 2;
 	c.X = 45;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 
 
 	// left side
 	c.Y = 9;
 	c.X = 48;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 9;
 	c.X = 47;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 8;
 	c.X = 47;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 7;
 	c.X = 47;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 6;
 	c.X = 46;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 5;
 	c.X = 45;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 4;
 	c.X = 44;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 3;
 	c.X = 43;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);//h
 }
 void Map::drawRobert(Console& g_Console)
 {
@@ -1781,127 +1781,127 @@ void Map::drawRobert(Console& g_Console)
 	COORD c;
 	c.Y = 6;
 	c.X = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 6;
 	c.X = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 7;
 	c.X = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 8;
 	c.X = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 9;
 	c.X = 11;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 10;
 	c.X = 11;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 10;
 	c.X = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 9;
 	c.X = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 10;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 11;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 
 	//eyes
 	c.Y = 5;
 	c.X = 16;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.Y = 5;
 	c.X = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.Y = 4;
 	c.X = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 
 	c.Y = 4;
 	c.X = 16;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 
 	//left legs
 	c.Y = 13;
 	c.X = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 14;
 	c.X = 11;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 14;
 	c.X = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.Y = 14;
 	c.X = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.Y = 13;
 	c.X = 14;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 14;
 	c.X = 14;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 
 
 
 	//right body
 	c.Y = 7;
 	c.X = 16;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 8;
 	c.X = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 9;
 	c.X = 18;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 10;
 	c.X = 18;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 10;
 	c.X = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 9;
 	c.X = 16;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 10;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 11;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 
 
 	//right leg
 	c.Y = 13;
 	c.X = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 14;
 	c.X = 18;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 14;
 	c.X = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.Y = 14;
 	c.X = 16;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.Y = 13;
 	c.X = 15;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 14;
 	c.X = 15;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 
 	c.Y = 12;
 	c.X = 14;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.Y = 12;
 	c.X = 15;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 }
 
 void Map::Battle_Wasp(Console & g_Console)
@@ -1910,7 +1910,7 @@ void Map::Battle_Wasp(Console & g_Console)
 	COORD c;
 	c.X = 3;
 	c.Y = 2;
-	g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x1A);
+	g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
 
 	//head
 	Road2(g_Console, 56, 3, 7);
@@ -1921,41 +1921,41 @@ void Map::Battle_Wasp(Console & g_Console)
 	//Left eye
 	c.X = 56;
 	c.Y = 5;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 57;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 56;
 	c.Y = 4;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 
 	//right eye
 	c.X = 62;
 	c.Y = 5;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 61;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 62;
 	c.Y = 4;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 
 	//feelers
 	c.X = 57;
 	c.Y = 3;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 61;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	Road2(g_Console, 54, 2, 3);
 	c.X = 53;
 	c.Y = 3;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.Y = 4;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	Road2(g_Console, 62, 2, 3);
 	c.X = 65;
 	c.Y = 3;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 4;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 
 	//body middle
 	Road(g_Console, 55, 8, 1);
@@ -1963,142 +1963,142 @@ void Map::Battle_Wasp(Console & g_Console)
 	Road2(g_Console, 56, 8, 7);
 	c.X = 55;
 	c.Y = 7;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 55;
 	c.Y = 9;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 56;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 62;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 
 	//body end
 	c.X = 55;
 	c.Y = 10;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	Road(g_Console, 55, 11, 1);
 	Road(g_Console, 63, 11, 1);
 	Road2(g_Console, 56, 10, 7);
 	Road2(g_Console, 56, 11, 7);
 	c.X = 55;
 	c.Y = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 56;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 62;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	Road2(g_Console, 57, 13, 5);
 	// stinger
 
 	c.Y = 14;
 	c.X = 58;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 60;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 59;
 	c.Y = 15;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'V', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'V', 0x0A);
 
 	//mandibles
 	c.X = 57;
 	c.Y = 7;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 61;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 58;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 60;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 
 	//Left leg 1
 	c.X = 54;
 	c.Y = 7;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	Road2(g_Console, 50, 6, 4);
 
 	//Right leg 1
 	c.X = 64;
 	c.Y = 7;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	Road2(g_Console, 65, 6, 4);
 
 	//Left leg 2
 	c.X = 54;
 	c.Y = 9;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 53;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 52;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 51;
 	c.Y = 7;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 50;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	Road2(g_Console, 48, 8, 2);
 
 	//Right leg 2
 	c.X = 64;
 	c.Y = 9;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 65;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 66;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 67;
 	c.Y = 7;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 68;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	Road2(g_Console, 69, 8, 2);
 
 	//Left leg 3
 	Road2(g_Console, 53, 10, 2);
 	c.X = 52;
 	c.Y = 11;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 51;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 50;
 	c.Y = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 50;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 50;
 	c.Y = 14;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	//Right leg 3
 	Road2(g_Console, 64, 10, 2);
 	c.X = 66;
 	c.Y = 11;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 67;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 68;
 	c.Y = 12;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 68;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 68;
 	c.Y = 14;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 }
 
 void Map::Battle_Raymond(Console & g_Console)
@@ -2109,23 +2109,23 @@ void Map::Battle_Raymond(Console & g_Console)
 	//Name
 	c.X = 3;
 	c.Y = 2;
-	g_Console.writeToBuffer(c, "=Raymond=", 0x1A);
+	g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
 	//face shape
 	Road(g_Console, 55, 5, 1);
 	Road(g_Console, 63, 5, 1);
 	Road2(g_Console, 57, 6, 5);
 	c.X = 56;
 	c.Y = 6;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 62;
 	c.Y = 6;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	//glasses
 	Road2(g_Console, 56, 5, 2);
 	Road(g_Console, 58, 5, 1);
 	c.Y = 5;
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	Road(g_Console, 60, 5, 1);
 	Road2(g_Console, 61, 5, 2);
 	Road2(g_Console, 56, 4, 2);
@@ -2133,167 +2133,167 @@ void Map::Battle_Raymond(Console & g_Console)
 	//hair + ear things
 	c.X = 56;
 	c.Y = 4;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 57;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 58;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 60;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 61;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 62;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	Road2(g_Console, 57, 2, 5);
 	c.Y = 2;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 56;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 62;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 3;
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 64;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 4;
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 64;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	//body
 	Road2(g_Console, 43, 7, 4);
 	c.Y = 7;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 56;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 57;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 58;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'v', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'v', 0x0A);
 	c.X = 60;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 61;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 62;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 64;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.X = 65;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	c.Y = 8;
 	Road2(g_Console, 50, 8, 4);
 	Road2(g_Console, 44, 8, 4);
 	c.X = 42;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 47;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 48;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 49;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 58;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 60;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 66;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 9;
 	c.X = 46;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 47;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 48;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 49;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	Road2(g_Console, 50, 9, 5);
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 58;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 60;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 64;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.X = 67;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 10;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'Y', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'Y', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 64;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 67;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 11;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	Road2(g_Console, 56, 11, 3);
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	Road2(g_Console, 60, 11, 3);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 64;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 65;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.X = 66;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	c.Y = 12;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	Road2(g_Console, 56, 12, 7);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 13;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 14;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 15;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.Y = 16;
 	c.X = 55;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 59;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	c.X = 63;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x1A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 }
 
 void Map::pig(Console & g_Console)
@@ -2304,75 +2304,75 @@ void Map::pig(Console & g_Console)
 	//tail
 	c.X = 75;
 	c.Y = 9;
-	g_Console.writeToBuffer(c, '\\', 0x1A);
+	g_Console.writeToBuffer(c, '\\', 0x0A);
 	c.X = 74;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_', 0x0A);
 	c.X = 73;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_', 0x0A);
 
 	//body
 	for (j = 5; j <= 12; j++)
 	{
 		c.X = 72;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '|', 0x1A);
+		g_Console.writeToBuffer(c, '|', 0x0A);
 	}
 	for (i = 56; i <= 71; i++)
 	{
 		c.X = i;
 		c.Y = 4;
-		g_Console.writeToBuffer(c, '_', 0x1A);
+		g_Console.writeToBuffer(c, '_', 0x0A);
 	}
 	for (i = 56; i <= 71; i++)
 	{
 		c.X = i;
 		c.Y = 12;
-		g_Console.writeToBuffer(c, '_', 0x1A);
+		g_Console.writeToBuffer(c, '_', 0x0A);
 	}
 	c.X = 55;
 	c.Y = 5;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|', 0x0A);
 	c.Y = 6;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|', 0x0A);
 	c.Y = 12;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|', 0x0A);
 
 	//head
 	c.X = 56;
 	c.Y = 6;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_', 0x0A);
 	c.X = 57;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_', 0x0A);
 	c.X = 58;
-	g_Console.writeToBuffer(c, '/', 0x1A);  //right ear
+	g_Console.writeToBuffer(c, '/', 0x0A);  //right ear
 	c.X = 59;								//right ear
-	g_Console.writeToBuffer(c, '\\', 0x1A); //right ear
+	g_Console.writeToBuffer(c, '\\', 0x0A); //right ear
 	c.X = 54;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_', 0x0A);
 	c.X = 53;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_', 0x0A);
 	c.X = 52;
-	g_Console.writeToBuffer(c, '\\', 0x1A); //left ear
+	g_Console.writeToBuffer(c, '\\', 0x0A); //left ear
 	c.X = 51;							    //left ear
-	g_Console.writeToBuffer(c, '/', 0x1A);  //left ear
+	g_Console.writeToBuffer(c, '/', 0x0A);  //left ear
 	for (j = 7; j <= 11; j++)
 	{
 		c.X = 60;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '|', 0x1A);
+		g_Console.writeToBuffer(c, '|', 0x0A);
 	}
 	for (j = 7; j <= 11; j++)
 	{
 		c.X = 50;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '|', 0x1A);
+		g_Console.writeToBuffer(c, '|', 0x0A);
 	}
 	for (i = 51; i <= 59; i++)
 	{
 		c.X = i;
 		c.Y = 11;
-		g_Console.writeToBuffer(c, '_', 0x1A);
+		g_Console.writeToBuffer(c, '_', 0x0A);
 	}
 	//eye
 	c.X = 53;
@@ -2385,19 +2385,19 @@ void Map::pig(Console & g_Console)
 	{
 		c.X = i;
 		c.Y = 9;
-		g_Console.writeToBuffer(c, '_', 0x1A);
+		g_Console.writeToBuffer(c, '_', 0x0A);
 	}
 	for (j = 10; j <= 11; j++)
 	{
 		c.X = 52;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '|', 0x1A);
+		g_Console.writeToBuffer(c, '|', 0x0A);
 	}
 	for (j = 10; j <= 11; j++)
 	{
 		c.X = 58;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '|', 0x1A);
+		g_Console.writeToBuffer(c, '|', 0x0A);
 	}
 	//nose hole
 	c.X = 54;
@@ -2411,30 +2411,30 @@ void Map::pig(Console & g_Console)
 	{
 		c.X = 58;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '|', 0x1A);
+		g_Console.writeToBuffer(c, '|', 0x0A);
 	}
 	for (j = 13; j <= 15; j++)
 	{
 		c.X = 60;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '|', 0x1A);
+		g_Console.writeToBuffer(c, '|', 0x0A);
 	}
 	c.X = 59;
 	c.Y = 15;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_', 0x0A);
 	for (j = 13; j <= 15; j++)
 	{
 		c.X = 67;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '|', 0x1A);
+		g_Console.writeToBuffer(c, '|', 0x0A);
 	}
 	for (j = 13; j <= 15; j++)
 	{
 		c.X = 69;
 		c.Y = j;
-		g_Console.writeToBuffer(c, '|', 0x1A);
+		g_Console.writeToBuffer(c, '|', 0x0A);
 	}
 	c.X = 68;
 	c.Y = 15;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_', 0x0A);
 }
