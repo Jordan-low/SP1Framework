@@ -19,8 +19,10 @@ double g_dProtestTime;
 double g_dDungeonTime;
 double g_dPathTime;
 double g_dIAF3Time;
-double  g_dDeltaTime;
+double g_dDeltaTime;
+double g_dMedicalFightTime;
 double g_dMedicalTime;
+double g_dMedical2Time;
 double g_dDungeonStealth3Time;
 double g_dBossTime;
 double startTime;
@@ -355,7 +357,9 @@ void update(double dt)
     g_dDungeonTime += dt;
     g_dPathTime += dt;
     g_dIAF3Time += dt;
+    g_dMedicalFightTime += dt;
     g_dMedicalTime += dt;
+    g_dMedical2Time += dt;
     g_dDungeonStealth3Time += dt;
     g_dBossTime += dt;
     startTime += dt;
@@ -1412,6 +1416,182 @@ void IAF3_Animation()
                                                 {
                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                     g_Console.writeToBuffer(c, "Medical Facilty route is now available.", 0x0F, 100);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Update_Medical_Fight_Animation()
+{
+    if (g_dMedicalFightTime > 31.8)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+
+void Medical_Fight_Animation()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.insideMedicalFacility(g_Console);
+    COORD c;
+    renderCharacter();
+    c.X = 5;
+    c.Y = 26;
+    Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
+    Cutscene.drawgrid(g_Console, 34, 13, 'O'); //Ell
+
+    Cutscene.drawgrid(g_Console, 36, 12, 'O'); //Patient 1
+    Cutscene.drawgrid(g_Console, 36, 9, 'O'); //Patient 2
+    Cutscene.drawgrid(g_Console, 36, 15, 'O'); //Patient 3
+    Cutscene.drawgrid(g_Console, 46, 15, 'O'); //Patient 4
+    Cutscene.drawgrid(g_Console, 46, 9, 'O'); //Patient 5
+    Cutscene.drawgrid(g_Console, 56, 15, 'O'); //Patient 6
+    Cutscene.drawgrid(g_Console, 56, 9, 'O'); //Patient 7
+    Cutscene.drawgrid(g_Console, 23, 13, 'O'); //nurse
+
+    if (g_dMedicalFightTime > 0.6)
+    {
+        g_Console.writeToBuffer(c, "Patient 1: Thank you so much for the medicine!", 0x0F, 100);
+        if (g_dMedicalFightTime > 3.6)
+        {
+            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+            //patient 2 walks to hero
+            Cutscene.cleargrid(g_Console, 36, 9);
+            Cutscene.drawgrid(g_Console, 36, 10, 'O'); //Patient 2
+            if (g_dMedicalFightTime > 3.9)
+            {
+                Cutscene.cleargrid(g_Console, 36, 10);
+                Cutscene.drawgrid(g_Console, 35, 11, 'O');
+                if (g_dMedicalFightTime > 4.2)
+                {
+                    g_Console.writeToBuffer(c, "Patient 2: You have so much medicine and you kept it from us?", 0x0F, 100);
+                    c.Y = 27;
+                    g_Console.writeToBuffer(c, "           How shameless of you!", 0x0F, 100);
+                    if (g_dMedicalFightTime > 7.2)
+                    {
+                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                        //patient 3 walks to hero ( ally side )
+                        Cutscene.cleargrid(g_Console, 36, 15);
+                        Cutscene.drawgrid(g_Console, 35, 14, 'O');
+                        if (g_dMedicalFightTime > 7.5)
+                        {
+                            g_Console.writeToBuffer(c, "Patient 3: Give it to me! Can't you see that you're healthier than me?", 0x0F, 100);
+                            c.Y = 27;
+                            g_Console.writeToBuffer(c, "           I obviously need it more than you!", 0x0F, 100);
+                            if (g_dMedicalFightTime > 10.5)
+                            {
+                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                c.Y = 26;
+                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                //patient 4 walks (in front of ally)
+                                Cutscene.cleargrid(g_Console, 46, 15);
+                                Cutscene.drawgrid(g_Console, 41, 14, 'O');
+                                if (g_dMedicalFightTime > 10.8)
+                                {
+                                    Cutscene.cleargrid(g_Console, 41, 14);
+                                    Cutscene.drawgrid(g_Console, 36, 13, 'O');
+                                    if (g_dMedicalFightTime > 11.1)
+                                    {
+                                        g_Console.writeToBuffer(c, "Patient 4: Please! I beg you, please give my daughter", 0x0F, 100);
+                                        c.Y = 27;
+                                        g_Console.writeToBuffer(c, "           some medicine or she'll die!", 0x0F, 100);
+                                        if (g_dMedicalFightTime > 14.1)
+                                        {
+                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                            c.Y = 26;
+                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                            // Patient 5 walks to Patient 1
+                                            Cutscene.cleargrid(g_Console, 46, 9);
+                                            Cutscene.drawgrid(g_Console, 41, 10, 'O');
+                                            if (g_dMedicalFightTime > 14.4)
+                                            {
+                                                Cutscene.cleargrid(g_Console, 41, 10);
+                                                Cutscene.drawgrid(g_Console, 37, 11, 'O');
+                                                if (g_dMedicalFightTime > 14.7)
+                                                {
+                                                    g_Console.writeToBuffer(c, "Patient 5: Give that to me! I deserve that more than you!", 0x0F, 100);
+                                                    if (g_dMedicalFightTime > 17.7)
+                                                    {
+                                                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                        g_Console.writeToBuffer(c, "Patient 1: Hands off! They're mine!", 0x0F, 100);
+                                                        if (g_dMedicalFightTime > 20.7)
+                                                        {
+                                                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                            //patient 6 & 7 walking 
+                                                            Cutscene.cleargrid(g_Console, 56, 15);
+                                                            Cutscene.cleargrid(g_Console, 56, 9);
+                                                            Cutscene.drawgrid(g_Console, 51, 14, 'O');
+                                                            Cutscene.drawgrid(g_Console, 51, 10, 'O');
+                                                            if (g_dMedicalFightTime > 21.0)
+                                                            {
+                                                                Cutscene.cleargrid(g_Console, 51, 14);
+                                                                Cutscene.cleargrid(g_Console, 51, 10);
+                                                                Cutscene.drawgrid(g_Console, 46, 14, 'O');
+                                                                Cutscene.drawgrid(g_Console, 46, 11, 'O');
+                                                                if (g_dMedicalFightTime > 21.3)
+                                                                {
+                                                                    Cutscene.cleargrid(g_Console, 46, 14);
+                                                                    Cutscene.cleargrid(g_Console, 46, 11);
+                                                                    Cutscene.drawgrid(g_Console, 41, 14, 'O');
+                                                                    Cutscene.drawgrid(g_Console, 41, 12, 'O');
+                                                                    if (g_dMedicalFightTime > 21.6)
+                                                                    {
+                                                                        Cutscene.cleargrid(g_Console, 41, 14);
+                                                                        Cutscene.cleargrid(g_Console, 41, 12);
+                                                                        Cutscene.drawgrid(g_Console, 37, 14, 'O');
+                                                                        Cutscene.drawgrid(g_Console, 38, 12, 'O');
+                                                                        if (g_dMedicalFightTime > 21.9)
+                                                                        {
+                                                                            g_Console.writeToBuffer(c, "Patient 6: Why do you have som much medicine?", 0x0F, 100);
+                                                                            c.Y = 27;
+                                                                            g_Console.writeToBuffer(c, "           You must have stolen it from us!", 0x0F, 100);
+                                                                            if (g_dMedicalFightTime > 24.9)
+                                                                            {
+                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                c.Y = 26;
+                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                g_Console.writeToBuffer(c, "Patient 7: You thief! Give them back!", 0x0F, 100);
+                                                                                if (g_dMedicalFightTime > 27.9)
+                                                                                {
+                                                                                    //nurse walks
+                                                                                    Cutscene.cleargrid(g_Console, 23, 13);
+                                                                                    Cutscene.drawgrid(g_Console, 27, 14, 'O');
+                                                                                    if (g_dMedicalFightTime > 28.2)
+                                                                                    {
+                                                                                        Cutscene.cleargrid(g_Console, 27, 14);
+                                                                                        Cutscene.drawgrid(g_Console, 30, 15, 'O');
+                                                                                        if (g_dMedicalFightTime > 28.5)
+                                                                                        {
+                                                                                            Cutscene.cleargrid(g_Console, 30, 15);
+                                                                                            Cutscene.drawgrid(g_Console, 33, 15, 'O');
+                                                                                            if (g_dMedicalFightTime > 28.8)
+                                                                                            {
+                                                                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                                                                                g_Console.writeToBuffer(c, "Nurse: Everyone! Please calm down!", 0x0F, 100);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
