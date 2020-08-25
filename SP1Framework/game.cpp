@@ -49,7 +49,7 @@ SGameChar   g_sRaymond;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
-Console g_Console(80, 30, "SP1 Framework");
+Console g_Console(80, 30, "Stick Bug");
 // Map object
 Map rMap;
 Map eMap;
