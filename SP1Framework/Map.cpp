@@ -1770,7 +1770,7 @@ void Map::drawGuard(Console& g_Console)
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);
 	c.Y = 3;
 	c.X = 43;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);//hi
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '\\', 0x0A);//h
 }
 void Map::drawRobert(Console& g_Console)
 {

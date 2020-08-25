@@ -8,7 +8,7 @@ void Cutscenes::animate(Console& g_Console)
 }
 
 void Cutscenes::nextdialogue(Console& g_Console)
-{
+{//hi
 	//system("pause");
 	//system("cls");
 	printmap(g_Console);
