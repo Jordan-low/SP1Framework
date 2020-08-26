@@ -12,11 +12,7 @@ public:
 	void initialise(Console& g_Console);
 	void printmap(Console& g_Console);
 	void townsquare(Console& g_Console);
-	void initialise(Console& g_Console);
-	void printmap(Console& g_Console);
-	void townsquare(Console& g_Console);
 	void orphanageDoor(Console& g_Console);
-	void orphanage(Console& g_Console);
 	void patharea(Console& g_Console);
 	void insideAbandonedFacility1(Console& g_Console);
 	void insideAbandonedFacility3(Console& g_Console);

@@ -5,8 +5,8 @@
 class Enemy : public Entity
 {
 private:
-	bool attacked;
-	bool attack;
+	bool attackEnemy;
+	bool attackPlayer;
 	int Chance;
 public:
 	Enemy();
@@ -17,8 +17,8 @@ public:
 	int getX();
 	int getY();
 	char getName();
-	//float Hit(float Eh, float Pd);
-	//float beenHit(float Ph, float Ed);
+	int Hit(int Eh, int Pd);
+	int beenHit(int Ph, int Ed);
 	void Drop(Console& g_Console);
 	bool Poison(Console& g_Console);
 };

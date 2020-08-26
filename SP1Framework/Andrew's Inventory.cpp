@@ -51,7 +51,7 @@ int Inventory::checkInventory(std::string n)
 {
 	for (int i = 0; i < MAX; i++)
 	{
-		if (playerItems[i] == nullptr)
+		if (playerItems[i] != nullptr)
 		{
 			if (playerItems[i]->getItemName() == n)
 			{

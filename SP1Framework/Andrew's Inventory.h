@@ -13,7 +13,7 @@ public:
 	Inventory();
 	//void setInventory(std::string n, int q);
 	//std::string getNameID();
-	int getQuantity();
+	//int getQuantity();
 	//void updateInventory();
 	int checkInventory(std::string n);
 	~Inventory();

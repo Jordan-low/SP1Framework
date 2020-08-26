@@ -4,8 +4,8 @@
 Enemy::Enemy()
 {
 	name = 'E';
-	attack = false;
-	attacked = false;
+	attackEnemy = false;
+	attackPlayer = false;
 	Chance = 0;
 }
 
@@ -43,21 +43,21 @@ char Enemy::getName()
 	return this->GetName();
 }
 
-/*float Enemy::Hit(float Eh, float Pd)
+int Enemy::Hit(int Eh,int Pd)
 {
-	if (attack == true)
+	if (attackEnemy == true)
 	{
 		return (Eh - Pd);
 	}
 }
 
-float Enemy::beenHit(float Ph, float Ed)
+int Enemy::beenHit(int Ph, int Ed)
 {
-	if (attacked == true)
+	if (attackPlayer == true)
 	{
 		return (Ph - Ed);
 	}
-}*/
+}
 
 void Enemy::Drop(Console& g_Console)
 {

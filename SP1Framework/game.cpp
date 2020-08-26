@@ -55,8 +55,6 @@ Dialogue Dialogues;
 //--------------------------------------------------------------
 void init(void)
 {
-    Inventory PlayerInv;
-    Item* Item1 = new Item;
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
     Pig.setEnemy(1, 1, 15, 3, 'E');
     MutantWasp.setEnemy(1, 1, 25, 5, 'E');
@@ -99,7 +97,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_MENU_UI;
+    g_eGameState = S_BattleScreen;
 
     g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
@@ -2989,24 +2987,24 @@ void render_DS1()
 void RenderBattleScreen()
 {
     Inventory PlayerInv;
-    Item* item1 = new Item;
-    if (PlayerInv.pickup(item1))
+    Item* Item1 = new Item;
+    /*if (PlayerInv.pickup(Item1))
     {
         COORD c;
         c.X = 5;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "Item Added", 100);
+        g_Console.writeToBuffer(c, "Item Added");
     }
     else {
         COORD c;
         c.X = 5;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "Not enough space.", 100);
-    }
+        g_Console.writeToBuffer(c, "Not enough space.");
+    }*/
     COORD c;
     c.X = 5;
     c.Y = 27;
-    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"));
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.drawGuard(g_Console);
