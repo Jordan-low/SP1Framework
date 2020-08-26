@@ -31,6 +31,27 @@ bool Inventory::pickup(Item* add)
 	}
 }
 
+bool Inventory::Consumed(Item* use)
+{
+	if (Quantity > 0)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			if (playerItems[i] != nullptr)
+			{
+				playerItems[i] = use;
+				Quantity--;
+				break;
+			}
+		}
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 /*void Inventory::setInventory(std::string n, int q)
 {
 	
@@ -189,7 +210,6 @@ int Inventory::checkInventory(std::string n)
 
 	}
 }*/
-
 
 Inventory::~Inventory()
 {

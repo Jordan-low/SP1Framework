@@ -66,20 +66,6 @@ void Item::itemDrops(Enemy* d)
 void Item::Barrel(Console& g_Console)
 {
 	itemChance = (rand() % 2) + 1;
-	if (itemChance == 1)
-	{
-		COORD c;
-		c.X = 5;
-		c.Y = 26;
-		g_Console.writeToBuffer(c, "Stinger", 0x0F);
-	}
-	if (itemChance == 2)
-	{
-		COORD c;
-		c.X = 5;
-		c.Y = 26;
-		g_Console.writeToBuffer(c, "Guard Armor", 0x0F);
-	}
 }
 
 void Item::Box(Console& g_Console)

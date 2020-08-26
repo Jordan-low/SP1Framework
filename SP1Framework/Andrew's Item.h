@@ -5,7 +5,7 @@
 
 class Item : public Enemy
 {
-protected:
+private:
 	std::string name;
 	int Heal;
 	int addDmg;

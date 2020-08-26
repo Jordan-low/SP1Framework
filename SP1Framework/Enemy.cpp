@@ -1,18 +1,17 @@
 #include "Enemy.h"
+#include "game.h"
 #include "Entity.h"//j
 
 Enemy::Enemy()
 {
-	name = 'E';
-	attackEnemy = false;
-	attackPlayer = false;
+	//name = 'E';
+	//attack = false;
+	//attacked = false;
 	Chance = 0;
 }
 
-void Enemy::setEnemy(int x, int y, int health, int dmg, const char n)
+/*void Enemy::setEnemy(int health, int dmg, const char n)
 {
-	this->SetX(x);
-	this->SetY(y);
 	this->SetH(health);
 	this->SetD(dmg);
 	name = n;
@@ -43,9 +42,9 @@ char Enemy::getName()
 	return this->GetName();
 }
 
-int Enemy::Hit(int Eh,int Pd)
+int Enemy::Hit(int Eh, int Pd)
 {
-	if (attackEnemy == true)
+	if (attack == true)
 	{
 		return (Eh - Pd);
 	}
@@ -53,7 +52,7 @@ int Enemy::Hit(int Eh,int Pd)
 
 int Enemy::beenHit(int Ph, int Ed)
 {
-	if (attackPlayer == true)
+	if (attacked == true)
 	{
 		return (Ph - Ed);
 	}
@@ -64,41 +63,39 @@ void Enemy::Drop(Console& g_Console)
 	if (GetH() == 0)
 	{
 		COORD c;
-		c.X = GetX();
-		c.Y = GetY();
+		c.X = 5;
+		c.Y = 26;
 		g_Console.writeToBuffer(c, ' ', 0x00);
 	}
-}
+}*/
 
 bool Enemy::Poison(Console& g_Console) 
 {
 	Chance = (rand() % 100) + 1;
-	if (Chance >= 0 && Chance <= 15)
+	if (Chance > 0 && Chance < 16)
 	{
 		return true;
 		COORD c;
-		c.X = GetX();
-		c.Y = GetY();
+		c.X = 5;
+		c.Y = 26;
 		int seconds = 0;
 		while (true)
 		{
 			g_Console.writeToBuffer(c, "Poisoned", 0xD2);
-			if (seconds == 10 || seconds == 20)
+			/*if (seconds == 10 && seconds == 20)
 			{
-				this->SetH(h - 3);
-				this->GetH();
+				SetH(GetH() - 3);
 				Sleep(1000);
 				seconds++;
 			}
 
 			if (seconds == 30)
 			{
-				this->SetH(h - 3);
-				this->GetH();
+				SetH(GetH() - 3);
 				Sleep(1000);
 				seconds = 0;
 			}
-			break;
+			break;*/
 		}
 	}
 	else

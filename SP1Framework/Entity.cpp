@@ -2,10 +2,10 @@
 //j
 Entity::Entity()
 {
-	x = 1;
-	y = 1;
-	h = 0;
-	d = 0;
+	//x = 1;
+	//y = 1;
+	h = 100;
+	d = 10;
 	name = ' ';
 }
 
@@ -18,7 +18,7 @@ char Entity::GetName()
 	return name;
 }
 
-int Entity::GetX()
+/*int Entity::GetX()
 {
 	return x;
 }
@@ -26,7 +26,7 @@ int Entity::GetX()
 int Entity::GetY()
 {
 	return y;
-}
+}*/
 
 int Entity::GetH()
 {
@@ -48,7 +48,7 @@ void Entity::SetH(int health)
 	h = health;
 }
 
-void Entity::SetX(int x_coord)
+/*void Entity::SetX(int x_coord)
 {
 	x = x_coord;
 }
@@ -56,5 +56,5 @@ void Entity::SetX(int x_coord)
 void Entity::SetY(int y_coord)
 {
 	y = y_coord;
-}
+}*/
 
