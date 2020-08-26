@@ -110,19 +110,14 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-=======
->>>>>>> ab9f16db710956d9ae03c67215e62b86f3d942f5
     g_sChar.SetH(50);
     g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
-<<<<<<< HEAD
     g_sGuard2.SetD(15);
     g_sGuard2.SetH(40);
     g_sGuard3.SetD(15);
     g_sGuard3.SetH(40);
-=======
->>>>>>> ab9f16db710956d9ae03c67215e62b86f3d942f5
     g_sPig.SetH(15);
     g_sPig.SetD(3);
     g_sTutEnemy.SetH(10);
@@ -4401,9 +4396,7 @@ void RenderBattleScreen()
 
         //g_eGameState = S_Townsquare;
     }
-<<<<<<< HEAD
     */
-=======
     if (g_sChar.itemActive == true)
     {
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 13))))
@@ -4639,7 +4632,6 @@ void RenderBattleScreen()
         g_Console.writeToBuffer(c, "Item used.", 100);
         InvenTime = 0.0;
     }*/
->>>>>>> ab9f16db710956d9ae03c67215e62b86f3d942f5
 }
 
 void UpdateBattleScreen()
