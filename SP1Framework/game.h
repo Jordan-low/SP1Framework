@@ -71,6 +71,8 @@ enum EGAMESTATES
     S_Dungeon_Stealth3_Animation,
     S_Boss_Room_Animation,
     S_BattleScreen,
+    //Battle animations
+    S_SlashGuard,
     S_COUNT
 };
 
@@ -184,6 +186,10 @@ void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
+
+//Animate Battle
+void Update_slashGuard();
+void slashGuard();
 
 //Others
 void renderMap_GuardStealth();
