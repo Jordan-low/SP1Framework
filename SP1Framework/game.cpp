@@ -3,7 +3,7 @@
 //
 #include "game.h"
 #include "Framework\console.h"
-#include <iostream>//hi
+#include <iostream>
 #include <iomanip>
 #include <sstream>
 #include "Map.h"
@@ -15,7 +15,7 @@
 
 using namespace std;
 
-double  g_dElapsedTime;
+double g_dElapsedTime;
 double g_dChildrenTime;
 double g_dProtestTime;
 double g_dDungeonTime;
@@ -27,12 +27,15 @@ double g_dMedicalTime;
 double g_dMedical2Time;
 double g_dDungeonStealth3Time;
 double g_dBossTime;
+double g_dslashGuard;
+double g_dkillGuard;
 double GuardDetectTime;
 double startTime;
 double resetTime;
 double playerDMGTime;
 double enemyDMGTime;
 double InvenTime;
+
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -180,7 +183,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Game_Over;
+    g_eGameState = S_SlashGuard;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -444,6 +447,8 @@ void update(double dt)
     g_dMedical2Time += dt;
     g_dDungeonStealth3Time += dt;
     g_dBossTime += dt;
+    g_dslashGuard += dt;
+    g_dkillGuard += dt;
     GuardDetectTime += dt;
     startTime += dt;
     resetTime += dt;
@@ -515,13 +520,16 @@ void update(double dt)
         break;
     case S_BattleScreen: UpdateBattleScreen();
         break;
+
+    //Battle Animations
+    case S_SlashGuard: Update_slashGuard();
+        break;
     }
 }
 void Update_Menu()
 {
     g_sChar.counter = true;
 }
-
 void UpdateGameOver()
 {
     g_sChar.counter = true;
@@ -2361,6 +2369,126 @@ void Boss_Room_Animation()
     }
 }
 
+void Update_slashGuard()
+{
+    if (g_dslashGuard > 3)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+void slashGuard()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    COORD c;
+    renderCharacter();
+    Sprites.drawGuard(g_Console, 0);
+    Cutscene.drawgrid(g_Console, 68, 5, '/');
+    //next
+    if (g_dslashGuard > 0.1)
+    {
+        Cutscene.drawgrid(g_Console, 67, 6, '|');
+        if (g_dslashGuard > 0.2)
+        {
+            Cutscene.drawgrid(g_Console, 66, 6, '_');
+            Cutscene.drawgrid(g_Console, 65, 7, '/');
+            Cutscene.drawgrid(g_Console, 66, 7, '/');
+            if (g_dslashGuard > 0.3)
+            {
+                Cutscene.drawgrid(g_Console, 64, 7, '_');
+                Cutscene.drawgrid(g_Console, 63, 8, '/');
+                Cutscene.drawgrid(g_Console, 64, 8, '/');
+                if (g_dslashGuard > 0.4)
+                {
+                    Cutscene.drawgrid(g_Console, 62, 8, '_');
+                    Cutscene.drawgrid(g_Console, 61, 9, '/');
+                    Cutscene.drawgrid(g_Console, 62, 9, '/');
+                    if (g_dslashGuard > 0.5)
+                    {
+                        Cutscene.drawgrid(g_Console, 60, 9, '_');
+                        Cutscene.drawgrid(g_Console, 59, 10, '/');
+                        Cutscene.drawgrid(g_Console, 60, 10, '/');
+                        if (g_dslashGuard > 0.6)
+                        {
+                            Cutscene.drawgrid(g_Console, 58, 10, '_');
+                            Cutscene.drawgrid(g_Console, 57, 11, '/');
+                            Cutscene.drawgrid(g_Console, 58, 11, '/');
+                            if (g_dslashGuard > 0.7)
+                            {
+                                Cutscene.drawgrid(g_Console, 56, 11, '_');
+                                if (g_dslashGuard > 0.8)
+                                {
+                                    Cutscene.drawgrid(g_Console, 55, 12, '/');
+                                    if (g_dslashGuard > 0.9)
+                                    {
+                                        Cutscene.drawgrid(g_Console, 54, 12, '_');
+                                        if (g_dslashGuard > 1.0)
+                                        {
+                                            Cutscene.drawgrid(g_Console, 53, 12, '_');
+                                            Cutscene.cleargrid(g_Console, 68, 5);
+                                            if (g_dslashGuard > 1.1)
+                                            {
+                                                Cutscene.cleargrid(g_Console, 67, 6);
+                                                if (g_dslashGuard > 1.2)
+                                                {
+                                                    Cutscene.drawgridG(g_Console, 66, 6, ' ');
+                                                    Cutscene.drawgridG(g_Console, 65, 7, ' ');
+                                                    Cutscene.drawgridG(g_Console, 66, 7, ' ');
+                                                    if (g_dslashGuard > 1.3)
+                                                    {
+                                                        Cutscene.drawgridG(g_Console, 64, 7, ' ');
+                                                        Cutscene.drawgridG(g_Console, 63, 8, '_');
+                                                        Cutscene.drawgridG(g_Console, 64, 8, '_');
+                                                        if (g_dslashGuard > 1.4)
+                                                        {
+                                                            Cutscene.drawgridG(g_Console, 62, 8, '_');
+                                                            Cutscene.drawgrid(g_Console, 61, 9, ' ');
+                                                            Cutscene.drawgrid(g_Console, 62, 9, ' ');
+                                                            if (g_dslashGuard > 1.5)
+                                                            {
+                                                                Cutscene.drawgrid(g_Console, 60, 9, ' ');
+                                                                Cutscene.drawgrid(g_Console, 59, 10, ' ');
+                                                                Cutscene.drawgrid(g_Console, 60, 10, ' ');
+                                                                if (g_dslashGuard > 1.6)
+                                                                {
+                                                                    Cutscene.drawgrid(g_Console, 58, 10, ' ');
+                                                                    Cutscene.drawgridG(g_Console, 57, 11, '|');
+                                                                    Cutscene.drawgrid(g_Console, 58, 11, ' ');
+                                                                    if (g_dslashGuard > 1.7)
+                                                                    {
+                                                                        Cutscene.cleargrid(g_Console, 56, 11);
+                                                                        if (g_dslashGuard > 1.8)
+                                                                        {
+                                                                            Cutscene.cleargrid(g_Console, 55, 12);
+                                                                            if (g_dslashGuard > 1.9)
+                                                                            {
+                                                                                Cutscene.cleargrid(g_Console, 54, 12);
+                                                                                if (g_dslashGuard > 2.0)
+                                                                                {
+                                                                                    Cutscene.cleargrid(g_Console, 53, 12);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 void splashScreenWait()    // waits for time to pass in splash screen
 {
     if (g_dElapsedTime > 6.0) // wait for 3 seconds to switch to game mode, else do nothing
@@ -2892,6 +3020,10 @@ void render()
     case S_Boss_Room_Animation: Boss_Room_Animation();
         break;
     case S_BattleScreen: RenderBattleScreen();
+        break;
+
+        //render battle animations
+    case S_SlashGuard: slashGuard();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc

@@ -13,7 +13,8 @@ public:
     int i; int j;
     void animate(Console& g_Console);
     void nextdialogue(Console& g_Console);
-    void drawgrid(Console& g_Console, int x, int y, char chara);
+    void drawgrid(Console& g_Console, int x, int y, char chara); //draws in red
+    void drawgridG(Console& g_Console, int x, int y, char chara); //draws in green
     void cleargrid(Console& g_Console, int x, int y);
     void orphanageCaretakerCutscene(Console& g_Console);
     
