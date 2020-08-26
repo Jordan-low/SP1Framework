@@ -78,6 +78,9 @@ enum EGAMESTATES
 struct SGameChar : public Enemy
 {
     int count;
+    COORD e_cLocation;
+    COORD f_cLocation;
+    COORD g_cLocation;
     COORD m_cLocation;
     bool m_bActive;
     bool fire;
@@ -92,17 +95,21 @@ struct SGameChar : public Enemy
     bool xRight;
     bool xUp;
     bool xDown;
-    bool talked;
+    bool Jerry;
+    bool Tom;
+    bool Charles;
+    bool Bobby;
+    bool Emmanuel;
+    bool Harry;
+    bool Sam;
     bool startTimer;
     bool resetTimer;
     bool showPlayerDMG;
     bool showEnemyDMG;
     bool unlockDoorDS1;
     bool Poison;
-    bool fightGuard;
-    bool fightWasp;
-    bool fightRaymond;
-    bool enemyDie;
+    bool InvenActive;
+    bool itemActive;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
@@ -139,7 +146,6 @@ void renderMap_Boss_Battle_Room();
 void RenderBattleScreen();
 void render_DS1();
 
-void renderMap_NPC();
 void renderCharacter();     // renders the character into the buffer
 void renderEnemy();
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
