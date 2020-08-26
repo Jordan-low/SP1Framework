@@ -121,7 +121,7 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-    g_sChar.SetH(5);
+    g_sChar.SetH(50);
     g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
