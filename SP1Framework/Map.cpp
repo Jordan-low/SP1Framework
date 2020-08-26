@@ -1539,7 +1539,7 @@ void Map::dungeon_stealth3(Console& g_Console)
 		c.X = i;
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
-	}
+	}//hi
 	i = 5; for (j = 10; j < 16; j++)
 	{
 		c.X = i;

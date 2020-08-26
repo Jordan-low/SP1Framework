@@ -158,7 +158,7 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mous
 //Animations + Menu AI
 void Update_Orphanage_Animation();
 void Orphanage_Animation();
-void Update_Orphanage_Animation2();
+void Update_Orphanage_Animation2();//hi
 void Orphanage_Children_Animation();
 void Update_Protest_Area();
 void Protest_Area_Animation();
