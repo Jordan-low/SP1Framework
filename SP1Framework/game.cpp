@@ -180,8 +180,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_2;
-    g_eGameState = S_MENU_UI;
+    g_eGameState = S_Dungeon_Stealth_3;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -1983,7 +1982,7 @@ void Update_Dungeon_Stealth3_Animation()
 {
     if (g_dDungeonStealth3Time > 61.7)
     {
-        g_eGameState = S_GAME;
+        g_eGameState = S_Dungeon_Stealth_3;
     }
     processUserInput();
 }
@@ -3981,7 +3980,7 @@ void renderMap_DS2()
     //To DS3
     if (g_sChar.m_cLocation.Y == 18 && (g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18 || g_sChar.m_cLocation.X == 19 || g_sChar.m_cLocation.X == 20 || g_sChar.m_cLocation.X == 21 || g_sChar.m_cLocation.X == 22 || g_sChar.m_cLocation.X == 23 || g_sChar.m_cLocation.X == 24 || g_sChar.m_cLocation.X == 25 || g_sChar.m_cLocation.X == 26))
     {
-        g_dPathTime = 0.0;
+        g_dDungeonStealth3Time = 0.0;
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
@@ -4003,14 +4002,14 @@ void renderMap_DS3()
         g_sChar.m_cLocation.Y = 19;
     }
     //trigger animation
-    /*if ((g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 57)
+    if ((g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 57)
     {
         g_dDungeonTime = 0.0;
         //must do count here, must get character to move after animation
         g_eGameState = S_Dungeon_Stealth3_Animation;
-        g_sChar.m_cLocation.X = 57;
+        g_sChar.m_cLocation.X = 60;
         g_sChar.m_cLocation.Y = 22;
-    }*/
+    }
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 5)
     {
         //ask if user wants to enter battle area
