@@ -79,10 +79,7 @@ struct SGameChar : public Enemy
 {
     int count;
     COORD m_cLocation;
-    COORD e_cLocation;
-    COORD f_cLocation;
-    COORD g_cLocation;
-    bool  m_bActive;
+    bool m_bActive;
     bool fire;
     bool fireOut;
     bool Orp_Obj1;
