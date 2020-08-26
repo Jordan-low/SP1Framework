@@ -5,7 +5,6 @@
 
 extern CStopWatch g_swTimer;
 extern bool g_bQuitGame;
-//j
 
 // struct to store keyboard events
 // a small subset of KEY_EVENT_RECORD
@@ -99,6 +98,14 @@ struct SGameChar : public Enemy
     bool showEnemyDMG;
     bool unlockDoorDS1;
     bool Poison;
+    bool faceLeft;
+    bool faceRight;
+    bool fightGuard;
+    bool fightWasp;
+    bool fightRaymond;
+    bool enemyDie;
+    bool InvenActive;
+    bool itemActive;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
@@ -173,6 +180,10 @@ void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
-void render_DS1();//hi
+
+//Others
+void renderMap_GuardStealth();
+void update_GuardDirection();
+void renderMap_GuardDirection();
 
 #endif //_GAME_H

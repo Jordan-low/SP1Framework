@@ -93,6 +93,17 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sGuard4.startTimer = true;
+    g_sChar.faceLeft = true;
+    g_sChar.faceRight = false;
+    g_sGuard.enemyDie = false;
+    g_sGuard2.enemyDie = false;
+    g_sGuard3.enemyDie = false;
+
+    g_sGuard.fightGuard = false;
+    g_sGuard2.fightGuard = false;
+    g_sGuard3.fightGuard = false;
+
     g_sChar.count = 0;
     g_sChar.unlockDoorDS1 = false;
     g_sChar.showEnemyDMG = false;
@@ -169,7 +180,8 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_BattleScreen;
+    g_eGameState = S_Dungeon_Stealth_2;
+    g_eGameState = S_MENU_UI;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -6289,3 +6301,4 @@ void render_Main_Menu()
         g_bQuitGame = true;
     }
 }
+//fried stickbug (* q  *
