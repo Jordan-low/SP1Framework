@@ -117,6 +117,7 @@ void update(double dt); // update the game and the state of the game
 void render(void);      // renders the current state of the game to the console
 void shutdown(void);      // do clean up, free memory
 
+//update
 void Update_Menu();
 void UpdateGameOver();
 void clearMenu();
@@ -144,11 +145,11 @@ void renderMap_DS1();
 void renderMap_DS2();
 void renderMap_DS3();
 void renderMap_Boss_Battle_Room();
-void RenderBattleScreen();
+void RenderBattleScreen();  // render battle screen
 
-void renderMap_NPC();
+void renderMap_NPC();       // render NPCs in Townsquare
 void renderCharacter();     // renders the character into the buffer.
-void renderEnemy();
+void renderEnemy();         // render enemy
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 void renderInputEvents();   // renders the status of input events
@@ -164,7 +165,7 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mous
 void RenderGameOver();
 void Update_Orphanage_Animation();
 void Orphanage_Animation();
-void Update_Orphanage_Animation2();//hi
+void Update_Orphanage_Animation2();
 void Orphanage_Children_Animation();
 void Update_Protest_Area();
 void Protest_Area_Animation();
