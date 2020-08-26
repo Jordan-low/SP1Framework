@@ -73,6 +73,7 @@ enum EGAMESTATES
     S_BattleScreen,
     //Battle animations
     S_SlashGuard,
+    S_KillGuard,
     S_COUNT
 };
 
@@ -189,6 +190,8 @@ void UpdateBattleScreen();
 //Animate Battle
 void Update_slashGuard();
 void slashGuard();
+void Update_killGuard();
+void killGuard();
 
 //Others
 void renderMap_GuardStealth();

@@ -34,6 +34,31 @@ void Cutscenes::cleargrid(Console& g_Console, int x, int y)
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
 }
 
+void Cutscenes::clearSprite(Console& g_Console)
+{
+	COORD c;
+	for (int j = 2; j < 16; j++)
+	{
+		for (int i = 35; i < 78; i++)
+		{
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
+		}
+	}
+}
+
+void Cutscenes::clearSpriteLine(Console& g_Console, int y)
+{
+	COORD c;
+	for (int i = 35; i < 78; i++)
+	{
+		c.X = i;
+		c.Y = y;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
+	}
+}
+
 void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
 {
 	COORD c;
@@ -206,8 +231,6 @@ void Cutscenes::CrowdMoveRightclear(Console& g_Console)
 		}
 	}
 }
-
-
 
 void Cutscenes::medical_breakIn(Console& g_Console)
 {

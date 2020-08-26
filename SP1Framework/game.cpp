@@ -524,6 +524,8 @@ void update(double dt)
     //Battle Animations
     case S_SlashGuard: Update_slashGuard();
         break;
+    case S_KillGuard: Update_killGuard();
+        break;
     }
 }
 void Update_Menu()
@@ -2386,93 +2388,246 @@ void slashGuard()
     Sprites.drawGuard(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
-    if (g_dslashGuard > 0.1)
+    if (g_dslashGuard > 0.05)
     {
         Cutscene.drawgrid(g_Console, 67, 6, '|');
-        if (g_dslashGuard > 0.2)
+        if (g_dslashGuard > 0.10)
         {
             Cutscene.drawgrid(g_Console, 66, 6, '_');
             Cutscene.drawgrid(g_Console, 65, 7, '/');
             Cutscene.drawgrid(g_Console, 66, 7, '/');
-            if (g_dslashGuard > 0.3)
+            if (g_dslashGuard > 0.15)
             {
                 Cutscene.drawgrid(g_Console, 64, 7, '_');
                 Cutscene.drawgrid(g_Console, 63, 8, '/');
                 Cutscene.drawgrid(g_Console, 64, 8, '/');
-                if (g_dslashGuard > 0.4)
+                if (g_dslashGuard > 0.20)
                 {
                     Cutscene.drawgrid(g_Console, 62, 8, '_');
                     Cutscene.drawgrid(g_Console, 61, 9, '/');
                     Cutscene.drawgrid(g_Console, 62, 9, '/');
-                    if (g_dslashGuard > 0.5)
+                    if (g_dslashGuard > 0.25)
                     {
                         Cutscene.drawgrid(g_Console, 60, 9, '_');
                         Cutscene.drawgrid(g_Console, 59, 10, '/');
                         Cutscene.drawgrid(g_Console, 60, 10, '/');
-                        if (g_dslashGuard > 0.6)
+                        if (g_dslashGuard > 0.30)
                         {
                             Cutscene.drawgrid(g_Console, 58, 10, '_');
                             Cutscene.drawgrid(g_Console, 57, 11, '/');
                             Cutscene.drawgrid(g_Console, 58, 11, '/');
-                            if (g_dslashGuard > 0.7)
+                            if (g_dslashGuard > 0.35)
                             {
                                 Cutscene.drawgrid(g_Console, 56, 11, '_');
-                                if (g_dslashGuard > 0.8)
+                                if (g_dslashGuard > 0.40)
                                 {
                                     Cutscene.drawgrid(g_Console, 55, 12, '/');
-                                    if (g_dslashGuard > 0.9)
+                                    if (g_dslashGuard > 0.45)
                                     {
                                         Cutscene.drawgrid(g_Console, 54, 12, '_');
-                                        if (g_dslashGuard > 1.0)
+                                        if (g_dslashGuard > 0.50)
                                         {
                                             Cutscene.drawgrid(g_Console, 53, 12, '_');
                                             Cutscene.cleargrid(g_Console, 68, 5);
-                                            if (g_dslashGuard > 1.1)
+                                            if (g_dslashGuard > 0.55)
                                             {
                                                 Cutscene.cleargrid(g_Console, 67, 6);
-                                                if (g_dslashGuard > 1.2)
+                                                if (g_dslashGuard > 0.60)
                                                 {
                                                     Cutscene.drawgridG(g_Console, 66, 6, ' ');
                                                     Cutscene.drawgridG(g_Console, 65, 7, ' ');
                                                     Cutscene.drawgridG(g_Console, 66, 7, ' ');
-                                                    if (g_dslashGuard > 1.3)
+                                                    if (g_dslashGuard > 0.65)
                                                     {
                                                         Cutscene.drawgridG(g_Console, 64, 7, ' ');
                                                         Cutscene.drawgridG(g_Console, 63, 8, '_');
                                                         Cutscene.drawgridG(g_Console, 64, 8, '_');
-                                                        if (g_dslashGuard > 1.4)
+                                                        if (g_dslashGuard > 0.70)
                                                         {
                                                             Cutscene.drawgridG(g_Console, 62, 8, '_');
                                                             Cutscene.drawgrid(g_Console, 61, 9, ' ');
                                                             Cutscene.drawgrid(g_Console, 62, 9, ' ');
-                                                            if (g_dslashGuard > 1.5)
+                                                            if (g_dslashGuard > 0.75)
                                                             {
                                                                 Cutscene.drawgrid(g_Console, 60, 9, ' ');
                                                                 Cutscene.drawgrid(g_Console, 59, 10, ' ');
                                                                 Cutscene.drawgrid(g_Console, 60, 10, ' ');
-                                                                if (g_dslashGuard > 1.6)
+                                                                if (g_dslashGuard > 0.80)
                                                                 {
                                                                     Cutscene.drawgrid(g_Console, 58, 10, ' ');
                                                                     Cutscene.drawgridG(g_Console, 57, 11, '|');
                                                                     Cutscene.drawgrid(g_Console, 58, 11, ' ');
-                                                                    if (g_dslashGuard > 1.7)
+                                                                    if (g_dslashGuard > 0.85)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 56, 11);
-                                                                        if (g_dslashGuard > 1.8)
+                                                                        if (g_dslashGuard > 0.90)
                                                                         {
                                                                             Cutscene.cleargrid(g_Console, 55, 12);
-                                                                            if (g_dslashGuard > 1.9)
+                                                                            if (g_dslashGuard > 0.95)
                                                                             {
                                                                                 Cutscene.cleargrid(g_Console, 54, 12);
-                                                                                if (g_dslashGuard > 2.0)
+                                                                                if (g_dslashGuard > 1.00)
                                                                                 {
                                                                                     Cutscene.cleargrid(g_Console, 53, 12);
+                                                                                    if (g_dslashGuard > 1.05)
+                                                                                    {
+                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                        Sprites.drawGuard(g_Console, 2);
+                                                                                        if (g_dslashGuard > 1.1)
+                                                                                        {
+                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                            Sprites.drawGuard(g_Console, 4);
+                                                                                            if (g_dslashGuard > 1.15)
+                                                                                            {
+                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                Sprites.drawGuard(g_Console, 2);
+                                                                                                if (g_dslashGuard > 1.20)
+                                                                                                {
+                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                    Sprites.drawGuard(g_Console, 0);
+                                                                                                    if (g_dslashGuard > 1.25)
+                                                                                                    {
+                                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                                        Sprites.drawGuard(g_Console, -2);
+                                                                                                        if (g_dslashGuard > 1.30)
+                                                                                                        {
+                                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                                            Sprites.drawGuard(g_Console, -4);
+                                                                                                            if (g_dslashGuard > 1.35)
+                                                                                                            {
+                                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                                Sprites.drawGuard(g_Console, -2);
+                                                                                                                if (g_dslashGuard > 1.40)
+                                                                                                                {
+                                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                                    Sprites.drawGuard(g_Console, 0);
+                                                                                                                    if (g_dslashGuard > 1.45)
+                                                                                                                    {
+                                                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                                                        Sprites.drawGuard(g_Console, 1);
+                                                                                                                        if (g_dslashGuard > 1.50)
+                                                                                                                        {
+                                                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                                                            Sprites.drawGuard(g_Console, 2);
+                                                                                                                            if (g_dslashGuard > 1.55)
+                                                                                                                            {
+                                                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                                                Sprites.drawGuard(g_Console, 1);
+                                                                                                                                if (g_dslashGuard > 1.60)
+                                                                                                                                {
+                                                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                                                    Sprites.drawGuard(g_Console, 0);
+                                                                                                                                    if (g_dslashGuard > 1.65)
+                                                                                                                                    {
+                                                                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                                                                        Sprites.drawGuard(g_Console, -1);
+                                                                                                                                        if (g_dslashGuard > 1.70)
+                                                                                                                                        {
+                                                                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                                                                            Sprites.drawGuard(g_Console, -2);
+                                                                                                                                            if (g_dslashGuard > 1.75)
+                                                                                                                                            {
+                                                                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                                                                Sprites.drawGuard(g_Console, -1);
+                                                                                                                                                if (g_dslashGuard > 1.80)
+                                                                                                                                                {
+                                                                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                                                                    Sprites.drawGuard(g_Console, 0);
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
                                                                                 }
                                                                             }
                                                                         }
                                                                     }
                                                                 }
                                                             }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Update_killGuard()
+{
+    if (g_dkillGuard > 3)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+void killGuard()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    COORD c;
+    renderCharacter();
+    Sprites.drawGuard(g_Console, 0);
+    if (g_dkillGuard > 1.95)
+    {
+        Cutscene.clearSpriteLine(g_Console, 2);
+        if (g_dkillGuard > 2.0)
+        {
+            Cutscene.clearSpriteLine(g_Console, 3);
+            if (g_dkillGuard > 2.05)
+            {
+                Cutscene.clearSpriteLine(g_Console, 4);
+                if (g_dkillGuard > 2.10)
+                {
+                    Cutscene.clearSpriteLine(g_Console, 5);
+                    if (g_dkillGuard > 2.15)
+                    {
+                        Cutscene.clearSpriteLine(g_Console, 6);
+                        if (g_dkillGuard > 2.20)
+                        {
+                            Cutscene.clearSpriteLine(g_Console, 7);
+                            if (g_dkillGuard > 2.25)
+                            {
+                                Cutscene.clearSpriteLine(g_Console, 8);
+                                if (g_dkillGuard > 2.30)
+                                {
+                                    Cutscene.clearSpriteLine(g_Console, 9);
+                                    if (g_dkillGuard > 2.35)
+                                    {
+                                        Cutscene.clearSpriteLine(g_Console, 10);
+                                        if (g_dkillGuard > 2.40)
+                                        {
+                                            Cutscene.clearSpriteLine(g_Console, 11);
+                                            if (g_dkillGuard > 2.45)
+                                            {
+                                                Cutscene.clearSpriteLine(g_Console, 12);
+                                                if (g_dkillGuard > 2.50)
+                                                {
+                                                    Cutscene.clearSpriteLine(g_Console, 13);
+                                                    if (g_dkillGuard > 2.55)
+                                                    {
+                                                        Cutscene.clearSpriteLine(g_Console, 14);
+                                                        if (g_dkillGuard > 2.60)
+                                                        {
+                                                            Cutscene.clearSpriteLine(g_Console, 15);
                                                         }
                                                     }
                                                 }
@@ -3024,6 +3179,8 @@ void render()
 
         //render battle animations
     case S_SlashGuard: slashGuard();
+        break;
+    case S_KillGuard: killGuard();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
