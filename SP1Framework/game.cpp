@@ -118,8 +118,8 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-    g_sChar.SetH(5);
-    g_sChar.SetD(5);
+    g_sChar.SetH(500);
+    g_sChar.SetD(50);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -180,7 +180,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Game_Over;
+    g_eGameState = S_Dungeon_Stealth_1;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -2440,7 +2440,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
-                    g_sGuard.xDown = true;
+                    g_sGuard.xLeft = true;
                 }
             }
         }
@@ -2462,7 +2462,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
-                    g_sGuard2.xDown = true;
+                    g_sGuard2.xLeft = true;
                 }
             }
         }
@@ -2484,7 +2484,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
-                    g_sGuard3.xDown = true;
+                    g_sGuard3.xLeft = true;
                 }
             }
         }
@@ -2717,21 +2717,17 @@ void moveCharacter()
                 {
                     g_sGuard.xDown = true;
                 }
-                if (rMap.Grid[g_sChar.m_cLocation.Y - j][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
+                if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
                     g_sGuard.xRight = true;
                 }
-                if (rMap.Grid[g_sChar.m_cLocation.Y + j][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
+                if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
                     g_sGuard.xRight = true;
                 }
-                if (rMap.Grid[g_sChar.m_cLocation.Y - j][g_sChar.m_cLocation.X] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X]) // works?
+                if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
-
-                }
-                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X]) // works
-                {
-                    g_sGuard.xLeft = true;
+                    g_sGuard.xUp = true;
                 }
             }
         }
@@ -2743,21 +2739,17 @@ void moveCharacter()
                 {
                     g_sGuard2.xDown = true;
                 }
-                if (rMap.Grid[g_sChar.m_cLocation.Y - j][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
+                if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
                     g_sGuard2.xRight = true;
                 }
-                if (rMap.Grid[g_sChar.m_cLocation.Y + j][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
+                if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
                     g_sGuard2.xRight = true;
                 }
-                if (rMap.Grid[g_sChar.m_cLocation.Y - j][g_sChar.m_cLocation.X] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X]) // works?
+                if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
-
-                }
-                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X]) // works
-                {
-                    g_sGuard2.xLeft = true;
+                    g_sGuard.xUp = true;
                 }
             }
         }
@@ -2769,21 +2761,17 @@ void moveCharacter()
                 {
                     g_sGuard3.xDown = true;
                 }
-                if (rMap.Grid[g_sChar.m_cLocation.Y - j][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
+                if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
                     g_sGuard3.xRight = true;
                 }
-                if (rMap.Grid[g_sChar.m_cLocation.Y + j][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
+                if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
                     g_sGuard3.xRight = true;
                 }
-                if (rMap.Grid[g_sChar.m_cLocation.Y - j][g_sChar.m_cLocation.X] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X]) // works?
+                if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X]) // works
                 {
-
-                }
-                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X]) // works
-                {
-                    g_sGuard3.xLeft = true;
+                    g_sGuard.xUp = true;
                 }
             }
         }
@@ -3698,7 +3686,7 @@ void renderMap_DS1()
             }
         }
     }
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.m_cLocation.X))
+    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard.m_cLocation.X))
     {
         g_sGuard.fightGuard = true;
         g_eGameState = S_BattleScreen;
