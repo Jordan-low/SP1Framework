@@ -92,21 +92,13 @@ struct SGameChar : public Enemy
     bool xRight;
     bool xUp;
     bool xDown;
-    bool Jerry;
-    bool Tom;
-    bool Charles;
-    bool Bobby;
-    bool Emmanuel;
-    bool Harry;
-    bool Sam;
+    bool talked;
     bool startTimer;
     bool resetTimer;
     bool showPlayerDMG;
     bool showEnemyDMG;
     bool unlockDoorDS1;
     bool Poison;
-    bool faceLeft;
-    bool faceRight;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
@@ -142,7 +134,8 @@ void renderMap_DS3();
 void renderMap_Boss_Battle_Room();
 void RenderBattleScreen();
 
-void renderCharacter();     // renders the character into the buffer
+void renderMap_NPC();
+void renderCharacter();     // renders the character into the buffer.
 void renderEnemy();
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
@@ -180,10 +173,6 @@ void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
-
-//Others
-void renderMap_GuardStealth();
-void update_GuardDirection();
-void renderMap_GuardDirection();
+void render_DS1();//hi
 
 #endif //_GAME_H
