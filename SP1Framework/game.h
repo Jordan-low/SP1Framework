@@ -74,6 +74,14 @@ enum EGAMESTATES
     //Battle animations
     S_SlashGuard,
     S_KillGuard,
+    S_slashWasp,
+    S_killWasp,
+    S_slashPig,
+    S_killPig,
+    S_slashRaymond,
+    S_killRaymond,
+    S_slashRobert,
+    S_killRobert,
     S_COUNT
 };
 
@@ -193,6 +201,22 @@ void Update_slashGuard();
 void slashGuard();
 void Update_killGuard();
 void killGuard();
+void Update_slashWasp();
+void slashWasp();
+void Update_killWasp();
+void killWasp();
+void Update_slashPig();
+void slashPig();
+void Update_killPig();
+void killPig();
+void Update_slashRaymond();
+void slashRaymond();
+void Update_killRaymond();
+void killRaymond();
+void Update_slashRobert();
+void slashRobert();
+void Update_killRobert();
+void killRobert();
 
 //Others
 void renderMap_GuardStealth();
