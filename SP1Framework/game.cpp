@@ -118,7 +118,7 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-    g_sChar.SetH(5);
+    g_sChar.SetH(50);
     g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
@@ -180,7 +180,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Game_Over;
+    g_eGameState = S_MENU_UI;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
