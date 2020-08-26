@@ -41,6 +41,7 @@ enum EGAMESTATES
 {
     S_MENU_UI,
     S_SPLASHSCREEN,
+    S_Game_Over,
     S_GAME,
     //Areas
     S_Townsquare,
@@ -114,6 +115,7 @@ void render(void);      // renders the current state of the game to the console
 void shutdown(void);      // do clean up, free memory
 
 void Update_Menu();
+void UpdateGameOver();
 void clearMenu();
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame();          // gameplay logic
@@ -156,6 +158,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyb
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
 
 //Animations + Menu AI
+void RenderGameOver();
 void Update_Orphanage_Animation();
 void Orphanage_Animation();
 void Update_Orphanage_Animation2();//hi

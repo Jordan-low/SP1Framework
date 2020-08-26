@@ -118,7 +118,7 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-    g_sChar.SetH(50);
+    g_sChar.SetH(5);
     g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
@@ -180,7 +180,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_3;
+    g_eGameState = S_Game_Over;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -258,6 +258,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
     case S_MENU_UI: gameplayKBHandler(keyboardEvent);
         break;
+    case S_Game_Over: gameplayKBHandler(keyboardEvent);
+        break;
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
@@ -318,6 +320,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     switch (g_eGameState)
     {
     case S_MENU_UI: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_Game_Over: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
         break;
@@ -451,6 +455,8 @@ void update(double dt)
     {
     case S_MENU_UI: Update_Menu();
         break;
+    case S_Game_Over: UpdateGameOver();
+        break;
     case S_SPLASHSCREEN: splashScreenWait(); // game logic for the splash screen
         break;
     case S_Orphanage_Animation: Update_Orphanage_Animation();
@@ -512,6 +518,11 @@ void update(double dt)
     }
 }
 void Update_Menu()
+{
+    g_sChar.counter = true;
+}
+
+void UpdateGameOver()
 {
     g_sChar.counter = true;
 }
@@ -2822,6 +2833,8 @@ void render()
         break;
     case S_MENU_UI: render_Main_Menu();
         break;
+    case S_Game_Over: RenderGameOver();
+        break;
     case S_SPLASHSCREEN: renderSplashScreen();
         break;
     case S_Orphanage_Animation: Orphanage_Animation();
@@ -4394,7 +4407,7 @@ void RenderBattleScreen()
     }
     if (g_sChar.GetH() <= 0)
     {
-        g_eGameState = S_MENU_UI; // if guard kills player
+        g_eGameState = S_Game_Over; // if guard kills player
     }
     /*
     if (g_sChar.InvenActive == true)
@@ -4765,7 +4778,7 @@ void RenderBattleScreen()
 
     if (g_sChar.GetH() <= 0)
     {
-        g_eGameState = S_Dungeon_Stealth_1; // if guard kills player
+        g_eGameState = S_Game_Over; // if guard kills player
     }
     if (g_sChar.count == 1)
     {
@@ -6301,4 +6314,785 @@ void render_Main_Menu()
     }
 }
 //fried stickbug (* q  *
-//i
+
+void RenderGameOver()
+{
+    COORD c; COORD d;
+    {
+        {
+            //GameOver
+
+            //G
+            c.X = 27;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 28;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 29;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 30;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 26;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 25;
+            c.Y = 2;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 24;
+            c.Y = 3;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 23;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 22;
+            c.Y = 5;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 22;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 21;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 22;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 23;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 24;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 25;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 21;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 26;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 27;
+            c.Y = 5;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 26;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 25;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+            //A
+            c.X = 28;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 29;
+            c.Y = 5;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 30;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 31;
+            c.Y = 3;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 32;
+            c.Y = 2;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 33;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 34;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 35;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 36;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 37;
+            c.Y = 2;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 36;
+            c.Y = 3;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 35;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 34;
+            c.Y = 5;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 33;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 34;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 33;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 32;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 31;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            //M
+            c.X = 35;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 36;
+            c.Y = 5;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 37;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 38;
+            c.Y = 3;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 39;
+            c.Y = 2;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 40;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 41;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 42;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 43;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 44;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 45;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 46;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 47;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 48;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 49;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 45;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 46;
+            c.Y = 5;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 47;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 48;
+            c.Y = 3;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 49;
+            c.Y = 2;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 44;
+            c.Y = 2;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 43;
+            c.Y = 3;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 42;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 41;
+            c.Y = 5;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 40;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            //E
+            c.X = 51;
+            c.Y = 2;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 50;
+            c.Y = 3;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 49;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 48;
+            c.Y = 5;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 47;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 52;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 53;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 54;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 55;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 56;
+            c.Y = 1;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 50;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 51;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 52;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 53;
+            c.Y = 4;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 48;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 49;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 50;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 51;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 52;
+            c.Y = 6;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            //O
+
+            c.X = 23;
+            c.Y = 9;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 22;
+            c.Y = 10;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 21;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 20;
+            c.Y = 12;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 19;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 20;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 21;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 22;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 23;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 24;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 25;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 26;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 27;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 28;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 29;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 24;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 29;
+            c.Y = 9;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 28;
+            c.Y = 10;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 27;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 26;
+            c.Y = 12;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 25;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            //V
+
+            c.X = 31;
+            c.Y = 9;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 30;
+            c.Y = 10;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 29;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 28;
+            c.Y = 12;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 27;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 28;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 29;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 30;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 31;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 32;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 33;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 38;
+            c.Y = 9;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 37;
+            c.Y = 10;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 36;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 35;
+            c.Y = 12;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 34;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 41;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 42;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 43;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 44;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 45;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 37;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 38;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 39;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 40;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 41;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 39;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 40;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 41;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 42;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            //E
+            c.X = 40;
+            c.Y = 9;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 39;
+            c.Y = 10;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 38;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 37;
+            c.Y = 12;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 36;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            //R
+            c.X = 47;
+            c.Y = 9;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 46;
+            c.Y = 10;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 45;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 44;
+            c.Y = 12;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 43;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 48;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 49;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 50;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 51;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 52;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 51;
+            c.Y = 10;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 52;
+            c.Y = 9;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 50;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/', 0x07);
+
+            c.X = 47;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 48;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 49;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 46;
+            c.Y = 11;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_', 0x07);
+
+            c.X = 47;
+            c.Y = 12;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\', 0x07);
+
+            c.X = 48;
+            c.Y = 13;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '\\', 0x07);
+
+        }//GameOver
+
+        {//Checkpoint
+            c.X = 31;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O', 0x07);
+
+            c.X = 33;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'C', 0x07);
+
+            c.X = 34;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'H', 0x07);
+
+            c.X = 35;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'E', 0x07);
+
+            c.X = 36;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'C', 0x07);
+
+            c.X = 37;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'K', 0x07);
+
+            c.X = 38;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'P', 0x07);
+
+            c.X = 39;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O', 0x07);
+
+            c.X = 40;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'I', 0x07);
+
+            c.X = 41;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'N', 0x07);
+
+            c.X = 42;
+            c.Y = 18;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T', 0x07);
+        }//CheckPoint
+        {
+            //Restart
+            c.X = 32;
+            c.Y = 20;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O', 0x07);
+
+            c.X = 34;
+            c.Y = 20;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'R', 0x07);
+
+            c.X = 35;
+            c.Y = 20;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'E', 0x07);
+
+            c.X = 36;
+            c.Y = 20;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'S', 0x07);
+
+            c.X = 37;
+            c.Y = 20;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T', 0x07);
+
+            c.X = 38;
+            c.Y = 20;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'A', 0x07);
+
+            c.X = 39;
+            c.Y = 20;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'R', 0x07);
+
+            c.X = 40;
+            c.Y = 20;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T', 0x07);
+        }//Restart
+        {
+            //Quit
+            c.X = 33;
+            c.Y = 22;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O', 0x07);
+
+            c.X = 35;
+            c.Y = 22;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'Q', 0x07);
+
+            c.X = 36;
+            c.Y = 22;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'U', 0x07);
+
+            c.X = 37;
+            c.Y = 22;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'I', 0x07);
+
+            c.X = 38;
+            c.Y = 22;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'T', 0x07);
+        }
+        for (int i = 29; i < 45; i++)
+        {
+            c.X = i;
+            c.Y = 16;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '=', 0x0B);
+        }
+
+        for (int i = 29; i < 45; i++)
+        {
+            c.X = i;
+            c.Y = 24;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '=', 0x0B);
+        }
+        //For Restart
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 20)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
+        {
+            g_dElapsedTime = 0.0;
+            g_eGameState = S_Orphanage_Animation;
+        }
+        //For Checkpoint
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || ((g_mouseEvent.mousePosition.X == 33) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42) || (g_mouseEvent.mousePosition.X == 43) || (g_mouseEvent.mousePosition.X == 44)))))
+        {
+            g_dElapsedTime = 0.0;
+            g_eGameState = S_Dungeon_Stealth_1;
+        }
+        //For Quit
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 22)) && ((g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40))))
+        {
+            exit(0);
+        }
+
+    }
+
+}
