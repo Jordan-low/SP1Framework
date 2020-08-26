@@ -108,18 +108,18 @@ void Map::drawChildren(Console& g_Console)
 	//children
 	c.X = 56;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 64;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 62;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 50;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 
 }
 void Map::House(Console& g_Console, int x, int y)
@@ -440,18 +440,18 @@ void Map::orphanage(Console& g_Console)
 	//children
 	c.X = 56;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
 	c.X = 64;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
 	c.X = 62;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
 	c.X = 50;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
 }
 void Map::townsquare(Console& g_Console)
 {
@@ -497,34 +497,33 @@ void Map::townsquare(Console& g_Console)
 
 	Road3(g_Console, 11, 2, 13);
 	Road3(g_Console, 51, 2, 18);
+	
 	COORD c;
-	c.X = 42;
-	c.Y = 16;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 
 	c.X = 65;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x00);
 
 	c.X = 64;
 	c.Y = 6;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x00);
 
 	c.X = 52;
 	c.Y = 8;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x00);
 
 	c.X = 19;
 	c.Y = 9;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x00);
 
 	c.X = 12;
 	c.Y = 13;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x00);
 
 	c.X = 61;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x00);
+	
 }
 
 void Map::protest_area(Console& g_Console)

@@ -48,10 +48,18 @@ SGameChar   g_sMutantWasp;
 SGameChar   g_sMutantWasp2;
 SGameChar   g_sMutantWasp3;
 SGameChar   g_sRaymond;
+SGameChar   g_sNPC1;
+SGameChar   g_sNPC2;
+SGameChar   g_sNPC3;
+SGameChar   g_sNPC4;
+SGameChar   g_sNPC5;
+SGameChar   g_sNPC6;
+SGameChar   g_sNPC7;
+
 EGAMESTATES g_eGameState; // game states
 
 // Console object
-Console g_Console(80, 30, "SP1 Framework");
+Console g_Console(80, 30, "Robert's Rescue");
 // Map object
 Map rMap;
 Map eMap;
@@ -79,16 +87,21 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sGuard.enemyDie = false;
+    g_sGuard2.enemyDie = false;
+    g_sGuard3.enemyDie = false;
+
+    g_sGuard.fightGuard = false;
+    g_sGuard2.fightGuard = false;
+    g_sGuard3.fightGuard = false;
+
     g_sChar.count = 0;
     g_sChar.unlockDoorDS1 = false;
     g_sChar.showEnemyDMG = false;
     g_sChar.showPlayerDMG = false;
     g_sChar.startTimer = true;
     g_sChar.resetTimer = false;
-    g_sChar.SetH(50);
-    g_sChar.SetD(5);
-    g_sGuard.SetD(15);
-    g_sGuard.SetH(40);
+
     /*
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
     Pig.setEnemy(1, 1, 15, 3, 'E');
@@ -100,12 +113,17 @@ void init(void)
     g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
+    g_sGuard2.SetD(15);
+    g_sGuard2.SetH(40);
+    g_sGuard3.SetD(15);
+    g_sGuard3.SetH(40);
     g_sPig.SetH(15);
     g_sPig.SetD(3);
     g_sTutEnemy.SetH(10);
     g_sTutEnemy.SetD(2);
     g_sMutantWasp.SetH(25);
     g_sMutantWasp.SetD(5);
+
     g_sChar.Poison = false;
     g_sRaymond.SetH(120);
     g_sRaymond.SetD(25);
@@ -115,13 +133,13 @@ void init(void)
     g_sGuard.setEnemy(40, 15, 'E');
     g_sRaymond.setEnemy(120, 25, 'E');*/
 
-    g_sChar.Jerry = false;
-    g_sChar.Tom = false;
-    g_sChar.Charles = false;
-    g_sChar.Bobby = false;
-    g_sChar.Emmanuel = false;
-    g_sChar.Harry = false;
-    g_sChar.Sam = false;
+    g_sNPC1.talked = false;
+    g_sNPC2.talked = false;
+    g_sNPC3.talked = false;
+    g_sNPC4.talked = false;
+    g_sNPC5.talked = false;
+    g_sNPC6.talked = false;
+    g_sNPC7.talked = false;
 
     g_sGuard.xLeft = false;
     g_sGuard.xRight = false;
@@ -150,20 +168,20 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_BattleScreen;
+    g_eGameState = S_MENU_UI;
 
-    g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
+    g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
+    g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
     g_sChar.m_bActive = true;
 
-    g_sGuard.m_cLocation.X = 40;
-    g_sGuard.m_cLocation.Y = 19;
+    g_sGuard3.m_cLocation.X = 40;
+    g_sGuard3.m_cLocation.Y = 19;
 
     g_sGuard2.m_cLocation.X = 22;
     g_sGuard2.m_cLocation.Y = 15;
 
-    g_sGuard3.m_cLocation.X = 44;
-    g_sGuard3.m_cLocation.Y = 10;
+    g_sGuard.m_cLocation.X = 44;
+    g_sGuard.m_cLocation.Y = 10;
 
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
@@ -516,19 +534,19 @@ void Orphanage_Animation()
                 if (g_dElapsedTime > 2.1)
                 {
                     Cutscene.cleargrid(g_Console, 11, 6);
-                    Cutscene.drawgrid(g_Console, 11, 7, 'O');
+                    Cutscene.drawgrid(g_Console, 11, 7, (char)12);
                     if (g_dElapsedTime > 2.4)
                     {
                         Cutscene.cleargrid(g_Console, 11, 7);
-                        Cutscene.drawgrid(g_Console, 9, 7, 'O');
+                        Cutscene.drawgrid(g_Console, 9, 7, (char)12);
                         if (g_dElapsedTime > 2.7)
                         {
                             Cutscene.cleargrid(g_Console, 9, 7);
-                            Cutscene.drawgrid(g_Console, 13, 7, 'O');
+                            Cutscene.drawgrid(g_Console, 13, 7, (char)12);
                             if (g_dElapsedTime > 3.0)
                             {
                                 Cutscene.cleargrid(g_Console, 13, 7);
-                                Cutscene.drawgrid(g_Console, 11, 7, 'O');
+                                Cutscene.drawgrid(g_Console, 11, 7, (char)12);
                                 int j = 6;
                                 for (int i = 9; i < 14; i++)
                                 {
@@ -589,10 +607,10 @@ void Orphanage_Children_Animation()
 {
     rMap.initialise(g_Console);
     rMap.drawAnimation(g_Console, 33, 22, 'B');
-    rMap.Animation(g_Console, 11, 7, 'O');
-    rMap.Animation(g_Console, 9, 7, 'O');
-    rMap.Animation(g_Console, 13, 7, 'O');
-    rMap.Animation(g_Console, 11, 7, 'O');
+    rMap.Animation(g_Console, 11, 7, (char)12);
+    rMap.Animation(g_Console, 9, 7, (char)12);
+    rMap.Animation(g_Console, 13, 7, (char)12);
+    rMap.Animation(g_Console, 11, 7, (char)12);
     int j = 6;
     for (int i = 9; i < 14; i++)
     {
@@ -681,11 +699,11 @@ void Orphanage_Children_Animation()
                                                         Cutscene.cleargrid(g_Console, 62, 17);
                                                         Cutscene.cleargrid(g_Console, 54, 17);
                                                         Cutscene.cleargrid(g_Console, 50, 20);
-                                                        Cutscene.drawgrid(g_Console, 56, 22, 'O');
-                                                        Cutscene.drawgrid(g_Console, 64, 21, 'O');
-                                                        Cutscene.drawgrid(g_Console, 62, 18, 'O');
-                                                        Cutscene.drawgrid(g_Console, 54, 18, 'O');
-                                                        Cutscene.drawgrid(g_Console, 50, 21, 'O');
+                                                        Cutscene.drawgrid(g_Console, 56, 22, (char)12);
+                                                        Cutscene.drawgrid(g_Console, 64, 21, (char)12);
+                                                        Cutscene.drawgrid(g_Console, 62, 18, (char)12);
+                                                        Cutscene.drawgrid(g_Console, 54, 18, (char)12);
+                                                        Cutscene.drawgrid(g_Console, 50, 21, (char)12);
                                                         if (g_dChildrenTime > 12.3)
                                                         {
                                                             Cutscene.cleargrid(g_Console, 56, 22);
@@ -693,11 +711,11 @@ void Orphanage_Children_Animation()
                                                             Cutscene.cleargrid(g_Console, 62, 18);
                                                             Cutscene.cleargrid(g_Console, 54, 18);
                                                             Cutscene.cleargrid(g_Console, 50, 21);
-                                                            Cutscene.drawgrid(g_Console, 56, 22, 'O');
-                                                            Cutscene.drawgrid(g_Console, 64, 22, 'O');
-                                                            Cutscene.drawgrid(g_Console, 62, 19, 'O');
-                                                            Cutscene.drawgrid(g_Console, 54, 19, 'O');
-                                                            Cutscene.drawgrid(g_Console, 50, 22, 'O');
+                                                            Cutscene.drawgrid(g_Console, 56, 22, (char)12);
+                                                            Cutscene.drawgrid(g_Console, 64, 22, (char)12);
+                                                            Cutscene.drawgrid(g_Console, 62, 19, (char)12);
+                                                            Cutscene.drawgrid(g_Console, 54, 19, (char)12);
+                                                            Cutscene.drawgrid(g_Console, 50, 22, (char)12);
                                                             if (g_dChildrenTime > 12.6)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 56, 22);
@@ -705,40 +723,40 @@ void Orphanage_Children_Animation()
                                                                 Cutscene.cleargrid(g_Console, 62, 19);
                                                                 Cutscene.cleargrid(g_Console, 54, 19);
                                                                 Cutscene.cleargrid(g_Console, 50, 22);
-                                                                Cutscene.drawgrid(g_Console, 64, 22, 'O');
-                                                                Cutscene.drawgrid(g_Console, 62, 20, 'O');
-                                                                Cutscene.drawgrid(g_Console, 54, 20, 'O');
-                                                                Cutscene.drawgrid(g_Console, 50, 22, 'O');
+                                                                Cutscene.drawgrid(g_Console, 64, 22, (char)12);
+                                                                Cutscene.drawgrid(g_Console, 62, 20, (char)12);
+                                                                Cutscene.drawgrid(g_Console, 54, 20, (char)12);
+                                                                Cutscene.drawgrid(g_Console, 50, 22, (char)12);
                                                                 if (g_dChildrenTime > 12.9)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 64, 22);
                                                                     Cutscene.cleargrid(g_Console, 62, 20);
                                                                     Cutscene.cleargrid(g_Console, 54, 20);
                                                                     Cutscene.cleargrid(g_Console, 50, 22);
-                                                                    Cutscene.drawgrid(g_Console, 64, 22, 'O');
-                                                                    Cutscene.drawgrid(g_Console, 62, 21, 'O');
-                                                                    Cutscene.drawgrid(g_Console, 54, 21, 'O');
-                                                                    Cutscene.drawgrid(g_Console, 50, 22, 'O');
+                                                                    Cutscene.drawgrid(g_Console, 64, 22, (char)12);
+                                                                    Cutscene.drawgrid(g_Console, 62, 21, (char)12);
+                                                                    Cutscene.drawgrid(g_Console, 54, 21, (char)12);
+                                                                    Cutscene.drawgrid(g_Console, 50, 22, (char)12);
                                                                     if (g_dChildrenTime > 13.2)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 64, 22);
                                                                         Cutscene.cleargrid(g_Console, 62, 21);
                                                                         Cutscene.cleargrid(g_Console, 54, 21);
                                                                         Cutscene.cleargrid(g_Console, 50, 22);
-                                                                        Cutscene.drawgrid(g_Console, 62, 22, 'O');
-                                                                        Cutscene.drawgrid(g_Console, 54, 22, 'O');
+                                                                        Cutscene.drawgrid(g_Console, 62, 22, (char)12);
+                                                                        Cutscene.drawgrid(g_Console, 54, 22, (char)12);
                                                                         if (g_dChildrenTime > 13.5)
                                                                         {
                                                                             Cutscene.cleargrid(g_Console, 62, 22);
                                                                             Cutscene.cleargrid(g_Console, 54, 22);
-                                                                            Cutscene.drawgrid(g_Console, 62, 22, 'O');
-                                                                            Cutscene.drawgrid(g_Console, 54, 22, 'O');
+                                                                            Cutscene.drawgrid(g_Console, 62, 22, (char)12);
+                                                                            Cutscene.drawgrid(g_Console, 54, 22, (char)12);
                                                                             if (g_dChildrenTime > 13.8)
                                                                             {
                                                                                 Cutscene.cleargrid(g_Console, 62, 22);
                                                                                 Cutscene.cleargrid(g_Console, 54, 22);
-                                                                                Cutscene.drawgrid(g_Console, 62, 22, 'O');
-                                                                                Cutscene.drawgrid(g_Console, 54, 22, 'O');
+                                                                                Cutscene.drawgrid(g_Console, 62, 22, (char)12);
+                                                                                Cutscene.drawgrid(g_Console, 54, 22, (char)12);
                                                                                 if (g_dChildrenTime > 14.1)
                                                                                 {
                                                                                     Cutscene.cleargrid(g_Console, 62, 22);
@@ -822,59 +840,59 @@ void Protest_Area_Animation()
             Cutscene.drawgrid(g_Console, 62, 5, '\\');
             if (g_dProtestTime > 0.9)
             {
-                Cutscene.drawgrid(g_Console, 62, 4, 'O');
+                Cutscene.drawgrid(g_Console, 62, 4, (char)12);
                 if (g_dProtestTime > 1.2)
                 {
                     Cutscene.cleargrid(g_Console, 62, 4);
-                    Cutscene.drawgrid(g_Console, 63, 4, 'O');
+                    Cutscene.drawgrid(g_Console, 63, 4, (char)12);
                     if (g_dProtestTime > 1.5)
                     {
                         Cutscene.cleargrid(g_Console, 63, 4);
-                        Cutscene.drawgrid(g_Console, 63, 5, 'O');
+                        Cutscene.drawgrid(g_Console, 63, 5, (char)12);
                         if (g_dProtestTime > 1.8)
                         {
                             Cutscene.cleargrid(g_Console, 63, 5);
-                            Cutscene.drawgrid(g_Console, 63, 6, 'O');
+                            Cutscene.drawgrid(g_Console, 63, 6, (char)12);
                             if (g_dProtestTime > 2.1)
                             {
                                 Cutscene.cleargrid(g_Console, 63, 6);
-                                Cutscene.drawgrid(g_Console, 63, 7, 'O');
+                                Cutscene.drawgrid(g_Console, 63, 7, (char)12);
                                 if (g_dProtestTime > 2.4)
                                 {
                                     Cutscene.cleargrid(g_Console, 63, 7);
-                                    Cutscene.drawgrid(g_Console, 62, 8, 'O');
+                                    Cutscene.drawgrid(g_Console, 62, 8, (char)12);
                                     if (g_dProtestTime > 2.7)
                                     {
                                         Cutscene.cleargrid(g_Console, 62, 8);
-                                        Cutscene.drawgrid(g_Console, 60, 8, 'O');
+                                        Cutscene.drawgrid(g_Console, 60, 8, (char)12);
                                         if (g_dProtestTime > 3.0)
                                         {
                                             Cutscene.cleargrid(g_Console, 60, 8);
-                                            Cutscene.drawgrid(g_Console, 57, 8, 'O');
+                                            Cutscene.drawgrid(g_Console, 57, 8, (char)12);
                                             if (g_dProtestTime > 3.3)
                                             {
                                                 Cutscene.cleargrid(g_Console, 57, 8);
-                                                Cutscene.drawgrid(g_Console, 54, 8, 'O');
+                                                Cutscene.drawgrid(g_Console, 54, 8, (char)12);
                                                 if (g_dProtestTime > 3.6)
                                                 {
                                                     Cutscene.cleargrid(g_Console, 54, 8);
-                                                    Cutscene.drawgrid(g_Console, 51, 8, 'O');
+                                                    Cutscene.drawgrid(g_Console, 51, 8, (char)12);
                                                     if (g_dProtestTime > 3.9)
                                                     {
                                                         Cutscene.cleargrid(g_Console, 51, 8);
-                                                        Cutscene.drawgrid(g_Console, 48, 8, 'O');
+                                                        Cutscene.drawgrid(g_Console, 48, 8, (char)12);
                                                         if (g_dProtestTime > 4.2)
                                                         {
                                                             Cutscene.cleargrid(g_Console, 48, 8);
-                                                            Cutscene.drawgrid(g_Console, 45, 8, 'O');
+                                                            Cutscene.drawgrid(g_Console, 45, 8, (char)12);
                                                             if (g_dProtestTime > 4.5)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 45, 8);
-                                                                Cutscene.drawgrid(g_Console, 42, 8, 'O');
+                                                                Cutscene.drawgrid(g_Console, 42, 8, (char)12);
                                                                 if (g_dProtestTime > 4.8)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 42, 8);
-                                                                    Cutscene.drawgrid(g_Console, 39, 8, 'O');
+                                                                    Cutscene.drawgrid(g_Console, 39, 8, (char)12);
                                                                     if (g_dProtestTime > 5.1)
                                                                     {
                                                                         //g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
@@ -931,59 +949,59 @@ void Protest_Area_Animation()
                                                                                                                     {
                                                                                                                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                                                                                         Cutscene.drawgrid(g_Console, 39, 8, '_');
-                                                                                                                        Cutscene.drawgrid(g_Console, 42, 8, 'O');
+                                                                                                                        Cutscene.drawgrid(g_Console, 42, 8, (char)12);
                                                                                                                         if (g_dProtestTime > 74.3)
                                                                                                                         {
                                                                                                                             Cutscene.cleargrid(g_Console, 42, 8);
-                                                                                                                            Cutscene.drawgrid(g_Console, 45, 8, 'O');
+                                                                                                                            Cutscene.drawgrid(g_Console, 45, 8, (char)12);
                                                                                                                             if (g_dProtestTime > 74.6)
                                                                                                                             {
                                                                                                                                 Cutscene.cleargrid(g_Console, 45, 8);
-                                                                                                                                Cutscene.drawgrid(g_Console, 48, 8, 'O');
+                                                                                                                                Cutscene.drawgrid(g_Console, 48, 8, (char)12);
                                                                                                                                 if (g_dProtestTime > 74.9)
                                                                                                                                 {
                                                                                                                                     Cutscene.cleargrid(g_Console, 48, 8);
-                                                                                                                                    Cutscene.drawgrid(g_Console, 51, 8, 'O');
+                                                                                                                                    Cutscene.drawgrid(g_Console, 51, 8, (char)12);
                                                                                                                                     if (g_dProtestTime > 75.2)
                                                                                                                                     {
                                                                                                                                         Cutscene.cleargrid(g_Console, 51, 8);
-                                                                                                                                        Cutscene.drawgrid(g_Console, 54, 8, 'O');
+                                                                                                                                        Cutscene.drawgrid(g_Console, 54, 8, (char)12);
                                                                                                                                         if (g_dProtestTime > 75.5)
                                                                                                                                         {
                                                                                                                                             Cutscene.cleargrid(g_Console, 54, 8);
-                                                                                                                                            Cutscene.drawgrid(g_Console, 57, 8, 'O');
+                                                                                                                                            Cutscene.drawgrid(g_Console, 57, 8, (char)12);
                                                                                                                                             if (g_dProtestTime > 75.8)
                                                                                                                                             {
                                                                                                                                                 Cutscene.cleargrid(g_Console, 57, 8);
-                                                                                                                                                Cutscene.drawgrid(g_Console, 60, 8, 'O');
+                                                                                                                                                Cutscene.drawgrid(g_Console, 60, 8, (char)12);
                                                                                                                                                 if (g_dProtestTime > 76.1)
                                                                                                                                                 {
                                                                                                                                                     Cutscene.cleargrid(g_Console, 60, 8);
-                                                                                                                                                    Cutscene.drawgrid(g_Console, 62, 8, 'O');
+                                                                                                                                                    Cutscene.drawgrid(g_Console, 62, 8, (char)12);
                                                                                                                                                     if (g_dProtestTime > 76.4)
                                                                                                                                                     {
                                                                                                                                                         Cutscene.cleargrid(g_Console, 62, 8);
-                                                                                                                                                        Cutscene.drawgrid(g_Console, 63, 7, 'O');
+                                                                                                                                                        Cutscene.drawgrid(g_Console, 63, 7, (char)12);
                                                                                                                                                         if (g_dProtestTime > 76.7)
                                                                                                                                                         {
                                                                                                                                                             Cutscene.cleargrid(g_Console, 63, 7);
-                                                                                                                                                            Cutscene.drawgrid(g_Console, 63, 6, 'O');
+                                                                                                                                                            Cutscene.drawgrid(g_Console, 63, 6, (char)12);
                                                                                                                                                             if (g_dProtestTime > 77.0)
                                                                                                                                                             {
                                                                                                                                                                 Cutscene.cleargrid(g_Console, 63, 6);
-                                                                                                                                                                Cutscene.drawgrid(g_Console, 63, 5, 'O');
+                                                                                                                                                                Cutscene.drawgrid(g_Console, 63, 5, (char)12);
                                                                                                                                                                 if (g_dProtestTime > 77.3)
                                                                                                                                                                 {
                                                                                                                                                                     Cutscene.cleargrid(g_Console, 63, 5);
-                                                                                                                                                                    Cutscene.drawgrid(g_Console, 63, 4, 'O');
+                                                                                                                                                                    Cutscene.drawgrid(g_Console, 63, 4, (char)12);
                                                                                                                                                                     if (g_dProtestTime > 77.6)
                                                                                                                                                                     {
                                                                                                                                                                         Cutscene.cleargrid(g_Console, 63, 4);
-                                                                                                                                                                        Cutscene.drawgrid(g_Console, 62, 4, 'O');
+                                                                                                                                                                        Cutscene.drawgrid(g_Console, 62, 4, (char)12);
                                                                                                                                                                         if (g_dProtestTime > 77.9)
                                                                                                                                                                         {
                                                                                                                                                                             Cutscene.cleargrid(g_Console, 63, 4);
-                                                                                                                                                                            Cutscene.drawgrid(g_Console, 62, 4, 'O');
+                                                                                                                                                                            Cutscene.drawgrid(g_Console, 62, 4, (char)12);
                                                                                                                                                                             if (g_dProtestTime > 78.2)
                                                                                                                                                                             {
                                                                                                                                                                                 Cutscene.cleargrid(g_Console, 62, 4);
@@ -1132,11 +1150,11 @@ void Dungeon_Cell_Animation()
     d.X = 5;
     d.Y = 27;
     //drawing Robert
-    Cutscene.drawgrid(g_Console, 40, 13, 'O');
+    Cutscene.drawgrid(g_Console, 40, 13, (char)12);
     if (g_dDungeonTime > 0.3)
     {
         //drawing Ell
-        Cutscene.drawgrid(g_Console, 4, 3, 'O');
+        Cutscene.drawgrid(g_Console, 4, 3, (char)12);
         if (g_dDungeonTime > 0.6)
         {
             g_Console.writeToBuffer(c, "Robert: ...Where am I?", 0x0F, 100);
@@ -1156,67 +1174,67 @@ void Dungeon_Cell_Animation()
                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
                             Cutscene.cleargrid(g_Console, 41, 12);
                             Cutscene.cleargrid(g_Console, 4, 1);
-                            Cutscene.drawgrid(g_Console, 4, 3, 'O');
+                            Cutscene.drawgrid(g_Console, 4, 3, (char)12);
                             if (g_dDungeonTime > 8.6)
                             {
                                 Cutscene.cleargrid(g_Console, 4, 3);
-                                Cutscene.drawgrid(g_Console, 4, 5, 'O');
+                                Cutscene.drawgrid(g_Console, 4, 5, (char)12);
                                 if (g_dDungeonTime > 8.9)
                                 {
                                     Cutscene.cleargrid(g_Console, 4, 5);
-                                    Cutscene.drawgrid(g_Console, 6, 5, 'O');
+                                    Cutscene.drawgrid(g_Console, 6, 5, (char)12);
                                     if (g_dDungeonTime > 9.2)
                                     {
                                         Cutscene.cleargrid(g_Console, 6, 5);
-                                        Cutscene.drawgrid(g_Console, 9, 5, 'O');
+                                        Cutscene.drawgrid(g_Console, 9, 5, (char)12);
                                         if (g_dDungeonTime > 9.5)
                                         {
                                             Cutscene.cleargrid(g_Console, 9, 5);
-                                            Cutscene.drawgrid(g_Console, 12, 5, 'O');
+                                            Cutscene.drawgrid(g_Console, 12, 5, (char)12);
                                             if (g_dDungeonTime > 9.8)
                                             {
                                                 Cutscene.cleargrid(g_Console, 12, 5);
-                                                Cutscene.drawgrid(g_Console, 15, 5, 'O');
+                                                Cutscene.drawgrid(g_Console, 15, 5, (char)12);
                                                 if (g_dDungeonTime > 10.1)
                                                 {
                                                     Cutscene.cleargrid(g_Console, 15, 5);
                                                     Cutscene.cleargrid(g_Console, 40, 13);
-                                                    Cutscene.drawgrid(g_Console, 18, 5, 'O');
-                                                    Cutscene.drawgrid(g_Console, 38, 13, 'O');
+                                                    Cutscene.drawgrid(g_Console, 18, 5, (char)12);
+                                                    Cutscene.drawgrid(g_Console, 38, 13, (char)12);
                                                     if (g_dDungeonTime > 10.4)
                                                     {
                                                         Cutscene.cleargrid(g_Console, 18, 5);
                                                         Cutscene.cleargrid(g_Console, 38, 13);
-                                                        Cutscene.drawgrid(g_Console, 21, 5, 'O');
-                                                        Cutscene.drawgrid(g_Console, 36, 13, 'O');
+                                                        Cutscene.drawgrid(g_Console, 21, 5, (char)12);
+                                                        Cutscene.drawgrid(g_Console, 36, 13, (char)12);
                                                         if (g_dDungeonTime > 10.7)
                                                         {
                                                             Cutscene.cleargrid(g_Console, 21, 5);
                                                             Cutscene.cleargrid(g_Console, 36, 13);
-                                                            Cutscene.drawgrid(g_Console, 24, 5, 'O');
-                                                            Cutscene.drawgrid(g_Console, 34, 13, 'O');
+                                                            Cutscene.drawgrid(g_Console, 24, 5, (char)12);
+                                                            Cutscene.drawgrid(g_Console, 34, 13, (char)12);
                                                             if (g_dDungeonTime > 11.0)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 24, 5);
                                                                 Cutscene.cleargrid(g_Console, 34, 13);
-                                                                Cutscene.drawgrid(g_Console, 27, 5, 'O');
-                                                                Cutscene.drawgrid(g_Console, 32, 13, 'O');
+                                                                Cutscene.drawgrid(g_Console, 27, 5, (char)12);
+                                                                Cutscene.drawgrid(g_Console, 32, 13, (char)12);
                                                                 if (g_dDungeonTime > 11.3)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 27, 5);
                                                                     Cutscene.cleargrid(g_Console, 32, 13);
-                                                                    Cutscene.drawgrid(g_Console, 30, 5, 'O');
-                                                                    Cutscene.drawgrid(g_Console, 30, 13, 'O');
+                                                                    Cutscene.drawgrid(g_Console, 30, 5, (char)12);
+                                                                    Cutscene.drawgrid(g_Console, 30, 13, (char)12);
                                                                     if (g_dDungeonTime > 11.6)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 30, 5);
                                                                         Cutscene.cleargrid(g_Console, 30, 13);
-                                                                        Cutscene.drawgrid(g_Console, 30, 7, 'O');
-                                                                        Cutscene.drawgrid(g_Console, 30, 11, 'O');
+                                                                        Cutscene.drawgrid(g_Console, 30, 7, (char)12);
+                                                                        Cutscene.drawgrid(g_Console, 30, 11, (char)12);
                                                                         if (g_dDungeonTime > 11.9)
                                                                         {
                                                                             Cutscene.cleargrid(g_Console, 30, 11);
-                                                                            Cutscene.drawgrid(g_Console, 30, 9, 'O');
+                                                                            Cutscene.drawgrid(g_Console, 30, 9, (char)12);
                                                                             if (g_dDungeonTime > 12.2)
                                                                             {
                                                                                 g_Console.writeToBuffer(c, "Ell: You're finally awake!!", 0x0F, 100);
@@ -1248,48 +1266,48 @@ void Dungeon_Cell_Animation()
                                                                                                     {
                                                                                                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                                                                         Cutscene.cleargrid(g_Console, 30, 7);
-                                                                                                        Cutscene.drawgrid(g_Console, 30, 5, 'O');
+                                                                                                        Cutscene.drawgrid(g_Console, 30, 5, (char)12);
 
                                                                                                         if (g_dDungeonTime > 33.5)
                                                                                                         {
                                                                                                             Cutscene.cleargrid(g_Console, 30, 5);
-                                                                                                            Cutscene.drawgrid(g_Console, 27, 5, 'O');
+                                                                                                            Cutscene.drawgrid(g_Console, 27, 5, (char)12);
                                                                                                             if (g_dDungeonTime > 33.8)
                                                                                                             {
                                                                                                                 Cutscene.cleargrid(g_Console, 27, 5);
-                                                                                                                Cutscene.drawgrid(g_Console, 24, 5, 'O');
+                                                                                                                Cutscene.drawgrid(g_Console, 24, 5, (char)12);
                                                                                                                 if (g_dDungeonTime > 34.1)
                                                                                                                 {
                                                                                                                     Cutscene.cleargrid(g_Console, 24, 5);
-                                                                                                                    Cutscene.drawgrid(g_Console, 21, 5, 'O');
+                                                                                                                    Cutscene.drawgrid(g_Console, 21, 5, (char)12);
                                                                                                                     if (g_dDungeonTime > 34.4)
                                                                                                                     {
                                                                                                                         Cutscene.cleargrid(g_Console, 21, 5);
-                                                                                                                        Cutscene.drawgrid(g_Console, 18, 5, 'O');
+                                                                                                                        Cutscene.drawgrid(g_Console, 18, 5, (char)12);
                                                                                                                         if (g_dDungeonTime > 34.7)
                                                                                                                         {
                                                                                                                             Cutscene.cleargrid(g_Console, 18, 5);
-                                                                                                                            Cutscene.drawgrid(g_Console, 15, 5, 'O');
+                                                                                                                            Cutscene.drawgrid(g_Console, 15, 5, (char)12);
                                                                                                                             if (g_dDungeonTime > 35.0)
                                                                                                                             {
                                                                                                                                 Cutscene.cleargrid(g_Console, 15, 5);
-                                                                                                                                Cutscene.drawgrid(g_Console, 12, 5, 'O');
+                                                                                                                                Cutscene.drawgrid(g_Console, 12, 5, (char)12);
                                                                                                                                 if (g_dDungeonTime > 35.3)
                                                                                                                                 {
                                                                                                                                     Cutscene.cleargrid(g_Console, 12, 5);
-                                                                                                                                    Cutscene.drawgrid(g_Console, 9, 5, 'O');
+                                                                                                                                    Cutscene.drawgrid(g_Console, 9, 5, (char)12);
                                                                                                                                     if (g_dDungeonTime > 35.6)
                                                                                                                                     {
                                                                                                                                         Cutscene.cleargrid(g_Console, 9, 5);
-                                                                                                                                        Cutscene.drawgrid(g_Console, 6, 5, 'O');
+                                                                                                                                        Cutscene.drawgrid(g_Console, 6, 5, (char)12);
                                                                                                                                         if (g_dDungeonTime > 35.9)
                                                                                                                                         {
                                                                                                                                             Cutscene.cleargrid(g_Console, 6, 5);
-                                                                                                                                            Cutscene.drawgrid(g_Console, 4, 5, 'O');
+                                                                                                                                            Cutscene.drawgrid(g_Console, 4, 5, (char)12);
                                                                                                                                             if (g_dDungeonTime > 36.2)
                                                                                                                                             {
                                                                                                                                                 Cutscene.cleargrid(g_Console, 4, 5);
-                                                                                                                                                Cutscene.drawgrid(g_Console, 4, 3, 'O');
+                                                                                                                                                Cutscene.drawgrid(g_Console, 4, 3, (char)12);
                                                                                                                                                 if (g_dDungeonTime > 36.5)
                                                                                                                                                 {
                                                                                                                                                     Cutscene.cleargrid(g_Console, 4, 3);
@@ -1522,16 +1540,16 @@ void Medical_Fight_Animation()
     c.X = 5;
     c.Y = 26;
     Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
-    Cutscene.drawgrid(g_Console, 34, 13, 'O'); //Ell
+    Cutscene.drawgrid(g_Console, 34, 13, (char)12); //Ell
 
-    Cutscene.drawgrid(g_Console, 36, 12, 'O'); //Patient 1
-    Cutscene.drawgrid(g_Console, 36, 9, 'O'); //Patient 2
-    Cutscene.drawgrid(g_Console, 36, 15, 'O'); //Patient 3
-    Cutscene.drawgrid(g_Console, 46, 15, 'O'); //Patient 4
-    Cutscene.drawgrid(g_Console, 46, 9, 'O'); //Patient 5
-    Cutscene.drawgrid(g_Console, 56, 15, 'O'); //Patient 6
-    Cutscene.drawgrid(g_Console, 56, 9, 'O'); //Patient 7
-    Cutscene.drawgrid(g_Console, 23, 13, 'O'); //nurse
+    Cutscene.drawgrid(g_Console, 36, 12, (char)12); //Patient 1
+    Cutscene.drawgrid(g_Console, 36, 9, (char)12); //Patient 2
+    Cutscene.drawgrid(g_Console, 36, 15, (char)12); //Patient 3
+    Cutscene.drawgrid(g_Console, 46, 15, (char)12); //Patient 4
+    Cutscene.drawgrid(g_Console, 46, 9, (char)12); //Patient 5
+    Cutscene.drawgrid(g_Console, 56, 15, (char)12); //Patient 6
+    Cutscene.drawgrid(g_Console, 56, 9, (char)12); //Patient 7
+    Cutscene.drawgrid(g_Console, 23, 13, (char)12); //nurse
 
     if (g_dMedicalFightTime > 0.6)
     {
@@ -1541,11 +1559,11 @@ void Medical_Fight_Animation()
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             //patient 2 walks to hero
             Cutscene.cleargrid(g_Console, 36, 9);
-            Cutscene.drawgrid(g_Console, 36, 10, 'O'); //Patient 2
+            Cutscene.drawgrid(g_Console, 36, 10, (char)12); //Patient 2
             if (g_dMedicalFightTime > 3.9)
             {
                 Cutscene.cleargrid(g_Console, 36, 10);
-                Cutscene.drawgrid(g_Console, 35, 11, 'O');
+                Cutscene.drawgrid(g_Console, 35, 11, (char)12);
                 if (g_dMedicalFightTime > 4.2)
                 {
                     g_Console.writeToBuffer(c, "Patient 2: You have so much medicine and you kept it from us?", 0x0F, 100);
@@ -1558,7 +1576,7 @@ void Medical_Fight_Animation()
                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                         //patient 3 walks to hero ( ally side )
                         Cutscene.cleargrid(g_Console, 36, 15);
-                        Cutscene.drawgrid(g_Console, 35, 14, 'O');
+                        Cutscene.drawgrid(g_Console, 35, 14, (char)12);
                         if (g_dMedicalFightTime > 7.5)
                         {
                             g_Console.writeToBuffer(c, "Patient 3: Give it to me! Can't you see that you're healthier than me?", 0x0F, 100);
@@ -1571,11 +1589,11 @@ void Medical_Fight_Animation()
                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                 //patient 4 walks (in front of ally)
                                 Cutscene.cleargrid(g_Console, 46, 15);
-                                Cutscene.drawgrid(g_Console, 41, 14, 'O');
+                                Cutscene.drawgrid(g_Console, 41, 14, (char)12);
                                 if (g_dMedicalFightTime > 10.8)
                                 {
                                     Cutscene.cleargrid(g_Console, 41, 14);
-                                    Cutscene.drawgrid(g_Console, 36, 13, 'O');
+                                    Cutscene.drawgrid(g_Console, 36, 13, (char)12);
                                     if (g_dMedicalFightTime > 11.1)
                                     {
                                         g_Console.writeToBuffer(c, "Patient 4: Please! I beg you, please give my daughter", 0x0F, 100);
@@ -1588,11 +1606,11 @@ void Medical_Fight_Animation()
                                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                             // Patient 5 walks to Patient 1
                                             Cutscene.cleargrid(g_Console, 46, 9);
-                                            Cutscene.drawgrid(g_Console, 41, 10, 'O');
+                                            Cutscene.drawgrid(g_Console, 41, 10, (char)12);
                                             if (g_dMedicalFightTime > 14.4)
                                             {
                                                 Cutscene.cleargrid(g_Console, 41, 10);
-                                                Cutscene.drawgrid(g_Console, 37, 11, 'O');
+                                                Cutscene.drawgrid(g_Console, 37, 11, (char)12);
                                                 if (g_dMedicalFightTime > 14.7)
                                                 {
                                                     g_Console.writeToBuffer(c, "Patient 5: Give that to me! I deserve that more than you!", 0x0F, 100);
@@ -1606,26 +1624,26 @@ void Medical_Fight_Animation()
                                                             //patient 6 & 7 walking 
                                                             Cutscene.cleargrid(g_Console, 56, 15);
                                                             Cutscene.cleargrid(g_Console, 56, 9);
-                                                            Cutscene.drawgrid(g_Console, 51, 14, 'O');
-                                                            Cutscene.drawgrid(g_Console, 51, 10, 'O');
+                                                            Cutscene.drawgrid(g_Console, 51, 14, (char)12);
+                                                            Cutscene.drawgrid(g_Console, 51, 10, (char)12);
                                                             if (g_dMedicalFightTime > 21.0)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 51, 14);
                                                                 Cutscene.cleargrid(g_Console, 51, 10);
-                                                                Cutscene.drawgrid(g_Console, 46, 14, 'O');
-                                                                Cutscene.drawgrid(g_Console, 46, 11, 'O');
+                                                                Cutscene.drawgrid(g_Console, 46, 14, (char)12);
+                                                                Cutscene.drawgrid(g_Console, 46, 11, (char)12);
                                                                 if (g_dMedicalFightTime > 21.3)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 46, 14);
                                                                     Cutscene.cleargrid(g_Console, 46, 11);
-                                                                    Cutscene.drawgrid(g_Console, 41, 14, 'O');
-                                                                    Cutscene.drawgrid(g_Console, 41, 12, 'O');
+                                                                    Cutscene.drawgrid(g_Console, 41, 14, (char)12);
+                                                                    Cutscene.drawgrid(g_Console, 41, 12, (char)12);
                                                                     if (g_dMedicalFightTime > 21.6)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 41, 14);
                                                                         Cutscene.cleargrid(g_Console, 41, 12);
-                                                                        Cutscene.drawgrid(g_Console, 37, 14, 'O');
-                                                                        Cutscene.drawgrid(g_Console, 38, 12, 'O');
+                                                                        Cutscene.drawgrid(g_Console, 37, 14, (char)12);
+                                                                        Cutscene.drawgrid(g_Console, 38, 12, (char)12);
                                                                         if (g_dMedicalFightTime > 21.9)
                                                                         {
                                                                             g_Console.writeToBuffer(c, "Patient 6: Why do you have som much medicine?", 0x0F, 100);
@@ -1641,15 +1659,15 @@ void Medical_Fight_Animation()
                                                                                 {
                                                                                     //nurse walks
                                                                                     Cutscene.cleargrid(g_Console, 23, 13);
-                                                                                    Cutscene.drawgrid(g_Console, 27, 14, 'O');
+                                                                                    Cutscene.drawgrid(g_Console, 27, 14, (char)12);
                                                                                     if (g_dMedicalFightTime > 28.2)
                                                                                     {
                                                                                         Cutscene.cleargrid(g_Console, 27, 14);
-                                                                                        Cutscene.drawgrid(g_Console, 30, 15, 'O');
+                                                                                        Cutscene.drawgrid(g_Console, 30, 15, (char)12);
                                                                                         if (g_dMedicalFightTime > 28.5)
                                                                                         {
                                                                                             Cutscene.cleargrid(g_Console, 30, 15);
-                                                                                            Cutscene.drawgrid(g_Console, 33, 15, 'O');
+                                                                                            Cutscene.drawgrid(g_Console, 33, 15, (char)12);
                                                                                             if (g_dMedicalFightTime > 28.8)
                                                                                             {
                                                                                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -1698,7 +1716,7 @@ void Medical_Facility_Animation()
     c.X = 5;
     c.Y = 26;
     Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
-    Cutscene.drawgrid(g_Console, 34, 13, 'O'); //Ell
+    Cutscene.drawgrid(g_Console, 34, 13, (char)12); //Ell
 
     //Breaking in
     Cutscene.drawgrid(g_Console, 2, 12, 'E');
@@ -1858,14 +1876,14 @@ void Medical_Facility_Part2_Animation()
     c.X = 5;
     c.Y = 26;
     Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
-    Cutscene.drawgrid(g_Console, 34, 13, 'O'); //Ell
+    Cutscene.drawgrid(g_Console, 34, 13, (char)12); //Ell
 
     Cutscene.drawgrid(g_Console, 32, 11, 'E');
     Cutscene.drawgrid(g_Console, 32, 12, 'E');
     Cutscene.drawgrid(g_Console, 32, 13, 'E');
     Cutscene.drawgrid(g_Console, 32, 14, 'E');
 
-    Cutscene.drawgrid(g_Console, 36, 12, 'O'); //Patient 1
+    Cutscene.drawgrid(g_Console, 36, 12, (char)12); //Patient 1
 
     if (g_dMedical2Time > 0.6)
     {
@@ -1885,7 +1903,7 @@ void Medical_Facility_Part2_Animation()
                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                         //oofus doofus robert gets pushed
                         Cutscene.cleargrid(g_Console, 36, 12);
-                        Cutscene.drawgrid(g_Console, 35, 12, 'O');
+                        Cutscene.drawgrid(g_Console, 35, 12, (char)12);
                         if (g_dMedical2Time > 10.2)
                         {
                             Cutscene.cleargrid(g_Console, 34, 12);
@@ -1894,35 +1912,35 @@ void Medical_Facility_Part2_Animation()
                             {
                                 //run patient run
                                 Cutscene.cleargrid(g_Console, 35, 12);
-                                Cutscene.drawgrid(g_Console, 31, 10, 'O');
+                                Cutscene.drawgrid(g_Console, 31, 10, (char)12);
                                 if (g_dMedical2Time > 10.8)
                                 {
                                     Cutscene.cleargrid(g_Console, 31, 10);
-                                    Cutscene.drawgrid(g_Console, 27, 7, 'O');
+                                    Cutscene.drawgrid(g_Console, 27, 7, (char)12);
                                     if (g_dMedical2Time > 11.1)
                                     {
                                         Cutscene.cleargrid(g_Console, 27, 7);
-                                        Cutscene.drawgrid(g_Console, 23, 4, 'O');
+                                        Cutscene.drawgrid(g_Console, 23, 4, (char)12);
                                         if (g_dMedical2Time > 11.4)
                                         {
                                             Cutscene.cleargrid(g_Console, 23, 4);
-                                            Cutscene.drawgrid(g_Console, 20, 4, 'O');
+                                            Cutscene.drawgrid(g_Console, 20, 4, (char)12);
                                             if (g_dMedical2Time > 11.7)
                                             {
                                                 Cutscene.cleargrid(g_Console, 20, 4);
-                                                Cutscene.drawgrid(g_Console, 16, 7, 'O');
+                                                Cutscene.drawgrid(g_Console, 16, 7, (char)12);
                                                 if (g_dMedical2Time > 12.0)
                                                 {
                                                     Cutscene.cleargrid(g_Console, 16, 7);
-                                                    Cutscene.drawgrid(g_Console, 12, 9, 'O');
+                                                    Cutscene.drawgrid(g_Console, 12, 9, (char)12);
                                                     if (g_dMedical2Time > 12.3)
                                                     {
                                                         Cutscene.cleargrid(g_Console, 12, 9);
-                                                        Cutscene.drawgrid(g_Console, 8, 9, 'O');
+                                                        Cutscene.drawgrid(g_Console, 8, 9, (char)12);
                                                         if (g_dMedical2Time > 12.6)
                                                         {
                                                             Cutscene.cleargrid(g_Console, 8, 9);
-                                                            Cutscene.drawgrid(g_Console, 3, 12, 'O');
+                                                            Cutscene.drawgrid(g_Console, 3, 12, (char)12);
                                                             if (g_dMedical2Time > 12.9)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 3, 11);
@@ -2896,10 +2914,10 @@ void renderGame()
     {
         rMap.initialise(g_Console);
 
-        rMap.Animation(g_Console, 11, 7, 'O');
-        rMap.Animation(g_Console, 9, 7, 'O');
-        rMap.Animation(g_Console, 13, 7, 'O');
-        rMap.Animation(g_Console, 11, 7, 'O');
+        rMap.Animation(g_Console, 11, 7, (char)12);
+        rMap.Animation(g_Console, 9, 7, (char)12);
+        rMap.Animation(g_Console, 13, 7, (char)12);
+        rMap.Animation(g_Console, 11, 7, (char)12);
         int j = 6;
         for (int i = 9; i < 14; i++)
         {
@@ -2924,10 +2942,10 @@ void renderGame()
     {
         rMap.initialise(g_Console);
         rMap.Border(g_Console);
-        rMap.Animation(g_Console, 11, 7, 'O');
-        rMap.Animation(g_Console, 9, 7, 'O');
-        rMap.Animation(g_Console, 13, 7, 'O');
-        rMap.Animation(g_Console, 11, 7, 'O');
+        rMap.Animation(g_Console, 11, 7, (char)12);
+        rMap.Animation(g_Console, 9, 7, (char)12);
+        rMap.Animation(g_Console, 13, 7, (char)12);
+        rMap.Animation(g_Console, 11, 7, (char)12);
         int j = 6;
         for (int i = 9; i < 14; i++)
         {
@@ -3000,52 +3018,104 @@ void renderGame()
         g_sChar.m_cLocation.Y = 17;
     }*/
 }
+void renderMap_NPC()
+{
+    WORD charColor = 0x0E;
 
+    g_sNPC2.m_cLocation.X = 65;
+    g_sNPC2.m_cLocation.Y = 13;
+
+    g_sNPC3.m_cLocation.X = 64;
+    g_sNPC3.m_cLocation.Y = 6;
+
+    g_sNPC4.m_cLocation.X = 52;
+    g_sNPC4.m_cLocation.Y = 8;
+
+    g_sNPC5.m_cLocation.X = 19;
+    g_sNPC5.m_cLocation.Y = 9;
+
+    g_sNPC6.m_cLocation.X = 12;
+    g_sNPC6.m_cLocation.Y = 13;
+
+    g_sNPC7.m_cLocation.X = 61;
+    g_sNPC7.m_cLocation.Y = 17;
+
+    g_Console.writeToBuffer(g_sNPC1.m_cLocation, (char)12, charColor);
+    g_Console.writeToBuffer(g_sNPC2.m_cLocation, (char)12, charColor);
+    g_Console.writeToBuffer(g_sNPC3.m_cLocation, (char)12, charColor);
+    g_Console.writeToBuffer(g_sNPC4.m_cLocation, (char)12, charColor);
+    g_Console.writeToBuffer(g_sNPC5.m_cLocation, (char)12, charColor);
+    g_Console.writeToBuffer(g_sNPC6.m_cLocation, (char)12, charColor);
+    g_Console.writeToBuffer(g_sNPC7.m_cLocation, (char)12, charColor);
+}
 void renderMap_Townsquare()
 {
     g_sChar.takenBackpack = false;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.townsquare(g_Console);
+    renderMap_NPC();
+    g_sChar.talked = true;
     renderCharacter();  // renders the character into the buffer
 
-    if ((g_sChar.m_cLocation.X == 43 && g_sChar.m_cLocation.Y == 16 || g_sChar.m_cLocation.X == 41 && g_sChar.m_cLocation.Y == 16) || (g_sChar.m_cLocation.X == 42 && g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.X == 42 && g_sChar.m_cLocation.Y == 15))
-    {
-        g_sChar.Jerry = true;
-        Dialogues.Jerry(g_Console);
-    }
     if ((g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == 13) || (g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 12))
     {
-        g_sChar.Tom = true;
+        g_sNPC2.talked = true;
         Dialogues.Tom(g_Console);
     }
     if ((g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 6 || g_sChar.m_cLocation.X == 63 && g_sChar.m_cLocation.Y == 6) || (g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == 7 || g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == 5))
     {
-        g_sChar.Bobby = true;
+        g_sNPC3.talked = true;
         Dialogues.Bobby(g_Console);
     }
     if ((g_sChar.m_cLocation.X == 53 && g_sChar.m_cLocation.Y == 8 || g_sChar.m_cLocation.X == 51 && g_sChar.m_cLocation.Y == 8) || (g_sChar.m_cLocation.X == 52 && g_sChar.m_cLocation.Y == 9 || g_sChar.m_cLocation.X == 52 && g_sChar.m_cLocation.Y == 7))
     {
-        g_sChar.Harry = true;
+        g_sNPC4.talked = true;
         Dialogues.Harry(g_Console);
     }
     if ((g_sChar.m_cLocation.X == 20 && g_sChar.m_cLocation.Y == 9 || g_sChar.m_cLocation.X == 18 && g_sChar.m_cLocation.Y == 9) || (g_sChar.m_cLocation.X == 19 && g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.X == 19 && g_sChar.m_cLocation.Y == 8))
     {
-        g_sChar.Sam = true;
+        g_sNPC5.talked = true;
         Dialogues.Sam(g_Console);
+    }
+    if ((g_sChar.m_cLocation.X == 11 && g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.X == 13 && g_sChar.m_cLocation.Y == 13) || (g_sChar.m_cLocation.X == 12 && g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.X == 12 && g_sChar.m_cLocation.Y == 12))
+    {
+        g_sNPC6.talked = true;
+        Dialogues.Charles(g_Console);
     }
     if ((g_sChar.m_cLocation.X == 62 && g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.X == 60 && g_sChar.m_cLocation.Y == 17) || (g_sChar.m_cLocation.X == 61 && g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.X == 61 && g_sChar.m_cLocation.Y == 16))
     {
-        g_sChar.Emmanuel = true;
+        g_sNPC7.talked = true;
         Dialogues.Emmanuel(g_Console);
     }
-    if ((g_sChar.m_cLocation.X == 11 && g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.X == 13 && g_sChar.m_cLocation.Y == 13) || (g_sChar.m_cLocation.X == 12 && g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.X == 12 && g_sChar.m_cLocation.Y == 11))
+
+    if (g_sNPC2.talked == true)
     {
-        g_sChar.Charles = true;
-        Dialogues.Charles(g_Console);
+        g_Console.writeToBuffer(g_sNPC2.m_cLocation, (char)12, 0x06);
+    }
+    if (g_sNPC3.talked == true)
+    {
+        g_Console.writeToBuffer(g_sNPC3.m_cLocation, (char)12, 0x06);
+    }
+    if (g_sNPC4.talked == true)
+    {
+        g_Console.writeToBuffer(g_sNPC4.m_cLocation, (char)12, 0x06);
+    }
+    if (g_sNPC5.talked == true)
+    {
+        g_Console.writeToBuffer(g_sNPC5.m_cLocation, (char)12, 0x06);
+    }
+    if (g_sNPC6.talked == true)
+    {
+        g_Console.writeToBuffer(g_sNPC6.m_cLocation, (char)12, 0x06);
+    }
+    if (g_sNPC7.talked == true)
+    {
+        g_Console.writeToBuffer(g_sNPC7.m_cLocation, (char)12, 0x06);
     }
 
-    if ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@') && (g_sChar.Jerry == true) && (g_sChar.Tom == true) && (g_sChar.Bobby == true) && (g_sChar.Harry == true) && (g_sChar.Sam == true) && (g_sChar.Emmanuel == true) && (g_sChar.Charles == true))
+
+    if ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@') && (g_sNPC2.talked == true) && (g_sNPC3.talked == true) && (g_sNPC4.talked == true) && (g_sNPC5.talked == true) && (g_sNPC6.talked == true) && (g_sNPC7.talked == true))
     {
         g_dProtestTime = 0.0;
         g_eGameState = S_Protest_Area_Animation;
@@ -3254,7 +3324,21 @@ void renderMap_DS1()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth1(g_Console);
-
+    if (g_sGuard.enemyDie == true)
+    {
+        g_sGuard.m_cLocation.Y = -1;
+        g_sGuard.m_cLocation.X = -1;
+    }
+    if (g_sGuard2.enemyDie == true)
+    {
+        g_sGuard2.m_cLocation.Y = -1;
+        g_sGuard2.m_cLocation.X = -1;
+    }
+    if (g_sGuard3.enemyDie == true)
+    {
+        g_sGuard3.m_cLocation.Y = -1;
+        g_sGuard3.m_cLocation.X = -1;
+    }
     renderCharacter();
     //g_sChar.m_cLocation.Y = 18;
     //g_sChar.m_cLocation.X = 4;
@@ -3299,7 +3383,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j][i - 1] != '_')
                     {
-                        if (rMap.Grid[j][i - 1] != 'O')
+                        if (rMap.Grid[j][i - 1] != (char)12)
                         {
                             if (rMap.Grid[j][i - 1] != 'E')
                             {
@@ -3325,7 +3409,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j][i + 1] != '_')
                     {
-                        if (rMap.Grid[j][i + 1] != 'O')
+                        if (rMap.Grid[j][i + 1] != (char)12)
                         {
                             if (rMap.Grid[j][i + 1] != 'E')
                             {
@@ -3350,7 +3434,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j - 1][i] != '_')
                     {
-                        if (rMap.Grid[j - 1][i] != 'O')
+                        if (rMap.Grid[j - 1][i] != (char)12)
                         {
                             if (rMap.Grid[j - 1][i] != 'E')
                             {
@@ -3375,7 +3459,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j + 1][i] != '_')
                     {
-                        if (rMap.Grid[j + 1][i] != 'O')
+                        if (rMap.Grid[j + 1][i] != (char)12)
                         {
                             if (rMap.Grid[j + 1][i] != 'E')
                             {
@@ -3399,7 +3483,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j][i - 1] != '_')
                     {
-                        if (rMap.Grid[j][i - 1] != 'O')
+                        if (rMap.Grid[j][i - 1] != (char)12)
                         {
                             if (rMap.Grid[j][i - 1] != 'E')
                             {
@@ -3425,7 +3509,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j][i + 1] != '_')
                     {
-                        if (rMap.Grid[j][i + 1] != 'O')
+                        if (rMap.Grid[j][i + 1] != (char)12)
                         {
                             if (rMap.Grid[j][i + 1] != 'E')
                             {
@@ -3450,7 +3534,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j - 1][i] != '_')
                     {
-                        if (rMap.Grid[j - 1][i] != 'O')
+                        if (rMap.Grid[j - 1][i] != (char)12)
                         {
                             if (rMap.Grid[j - 1][i] != 'E')
                             {
@@ -3475,7 +3559,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j + 1][i] != '_')
                     {
-                        if (rMap.Grid[j + 1][i] != 'O')
+                        if (rMap.Grid[j + 1][i] != (char)12)
                         {
                             if (rMap.Grid[j + 1][i] != 'E')
                             {
@@ -3499,7 +3583,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j][i - 1] != '_')
                     {
-                        if (rMap.Grid[j][i - 1] != 'O')
+                        if (rMap.Grid[j][i - 1] != (char)12)
                         {
                             if (rMap.Grid[j][i - 1] != 'E')
                             {
@@ -3525,7 +3609,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j][i + 1] != '_')
                     {
-                        if (rMap.Grid[j][i + 1] != 'O')
+                        if (rMap.Grid[j][i + 1] != (char)12)
                         {
                             if (rMap.Grid[j][i + 1] != 'E')
                             {
@@ -3550,7 +3634,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j - 1][i] != '_')
                     {
-                        if (rMap.Grid[j - 1][i] != 'O')
+                        if (rMap.Grid[j - 1][i] != (char)12)
                         {
                             if (rMap.Grid[j - 1][i] != 'E')
                             {
@@ -3575,7 +3659,7 @@ void renderMap_DS1()
                 {
                     if (rMap.Grid[j + 1][i] != '_')
                     {
-                        if (rMap.Grid[j + 1][i] != 'O')
+                        if (rMap.Grid[j + 1][i] != (char)12)
                         {
                             if (rMap.Grid[j + 1][i] != 'E')
                             {
@@ -3587,18 +3671,28 @@ void renderMap_DS1()
             }
         }
     }
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.m_cLocation.X))
+    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.m_cLocation.X))
     {
+        g_sGuard.fightGuard = true;
         g_eGameState = S_BattleScreen;
         g_sChar.m_cLocation.Y = 5;
         g_sChar.m_cLocation.X = 37;
     }
     if ((g_sChar.m_cLocation.Y + 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.m_cLocation.X))
     {
+        g_sGuard2.fightGuard = true;
         g_sChar.count = 0;
         g_eGameState = S_BattleScreen;
-        g_sChar.m_cLocation.Y = 5;
-        g_sChar.m_cLocation.X = 37;
+        g_sChar.m_cLocation.Y = 13;
+        g_sChar.m_cLocation.X = 35;
+    }
+    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.m_cLocation.X))
+    {
+        g_sGuard3.fightGuard = true;
+        g_sChar.count = 0;
+        g_eGameState = S_BattleScreen;
+        g_sChar.m_cLocation.Y = 21;
+        g_sChar.m_cLocation.X = 50;
     }
     COORD c;
     int BoxItemChance = 0;
@@ -3810,23 +3904,323 @@ void RenderBattleScreen()
        
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
-    Sprites.drawRobert(g_Console, 0);
-    //rMap.pig(g_Console);
-    //rMap.Battle_Wasp(g_Console);
-    //rMap.Battle_Raymond(g_Console);
-    //renderCharacter();  // renders the character into the buffer
-
     c.X = 11;
     c.Y = 0;
     string str_charhealth = to_string(g_sChar.GetH());
     g_Console.writeToBuffer(c, "Your Health: " + str_charhealth, 0x0A, 100);
 
-    c.X = 53;
-    c.Y = 0;
-    string str_guardhealth = to_string(g_sGuard.GetH());
-    g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x0A, 100);
+    // fight guard 1
+    if (g_sGuard.fightGuard == true)
+    {
+        Sprites.drawGuard(g_Console, 0);
+        //rMap.pig(g_Console);
+        //rMap.Battle_Wasp(g_Console);
+        //rMap.Battle_Raymond(g_Console);
+        //renderCharacter();  // renders the character into the buffer
+
+        c.X = 53;
+        c.Y = 0;
+        string str_guardhealth = to_string(g_sGuard.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sGuard.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+
+                }
+                if (randHit > 1) // player gets hit
+                {
+                    int guardhealth = g_sGuard.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sGuard.SetH(guardhealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+
+                }
+
+                /*
+                if (g_sGuard.GetH() <= 0)
+                {
+                    Item GuardArmor;
+
+                    GuardArmor.setItemName("Guard Armor");
+
+                    Item* item3 = new Item;
+                    if (PlayerInv.pickup(item3))
+                    {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Item Added", 100);
+                    }
+                    else {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Not enough space.", 100);
+                    }
+
+                    c.X = 5;
+                    c.Y = 27;
+                    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+                }
+                */
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                playerDMGTime = 0.0;
+                g_sChar.count = 1;
+
+            }
+        }
+        if (g_sChar.count == 1)
+        {
+            if (g_sGuard.GetH() <= 0)
+            {
+                g_sGuard.enemyDie = true;
+                g_sGuard.fightGuard = false;
+                g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+                g_sChar.unlockDoorDS1 = true;
+            }
+        }
+
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_guardDMG = to_string(g_sGuard.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
+        }
+    }
+    if (g_sGuard2.fightGuard == true)
+    {
+        Sprites.drawGuard(g_Console, 0);
+        //rMap.pig(g_Console);
+        //rMap.Battle_Wasp(g_Console);
+        //rMap.Battle_Raymond(g_Console);
+        //renderCharacter();  // renders the character into the buffer
+
+        c.X = 53;
+        c.Y = 0;
+        string str_guardhealth = to_string(g_sGuard2.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 2 + 1;
+                if (randHit == 1) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sGuard2.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+
+                }
+
+                if (randHit > 1) // player gets hit
+                {
+                    int guardhealth = g_sGuard2.GetH() - g_sChar.GetD(); // get enemy health
+                   //string str_guardhealth = to_string(guardhealth);
+
+                    g_sGuard2.SetH(guardhealth);
+                    g_sChar.showPlayerDMG = true;
 
 
+                }
+                /*
+                if (g_sGuard2.GetH() <= 0)
+                {
+                    Item GuardArmor;
+
+                    GuardArmor.setItemName("Guard Armor");
+
+                    Item* item3 = new Item;
+                    if (PlayerInv.pickup(item3))
+                    {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Item Added", 100);
+                    }
+                    else {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Not enough space.", 100);
+                    }
+
+                    c.X = 5;
+                    c.Y = 27;
+                    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+                }
+                */
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                playerDMGTime = 0.0;
+                g_sChar.count = 1;
+
+            }
+        }
+        if (g_sChar.count == 1)
+        {
+            if (g_sGuard2.GetH() <= 0)
+            {
+                g_sGuard2.enemyDie = true;
+                g_sGuard2.fightGuard = false;
+                g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+                g_sChar.unlockDoorDS1 = true;
+            }
+        }
+
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_guardDMG = to_string(g_sGuard2.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
+        }
+    }
+    if (g_sGuard3.fightGuard == true)
+    {
+        Sprites.drawGuard(g_Console, 0);
+        //rMap.pig(g_Console);
+        //rMap.Battle_Wasp(g_Console);
+        //rMap.Battle_Raymond(g_Console);
+        //renderCharacter();  // renders the character into the buffer
+
+        c.X = 53;
+        c.Y = 0;
+        string str_guardhealth = to_string(g_sGuard3.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 2 + 1;
+                if (randHit == 1) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sGuard3.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+
+                }
+                if (randHit > 1) // player gets hit
+                {
+                    int guardhealth = g_sGuard3.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sGuard3.SetH(guardhealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+
+                }
+                /*
+                if (g_sGuard2.GetH() <= 0)
+                {
+                    Item GuardArmor;
+
+                    GuardArmor.setItemName("Guard Armor");
+
+                    Item* item3 = new Item;
+                    if (PlayerInv.pickup(item3))
+                    {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Item Added", 100);
+                    }
+                    else {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Not enough space.", 100);
+                    }
+
+                    c.X = 5;
+                    c.Y = 27;
+                    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+                }
+                */
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                playerDMGTime = 0.0;
+                g_sChar.count = 1;
+
+            }
+        }
+        if (g_sChar.count == 1)
+        {
+            if (g_sGuard3.GetH() <= 0)
+            {
+                g_sGuard3.enemyDie = true;
+                g_sGuard3.fightGuard = false;
+                g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+                g_sChar.unlockDoorDS1 = true;
+            }
+        }
+
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_guardDMG = to_string(g_sGuard3.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
+        }
+    }
+    if (g_sChar.GetH() <= 0)
+    {
+        g_eGameState = S_MENU_UI; // if guard kills player
+    }
+    /*
     //change g_eGameState to inventory
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 15) || (g_mouseEvent.mousePosition.X == 16) || (g_mouseEvent.mousePosition.X == 17) || (g_mouseEvent.mousePosition.X == 18) || (g_mouseEvent.mousePosition.X == 19) || (g_mouseEvent.mousePosition.X == 20) || (g_mouseEvent.mousePosition.X == 21) || (g_mouseEvent.mousePosition.X == 22) || (g_mouseEvent.mousePosition.X == 23) || (g_mouseEvent.mousePosition.X == 24) || (g_mouseEvent.mousePosition.X == 25))))
     {
@@ -3941,7 +4335,7 @@ void RenderBattleScreen()
         c.Y = 27;
         g_Console.writeToBuffer(c, PlayerInv.checkInventory("Cake"), 100);
 
-        /*if (PlayerInv.Consumed(item8))
+        if (PlayerInv.Consumed(item8))
         {
             c.X = 5;
             c.Y = 26;
@@ -3954,103 +4348,11 @@ void RenderBattleScreen()
         }
         c.X = 5;
         c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Medicine"), 100);*/
+        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Medicine"), 100);
 
         //g_eGameState = S_Townsquare;
     }
-    // if click on fight
-    if (g_sChar.startTimer == true)
-    {
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
-        {
-            int randHit = rand() % 100 + 1;
-            if (randHit >= 0 && randHit <= 50) // player gets hit
-            {
-                int charhealth = g_sChar.GetH() - g_sGuard.GetD(); // get player health
-                string str_charhealth = to_string(charhealth);
-
-                g_sChar.SetH(charhealth); // set player health to new health
-
-                g_sChar.showEnemyDMG = true;
-                enemyDMGTime = 0.0;
-
-            }
-
-            int guardhealth = g_sGuard.GetH() - g_sChar.GetD(); // get enemy health
-            //string str_guardhealth = to_string(guardhealth);
-
-
-            g_sGuard.SetH(guardhealth); // set enemy health to new health
-            if (g_sGuard.GetH() == 0)
-            {
-                Item GuardArmor;
-
-                GuardArmor.setItemName("Guard Armor");
-
-                Item* item3 = new Item;
-                if (PlayerInv.pickup(item3))
-                {
-                    c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "Item Added", 100);
-                }
-                else {
-                    c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "Not enough space.", 100);
-                }
-
-                c.X = 5;
-                c.Y = 27;
-                g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
-            }
-
-
-
-            startTime = 0.0;
-            g_sChar.resetTimer = true;
-            g_sChar.startTimer = false;
-            g_sChar.showPlayerDMG = true;
-            playerDMGTime = 0.0;
-            g_sChar.count = 1;
-
-        }
-    }
-
-    if (g_sChar.GetH() <= 0)
-    {
-        g_eGameState = S_Dungeon_Stealth_1; // if guard kills player
-    }
-    if (g_sChar.count == 1)
-    {
-        if (g_sGuard.GetH() <= 0)
-        {
-            g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-            g_sChar.unlockDoorDS1 = true;
-        }
-    }
-
-
-
-    if (g_sChar.showPlayerDMG == true)
-    {
-        COORD c;
-        c.X = 3;
-        c.Y = 25;
-        string str_charDMG = to_string(g_sChar.GetD());
-
-        g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
-
-    }
-    if (g_sChar.showEnemyDMG == true)
-    {
-        COORD c;
-        c.X = 3;
-        c.Y = 26;
-        string str_guardDMG = to_string(g_sGuard.GetD());
-
-        g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
-    }
+    */
 }
 
 void UpdateBattleScreen()
@@ -4070,7 +4372,6 @@ void UpdateBattleScreen()
         COORD c;
         c.X = 3;
         c.Y = 25;
-
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
         playerDMGTime = 0.0;
 
@@ -5472,7 +5773,7 @@ void render_Main_Menu()
 
     c.X = 35;
     c.Y = 18;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O', 0x0B);
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'o', 0x0B);
 
     c.X = 37;
     c.Y = 18;
@@ -5504,7 +5805,7 @@ void render_Main_Menu()
 
     c.X = 35;
     c.Y = 21;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O', 0x07);
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'o', 0x07);
 
     c.X = 37;
     c.Y = 21;
@@ -5534,5 +5835,9 @@ void render_Main_Menu()
     {
         g_dElapsedTime = 0.0;
         g_eGameState = S_Orphanage_Animation;
+    }
+    if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 21)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
+    {
+        g_bQuitGame = true;
     }
 }

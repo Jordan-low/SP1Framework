@@ -47,13 +47,13 @@ void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
 
 	//caretaker stumbling
 	cleargrid(g_Console, 11, 7);
-	drawgrid(g_Console, 9, 7, 'O');
+	drawgrid(g_Console, 9, 7, (char)12);
 	animate(g_Console); 
 	cleargrid(g_Console, 9, 7);
-	drawgrid(g_Console, 13, 7, 'O');
+	drawgrid(g_Console, 13, 7, (char)12);
 	animate(g_Console); 
 	cleargrid(g_Console, 13, 7);
-	drawgrid(g_Console, 11, 7, 'O');
+	drawgrid(g_Console, 11, 7, (char)12);
 	printmap(g_Console);
 	
 	//fire appearing
@@ -91,7 +91,7 @@ void Cutscenes::CrowdStandstill(Console& g_Console)
 	{
 		for (i = 19; i < 60; (i = i + 2))
 		{
-			drawgrid(g_Console, i, j, 'O');
+			drawgrid(g_Console, i, j, (char)12);
 		}
 	}
 	//even rows
@@ -99,7 +99,7 @@ void Cutscenes::CrowdStandstill(Console& g_Console)
 	{
 		for (i = 18; i < 61; (i = i + 2))
 		{
-			drawgrid(g_Console, i, j, 'O');
+			drawgrid(g_Console, i, j, (char)12);
 		}
 	}
 }
@@ -129,7 +129,7 @@ void Cutscenes::CrowdMoveLeft(Console& g_Console)
 	{
 		for (i = 18; i < 59; (i = i + 2))
 		{
-			drawgrid(g_Console, i, j, 'O');
+			drawgrid(g_Console, i, j, (char)12);
 		}
 	}
 	//even rows
@@ -137,7 +137,7 @@ void Cutscenes::CrowdMoveLeft(Console& g_Console)
 	{
 		for (i = 19; i < 62; (i = i + 2))
 		{
-			drawgrid(g_Console, i, j, 'O');
+			drawgrid(g_Console, i, j, (char)12);
 		}
 	}
 }
@@ -167,7 +167,7 @@ void Cutscenes::CrowdMoveRight(Console& g_Console)
 	{
 		for (i = 20; i < 61; (i = i + 2))
 		{
-			drawgrid(g_Console, i, j, 'O');
+			drawgrid(g_Console, i, j, (char)12);
 		}
 	}
 	//even rows
@@ -175,7 +175,7 @@ void Cutscenes::CrowdMoveRight(Console& g_Console)
 	{
 		for (i = 17; i < 60; (i = i + 2))
 		{
-			drawgrid(g_Console, i, j, 'O');
+			drawgrid(g_Console, i, j, (char)12);
 		}
 	}
 }
@@ -210,8 +210,8 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	drawgrid(g_Console, 34, 13, 'E'); //Ell
 
 	//breaking in
-	drawgrid(g_Console, 2, 12, 'O');
-	drawgrid(g_Console, 2, 13, 'O');
+	drawgrid(g_Console, 2, 12, (char)12);
+	drawgrid(g_Console, 2, 13, (char)12);
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Ell: The hornets have broken in!");
@@ -219,123 +219,123 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	cleargrid(g_Console, 2, 12);
 	cleargrid(g_Console, 2, 13);
 
-	drawgrid(g_Console, 4, 11, 'O');
-	drawgrid(g_Console, 4, 14, 'O');
+	drawgrid(g_Console, 4, 11, (char)12);
+	drawgrid(g_Console, 4, 14, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 4, 11);
 	cleargrid(g_Console, 4, 14);
 
-	drawgrid(g_Console, 6, 10, 'O');
-	drawgrid(g_Console, 6, 15, 'O');
+	drawgrid(g_Console, 6, 10, (char)12);
+	drawgrid(g_Console, 6, 15, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 6, 10);
 	cleargrid(g_Console, 6, 15);
 
-	drawgrid(g_Console, 8, 9, 'O');
-	drawgrid(g_Console, 8, 16, 'O');
+	drawgrid(g_Console, 8, 9, (char)12);
+	drawgrid(g_Console, 8, 16, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 8, 9);
 	cleargrid(g_Console, 8, 16);
 
-	drawgrid(g_Console, 10, 8, 'O');
-	drawgrid(g_Console, 10, 17, 'O');
+	drawgrid(g_Console, 10, 8, (char)12);
+	drawgrid(g_Console, 10, 17, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 10, 8);
 	cleargrid(g_Console, 10, 17);
 
-	drawgrid(g_Console, 12, 7, 'O');
-	drawgrid(g_Console, 12, 18, 'O');
+	drawgrid(g_Console, 12, 7, (char)12);
+	drawgrid(g_Console, 12, 18, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 12, 7);
 	cleargrid(g_Console, 12, 18);
 
-	drawgrid(g_Console, 14, 6, 'O');
-	drawgrid(g_Console, 14, 19, 'O');
+	drawgrid(g_Console, 14, 6, (char)12);
+	drawgrid(g_Console, 14, 19, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 14, 6);
 	cleargrid(g_Console, 14, 19);
 
-	drawgrid(g_Console, 16, 5, 'O');
-	drawgrid(g_Console, 16, 20, 'O');
+	drawgrid(g_Console, 16, 5, (char)12);
+	drawgrid(g_Console, 16, 20, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 16, 5);
 	cleargrid(g_Console, 16, 20);
 
-	drawgrid(g_Console, 18, 4, 'O');
-	drawgrid(g_Console, 18, 21, 'O');
+	drawgrid(g_Console, 18, 4, (char)12);
+	drawgrid(g_Console, 18, 21, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 18, 4);
 	cleargrid(g_Console, 18, 21);
 
-	drawgrid(g_Console, 20, 3, 'O');
-	drawgrid(g_Console, 20, 22, 'O');
+	drawgrid(g_Console, 20, 3, (char)12);
+	drawgrid(g_Console, 20, 22, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 20, 3);
 	cleargrid(g_Console, 20, 22);
 
-	//drawgrid(22, 2, 'O');
-	//drawgrid(21, 23, 'O');
+	//drawgrid(22, 2, (char)12);
+	//drawgrid(21, 23, (char)12);
 	//animate();
 	//cleargrid(21, 1);
 	//cleargrid(21, 23);
 
-	//drawgrid(23, 0, 'O');
-	//drawgrid(23, 24, 'O');
+	//drawgrid(23, 0, (char)12);
+	//drawgrid(23, 24, (char)12);
 	//animate();
 	//cleargrid(23, 0);
 	//cleargrid(23, 24);
 
 	//surround
-	drawgrid(g_Console, 21, 4, 'O');
-	drawgrid(g_Console, 21, 21, 'O');
+	drawgrid(g_Console, 21, 4, (char)12);
+	drawgrid(g_Console, 21, 21, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 21, 4);
 	cleargrid(g_Console, 21, 21);
 
-	drawgrid(g_Console, 22, 5, 'O');
-	drawgrid(g_Console, 22, 20, 'O');
+	drawgrid(g_Console, 22, 5, (char)12);
+	drawgrid(g_Console, 22, 20, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 22, 5);
 	cleargrid(g_Console, 22, 20);
 
-	drawgrid(g_Console, 23, 6, 'O');
-	drawgrid(g_Console, 23, 19, 'O');
+	drawgrid(g_Console, 23, 6, (char)12);
+	drawgrid(g_Console, 23, 19, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 23, 6);
 	cleargrid(g_Console, 23, 19);
 
-	drawgrid(g_Console, 24, 7, 'O');
-	drawgrid(g_Console, 24, 18, 'O');
+	drawgrid(g_Console, 24, 7, (char)12);
+	drawgrid(g_Console, 24, 18, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 24, 7);
 	cleargrid(g_Console, 24, 18);
 
-	drawgrid(g_Console, 25, 8, 'O');
-	drawgrid(g_Console, 25, 17, 'O');
+	drawgrid(g_Console, 25, 8, (char)12);
+	drawgrid(g_Console, 25, 17, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 25, 8);
 	cleargrid(g_Console, 25, 17);
 
-	drawgrid(g_Console, 27, 9, 'O');
-	drawgrid(g_Console, 26, 16, 'O');
+	drawgrid(g_Console, 27, 9, (char)12);
+	drawgrid(g_Console, 26, 16, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 27, 9);
 	cleargrid(g_Console, 26, 16);
 
-	drawgrid(g_Console, 29, 10, 'O');
-	drawgrid(g_Console, 29, 15, 'O');
+	drawgrid(g_Console, 29, 10, (char)12);
+	drawgrid(g_Console, 29, 15, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 29, 10);
 	cleargrid(g_Console, 29, 15);
 
-	drawgrid(g_Console, 31, 11, 'O');
-	drawgrid(g_Console, 31, 14, 'O');
+	drawgrid(g_Console, 31, 11, (char)12);
+	drawgrid(g_Console, 31, 14, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 31, 11);
 	cleargrid(g_Console, 31, 14);
 
-	drawgrid(g_Console, 33, 12, 'O');
-	drawgrid(g_Console, 33, 13, 'O');
+	drawgrid(g_Console, 33, 12, (char)12);
+	drawgrid(g_Console, 33, 13, (char)12);
 	g_Console.writeToBuffer(c, "Robert: We have no choice but to fight them and buy some time for the patients to escape.");
 	nextdialogue(g_Console);
 
@@ -345,7 +345,7 @@ void Cutscenes::medical_breakIn(Console& g_Console)
 	cleargrid(g_Console, 33, 10); //bee 1
 	cleargrid(g_Console, 33, 14); //bee 2
 	cleargrid(g_Console, 35, 12); //1
-	drawgrid(g_Console, 36, 12, 'O'); //change position for 1
+	drawgrid(g_Console, 36, 12, (char)12); //change position for 1
 	cleargrid(g_Console, 34, 11); //patient 2
 	cleargrid(g_Console, 34, 14); //3
 	cleargrid(g_Console, 35, 11); //4
@@ -360,10 +360,10 @@ void Cutscenes::medical_breakIn_part2(Console& g_Console)
 	drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
 	drawgrid(g_Console, 34, 13, 'E'); //Ell
 	//after battle, more bees break in
-	drawgrid(g_Console, 32, 11, 'O');
-	drawgrid(g_Console, 32, 12, 'O');
-	drawgrid(g_Console, 32, 13, 'O');
-	drawgrid(g_Console, 32, 14, 'O');
+	drawgrid(g_Console, 32, 11, (char)12);
+	drawgrid(g_Console, 32, 12, (char)12);
+	drawgrid(g_Console, 32, 13, (char)12);
+	drawgrid(g_Console, 32, 14, (char)12);
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Ell: There's more! They must have came while we were fighting!");
@@ -371,7 +371,7 @@ void Cutscenes::medical_breakIn_part2(Console& g_Console)
 
 	//patient 1 push robert
 	cleargrid(g_Console, 36, 12);
-	drawgrid(g_Console, 35, 12, 'O');
+	drawgrid(g_Console, 35, 12, (char)12);
 	cleargrid(g_Console, 34, 12);
 	drawgrid(g_Console, 35, 12, 'H');
 	animate(g_Console);
@@ -392,14 +392,14 @@ void Cutscenes::medical_fight(Console& g_Console)
 	//ref
 	drawgrid(g_Console, 2, 12, 'H'); //Robert (Hero)
 	drawgrid(g_Console, 2, 13, 'E'); //Ell
-	drawgrid(g_Console, 35, 12, 'O'); //Patient 1
-	drawgrid(g_Console, 36, 9, 'O'); //Patient 2
-	drawgrid(g_Console, 36, 16, 'O'); //Patient 3
-	drawgrid(g_Console, 46, 9, 'O'); //Patient 4
-	drawgrid(g_Console, 46, 16, 'O'); //Patient 5
-	drawgrid(g_Console, 56, 9, 'O'); //Patient 6
-	drawgrid(g_Console, 56, 16, 'O'); //Patient 7
-	drawgrid(g_Console, 23, 13, 'O'); //nurse
+	drawgrid(g_Console, 35, 12, (char)12); //Patient 1
+	drawgrid(g_Console, 36, 9, (char)12); //Patient 2
+	drawgrid(g_Console, 36, 16, (char)12); //Patient 3
+	drawgrid(g_Console, 46, 9, (char)12); //Patient 4
+	drawgrid(g_Console, 46, 16, (char)12); //Patient 5
+	drawgrid(g_Console, 56, 9, (char)12); //Patient 6
+	drawgrid(g_Console, 56, 16, (char)12); //Patient 7
+	drawgrid(g_Console, 23, 13, (char)12); //nurse
 	animate(g_Console);
 
 	//Robert walks to a patient 1 and gives medicine
@@ -413,11 +413,11 @@ void Cutscenes::medical_fight(Console& g_Console)
 
 	//Patient 2 walks to Hero (34,11)
 	cleargrid(g_Console, 36, 9);
-	drawgrid(g_Console, 35, 10, 'O'); //Patient 2
+	drawgrid(g_Console, 35, 10, (char)12); //Patient 2
 	animate(g_Console);
 	cleargrid(g_Console, 35, 10);
 
-	drawgrid(g_Console, 34, 11, 'O'); //Patient 2
+	drawgrid(g_Console, 34, 11, (char)12); //Patient 2
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Patient 2: You have so much medicine and you kept it from us? How shameless of you!");
@@ -428,11 +428,11 @@ void Cutscenes::medical_fight(Console& g_Console)
 
 	//Patient 3 walks to Hero (34,14)
 	cleargrid(g_Console, 36, 16);
-	drawgrid(g_Console, 35, 15, 'O'); //Patient 3
+	drawgrid(g_Console, 35, 15, (char)12); //Patient 3
 	animate(g_Console);
 	cleargrid(g_Console, 35, 15);
 
-	drawgrid(g_Console, 34, 14, 'O'); //Patient 3
+	drawgrid(g_Console, 34, 14, (char)12); //Patient 3
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Patient 3: Please! I beg you, please give my daughter some medicine or she'll die!");
@@ -441,15 +441,15 @@ void Cutscenes::medical_fight(Console& g_Console)
 	//Patient 4 walks to Patient 1 (35,11)
 	//Patient 1 (35,12)
 	cleargrid(g_Console, 46, 9);
-	drawgrid(g_Console, 42, 9, 'O'); //Patient 4
+	drawgrid(g_Console, 42, 9, (char)12); //Patient 4
 	animate(g_Console);
 	cleargrid(g_Console, 42, 9);
 
-	drawgrid(g_Console, 38, 10, 'O'); //Patient 4
+	drawgrid(g_Console, 38, 10, (char)12); //Patient 4
 	animate(g_Console);
 	cleargrid(g_Console, 38, 10);
 
-	drawgrid(g_Console, 35, 11, 'O'); //Patient 4
+	drawgrid(g_Console, 35, 11, (char)12); //Patient 4
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Patient 4: Give that to me! I deserve that more than you!");
@@ -460,15 +460,15 @@ void Cutscenes::medical_fight(Console& g_Console)
 
 	//Patient 5 walks to patient 1 / Hero (35,14)
 	cleargrid(g_Console, 46, 16);
-	drawgrid(g_Console, 42, 16, 'O'); //Patient 5
+	drawgrid(g_Console, 42, 16, (char)12); //Patient 5
 	animate(g_Console);
 	cleargrid(g_Console, 42, 16);
 
-	drawgrid(g_Console, 38, 15, 'O'); //Patient 5
+	drawgrid(g_Console, 38, 15, (char)12); //Patient 5
 	animate(g_Console);
 	cleargrid(g_Console, 38, 15);
 
-	drawgrid(g_Console, 35, 14, 'O'); //Patient 5
+	drawgrid(g_Console, 35, 14, (char)12); //Patient 5
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Patient 5: You selfish prick, you are in such a healthy condition but you hog all the meds for yourself?");
@@ -478,61 +478,61 @@ void Cutscenes::medical_fight(Console& g_Console)
 
 	//Patient 6 walks to Hero (35,10)
 	cleargrid(g_Console, 56, 9);
-	drawgrid(g_Console, 52, 9, 'O'); //Patient 6
+	drawgrid(g_Console, 52, 9, (char)12); //Patient 6
 	animate(g_Console);
 	cleargrid(g_Console, 52, 9);
 
-	drawgrid(g_Console, 48, 9, 'O'); //Patient 6
+	drawgrid(g_Console, 48, 9, (char)12); //Patient 6
 	animate(g_Console);
 	cleargrid(g_Console, 48, 9);
 
-	drawgrid(g_Console, 44, 9, 'O'); //Patient 6
+	drawgrid(g_Console, 44, 9, (char)12); //Patient 6
 	animate(g_Console);
 	cleargrid(g_Console, 44, 9);
 
-	drawgrid(g_Console, 40, 9, 'O'); //Patient 6
+	drawgrid(g_Console, 40, 9, (char)12); //Patient 6
 	animate(g_Console);
 	cleargrid(g_Console, 40, 9);
 
-	drawgrid(g_Console, 35, 10, 'O'); //Patient 6
+	drawgrid(g_Console, 35, 10, (char)12); //Patient 6
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Patient 6: Why do you have som muc medicine? You must have stolen it from us!");
 
 	//Patient 7 walks to Hero (35,15)
 	cleargrid(g_Console, 56, 16);
-	drawgrid(g_Console, 52, 16, 'O'); //Patient 7
+	drawgrid(g_Console, 52, 16, (char)12); //Patient 7
 	animate(g_Console);
 	cleargrid(g_Console, 52, 16);
 
-	drawgrid(g_Console, 48, 16, 'O'); //Patient 7
+	drawgrid(g_Console, 48, 16, (char)12); //Patient 7
 	animate(g_Console);
 	cleargrid(g_Console, 48, 16);
 
-	drawgrid(g_Console, 44, 16, 'O'); //Patient 7
+	drawgrid(g_Console, 44, 16, (char)12); //Patient 7
 	animate(g_Console);
 	cleargrid(g_Console, 44, 16);
 
-	drawgrid(g_Console, 40, 16, 'O'); //Patient 7
+	drawgrid(g_Console, 40, 16, (char)12); //Patient 7
 	animate(g_Console);
 	cleargrid(g_Console, 40, 16);
 
-	drawgrid(g_Console, 35, 15, 'O'); //Patient 7
+	drawgrid(g_Console, 35, 15, (char)12); //Patient 7
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Patient 7: Thief! Give it back!");
 
 	//nurse tries to stop fight (35,16)
 	cleargrid(g_Console, 23, 13);
-	drawgrid(g_Console, 27, 14, 'O');
+	drawgrid(g_Console, 27, 14, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 27, 14);
 
-	drawgrid(g_Console, 31, 15, 'O');
+	drawgrid(g_Console, 31, 15, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 31, 15);
 	
-	drawgrid(g_Console, 35, 16, 'O');
+	drawgrid(g_Console, 35, 16, (char)12);
 	c.X = 5;
 	c.Y = 24;
 	g_Console.writeToBuffer(c, "Nurse: Everyone, please calm down!");
