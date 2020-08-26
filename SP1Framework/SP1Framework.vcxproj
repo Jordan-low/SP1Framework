@@ -84,6 +84,7 @@
     <ClCompile Include="Cutscenes.cpp" />
     <ClCompile Include="Damage.cpp" />
     <ClCompile Include="Dialogue.cpp" />
+    <ClCompile Include="drawSprites.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Framework\console.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Cutscenes.h" />
     <ClInclude Include="Damage.h" />
     <ClInclude Include="Dialogue.h" />
+    <ClInclude Include="drawSprites.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Framework\console.h" />
