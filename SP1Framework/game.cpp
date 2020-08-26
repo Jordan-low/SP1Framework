@@ -27,6 +27,7 @@ double g_dMedicalTime;
 double g_dMedical2Time;
 double g_dDungeonStealth3Time;
 double g_dBossTime;
+double GuardDetectTime;
 double startTime;
 double resetTime;
 double playerDMGTime;
@@ -44,6 +45,10 @@ SGameChar   g_sPig3;
 SGameChar   g_sGuard;
 SGameChar   g_sGuard2;
 SGameChar   g_sGuard3;
+SGameChar   g_sGuard4; 
+SGameChar   g_sGuard5;
+SGameChar   g_sGuard6;
+SGameChar   g_sGuard7;
 SGameChar   g_sMutantWasp;
 SGameChar   g_sMutantWasp2;
 SGameChar   g_sMutantWasp3;
@@ -79,6 +84,9 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sGuard4.startTimer = true;
+    g_sChar.faceLeft = true;
+    g_sChar.faceRight = false;
     g_sChar.count = 0;
     g_sChar.unlockDoorDS1 = false;
     g_sChar.showEnemyDMG = false;
@@ -150,7 +158,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_BattleScreen;
+    g_eGameState = S_Dungeon_Stealth_2;
 
     g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
@@ -410,6 +418,7 @@ void update(double dt)
     g_dMedical2Time += dt;
     g_dDungeonStealth3Time += dt;
     g_dBossTime += dt;
+    GuardDetectTime += dt;
     startTime += dt;
     resetTime += dt;
     playerDMGTime += dt;
@@ -450,7 +459,7 @@ void update(double dt)
         break;
     case S_Dungeon_Stealth_1: updateGame();
         break;
-    case S_Dungeon_Stealth_2: updateGame();
+    case S_Dungeon_Stealth_2: update_GuardDirection();
         break;
     case S_Dungeon_Stealth_3: updateGame();
         break;
@@ -483,6 +492,8 @@ void Update_Menu()
 {
     g_sChar.counter = true;
 }
+
+//Animated Cutscenes here
 void Update_Orphanage_Animation()
 {
     if (g_dElapsedTime > 22)
@@ -1511,7 +1522,6 @@ void Update_Medical_Fight_Animation()
     }
     processUserInput();
 }
-
 void Medical_Fight_Animation()
 {
     rMap.initialise(g_Console);
@@ -1848,7 +1858,6 @@ void Update_Medical_Facility_Part2_Animation()
     processUserInput();
 }
 void Medical_Facility_Part2_Animation()
-//gg
 {
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -3262,7 +3271,7 @@ void renderMap_DS1()
     //To DS2
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 11 || g_sChar.m_cLocation.X == 12 || g_sChar.m_cLocation.X == 13 || g_sChar.m_cLocation.X == 14 || g_sChar.m_cLocation.X == 15 || g_sChar.m_cLocation.X == 16 || g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18))
     {
-        g_dPathTime = 0.0;
+        GuardDetectTime = 0.0;
         g_eGameState = S_Dungeon_Stealth_2;
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
@@ -3693,13 +3702,174 @@ void renderMap_DS1()
 
 }
 
+void renderMap_GuardStealth()
+{
+    g_sGuard4.m_cLocation.X = 22;
+    g_sGuard4.m_cLocation.Y = 3;
+
+    g_sGuard5.m_cLocation.X = 59;
+    g_sGuard5.m_cLocation.Y = 3;
+
+    g_sGuard6.m_cLocation.X = 74;
+    g_sGuard6.m_cLocation.Y = 12;
+
+    g_sGuard7.m_cLocation.X = 59;
+    g_sGuard7.m_cLocation.Y = 20;
+
+    g_Console.writeToBuffer(g_sGuard4.m_cLocation, (char)12, 0x04);
+    g_Console.writeToBuffer(g_sGuard5.m_cLocation, (char)12, 0x04);
+    g_Console.writeToBuffer(g_sGuard6.m_cLocation, (char)12, 0x04);
+    g_Console.writeToBuffer(g_sGuard7.m_cLocation, (char)12, 0x04);
+}
+
+void update_GuardDirection()
+{
+    processUserInput(); 
+    moveCharacter();
+    if (GuardDetectTime >= 4 && GuardDetectTime < 8)
+    {
+        g_sChar.faceLeft = false;
+        g_sChar.faceRight = true;
+    }
+    if (GuardDetectTime > 8)
+    {
+        g_sGuard4.startTimer = true;
+    }
+}
+
+void renderMap_GuardDirection()
+{
+    COORD c, d;
+    int i; int j;
+    if (g_sGuard4.startTimer == true)
+    {
+        g_sChar.faceLeft = true;
+        g_sChar.faceRight = false;
+        GuardDetectTime = 0;
+        g_sGuard4.startTimer = false;
+    }
+    if (g_sChar.faceLeft == true)
+    { 
+        Cutscene.drawgrid(g_Console, 21, 3, '>');
+        Cutscene.drawgrid(g_Console, 60, 3, '<');
+        Cutscene.drawgrid(g_Console, 74, 11, 'V');
+        Cutscene.drawgrid(g_Console, 58, 20, '>');
+        Cutscene.cleargrid(g_Console, 23, 3);
+        Cutscene.cleargrid(g_Console, 58, 3);
+        Cutscene.cleargrid(g_Console, 74, 13);
+        Cutscene.cleargrid(g_Console, 60, 20);
+
+        //Guard 4 Detect Left
+        for (j = 2; j < 5; j++)
+        {
+            for (i = 2; i < 23; i++)
+            {
+                if (g_sChar.m_cLocation.X == i && g_sChar.m_cLocation.Y == j)
+                {
+                    g_sChar.m_cLocation.X = 5;
+                    g_sChar.m_cLocation.Y = 20;
+                }
+            }
+        }
+        //Guard 5 Detect Right
+        for (j = 2; j < 5; j++)
+        {
+            for (i = 59; i < 78; i++)
+            {
+                if (g_sChar.m_cLocation.X == i && g_sChar.m_cLocation.Y == j)
+                {
+                    g_sChar.m_cLocation.X = 5;
+                    g_sChar.m_cLocation.Y = 20;
+                }
+            }
+        }
+        //Guard 6 Detect Up
+        for (j = 2; j < 13; j++)
+        {
+            for (i = 70; i < 78; i++)
+            {
+                if (g_sChar.m_cLocation.X == i && g_sChar.m_cLocation.Y == j)
+                {
+                    g_sChar.m_cLocation.X = 5;
+                    g_sChar.m_cLocation.Y = 20;
+                }
+            }
+        }
+        //Guard 7 Detect Left
+        for (j = 19; j < 23; j++)
+        {
+            for (i = 17; i < 60; i++)
+            {
+                if (g_sChar.m_cLocation.X == i && g_sChar.m_cLocation.Y == j)
+                {
+                    g_sChar.m_cLocation.X = 5;
+                    g_sChar.m_cLocation.Y = 20;
+                }
+            }
+        }
+    }
+    
+    if (g_sChar.faceRight == true)
+    {
+        Cutscene.drawgrid(g_Console, 23, 3, '<');
+        Cutscene.drawgrid(g_Console, 58, 3, '>');
+        Cutscene.drawgrid(g_Console, 74, 13, '^');
+        Cutscene.drawgrid(g_Console, 60, 20, '<');
+        
+        Cutscene.cleargrid(g_Console, 21, 3);
+        Cutscene.cleargrid(g_Console, 60, 3);
+        Cutscene.cleargrid(g_Console, 74, 11);
+        Cutscene.cleargrid(g_Console, 58, 20);
+
+        //Guard 4 & 5 Detect Right
+        for (j = 2; j < 5; j++)
+        {
+            for (i = 22; i < 60; i++)
+            {
+                if (g_sChar.m_cLocation.X == i && g_sChar.m_cLocation.Y == j)
+                {
+                    g_sChar.m_cLocation.X = 5;
+                    g_sChar.m_cLocation.Y = 20;
+                }
+            }
+        }
+        //Guard 6 Detect Down
+        for (j = 12; j < 23; j++)
+        {
+            for (i = 70; i < 78; i++)
+            {
+                if (g_sChar.m_cLocation.X == i && g_sChar.m_cLocation.Y == j)
+                {
+                    g_sChar.m_cLocation.X = 5;
+                    g_sChar.m_cLocation.Y = 20;
+                }
+            }
+        }
+        //Guard 7 Detect Right
+        for (j = 19; j < 23; j++)
+        {
+            for (i = 59; i < 78; i++)
+            {
+                if (g_sChar.m_cLocation.X == i && g_sChar.m_cLocation.Y == j)
+                {
+                    g_sChar.m_cLocation.X = 5;
+                    g_sChar.m_cLocation.Y = 20;
+                }
+            }
+        }
+    }
+}
 
 void renderMap_DS2()
 {
+
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth2(g_Console);
     renderCharacter();  // renders the character into the buffer
+    renderMap_GuardStealth();
+
+    renderMap_GuardDirection();
     //back to DS1
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8))
     {
@@ -4087,6 +4257,7 @@ void UpdateBattleScreen()
 
     }
 }
+
 
 void renderCharacter()
 {

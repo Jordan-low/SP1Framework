@@ -26,7 +26,6 @@ void Map::initialise(Console& g_Console)
 			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x00);
 		}
 	}
-	
 }
 
 //Prints Map
@@ -1335,13 +1334,13 @@ void Map::dungeon_stealth2(Console& g_Console)
 		c.Y = 22;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
-	for (i = 17; i <= 25; i++)
+	for (i = 17; i <= 26; i++)
 	{
 		c.X = i;
 		c.Y = 18;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
 	}
-
+	
 	//walls
 	for (j = 6; j <= 22; j++)
 	{
@@ -1361,10 +1360,22 @@ void Map::dungeon_stealth2(Console& g_Console)
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
 	}
+	for (j = 7; j < 17; j++)
+	{
+		c.X = 67;
+		c.Y = j;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	}
 	for (i = 9; i <= 69; i++)
 	{
 		c.X = i;
 		c.Y = 5;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
+	}
+	for (i = 10; i < 68; i++)
+	{
+		c.X = i;
+		c.Y = 7;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
 	for (i = 27; i <= 69; i++)
@@ -1373,6 +1384,104 @@ void Map::dungeon_stealth2(Console& g_Console)
 		c.Y = 18;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
+	for (i = 17; i < 68; i++)
+	{
+		c.X = i;
+		c.Y = 16;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
+	}
+
+	//Draw Hiding spots
+	c.Y = 5; 
+	c.X = 21;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 23;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 40;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 42;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+
+	c.Y = 6;
+	c.X = 20;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 24;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 39;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 43;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 57;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 61;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+
+	c.X = 69;
+	c.Y = 8;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.Y = 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.Y = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.Y = 16;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 68;
+	c.Y = 7;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
+	c.Y = 9;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
+	c.Y = 10;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
+	c.Y = 14;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
+	c.Y = 15;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
+	c.Y = 17;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
+
+	c.Y = 18;
+	c.X = 58;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 60;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 41;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 43;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+	c.X = 28;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0F);
+
+	c.Y = 17;
+	c.X = 57;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 61;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 40;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 44;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 27;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+	c.X = 29;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0A);
+
+	//Draw people
+	c.X = 22;
+	c.Y = 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0F);
+	c.X = 59;
+	c.Y = 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0F);
+	c.X = 74;
+	c.Y = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0F);
+	c.X = 59;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0F);
 }
 void Map::dungeon_stealth3(Console& g_Console)
 {
