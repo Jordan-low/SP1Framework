@@ -3,14 +3,10 @@
 void Cutscenes::animate(Console& g_Console)
 {
 	printmap(g_Console); 
-	//std::this_thread::sleep_for(std::chrono::milliseconds(300));
-	//system("cls"); 
 }
 
 void Cutscenes::nextdialogue(Console& g_Console)
-{//hi
-	//system("pause");
-	//system("cls");
+{
 	printmap(g_Console);
 }
 

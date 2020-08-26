@@ -93,6 +93,9 @@
     <ClCompile Include="Andrew%27s Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="drawSprites.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\console.h">
@@ -162,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Andrew%27s Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="drawSprites.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
