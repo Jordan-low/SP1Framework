@@ -4126,7 +4126,7 @@ void RenderBattleScreen()
         }
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
         {
-
+            //Poison Status
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
