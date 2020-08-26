@@ -78,6 +78,9 @@ enum EGAMESTATES
 struct SGameChar : public Enemy
 {
     int count;
+    COORD e_cLocation;
+    COORD f_cLocation;
+    COORD g_cLocation;
     COORD m_cLocation;
     bool m_bActive;
     bool fire;
@@ -105,6 +108,8 @@ struct SGameChar : public Enemy
     bool showEnemyDMG;
     bool unlockDoorDS1;
     bool Poison;
+    bool InvenActive;
+    bool itemActive;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player

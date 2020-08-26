@@ -29,6 +29,7 @@ double startTime;
 double resetTime;
 double playerDMGTime;
 double enemyDMGTime;
+double InvenTime;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -46,6 +47,7 @@ SGameChar   g_sMutantWasp;
 SGameChar   g_sMutantWasp2;
 SGameChar   g_sMutantWasp3;
 SGameChar   g_sRaymond;
+SGameChar   g_sInven;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -86,17 +88,6 @@ void init(void)
     g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
-    /*
-    TutEnemy.setEnemy(1, 1, 10, 2, 'E');
-    Pig.setEnemy(1, 1, 15, 3, 'E');
-    MutantWasp.setEnemy(1, 1, 25, 5, 'E');
-    Guard.setEnemy(1, 1, 40, 15, 'E');
-    Raymond.setEnemy(1, 1, 120, 25, 'E');
-    */
-    g_sChar.SetH(50);
-    g_sChar.SetD(5);
-    g_sGuard.SetD(15);
-    g_sGuard.SetH(40);
     g_sPig.SetH(15);
     g_sPig.SetD(3);
     g_sTutEnemy.SetH(10);
@@ -106,6 +97,9 @@ void init(void)
     g_sChar.Poison = false;
     g_sRaymond.SetH(120);
     g_sRaymond.SetD(25);
+    g_sChar.InvenActive = false;
+    g_sChar.itemActive = false;
+    g_sInven.startTimer = false;
     /*g_sTutEnemy.setEnemy(10, 2, 'E');
     g_sPig.setEnemy(15, 3, 'E');
     g_sMutantWasp.setEnemy(25, 5, 'E');
@@ -147,7 +141,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Protest_Area;
+    g_eGameState = S_BattleScreen;
 
     g_sChar.m_cLocation.X = 4;//g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;//g_Console.getConsoleSize().Y / 2;
@@ -411,6 +405,7 @@ void update(double dt)
     resetTime += dt;
     playerDMGTime += dt;
     enemyDMGTime += dt;
+    InvenTime += dt;
 
     switch (g_eGameState)
     {
@@ -3765,6 +3760,7 @@ void renderMap_Boss_Battle_Room()
 void RenderBattleScreen()
 {
     COORD c;
+    
     int UpdateDmg = 0;
     int UpdateHealth = 0;
     if (g_sTutEnemy.GetH() == 0 || g_sMutantWasp.GetH() == 0)
@@ -3786,7 +3782,7 @@ void RenderBattleScreen()
         c.Y = 27;
         g_Console.writeToBuffer(c, PlayerInv.checkInventory("Stinger"), 100);
     }
-    else if (g_sPig.GetH() == 0)
+    else if (g_sPig.GetH() <= 0)
     {
         if (PlayerInv.pickup(item2))
         {
@@ -3823,21 +3819,57 @@ void RenderBattleScreen()
     string str_guardhealth = to_string(g_sGuard.GetH());
     g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x0A, 100);
 
-
+    if (g_sChar.InvenActive == true)
+    {
+        rMap.Road2(g_Console, 3, 24, 74);
+        rMap.Road(g_Console, 2, 25, 5);
+        rMap.Road2(g_Console, 3, 29, 75);
+        rMap.Road(g_Console, 77, 25, 5);
+        c.X = 13;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "o Raw Meat" + PlayerInv.checkInventory("Raw Meat"), 0x0F, 100);
+        c.X = 13;
+        c.Y = 28;
+        g_Console.writeToBuffer(c, "o Stinger" + PlayerInv.checkInventory("Stinger"), 0x0F, 100);
+        c.X = 28;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "o Guard Armor" + PlayerInv.checkInventory("Guard Armor"), 0x0F, 100);
+        c.X = 28;
+        c.Y = 28;
+        g_Console.writeToBuffer(c, "o Bread" + PlayerInv.checkInventory("Bread"), 0x0F, 100);
+        c.X = 46;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "o Burger" + PlayerInv.checkInventory("Burger"), 0x0F, 100);
+        c.X = 46;
+        c.Y = 28;
+        g_Console.writeToBuffer(c, "o Taco" + PlayerInv.checkInventory("Taco"), 0x0F, 100);
+        c.X = 61;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "o Cake" + PlayerInv.checkInventory("Cake"), 0x0F, 100);
+        c.X = 61;
+        c.Y = 28;
+        g_Console.writeToBuffer(c, "o Medicine" + PlayerInv.checkInventory("Medicine"), 0x0F, 100);
+    }
     //change g_eGameState to inventory
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 15) || (g_mouseEvent.mousePosition.X == 16) || (g_mouseEvent.mousePosition.X == 17) || (g_mouseEvent.mousePosition.X == 18) || (g_mouseEvent.mousePosition.X == 19) || (g_mouseEvent.mousePosition.X == 20) || (g_mouseEvent.mousePosition.X == 21) || (g_mouseEvent.mousePosition.X == 22) || (g_mouseEvent.mousePosition.X == 23) || (g_mouseEvent.mousePosition.X == 24) || (g_mouseEvent.mousePosition.X == 25))))
     {
-        if (PlayerInv.Consumed(item1))
+        g_sChar.InvenActive = true;
+        g_sChar.itemActive = true;
+        
+        /*if (PlayerInv.Consumed(item1))
         {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item used.", 100);
+            c.X = 8;
+            c.Y = 27;
+            g_Console.writeToBuffer(c, "item 1 was used.", 100);
             UpdateDmg = g_sChar.GetD() + 5;
             g_sChar.SetD(UpdateDmg);
         }
+        
         else
         {
-            g_Console.writeToBuffer(c, "Item was not used.", 100);
+            c.X = 8;
+            c.Y = 27;
+            g_Console.writeToBuffer(c, "item 1 was not used.", 100);
         }
         c.X = 5;
         c.Y = 27;
@@ -3938,7 +3970,7 @@ void RenderBattleScreen()
         c.Y = 27;
         g_Console.writeToBuffer(c, PlayerInv.checkInventory("Cake"), 100);
 
-        /*if (PlayerInv.Consumed(item8))
+        if (PlayerInv.Consumed(item8))
         {
             c.X = 5;
             c.Y = 26;
@@ -3955,6 +3987,148 @@ void RenderBattleScreen()
 
         //g_eGameState = S_Townsquare;
     }
+    if (g_sChar.itemActive == true)
+    {
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 13))))
+        {
+            if (g_sInven.startTimer == true)
+            {
+                c.X = 5;
+                c.Y = 25;
+                g_Console.writeToBuffer(c, "Raw Meat was used.", 0x0F, 100);
+            }
+            UpdateHealth = g_sChar.GetH() + 5;
+            if (g_sChar.GetH() == 50)
+            {
+                if (g_sInven.startTimer == true)
+                {
+                    c.X = 5;
+                    c.Y = 25;
+                    g_Console.writeToBuffer(c, "Raw Meat was not used.", 0x0F, 100);
+                }
+            }
+            g_sChar.SetH(UpdateHealth);
+            if (UpdateHealth > 50)
+            {
+                g_sChar.SetH(50);
+                if (g_sInven.startTimer == true)
+                {
+                    c.X = 5;
+                    c.Y = 25;
+                    g_Console.writeToBuffer(c, "Raw Meat was not used.", 0x0F, 100);
+                }
+            }
+            InvenTime = 0.0;
+            g_sInven.startTimer = false;
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 13))))
+        {
+            g_sInven.startTimer = true;
+            c.X = 5;
+            c.Y = 25;
+            g_Console.writeToBuffer(c, "Stinger was used.", 0x0F, 100);
+            UpdateDmg = g_sChar.GetD() + 5;
+            g_sChar.SetD(UpdateDmg);
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 28))))
+        {
+            g_sInven.startTimer = true;
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Guard Armor was used.", 100);
+            UpdateDmg = g_sChar.GetD() + 10;
+            g_sChar.SetD(UpdateDmg);
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 28))))
+        {
+            g_sInven.startTimer = true;
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Bread was used.", 100);
+            UpdateHealth = g_sChar.GetH() + 10;
+            if (g_sChar.GetH() == 50)
+            {
+                g_Console.writeToBuffer(c, "Bread was not used.", 0x0F, 100);
+            }
+            g_sChar.SetH(UpdateHealth);
+            if (UpdateHealth > 50)
+            {
+                g_sChar.SetH(50);
+                g_Console.writeToBuffer(c, "Bread was not used.", 0x0F, 100);
+            }
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 46))))
+        {
+            g_sInven.startTimer = true;
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Burger was used.", 100);
+            UpdateHealth = g_sChar.GetH() + 25;
+            if (g_sChar.GetH() == 50)
+            {
+                g_Console.writeToBuffer(c, "Burger was not used.", 0x0F, 100);
+            }
+            g_sChar.SetH(UpdateHealth);
+            if (UpdateHealth > 50)
+            {
+                g_sChar.SetH(50);
+                g_Console.writeToBuffer(c, "Burger was not used.", 0x0F, 100);
+            }
+            g_sChar.SetH(UpdateHealth);
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 46))))
+        {
+            g_sInven.startTimer = true;
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Taco was used.", 100);
+            UpdateHealth = g_sChar.GetH() + 25;
+            g_sChar.SetH(UpdateHealth);
+            if (g_sChar.GetH() == 50)
+            {
+                g_Console.writeToBuffer(c, "Taco was not used.", 0x0F, 100);
+            }
+            g_sChar.SetH(UpdateHealth);
+            if (UpdateHealth > 50)
+            {
+                g_sChar.SetH(50);
+                g_Console.writeToBuffer(c, "Taco was not used.", 0x0F, 100);
+            }
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 61))))
+        {
+            g_sInven.startTimer = true;
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Cake was used.", 100);
+            g_sChar.SetH(50);
+            if (g_sChar.GetH() == 50)
+            {
+                g_Console.writeToBuffer(c, "Cake was not used.", 0x0F, 100);
+            }
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
+        {
+
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+    }
+    
     // if click on fight
     if (g_sChar.startTimer == true)
     {
@@ -3978,22 +4152,19 @@ void RenderBattleScreen()
 
 
             g_sGuard.SetH(guardhealth); // set enemy health to new health
-            if (g_sGuard.GetH() == 0)
+            if (g_sGuard.GetH() <= 0)
             {
-                Item GuardArmor;
-
-                GuardArmor.setItemName("Guard Armor");
-
-                Item* item3 = new Item;
+               
                 if (PlayerInv.pickup(item3))
                 {
                     c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "Item Added", 100);
+                    c.Y = 27;
+                    g_Console.writeToBuffer(c, "Guard Armor Added", 0x0F, 100);
                 }
-                else {
+                else 
+                {
                     c.X = 5;
-                    c.Y = 26;
+                    c.Y = 27;
                     g_Console.writeToBuffer(c, "Not enough space.", 100);
                 }
 
@@ -4001,8 +4172,6 @@ void RenderBattleScreen()
                 c.Y = 27;
                 g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
             }
-
-
 
             startTime = 0.0;
             g_sChar.resetTimer = true;
@@ -4027,8 +4196,6 @@ void RenderBattleScreen()
         }
     }
 
-
-
     if (g_sChar.showPlayerDMG == true)
     {
         COORD c;
@@ -4048,11 +4215,24 @@ void RenderBattleScreen()
 
         g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
     }
+    /*if (g_sInven.startTimer == true)
+    {
+        c.X = 40;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Item used.", 100);
+        InvenTime = 0.0;
+    }*/
 }
 
 void UpdateBattleScreen()
 {
     processUserInput();
+    if ((InvenTime > 2) && (g_sChar.itemActive == true))
+    {
+        g_sInven.startTimer = false;
+        InvenTime = 0;
+    }
+
     if (g_sChar.resetTimer == true)
     {
         if (startTime > 5)
@@ -4060,6 +4240,7 @@ void UpdateBattleScreen()
             g_sChar.startTimer = true;
         }
     }
+
     if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
     {
         //g_eGameState = S_Townsquare;
@@ -4083,6 +4264,7 @@ void UpdateBattleScreen()
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
 
     }
+    
 }
 
 void renderCharacter()
@@ -4234,6 +4416,7 @@ void renderInputEvents()
         break;
     }
 }
+
 void render_Main_Menu()
 {
     COORD c; COORD d;

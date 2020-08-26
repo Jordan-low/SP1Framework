@@ -27,6 +27,7 @@ bool Inventory::pickup(Item* add)
 	}
 	else
 	{
+		Quantity = 0;
 		return false;
 	}
 }
@@ -78,6 +79,11 @@ int Inventory::checkInventory(std::string n)
 			{
 				Quantity++;
 			}
+		}
+
+		else
+		{
+			Quantity = 0;
 		}
 	}
 	return Quantity; 
