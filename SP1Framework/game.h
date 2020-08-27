@@ -112,10 +112,8 @@ struct SGameChar : public Enemy
     bool Poison;
     bool faceLeft;
     bool faceRight;
-    bool fightGuard;
-    bool fightWasp;
-    bool fightRaymond;
-    bool enemyDie;
+    bool fight;
+    bool entityDie;
     bool InvenActive;
     bool itemActive;
     bool CP1;

@@ -295,6 +295,7 @@ void drawSprites::drawRobert(Console& g_Console, int k)
 void drawSprites::Battle_Wasp(Console& g_Console, int k)
 {
 	Battle_Screen(g_Console);
+	drawRobert(g_Console, 0);
 	COORD c;
 	//head
 	Road2(g_Console, 56 + k, 3, 7);
