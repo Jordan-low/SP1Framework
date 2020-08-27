@@ -191,7 +191,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_slashPig;
+    g_eGameState = S_slashRaymond;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -3286,12 +3286,12 @@ void slashRaymond()
                                                 if (g_dslashRaymond > 0.60)
                                                 {
                                                     Cutscene.drawgridG(g_Console, 66, 6, ' ');
-                                                    Cutscene.drawgridG(g_Console, 65, 7, ' ');
+                                                    Cutscene.drawgridG(g_Console, 65, 7, '_');
                                                     Cutscene.drawgridG(g_Console, 66, 7, ' ');
                                                     if (g_dslashRaymond > 0.65)
                                                     {
-                                                        Cutscene.drawgridG(g_Console, 64, 7, ' ');
-                                                        Cutscene.drawgridG(g_Console, 63, 8, ' ');
+                                                        Cutscene.drawgridG(g_Console, 64, 7, '_');
+                                                        Cutscene.drawgridG(g_Console, 63, 8, '|');
                                                         Cutscene.drawgridG(g_Console, 64, 8, ' ');
                                                         if (g_dslashRaymond > 0.70)
                                                         {
@@ -3300,20 +3300,20 @@ void slashRaymond()
                                                             Cutscene.drawgrid(g_Console, 62, 9, ' ');
                                                             if (g_dslashRaymond > 0.75)
                                                             {
-                                                                Cutscene.drawgrid(g_Console, 60, 9, ' ');
-                                                                Cutscene.drawgrid(g_Console, 59, 10, ' ');
+                                                                Cutscene.drawgridG(g_Console, 60, 9, '/');
+                                                                Cutscene.drawgridG(g_Console, 59, 10, 'V');
                                                                 Cutscene.drawgrid(g_Console, 60, 10, ' ');
                                                                 if (g_dslashRaymond > 0.80)
                                                                 {
                                                                     Cutscene.drawgrid(g_Console, 58, 10, ' ');
-                                                                    Cutscene.drawgridG(g_Console, 57, 11, ' ');
-                                                                    Cutscene.drawgrid(g_Console, 58, 11, ' ');
+                                                                    Cutscene.drawgridG(g_Console, 57, 11, '_');
+                                                                    Cutscene.drawgridG(g_Console, 58, 11, '_');
                                                                     if (g_dslashRaymond > 0.85)
                                                                     {
-                                                                        Cutscene.cleargrid(g_Console, 56, 11);
+                                                                        Cutscene.drawgridG(g_Console, 56, 11, '_');
                                                                         if (g_dslashRaymond > 0.90)
                                                                         {
-                                                                            Cutscene.cleargrid(g_Console, 55, 12);
+                                                                            Cutscene.drawgridG(g_Console, 55, 12, '|');
                                                                             if (g_dslashRaymond > 0.95)
                                                                             {
                                                                                 Cutscene.cleargrid(g_Console, 54, 12);
