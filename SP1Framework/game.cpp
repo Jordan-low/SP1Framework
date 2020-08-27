@@ -46,6 +46,7 @@ double resetTime;
 double playerDMGTime;
 double enemyDMGTime;
 double InvenTime;
+double deathAnimation;
 
 
 
@@ -135,7 +136,6 @@ void init(void)
     g_sChar.startTimer = true;
     g_sChar.resetTimer = false;
 
-    
     /*
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
     Pig.setEnemy(1, 1, 15, 3, 'E');
@@ -143,8 +143,8 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-    g_sChar.SetH(5);
-    g_sChar.SetD(5);
+    g_sChar.SetH(50);
+    g_sChar.SetD(25);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -164,6 +164,9 @@ void init(void)
     g_sChar.InvenActive = false;
     g_sChar.itemActive = false;
     g_sInven.startTimer = false;
+    g_sChar.CP1 = false;
+    g_sChar.CP2 = false;
+    g_sChar.CP3 = false;
     /*g_sTutEnemy.setEnemy(10, 2, 'E');
     g_sPig.setEnemy(15, 3, 'E');
     g_sMutantWasp.setEnemy(25, 5, 'E');
@@ -233,7 +236,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_IAF1;
+    g_eGameState = S_killRobert;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -523,8 +526,7 @@ void update(double dt)
     g_dkillRaymond += dt;
     g_dslashRobert += dt;
     g_dkillRobert += dt;
-    g_dslashTutWasp += dt;
-    g_dkillTutWasp += dt;
+
 
     switch (g_eGameState)
     {
@@ -594,8 +596,8 @@ void update(double dt)
         break;
 
     //Battle Animations
-    case S_SlashGuard: Update_slashGuard();
-        break;
+    //case S_SlashGuard: Update_slashGuard();
+        //break;
     case S_KillGuard: Update_killGuard();
         break;
     case S_slashWasp: Update_slashWasp();
@@ -2472,19 +2474,16 @@ void Update_slashGuard()
 {
     if (g_dslashGuard > 3)
     {
-        g_eGameState = S_GAME;
+        //g_eGameState = S_GAME;
     }
-    processUserInput();
+    //processUserInput();
 }
 void slashGuard()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
     renderCharacter();
-    c.X = 3;
-    c.Y = 2;
-    g_Console.writeToBuffer(c, "=Guard=", 0x0A);
     Sprites.drawGuard(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
@@ -2672,22 +2671,20 @@ void slashGuard()
 }
 void Update_killGuard()
 {
-    if (g_dkillGuard > 3)
-    {
-        g_eGameState = S_GAME;
-    }
+   // if (g_dkillGuard > 3)
+   // {
+       // g_eGameState = S_GAME;
+  //  }
     processUserInput();
 }
+
 void killGuard()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
-    c.X = 3;
-    c.Y = 2;
-    g_Console.writeToBuffer(c, "=Guard=", 0x0A);
-    Sprites.drawGuard(g_Console, 0);
+    //renderCharacter();
+    //Sprites.drawGuard(g_Console, 0);
     if (g_dkillGuard > 1.95)
     {
         Cutscene.clearSpriteLine(g_Console, 2);
@@ -4665,8 +4662,8 @@ void render()
         break;
 
         //render battle animations
-    case S_SlashGuard: slashGuard();
-        break;
+    //case S_SlashGuard: slashGuard();
+        //break;
     case S_KillGuard: killGuard();
         break;
     case S_slashWasp: slashWasp();
@@ -4979,6 +4976,7 @@ void renderMap_Path_Area()
     //to OAF area
     if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44 || g_sChar.m_cLocation.X == 45))
     {
+        g_sChar.CP1 = true;
         g_dPathTime = 0.0;
         g_eGameState = S_OAF;
         g_sChar.m_cLocation.X = 7;
@@ -5255,6 +5253,8 @@ void renderMap_Dungeon_Cell()
     //to DS1
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
+        g_sChar.CP2 = true;
+        g_sChar.CP1 = false;
         g_dPathTime = 0.0;
         g_eGameState = S_Dungeon_Stealth_1;
         g_sChar.m_cLocation.X = 5;
@@ -5292,6 +5292,7 @@ void renderMap_DS1()
     {
         g_sGuard.m_cLocation.Y = -1;
         g_sGuard.m_cLocation.X = -1;
+        g_sGuard.startTimer = false;
     }
     if (g_sGuard2.enemyDie == true)
     {
@@ -5634,7 +5635,8 @@ void renderMap_DS1()
                 }
             }
         }
-    }
+    } 
+    //fight guard
     if ((g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard.m_cLocation.X))
     {
         g_sGuard.fightGuard = true;
@@ -5645,15 +5647,13 @@ void renderMap_DS1()
     if ((g_sChar.m_cLocation.Y + 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.m_cLocation.X))
     {
         g_sGuard2.fightGuard = true;
-        g_sChar.count = 0;
         g_eGameState = S_BattleScreen;
-        g_sChar.m_cLocation.Y = 13;
-        g_sChar.m_cLocation.X = 35;
+        g_sChar.m_cLocation.Y = 16;
+        g_sChar.m_cLocation.X = 28;
     }
     if ((g_sChar.m_cLocation.Y + 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.m_cLocation.X))
     {
         g_sGuard3.fightGuard = true;
-        g_sChar.count = 0;
         g_eGameState = S_BattleScreen;
         g_sChar.m_cLocation.Y = 21;
         g_sChar.m_cLocation.X = 50;
@@ -5930,6 +5930,8 @@ void renderMap_DS2()
     //To DS3
     if (g_sChar.m_cLocation.Y == 18 && (g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18 || g_sChar.m_cLocation.X == 19 || g_sChar.m_cLocation.X == 20 || g_sChar.m_cLocation.X == 21 || g_sChar.m_cLocation.X == 22 || g_sChar.m_cLocation.X == 23 || g_sChar.m_cLocation.X == 24 || g_sChar.m_cLocation.X == 25 || g_sChar.m_cLocation.X == 26))
     {
+        g_sChar.CP2 = false;
+        g_sChar.CP3 = true;
         g_dDungeonStealth3Time = 0.0;
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 5;
@@ -6071,7 +6073,8 @@ void RenderBattleScreen()
 
                     g_sGuard.SetH(guardhealth); // set enemy health to new health
                     g_sChar.showPlayerDMG = true;
-
+                    playerDMGTime = 0.0;
+                    g_dslashGuard = 0.0;
                 }
 
                 /*
@@ -6102,19 +6105,14 @@ void RenderBattleScreen()
                 startTime = 0.0;
                 g_sChar.resetTimer = true;
                 g_sChar.startTimer = false;
-                playerDMGTime = 0.0;
-                g_sChar.count = 1;
+                if (g_sGuard.GetH() <= 0)
+                {
+                    g_dkillGuard = 0.0;
+                    //deathAnimation = 0.0;
+                    g_sGuard.startTimer = true;
+                    g_sChar.showPlayerDMG = true;
+                }
 
-            }
-        }
-        if (g_sChar.count == 1)
-        {
-            if (g_sGuard.GetH() <= 0)
-            {
-                g_sGuard.enemyDie = true;
-                g_sGuard.fightGuard = false;
-                g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-                g_sChar.unlockDoorDS1 = true;
             }
         }
 
@@ -6125,8 +6123,8 @@ void RenderBattleScreen()
             c.Y = 25;
             string str_charDMG = to_string(g_sChar.GetD());
 
-            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
-
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100); 
+            slashGuard();
         }
         if (g_sChar.showEnemyDMG == true)
         {
@@ -6207,17 +6205,14 @@ void RenderBattleScreen()
                 g_sChar.startTimer = false;
                 playerDMGTime = 0.0;
                 g_sChar.count = 1;
-
-            }
-        }
-        if (g_sChar.count == 1)
-        {
-            if (g_sGuard2.GetH() <= 0)
-            {
-                g_sGuard2.enemyDie = true;
-                g_sGuard2.fightGuard = false;
-                g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-                g_sChar.unlockDoorDS1 = true;
+                if (g_sGuard2.GetH() <= 0)
+                {
+                    g_dkillGuard = 0.0;
+                    //deathAnimation = 0.0;
+                    g_sGuard2.startTimer = true;
+                    g_sChar.showPlayerDMG = true;
+                    
+                }
             }
         }
 
@@ -6271,12 +6266,13 @@ void RenderBattleScreen()
                 }
                 if (randHit > 1) // player gets hit
                 {
-                    int guardhealth = g_sGuard3.GetH() - g_sChar.GetD(); // get enemy health
+                    int guardhealth = g_sGuard.GetH() - g_sChar.GetD(); // get enemy health
                     //string str_guardhealth = to_string(guardhealth);
 
-                    g_sGuard3.SetH(guardhealth); // set enemy health to new health
+                    g_sGuard.SetH(guardhealth); // set enemy health to new health
                     g_sChar.showPlayerDMG = true;
-
+                    playerDMGTime = 0.0;
+                    g_dslashGuard = 0.0;
                 }
                 /*
                 if (g_sGuard2.GetH() <= 0)
@@ -6330,17 +6326,18 @@ void RenderBattleScreen()
             string str_charDMG = to_string(g_sChar.GetD());
 
             g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
-
+            slashGuard();
         }
         if (g_sChar.showEnemyDMG == true)
         {
             COORD c;
             c.X = 3;
             c.Y = 26;
-            string str_guardDMG = to_string(g_sGuard3.GetD());
+            string str_guardDMG = to_string(g_sGuard.GetD());
 
             g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
         }
+       
     }
     if (g_sChar.GetH() <= 0)
     {
@@ -6378,7 +6375,6 @@ void RenderBattleScreen()
         c.Y = 28;
         g_Console.writeToBuffer(c, "o Medicine" + PlayerInv.checkInventory("Medicine"), 0x0F, 100);
     }
->>>>>>> ab9f16db710956d9ae03c67215e62b86f3d942f5
     //change g_eGameState to inventory
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 15) || (g_mouseEvent.mousePosition.X == 16) || (g_mouseEvent.mousePosition.X == 17) || (g_mouseEvent.mousePosition.X == 18) || (g_mouseEvent.mousePosition.X == 19) || (g_mouseEvent.mousePosition.X == 20) || (g_mouseEvent.mousePosition.X == 21) || (g_mouseEvent.mousePosition.X == 22) || (g_mouseEvent.mousePosition.X == 23) || (g_mouseEvent.mousePosition.X == 24) || (g_mouseEvent.mousePosition.X == 25))))
     {
@@ -6622,7 +6618,7 @@ void RenderBattleScreen()
             c.X = 5;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Taco was used.", 100);
-            UpdateHealth = g_sChar.GetH() + 25;
+            UpdateHealth = g_sChar.GetH() + 25;//hi
             g_sChar.SetH(UpdateHealth);
             if (g_sChar.GetH() == 50)
             {
@@ -6653,13 +6649,14 @@ void RenderBattleScreen()
         }
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
         {
-            //Poison Status
-            g_sChar.InvenActive = false;
-            g_sChar.itemActive = false;
+        //Poison Status
+        g_sChar.InvenActive = false;
+        g_sChar.itemActive = false;
         }
     }
-    
+
     // if click on fight
+    /*
     if (g_sChar.startTimer == true)
     {
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -6684,14 +6681,14 @@ void RenderBattleScreen()
             g_sGuard.SetH(guardhealth); // set enemy health to new health
             if (g_sGuard.GetH() <= 0)
             {
-               
+                /*
                 if (PlayerInv.pickup(item3))
                 {
                     c.X = 5;
                     c.Y = 27;
                     g_Console.writeToBuffer(c, "Guard Armor Added", 0x0F, 100);
                 }
-                else 
+                else
                 {
                     c.X = 5;
                     c.Y = 27;
@@ -6701,6 +6698,7 @@ void RenderBattleScreen()
                 c.X = 5;
                 c.Y = 27;
                 g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+                
             }
 
             startTime = 0.0;
@@ -6711,7 +6709,9 @@ void RenderBattleScreen()
             g_sChar.count = 1;
 
         }
+        
     }
+    
 
     if (g_sChar.GetH() <= 0)
     {
@@ -6721,8 +6721,8 @@ void RenderBattleScreen()
     {
         if (g_sGuard.GetH() <= 0)
         {
-            g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-            g_sChar.unlockDoorDS1 = true;
+            //g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+            //g_sChar.unlockDoorDS1 = true;
         }
     }
 
@@ -6745,13 +6745,21 @@ void RenderBattleScreen()
 
         g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
     }
-    /*if (g_sInven.startTimer == true)
     {
         c.X = 40;
         c.Y = 25;
         g_Console.writeToBuffer(c, "Item used.", 100);
         InvenTime = 0.0;
-    }*/
+    }
+    */
+    if (g_sGuard.startTimer == true)
+    {
+        killGuard();
+    }
+    if (g_sGuard2.startTimer == true)
+    {
+        killGuard();
+    }
 }
 
 void renderMap_wireGame()
@@ -7161,7 +7169,20 @@ void UpdateBattleScreen()
             g_sChar.startTimer = true;
         }
     }
-
+    if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
+    {
+        g_sGuard.fightGuard = false;
+        g_sGuard.enemyDie = true;
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+        g_sChar.unlockDoorDS1 = true;
+        //killGuard();
+    }
+    if ((g_dkillGuard > 6) && (g_sGuard2.startTimer == true))
+    {
+        g_sGuard2.enemyDie = true;
+        g_sGuard2.fightGuard = false;
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+    }
     if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
     {
         //g_eGameState = S_Townsquare;
@@ -7184,7 +7205,6 @@ void UpdateBattleScreen()
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
 
     }
-    
 }
 
 void renderCharacter()
@@ -9411,7 +9431,24 @@ void RenderGameOver()
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || ((g_mouseEvent.mousePosition.X == 33) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42) || (g_mouseEvent.mousePosition.X == 43) || (g_mouseEvent.mousePosition.X == 44)))))
         {
             g_dElapsedTime = 0.0;
-            g_eGameState = S_Dungeon_Stealth_1;
+            if (g_sChar.CP1 == true)
+            {
+                g_eGameState = S_OAF;
+                g_sChar.m_cLocation.X = 7;
+                g_sChar.m_cLocation.Y = 21;
+            }
+            if (g_sChar.CP2 == true)
+            {
+                g_eGameState = S_Dungeon_Stealth_1;
+                g_sChar.m_cLocation.X = 5;
+                g_sChar.m_cLocation.Y = 21;
+            }
+            if (g_sChar.CP3 == true)
+            {
+                g_eGameState = S_Dungeon_Stealth_3;
+                g_sChar.m_cLocation.X = 41;
+                g_sChar.m_cLocation.Y = 21;
+            };
         }
         //For Quit
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 22)) && ((g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40))))
