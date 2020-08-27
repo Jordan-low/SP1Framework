@@ -48,6 +48,20 @@ void Cutscenes::clearSprite(Console& g_Console)
 	}
 }
 
+void Cutscenes::clearRobertSprite(Console& g_Console)
+{
+	COORD c;
+	for (int j = 3; j < 16; j++)
+	{
+		for (int i = 3; i < 27; i++)
+		{
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
+		}
+	}
+}
+
 void Cutscenes::clearSpriteLine(Console& g_Console, int y)
 {
 	COORD c;
@@ -56,6 +70,31 @@ void Cutscenes::clearSpriteLine(Console& g_Console, int y)
 		c.X = i;
 		c.Y = y;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
+	}
+}
+
+void Cutscenes::clearRobertSpriteLine(Console& g_Console, int y)
+{
+	COORD c;
+	for (int i = 3; i < 27; i++)
+	{
+		c.X = i;
+		c.Y = y;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
+	}
+}
+
+void Cutscenes::clearScreen(Console& g_Console)
+{
+	COORD c;
+	for (int j = 2; j <= 14; j++)
+	{
+		for (int i = 2; i <= 76; i++)
+		{
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ');
+		}
 	}
 }
 

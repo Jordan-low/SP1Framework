@@ -296,10 +296,6 @@ void drawSprites::Battle_Wasp(Console& g_Console, int k)
 {
 	Battle_Screen(g_Console);
 	COORD c;
-	c.X = 3 + k;
-	c.Y = 2;
-	g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
-
 	//head
 	Road2(g_Console, 56 + k, 3, 7);
 	Road(g_Console, 55 + k, 4, 3);
@@ -493,10 +489,6 @@ void drawSprites::Battle_Raymond(Console& g_Console, int k)
 	Battle_Screen(g_Console);
 	COORD c;
 
-	//Name
-	c.X = 3 + k;
-	c.Y = 2;
-	g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
 	//face shape
 	Road(g_Console, 55 + k, 5, 1);
 	Road(g_Console, 63 + k, 5, 1);
@@ -824,4 +816,140 @@ void drawSprites::pig(Console& g_Console, int k)
 	c.X = 68 + k;
 	c.Y = 15;
 	g_Console.writeToBuffer(c, '_', 0x0A);
+}
+
+void drawSprites::stickbug_frame1(Console& g_Console)
+{
+	COORD c;
+	// frame 1
+	c.X = 5;
+	c.Y = 21;
+	g_Console.writeToBuffer(c, '|');
+	c.Y = 22;
+	g_Console.writeToBuffer(c, '|');
+	c.X = 6;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '/');
+	c.X = 7;
+	c.Y = 19;
+	g_Console.writeToBuffer(c, '/');
+	c.Y = 21;
+	g_Console.writeToBuffer(c, '|');
+	c.Y = 22;
+	g_Console.writeToBuffer(c, '|');
+	c.X = 8;
+	c.Y = 18;
+	g_Console.writeToBuffer(c, '_');
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '/');
+	c.X = 9;
+	c.Y = 18;
+	g_Console.writeToBuffer(c, '\\');
+	c.Y = 19;
+	g_Console.writeToBuffer(c, '/');
+	c.X = 10;
+	c.Y = 19;
+	g_Console.writeToBuffer(c, '\\');
+	c.X = 11;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '\\');
+	c.Y = 21;
+	g_Console.writeToBuffer(c, '/');
+	c.Y = 22;
+	g_Console.writeToBuffer(c, '\\');
+	c.X = 12;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 13;
+	g_Console.writeToBuffer(c, '_');
+	c.Y = 21;
+	g_Console.writeToBuffer(c, '\\');
+	c.X = 14;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '_');
+	c.Y = 22;
+	g_Console.writeToBuffer(c, '\\');
+	c.X = 15;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 16;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 17;
+	g_Console.writeToBuffer(c, '_');
+	c.Y = 21;
+	g_Console.writeToBuffer(c, '|');
+	c.Y = 22;
+	g_Console.writeToBuffer(c, '|');
+	c.X = 18;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '_');
+}
+
+void drawSprites::stickbug_frame2(Console& g_Console)
+{
+	COORD c;
+	for (int j = 18; j <= 22; j++)
+	{
+		for (int i = 4; i <= 19; i++)
+		{
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, "       ");
+		}
+	}
+	for (int j = 19; j <= 22; j++)
+	{
+		c.X = 4;
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|');
+	}
+	c.X = 5;
+	c.Y = 18;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 6;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 7;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 8;
+	g_Console.writeToBuffer(c, '\\');
+	for (int j = 19; j <= 22; j++)
+	{
+		c.Y = j;
+		g_Console.writeToBuffer(c, '|');
+	}
+	c.X = 9;
+	c.Y = 19;
+	g_Console.writeToBuffer(c, '\\');
+	c.X = 10;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '\\');
+	c.Y = 21;
+	g_Console.writeToBuffer(c, '/');
+	c.Y = 22;
+	g_Console.writeToBuffer(c, '|');
+	c.X = 11;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 12;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 13;
+	g_Console.writeToBuffer(c, '_');
+	c.Y = 21;
+	g_Console.writeToBuffer(c, '|');
+	c.Y = 22;
+	g_Console.writeToBuffer(c, '|');
+	c.X = 14;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 15;
+	g_Console.writeToBuffer(c, '_');
+	c.X = 16;
+	g_Console.writeToBuffer(c, '_');
+	c.Y = 21;
+	g_Console.writeToBuffer(c, '\\');
+	c.X = 17;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, '_');
+	c.Y = 22;
+	g_Console.writeToBuffer(c, '\\');
 }
