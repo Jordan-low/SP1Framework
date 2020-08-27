@@ -296,10 +296,6 @@ void drawSprites::Battle_Wasp(Console& g_Console, int k)
 {
 	Battle_Screen(g_Console);
 	COORD c;
-	c.X = 3 + k;
-	c.Y = 2;
-	g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
-
 	//head
 	Road2(g_Console, 56 + k, 3, 7);
 	Road(g_Console, 55 + k, 4, 3);
@@ -493,10 +489,6 @@ void drawSprites::Battle_Raymond(Console& g_Console, int k)
 	Battle_Screen(g_Console);
 	COORD c;
 
-	//Name
-	c.X = 3 + k;
-	c.Y = 2;
-	g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
 	//face shape
 	Road(g_Console, 55 + k, 5, 1);
 	Road(g_Console, 63 + k, 5, 1);

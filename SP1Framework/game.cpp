@@ -191,7 +191,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_slashRaymond;
+    g_eGameState = S_killRaymond;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -2417,6 +2417,9 @@ void slashGuard()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Guard=", 0x0A);
     Sprites.drawGuard(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
@@ -2616,6 +2619,9 @@ void killGuard()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Guard=", 0x0A);
     Sprites.drawGuard(g_Console, 0);
     if (g_dkillGuard > 1.95)
     {
@@ -2690,6 +2696,9 @@ void slashWasp()
     COORD c;
     renderCharacter();
     Sprites.Battle_Wasp(g_Console, 0);
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
     if (g_dslashWasp > 0.05)
@@ -2888,6 +2897,9 @@ void killWasp()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
     Sprites.Battle_Wasp(g_Console, 0);
     if (g_dkillWasp > 1.95)
     {
@@ -2962,6 +2974,9 @@ void slashPig()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Pig=", 0x0A);
     Sprites.pig(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
@@ -3163,6 +3178,9 @@ void killPig()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Pig=", 0x0A);
     Sprites.pig(g_Console, 0);
     if (g_dkillPig > 1.95)
     {
@@ -3236,6 +3254,9 @@ void slashRaymond()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
     Sprites.Battle_Raymond(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
@@ -3435,6 +3456,9 @@ void killRaymond()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
     Sprites.Battle_Raymond(g_Console, 0);
     if (g_dkillRaymond > 1.95)
     {
