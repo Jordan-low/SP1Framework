@@ -84,6 +84,20 @@ void Cutscenes::clearRobertSpriteLine(Console& g_Console, int y)
 	}
 }
 
+void Cutscenes::clearScreen(Console& g_Console)
+{
+	COORD c;
+	for (int j = 2; j <= 14; j++)
+	{
+		for (int i = 2; i <= 76; i++)
+		{
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ');
+		}
+	}
+}
+
 void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
 {
 	COORD c;
