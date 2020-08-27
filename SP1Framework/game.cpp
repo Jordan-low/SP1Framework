@@ -191,7 +191,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_killRaymond;
+    g_eGameState = S_killRobert;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -2417,6 +2417,9 @@ void slashGuard()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Guard=", 0x0A);
     Sprites.drawGuard(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
@@ -2616,6 +2619,9 @@ void killGuard()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Guard=", 0x0A);
     Sprites.drawGuard(g_Console, 0);
     if (g_dkillGuard > 1.95)
     {
@@ -2690,6 +2696,9 @@ void slashWasp()
     COORD c;
     renderCharacter();
     Sprites.Battle_Wasp(g_Console, 0);
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
     if (g_dslashWasp > 0.05)
@@ -2888,6 +2897,9 @@ void killWasp()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
     Sprites.Battle_Wasp(g_Console, 0);
     if (g_dkillWasp > 1.95)
     {
@@ -2950,7 +2962,7 @@ void killWasp()
 
 void Update_slashPig()
 {
-    if (g_dslashWasp > 3)
+    if (g_dslashPig > 3)
     {
         g_eGameState = S_GAME;
     }
@@ -2962,154 +2974,159 @@ void slashPig()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
-    Sprites.Battle_Wasp(g_Console, 0);
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Pig=", 0x0A);
+    Sprites.pig(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
-    if (g_dslashWasp > 0.05)
+    if (g_dslashPig > 0.05)
     {
         Cutscene.drawgrid(g_Console, 67, 6, '|');
-        if (g_dslashWasp > 0.10)
+        if (g_dslashPig > 0.10)
         {
             Cutscene.drawgrid(g_Console, 66, 6, '_');
             Cutscene.drawgrid(g_Console, 65, 7, '/');
             Cutscene.drawgrid(g_Console, 66, 7, '/');
-            if (g_dslashWasp > 0.15)
+            if (g_dslashPig > 0.15)
             {
                 Cutscene.drawgrid(g_Console, 64, 7, '_');
                 Cutscene.drawgrid(g_Console, 63, 8, '/');
                 Cutscene.drawgrid(g_Console, 64, 8, '/');
-                if (g_dslashWasp > 0.20)
+                if (g_dslashPig > 0.20)
                 {
                     Cutscene.drawgrid(g_Console, 62, 8, '_');
                     Cutscene.drawgrid(g_Console, 61, 9, '/');
                     Cutscene.drawgrid(g_Console, 62, 9, '/');
-                    if (g_dslashWasp > 0.25)
+                    if (g_dslashPig > 0.25)
                     {
                         Cutscene.drawgrid(g_Console, 60, 9, '_');
                         Cutscene.drawgrid(g_Console, 59, 10, '/');
                         Cutscene.drawgrid(g_Console, 60, 10, '/');
-                        if (g_dslashWasp > 0.30)
+                        if (g_dslashPig > 0.30)
                         {
                             Cutscene.drawgrid(g_Console, 58, 10, '_');
                             Cutscene.drawgrid(g_Console, 57, 11, '/');
                             Cutscene.drawgrid(g_Console, 58, 11, '/');
-                            if (g_dslashWasp > 0.35)
+                            if (g_dslashPig > 0.35)
                             {
                                 Cutscene.drawgrid(g_Console, 56, 11, '_');
-                                if (g_dslashWasp > 0.40)
+                                if (g_dslashPig > 0.40)
                                 {
                                     Cutscene.drawgrid(g_Console, 55, 12, '/');
-                                    if (g_dslashWasp > 0.45)
+                                    if (g_dslashPig > 0.45)
                                     {
                                         Cutscene.drawgrid(g_Console, 54, 12, '_');
-                                        if (g_dslashWasp > 0.50)
+                                        if (g_dslashPig > 0.50)
                                         {
                                             Cutscene.drawgrid(g_Console, 53, 12, '_');
                                             Cutscene.cleargrid(g_Console, 68, 5);
-                                            if (g_dslashWasp > 0.55)
+                                            if (g_dslashPig > 0.55)
                                             {
                                                 Cutscene.cleargrid(g_Console, 67, 6);
-                                                if (g_dslashWasp > 0.60)
+                                                if (g_dslashPig > 0.60)
                                                 {
                                                     Cutscene.drawgridG(g_Console, 66, 6, ' ');
                                                     Cutscene.drawgridG(g_Console, 65, 7, ' ');
                                                     Cutscene.drawgridG(g_Console, 66, 7, ' ');
-                                                    if (g_dslashWasp > 0.65)
+                                                    if (g_dslashPig > 0.65)
                                                     {
                                                         Cutscene.drawgridG(g_Console, 64, 7, ' ');
                                                         Cutscene.drawgridG(g_Console, 63, 8, ' ');
                                                         Cutscene.drawgridG(g_Console, 64, 8, ' ');
-                                                        if (g_dslashWasp > 0.70)
+                                                        if (g_dslashPig > 0.70)
                                                         {
                                                             Cutscene.drawgridG(g_Console, 62, 8, ' ');
                                                             Cutscene.drawgrid(g_Console, 61, 9, ' ');
                                                             Cutscene.drawgrid(g_Console, 62, 9, ' ');
-                                                            if (g_dslashWasp > 0.75)
+                                                            if (g_dslashPig > 0.75)
                                                             {
-                                                                Cutscene.drawgrid(g_Console, 60, 9, ' ');
+                                                                Cutscene.drawgridG(g_Console, 60, 9, '|');
                                                                 Cutscene.drawgrid(g_Console, 59, 10, ' ');
-                                                                Cutscene.drawgrid(g_Console, 60, 10, ' ');
-                                                                if (g_dslashWasp > 0.80)
+                                                                Cutscene.drawgridG(g_Console, 60, 10, '|');
+                                                                if (g_dslashPig > 0.80)
                                                                 {
-                                                                    Cutscene.drawgrid(g_Console, 58, 10, ' ');
-                                                                    Cutscene.drawgridG(g_Console, 57, 11, ' ');
-                                                                    Cutscene.drawgrid(g_Console, 58, 11, ' ');
-                                                                    if (g_dslashWasp > 0.85)
+                                                                    Cutscene.drawgridG(g_Console, 58, 10, '|');
+                                                                    Cutscene.drawgridG(g_Console, 57, 11, '_');
+                                                                    Cutscene.drawgridG(g_Console, 58, 11, '|');
+                                                                    if (g_dslashPig > 0.85)
                                                                     {
-                                                                        Cutscene.cleargrid(g_Console, 56, 11);
-                                                                        if (g_dslashWasp > 0.90)
+                                                                        Cutscene.drawgridG(g_Console, 56, 11, '_');
+                                                                        if (g_dslashPig > 0.90)
                                                                         {
-                                                                            Cutscene.cleargrid(g_Console, 55, 12);
-                                                                            if (g_dslashWasp > 0.95)
+                                                                            Cutscene.drawgridG(g_Console, 55, 12, '|');
+                                                                            if (g_dslashPig > 0.95)
                                                                             {
                                                                                 Cutscene.cleargrid(g_Console, 54, 12);
-                                                                                if (g_dslashWasp > 1.00)
+                                                                                if (g_dslashPig > 1.00)
                                                                                 {
                                                                                     Cutscene.cleargrid(g_Console, 53, 12);
-                                                                                    if (g_dslashWasp > 1.05)
+                                                                                    if (g_dslashPig > 1.05)
                                                                                     {
                                                                                         Cutscene.clearSprite(g_Console);
-                                                                                        Sprites.Battle_Wasp(g_Console, 2);
-                                                                                        if (g_dslashWasp > 1.1)
+                                                                                        Sprites.pig(g_Console, 2);
+                                                                                        if (g_dslashPig > 1.1)
                                                                                         {
                                                                                             Cutscene.clearSprite(g_Console);
-                                                                                            Sprites.Battle_Wasp(g_Console, 4);
-                                                                                            if (g_dslashWasp > 1.15)
+                                                                                            Sprites.pig(g_Console, 4);
+                                                                                            if (g_dslashPig > 1.15)
                                                                                             {
                                                                                                 Cutscene.clearSprite(g_Console);
-                                                                                                Sprites.Battle_Wasp(g_Console, 2);
-                                                                                                if (g_dslashWasp > 1.20)
+                                                                                                Cutscene.cleargrid(g_Console, 79, 9);
+                                                                                                rMap.Border(g_Console);
+                                                                                                Sprites.pig(g_Console, 2);
+                                                                                                if (g_dslashPig > 1.20)
                                                                                                 {
                                                                                                     Cutscene.clearSprite(g_Console);
-                                                                                                    Sprites.Battle_Wasp(g_Console, 0);
-                                                                                                    if (g_dslashWasp > 1.25)
+                                                                                                    Sprites.pig(g_Console, 0);
+                                                                                                    if (g_dslashPig > 1.25)
                                                                                                     {
                                                                                                         Cutscene.clearSprite(g_Console);
-                                                                                                        Sprites.Battle_Wasp(g_Console, -2);
-                                                                                                        if (g_dslashWasp > 1.30)
+                                                                                                        Sprites.pig(g_Console, -2);
+                                                                                                        if (g_dslashPig > 1.30)
                                                                                                         {
                                                                                                             Cutscene.clearSprite(g_Console);
-                                                                                                            Sprites.Battle_Wasp(g_Console, -4);
-                                                                                                            if (g_dslashWasp > 1.35)
+                                                                                                            Sprites.pig(g_Console, -4);
+                                                                                                            if (g_dslashPig > 1.35)
                                                                                                             {
                                                                                                                 Cutscene.clearSprite(g_Console);
-                                                                                                                Sprites.Battle_Wasp(g_Console, -2);
-                                                                                                                if (g_dslashWasp > 1.40)
+                                                                                                                Sprites.pig(g_Console, -2);
+                                                                                                                if (g_dslashPig > 1.40)
                                                                                                                 {
                                                                                                                     Cutscene.clearSprite(g_Console);
-                                                                                                                    Sprites.Battle_Wasp(g_Console, 0);
-                                                                                                                    if (g_dslashWasp > 1.45)
+                                                                                                                    Sprites.pig(g_Console, 0);
+                                                                                                                    if (g_dslashPig > 1.45)
                                                                                                                     {
                                                                                                                         Cutscene.clearSprite(g_Console);
-                                                                                                                        Sprites.Battle_Wasp(g_Console, 1);
-                                                                                                                        if (g_dslashWasp > 1.50)
+                                                                                                                        Sprites.pig(g_Console, 1);
+                                                                                                                        if (g_dslashPig > 1.50)
                                                                                                                         {
                                                                                                                             Cutscene.clearSprite(g_Console);
-                                                                                                                            Sprites.Battle_Wasp(g_Console, 2);
-                                                                                                                            if (g_dslashWasp > 1.55)
+                                                                                                                            Sprites.pig(g_Console, 2);
+                                                                                                                            if (g_dslashPig > 1.55)
                                                                                                                             {
                                                                                                                                 Cutscene.clearSprite(g_Console);
-                                                                                                                                Sprites.Battle_Wasp(g_Console, 1);
-                                                                                                                                if (g_dslashWasp > 1.60)
+                                                                                                                                Sprites.pig(g_Console, 1);
+                                                                                                                                if (g_dslashPig > 1.60)
                                                                                                                                 {
                                                                                                                                     Cutscene.clearSprite(g_Console);
-                                                                                                                                    Sprites.Battle_Wasp(g_Console, 0);
-                                                                                                                                    if (g_dslashWasp > 1.65)
+                                                                                                                                    Sprites.pig(g_Console, 0);
+                                                                                                                                    if (g_dslashPig > 1.65)
                                                                                                                                     {
                                                                                                                                         Cutscene.clearSprite(g_Console);
-                                                                                                                                        Sprites.Battle_Wasp(g_Console, -1);
-                                                                                                                                        if (g_dslashWasp > 1.70)
+                                                                                                                                        Sprites.pig(g_Console, -1);
+                                                                                                                                        if (g_dslashPig > 1.70)
                                                                                                                                         {
                                                                                                                                             Cutscene.clearSprite(g_Console);
-                                                                                                                                            Sprites.Battle_Wasp(g_Console, -2);
-                                                                                                                                            if (g_dslashWasp > 1.75)
+                                                                                                                                            Sprites.pig(g_Console, -2);
+                                                                                                                                            if (g_dslashPig > 1.75)
                                                                                                                                             {
                                                                                                                                                 Cutscene.clearSprite(g_Console);
-                                                                                                                                                Sprites.Battle_Wasp(g_Console, -1);
-                                                                                                                                                if (g_dslashWasp > 1.80)
+                                                                                                                                                Sprites.pig(g_Console, -1);
+                                                                                                                                                if (g_dslashPig > 1.80)
                                                                                                                                                 {
                                                                                                                                                     Cutscene.clearSprite(g_Console);
-                                                                                                                                                    Sprites.Battle_Wasp(g_Console, 0);
+                                                                                                                                                    Sprites.pig(g_Console, 0);
                                                                                                                                                 }
                                                                                                                                             }
                                                                                                                                         }
@@ -3161,6 +3178,9 @@ void killPig()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Pig=", 0x0A);
     Sprites.pig(g_Console, 0);
     if (g_dkillPig > 1.95)
     {
@@ -3222,7 +3242,7 @@ void killPig()
 
 void Update_slashRaymond()
 {
-    if (g_dslashWasp > 3)
+    if (g_dslashRaymond > 3)
     {
         g_eGameState = S_GAME;
     }
@@ -3234,154 +3254,157 @@ void slashRaymond()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
-    Sprites.Battle_Wasp(g_Console, 0);
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
+    Sprites.Battle_Raymond(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
-    if (g_dslashWasp > 0.05)
+    if (g_dslashRaymond > 0.05)
     {
         Cutscene.drawgrid(g_Console, 67, 6, '|');
-        if (g_dslashWasp > 0.10)
+        if (g_dslashRaymond > 0.10)
         {
             Cutscene.drawgrid(g_Console, 66, 6, '_');
             Cutscene.drawgrid(g_Console, 65, 7, '/');
             Cutscene.drawgrid(g_Console, 66, 7, '/');
-            if (g_dslashWasp > 0.15)
+            if (g_dslashRaymond > 0.15)
             {
                 Cutscene.drawgrid(g_Console, 64, 7, '_');
                 Cutscene.drawgrid(g_Console, 63, 8, '/');
                 Cutscene.drawgrid(g_Console, 64, 8, '/');
-                if (g_dslashWasp > 0.20)
+                if (g_dslashRaymond > 0.20)
                 {
                     Cutscene.drawgrid(g_Console, 62, 8, '_');
                     Cutscene.drawgrid(g_Console, 61, 9, '/');
                     Cutscene.drawgrid(g_Console, 62, 9, '/');
-                    if (g_dslashWasp > 0.25)
+                    if (g_dslashRaymond > 0.25)
                     {
                         Cutscene.drawgrid(g_Console, 60, 9, '_');
                         Cutscene.drawgrid(g_Console, 59, 10, '/');
                         Cutscene.drawgrid(g_Console, 60, 10, '/');
-                        if (g_dslashWasp > 0.30)
+                        if (g_dslashRaymond > 0.30)
                         {
                             Cutscene.drawgrid(g_Console, 58, 10, '_');
                             Cutscene.drawgrid(g_Console, 57, 11, '/');
                             Cutscene.drawgrid(g_Console, 58, 11, '/');
-                            if (g_dslashWasp > 0.35)
+                            if (g_dslashRaymond > 0.35)
                             {
                                 Cutscene.drawgrid(g_Console, 56, 11, '_');
-                                if (g_dslashWasp > 0.40)
+                                if (g_dslashRaymond > 0.40)
                                 {
                                     Cutscene.drawgrid(g_Console, 55, 12, '/');
-                                    if (g_dslashWasp > 0.45)
+                                    if (g_dslashRaymond > 0.45)
                                     {
                                         Cutscene.drawgrid(g_Console, 54, 12, '_');
-                                        if (g_dslashWasp > 0.50)
+                                        if (g_dslashRaymond > 0.50)
                                         {
                                             Cutscene.drawgrid(g_Console, 53, 12, '_');
                                             Cutscene.cleargrid(g_Console, 68, 5);
-                                            if (g_dslashWasp > 0.55)
+                                            if (g_dslashRaymond > 0.55)
                                             {
                                                 Cutscene.cleargrid(g_Console, 67, 6);
-                                                if (g_dslashWasp > 0.60)
+                                                if (g_dslashRaymond > 0.60)
                                                 {
                                                     Cutscene.drawgridG(g_Console, 66, 6, ' ');
-                                                    Cutscene.drawgridG(g_Console, 65, 7, ' ');
+                                                    Cutscene.drawgridG(g_Console, 65, 7, '_');
                                                     Cutscene.drawgridG(g_Console, 66, 7, ' ');
-                                                    if (g_dslashWasp > 0.65)
+                                                    if (g_dslashRaymond > 0.65)
                                                     {
-                                                        Cutscene.drawgridG(g_Console, 64, 7, ' ');
-                                                        Cutscene.drawgridG(g_Console, 63, 8, ' ');
+                                                        Cutscene.drawgridG(g_Console, 64, 7, '_');
+                                                        Cutscene.drawgridG(g_Console, 63, 8, '|');
                                                         Cutscene.drawgridG(g_Console, 64, 8, ' ');
-                                                        if (g_dslashWasp > 0.70)
+                                                        if (g_dslashRaymond > 0.70)
                                                         {
                                                             Cutscene.drawgridG(g_Console, 62, 8, ' ');
                                                             Cutscene.drawgrid(g_Console, 61, 9, ' ');
                                                             Cutscene.drawgrid(g_Console, 62, 9, ' ');
-                                                            if (g_dslashWasp > 0.75)
+                                                            if (g_dslashRaymond > 0.75)
                                                             {
-                                                                Cutscene.drawgrid(g_Console, 60, 9, ' ');
-                                                                Cutscene.drawgrid(g_Console, 59, 10, ' ');
+                                                                Cutscene.drawgridG(g_Console, 60, 9, '/');
+                                                                Cutscene.drawgridG(g_Console, 59, 10, 'V');
                                                                 Cutscene.drawgrid(g_Console, 60, 10, ' ');
-                                                                if (g_dslashWasp > 0.80)
+                                                                if (g_dslashRaymond > 0.80)
                                                                 {
                                                                     Cutscene.drawgrid(g_Console, 58, 10, ' ');
-                                                                    Cutscene.drawgridG(g_Console, 57, 11, ' ');
-                                                                    Cutscene.drawgrid(g_Console, 58, 11, ' ');
-                                                                    if (g_dslashWasp > 0.85)
+                                                                    Cutscene.drawgridG(g_Console, 57, 11, '_');
+                                                                    Cutscene.drawgridG(g_Console, 58, 11, '_');
+                                                                    if (g_dslashRaymond > 0.85)
                                                                     {
-                                                                        Cutscene.cleargrid(g_Console, 56, 11);
-                                                                        if (g_dslashWasp > 0.90)
+                                                                        Cutscene.drawgridG(g_Console, 56, 11, '_');
+                                                                        if (g_dslashRaymond > 0.90)
                                                                         {
-                                                                            Cutscene.cleargrid(g_Console, 55, 12);
-                                                                            if (g_dslashWasp > 0.95)
+                                                                            Cutscene.drawgridG(g_Console, 55, 12, '|');
+                                                                            if (g_dslashRaymond > 0.95)
                                                                             {
                                                                                 Cutscene.cleargrid(g_Console, 54, 12);
-                                                                                if (g_dslashWasp > 1.00)
+                                                                                if (g_dslashRaymond > 1.00)
                                                                                 {
                                                                                     Cutscene.cleargrid(g_Console, 53, 12);
-                                                                                    if (g_dslashWasp > 1.05)
+                                                                                    if (g_dslashRaymond > 1.05)
                                                                                     {
                                                                                         Cutscene.clearSprite(g_Console);
-                                                                                        Sprites.Battle_Wasp(g_Console, 2);
-                                                                                        if (g_dslashWasp > 1.1)
+                                                                                        Sprites.Battle_Raymond(g_Console, 2);
+                                                                                        if (g_dslashRaymond > 1.1)
                                                                                         {
                                                                                             Cutscene.clearSprite(g_Console);
-                                                                                            Sprites.Battle_Wasp(g_Console, 4);
-                                                                                            if (g_dslashWasp > 1.15)
+                                                                                            Sprites.Battle_Raymond(g_Console, 4);
+                                                                                            if (g_dslashRaymond > 1.15)
                                                                                             {
                                                                                                 Cutscene.clearSprite(g_Console);
-                                                                                                Sprites.Battle_Wasp(g_Console, 2);
-                                                                                                if (g_dslashWasp > 1.20)
+                                                                                                Sprites.Battle_Raymond(g_Console, 2);
+                                                                                                if (g_dslashRaymond > 1.20)
                                                                                                 {
                                                                                                     Cutscene.clearSprite(g_Console);
-                                                                                                    Sprites.Battle_Wasp(g_Console, 0);
-                                                                                                    if (g_dslashWasp > 1.25)
+                                                                                                    Sprites.Battle_Raymond(g_Console, 0);
+                                                                                                    if (g_dslashRaymond > 1.25)
                                                                                                     {
                                                                                                         Cutscene.clearSprite(g_Console);
-                                                                                                        Sprites.Battle_Wasp(g_Console, -2);
-                                                                                                        if (g_dslashWasp > 1.30)
+                                                                                                        Sprites.Battle_Raymond(g_Console, -2);
+                                                                                                        if (g_dslashRaymond > 1.30)
                                                                                                         {
                                                                                                             Cutscene.clearSprite(g_Console);
-                                                                                                            Sprites.Battle_Wasp(g_Console, -4);
-                                                                                                            if (g_dslashWasp > 1.35)
+                                                                                                            Sprites.Battle_Raymond(g_Console, -4);
+                                                                                                            if (g_dslashRaymond > 1.35)
                                                                                                             {
                                                                                                                 Cutscene.clearSprite(g_Console);
-                                                                                                                Sprites.Battle_Wasp(g_Console, -2);
-                                                                                                                if (g_dslashWasp > 1.40)
+                                                                                                                Sprites.Battle_Raymond(g_Console, -2);
+                                                                                                                if (g_dslashRaymond > 1.40)
                                                                                                                 {
                                                                                                                     Cutscene.clearSprite(g_Console);
-                                                                                                                    Sprites.Battle_Wasp(g_Console, 0);
-                                                                                                                    if (g_dslashWasp > 1.45)
+                                                                                                                    Sprites.Battle_Raymond(g_Console, 0);
+                                                                                                                    if (g_dslashRaymond > 1.45)
                                                                                                                     {
                                                                                                                         Cutscene.clearSprite(g_Console);
-                                                                                                                        Sprites.Battle_Wasp(g_Console, 1);
-                                                                                                                        if (g_dslashWasp > 1.50)
+                                                                                                                        Sprites.Battle_Raymond(g_Console, 1);
+                                                                                                                        if (g_dslashRaymond > 1.50)
                                                                                                                         {
                                                                                                                             Cutscene.clearSprite(g_Console);
-                                                                                                                            Sprites.Battle_Wasp(g_Console, 2);
-                                                                                                                            if (g_dslashWasp > 1.55)
+                                                                                                                            Sprites.Battle_Raymond(g_Console, 2);
+                                                                                                                            if (g_dslashRaymond > 1.55)
                                                                                                                             {
                                                                                                                                 Cutscene.clearSprite(g_Console);
-                                                                                                                                Sprites.Battle_Wasp(g_Console, 1);
-                                                                                                                                if (g_dslashWasp > 1.60)
+                                                                                                                                Sprites.Battle_Raymond(g_Console, 1);
+                                                                                                                                if (g_dslashRaymond > 1.60)
                                                                                                                                 {
                                                                                                                                     Cutscene.clearSprite(g_Console);
-                                                                                                                                    Sprites.Battle_Wasp(g_Console, 0);
-                                                                                                                                    if (g_dslashWasp > 1.65)
+                                                                                                                                    Sprites.Battle_Raymond(g_Console, 0);
+                                                                                                                                    if (g_dslashRaymond > 1.65)
                                                                                                                                     {
                                                                                                                                         Cutscene.clearSprite(g_Console);
-                                                                                                                                        Sprites.Battle_Wasp(g_Console, -1);
-                                                                                                                                        if (g_dslashWasp > 1.70)
+                                                                                                                                        Sprites.Battle_Raymond(g_Console, -1);
+                                                                                                                                        if (g_dslashRaymond > 1.70)
                                                                                                                                         {
                                                                                                                                             Cutscene.clearSprite(g_Console);
-                                                                                                                                            Sprites.Battle_Wasp(g_Console, -2);
-                                                                                                                                            if (g_dslashWasp > 1.75)
+                                                                                                                                            Sprites.Battle_Raymond(g_Console, -2);
+                                                                                                                                            if (g_dslashRaymond > 1.75)
                                                                                                                                             {
                                                                                                                                                 Cutscene.clearSprite(g_Console);
-                                                                                                                                                Sprites.Battle_Wasp(g_Console, -1);
-                                                                                                                                                if (g_dslashWasp > 1.80)
+                                                                                                                                                Sprites.Battle_Raymond(g_Console, -1);
+                                                                                                                                                if (g_dslashRaymond > 1.80)
                                                                                                                                                 {
                                                                                                                                                     Cutscene.clearSprite(g_Console);
-                                                                                                                                                    Sprites.Battle_Wasp(g_Console, 0);
+                                                                                                                                                    Sprites.Battle_Raymond(g_Console, 0);
                                                                                                                                                 }
                                                                                                                                             }
                                                                                                                                         }
@@ -3433,6 +3456,9 @@ void killRaymond()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
     Sprites.Battle_Raymond(g_Console, 0);
     if (g_dkillRaymond > 1.95)
     {
@@ -3500,7 +3526,7 @@ void killRaymond()
 
 void Update_slashRobert()
 {
-    if (g_dslashWasp > 3)
+    if (g_dslashRobert > 3)
     {
         g_eGameState = S_GAME;
     }
@@ -3512,9 +3538,179 @@ void slashRobert()
     rMap.Border(g_Console);
     COORD c;
     renderCharacter();
-    Sprites.Battle_Wasp(g_Console, 0);
-    Cutscene.drawgrid(g_Console, 68, 5, '/');
-   
+    Sprites.drawRobert(g_Console, 0);
+    rMap.Battle_Screen(g_Console);
+    Cutscene.drawgrid(g_Console, 20, 5, '/');
+    //next
+    if (g_dslashGuard > 0.05)
+    {
+        Cutscene.drawgrid(g_Console, 19, 6, '|');
+        if (g_dslashGuard > 0.10)
+        {
+            Cutscene.drawgrid(g_Console, 18, 6, '_');
+            Cutscene.drawgrid(g_Console, 17, 7, '/');
+            Cutscene.drawgrid(g_Console, 18, 7, '/');
+            if (g_dslashGuard > 0.15)
+            {
+                Cutscene.drawgrid(g_Console, 16, 7, '_');
+                Cutscene.drawgrid(g_Console, 15, 8, '/');
+                Cutscene.drawgrid(g_Console, 16, 8, '/');
+                if (g_dslashGuard > 0.20)
+                {
+                    Cutscene.drawgrid(g_Console, 14, 8, '_');
+                    Cutscene.drawgrid(g_Console, 13, 9, '/');
+                    Cutscene.drawgrid(g_Console, 14, 9, '/');
+                    if (g_dslashGuard > 0.25)
+                    {
+                        Cutscene.drawgrid(g_Console, 12, 9, '_');
+                        Cutscene.drawgrid(g_Console, 11, 10, '/');
+                        Cutscene.drawgrid(g_Console, 12, 10, '/');
+                        if (g_dslashGuard > 0.30)
+                        {
+                            Cutscene.drawgrid(g_Console, 10, 10, '_');
+                            if (g_dslashGuard > 0.35)
+                            {
+                                Cutscene.drawgrid(g_Console, 9, 11, '/');
+                                if (g_dslashGuard > 0.4)
+                                {
+                                    Cutscene.drawgrid(g_Console, 8, 11, '_');
+                                    if (g_dslashGuard > 0.45)
+                                    {
+                                        Cutscene.drawgrid(g_Console, 7, 11, '_');
+                                        Cutscene.cleargrid(g_Console, 20, 5);
+                                        if (g_dslashGuard > 0.5)
+                                        {
+                                            Cutscene.cleargrid(g_Console, 19, 6);
+                                            if (g_dslashGuard > 0.55)
+                                            {
+                                                Cutscene.drawgridG(g_Console, 18, 6, ' ');
+                                                Cutscene.drawgridG(g_Console, 17, 7, ' ');
+                                                Cutscene.drawgridG(g_Console, 18, 7, ' ');
+                                                if (g_dslashGuard > 0.60)
+                                                {
+                                                    Cutscene.drawgridG(g_Console, 16, 7, '\\');
+                                                    Cutscene.drawgridG(g_Console, 15, 8, ' ');
+                                                    Cutscene.drawgridG(g_Console, 16, 8, ' ');
+                                                    if (g_dslashGuard > 0.65)
+                                                    {
+                                                        Cutscene.drawgridG(g_Console, 14, 8, ' ');
+                                                        Cutscene.drawgrid(g_Console, 13, 9, ' ');
+                                                        Cutscene.drawgrid(g_Console, 14, 9, ' ');
+                                                        if (g_dslashGuard > 0.70)
+                                                        {
+                                                            Cutscene.drawgrid(g_Console, 12, 9, ' ');
+                                                            Cutscene.drawgridG(g_Console, 11, 10, '\\');
+                                                            Cutscene.drawgridG(g_Console, 12, 10, '/');
+                                                            if (g_dslashGuard > 0.75)
+                                                            {
+                                                                Cutscene.cleargrid(g_Console, 10, 10);
+                                                                if (g_dslashGuard > 0.80)
+                                                                {
+                                                                    Cutscene.cleargrid(g_Console, 9, 11);
+                                                                    if (g_dslashGuard > 0.85)
+                                                                    {
+                                                                        Cutscene.cleargrid(g_Console, 8, 11);
+                                                                        if (g_dslashGuard > 0.90)
+                                                                        {
+                                                                            Cutscene.cleargrid(g_Console, 7, 11);
+                                                                            if (g_dslashGuard > 0.95)
+                                                                            {
+                                                                                Cutscene.clearRobertSprite(g_Console);
+                                                                                Sprites.drawRobert(g_Console, 2);
+                                                                                if (g_dslashGuard > 1.0)
+                                                                                {
+                                                                                    Cutscene.clearRobertSprite(g_Console);
+                                                                                    Sprites.drawRobert(g_Console, 4);
+                                                                                    if (g_dslashGuard > 1.05)
+                                                                                    {
+                                                                                        Cutscene.clearRobertSprite(g_Console);
+                                                                                        Sprites.drawRobert(g_Console, 2);
+                                                                                        if (g_dslashGuard > 1.10)
+                                                                                        {
+                                                                                            Cutscene.clearRobertSprite(g_Console);
+                                                                                            Sprites.drawRobert(g_Console, 0);
+                                                                                            if (g_dslashGuard > 1.15)
+                                                                                            {
+                                                                                                Cutscene.clearRobertSprite(g_Console);
+                                                                                                Sprites.drawRobert(g_Console, -2);
+                                                                                                if (g_dslashGuard > 1.20)
+                                                                                                {
+                                                                                                    Cutscene.clearRobertSprite(g_Console);
+                                                                                                    Sprites.drawRobert(g_Console, -4);
+                                                                                                    if (g_dslashGuard > 1.25)
+                                                                                                    {
+                                                                                                        Cutscene.clearRobertSprite(g_Console);
+                                                                                                        Sprites.drawRobert(g_Console, -2);
+                                                                                                        if (g_dslashGuard > 1.3)
+                                                                                                        {
+                                                                                                            Cutscene.clearRobertSprite(g_Console);
+                                                                                                            Sprites.drawRobert(g_Console, 0);
+                                                                                                            if (g_dslashGuard > 1.35)
+                                                                                                            {
+                                                                                                                Cutscene.clearRobertSprite(g_Console);
+                                                                                                                Sprites.drawRobert(g_Console, 1);
+                                                                                                                if (g_dslashGuard > 1.40)
+                                                                                                                {
+                                                                                                                    Cutscene.clearRobertSprite(g_Console);
+                                                                                                                    Sprites.drawRobert(g_Console, 2);
+                                                                                                                    if (g_dslashGuard > 1.45)
+                                                                                                                    {
+                                                                                                                        Cutscene.clearRobertSprite(g_Console);
+                                                                                                                        Sprites.drawRobert(g_Console, 1);
+                                                                                                                        if (g_dslashGuard > 1.50)
+                                                                                                                        {
+                                                                                                                            Cutscene.clearRobertSprite(g_Console);
+                                                                                                                            Sprites.drawRobert(g_Console, 0);
+                                                                                                                            if (g_dslashGuard > 1.55)
+                                                                                                                            {
+                                                                                                                                Cutscene.clearRobertSprite(g_Console);
+                                                                                                                                Sprites.drawRobert(g_Console, -1);
+                                                                                                                                if (g_dslashGuard > 1.60)
+                                                                                                                                {
+                                                                                                                                    Cutscene.clearRobertSprite(g_Console);
+                                                                                                                                    Sprites.drawRobert(g_Console, -2);
+                                                                                                                                    if (g_dslashGuard > 1.65)
+                                                                                                                                    {
+                                                                                                                                        Cutscene.clearRobertSprite(g_Console);
+                                                                                                                                        Sprites.drawRobert(g_Console, -1);
+                                                                                                                                        if (g_dslashGuard > 1.70)
+                                                                                                                                        {
+                                                                                                                                            Cutscene.clearRobertSprite(g_Console);
+                                                                                                                                            Sprites.drawRobert(g_Console, 0);
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 void Update_killRobert()
 {
@@ -3531,6 +3727,62 @@ void killRobert()
     COORD c;
     renderCharacter();
     Sprites.drawRobert(g_Console, 0);
+    if (g_dkillRobert > 1.95)
+    {
+        Cutscene.clearRobertSpriteLine(g_Console, 2);
+        if (g_dkillRobert > 2.0)
+        {
+            Cutscene.clearRobertSpriteLine(g_Console, 3);
+            if (g_dkillRobert > 2.05)
+            {
+                Cutscene.clearRobertSpriteLine(g_Console, 4);
+                if (g_dkillRobert > 2.10)
+                {
+                    Cutscene.clearRobertSpriteLine(g_Console, 5);
+                    if (g_dkillRobert > 2.15)
+                    {
+                        Cutscene.clearRobertSpriteLine(g_Console, 6);
+                        if (g_dkillRobert > 2.20)
+                        {
+                            Cutscene.clearRobertSpriteLine(g_Console, 7);
+                            if (g_dkillRobert > 2.25)
+                            {
+                                Cutscene.clearRobertSpriteLine(g_Console, 8);
+                                if (g_dkillRobert > 2.30)
+                                {
+                                    Cutscene.clearRobertSpriteLine(g_Console, 9);
+                                    if (g_dkillRobert > 2.35)
+                                    {
+                                        Cutscene.clearRobertSpriteLine(g_Console, 10);
+                                        if (g_dkillRobert > 2.40)
+                                        {
+                                            Cutscene.clearRobertSpriteLine(g_Console, 11);
+                                            if (g_dkillRobert > 2.45)
+                                            {
+                                                Cutscene.clearRobertSpriteLine(g_Console, 12);
+                                                if (g_dkillRobert > 2.50)
+                                                {
+                                                    Cutscene.clearRobertSpriteLine(g_Console, 13);
+                                                    if (g_dkillRobert > 2.55)
+                                                    {
+                                                        Cutscene.clearRobertSpriteLine(g_Console, 14);
+                                                        if (g_dkillRobert > 2.60)
+                                                        {
+                                                            Cutscene.clearRobertSpriteLine(g_Console, 15);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 
