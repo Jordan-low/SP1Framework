@@ -12,7 +12,7 @@ int Items::GetHeal()
 	return 0;
 }
 
-void Items::setItems(char* nameid)
+void Items::setItems(char* nameid)/i
 {
 	item = nameid;
 }
