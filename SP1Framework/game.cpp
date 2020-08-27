@@ -150,6 +150,9 @@ void init(void)
     g_sChar.InvenActive = false;
     g_sChar.itemActive = false;
     g_sInven.startTimer = false;
+    g_sChar.CP1 = false;
+    g_sChar.CP2 = false;
+    g_sChar.CP3 = false;
     /*g_sTutEnemy.setEnemy(10, 2, 'E');
     g_sPig.setEnemy(15, 3, 'E');
     g_sMutantWasp.setEnemy(25, 5, 'E');
@@ -191,7 +194,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_killRobert;
+    g_eGameState = S_Dungeon_Cell;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -4618,6 +4621,7 @@ void renderMap_Path_Area()
     //to OAF area
     if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44 || g_sChar.m_cLocation.X == 45))
     {
+        g_sChar.CP1 = true;
         g_dPathTime = 0.0;
         g_eGameState = S_OAF;
         g_sChar.m_cLocation.X = 7;
@@ -4775,6 +4779,8 @@ void renderMap_Dungeon_Cell()
     //to DS1
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
+        g_sChar.CP2 = true;
+        g_sChar.CP1 = false;
         g_dPathTime = 0.0;
         g_eGameState = S_Dungeon_Stealth_1;
         g_sChar.m_cLocation.X = 5;
@@ -5428,6 +5434,8 @@ void renderMap_DS2()
     //To DS3
     if (g_sChar.m_cLocation.Y == 18 && (g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18 || g_sChar.m_cLocation.X == 19 || g_sChar.m_cLocation.X == 20 || g_sChar.m_cLocation.X == 21 || g_sChar.m_cLocation.X == 22 || g_sChar.m_cLocation.X == 23 || g_sChar.m_cLocation.X == 24 || g_sChar.m_cLocation.X == 25 || g_sChar.m_cLocation.X == 26))
     {
+        g_sChar.CP2 = false;
+        g_sChar.CP3 = true;
         g_dDungeonStealth3Time = 0.0;
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 5;
@@ -8520,7 +8528,24 @@ void RenderGameOver()
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || ((g_mouseEvent.mousePosition.X == 33) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42) || (g_mouseEvent.mousePosition.X == 43) || (g_mouseEvent.mousePosition.X == 44)))))
         {
             g_dElapsedTime = 0.0;
-            g_eGameState = S_Dungeon_Stealth_1;
+            if (g_sChar.CP1 == true)
+            {
+                g_eGameState = S_OAF;
+                g_sChar.m_cLocation.X = 7;
+                g_sChar.m_cLocation.Y = 21;
+            }
+            if (g_sChar.CP2 == true)
+            {
+                g_eGameState = S_Dungeon_Stealth_1;
+                g_sChar.m_cLocation.X = 5;
+                g_sChar.m_cLocation.Y = 21;
+            }
+            if (g_sChar.CP3 == true)
+            {
+                g_eGameState = S_Dungeon_Stealth_3;
+                g_sChar.m_cLocation.X = 41;
+                g_sChar.m_cLocation.Y = 21;
+            };
         }
         //For Quit
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 22)) && ((g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40))))
