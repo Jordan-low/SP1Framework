@@ -71,6 +71,7 @@ enum EGAMESTATES
     S_Dungeon_Stealth3_Animation,
     S_Boss_Room_Animation,
     S_BattleScreen,
+    S_wireGame,
     //Battle animations
     S_SlashGuard,
     S_KillGuard,
@@ -82,6 +83,8 @@ enum EGAMESTATES
     S_killRaymond,
     S_slashRobert,
     S_killRobert,
+    S_slashTutWasp,
+    S_killTutWasp,
     S_COUNT
 };
 
@@ -116,9 +119,6 @@ struct SGameChar : public Enemy
     bool entityDie;
     bool InvenActive;
     bool itemActive;
-    bool CP1;
-    bool CP2;
-    bool CP3;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
@@ -140,6 +140,8 @@ void renderGame();          // renders the game stuff
 //void renderMap();  // renders the map to the buffer first
 
 //Render areas + Battle screens
+void renderBox();
+void renderBoxes();
 void renderMap_Townsquare();
 void renderMap_Protest_Area();
 void renderMap_Path_Area();
@@ -155,6 +157,7 @@ void renderMap_DS2();
 void renderMap_DS3();
 void renderMap_Boss_Battle_Room();
 void RenderBattleScreen();  // render battle screen
+void renderMap_wireGame();
 
 void renderMap_NPC();       // render NPCs in Townsquare
 void renderCharacter();     // renders the character into the buffer.
@@ -197,6 +200,7 @@ void Boss_Room_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
 
+
 //Animate Battle
 void Update_slashGuard();
 void slashGuard();
@@ -218,6 +222,10 @@ void Update_slashRobert();
 void slashRobert();
 void Update_killRobert();
 void killRobert();
+void Update_slashTutWasp();
+void slashTutWasp();
+void Update_killTuTWasp();
+void killTutWasp();
 
 //Others
 void renderMap_GuardStealth();

@@ -12,6 +12,7 @@
 #include "Cutscenes.h"
 #include "Dialogue.h"
 #include "drawSprites.h"
+#include "Minigame.h"
 
 using namespace std;
 
@@ -32,11 +33,13 @@ double g_dkillGuard;
 double g_dslashWasp;
 double g_dkillWasp;
 double g_dslashPig;
-double g_dkillPig;
+double g_dkillPig;;
 double g_dslashRaymond;
 double g_dkillRaymond;
 double g_dslashRobert;
 double g_dkillRobert;
+double g_dslashTutWasp;
+double g_dkillTutWasp;
 double GuardDetectTime;
 double startTime;
 double resetTime;
@@ -44,6 +47,7 @@ double playerDMGTime;
 double enemyDMGTime;
 double InvenTime;
 double deathAnimation;
+
 
 
 SKeyEvent g_skKeyEvent[K_COUNT];
@@ -74,6 +78,13 @@ SGameChar   g_sNPC5;
 SGameChar   g_sNPC6;
 SGameChar   g_sNPC7;
 SGameChar   g_sInven;
+SGameChar   g_sBox;
+SGameChar   g_sBox1;
+SGameChar   g_sBox2;
+SGameChar   g_sBox3;
+SGameChar   g_sBox4;
+SGameChar   g_sBox5;
+SGameChar   g_sBox6;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -85,6 +96,7 @@ drawSprites Sprites;
 Cutscenes Cutscene;
 Dialogue Dialogues;
 Enemy Guardz;
+Minigame mini;
 //Inventory Stuff
 Inventory PlayerInv;
 Item* item1 = new Item;
@@ -105,6 +117,7 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sChar.nextDialogue = 0;
     g_sGuard4.startTimer = true;
     g_sChar.faceLeft = true;
     g_sChar.faceRight = false;
@@ -124,8 +137,6 @@ void init(void)
     g_sChar.startTimer = true;
     g_sChar.resetTimer = false;
     g_sGuard.startTimer = false;
-    g_sMutantWasp.startTimer = false;
-    g_sMutantWasp.entityDie = false;
     /*
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
     Pig.setEnemy(1, 1, 15, 3, 'E');
@@ -196,11 +207,39 @@ void init(void)
     g_sChar.takenBackpack = false;
     g_sChar.takenExtinguisher = false;
     g_sChar.Orp_Dialogue = false;
+
+    //Wire minigame
+    g_sBox1.m_cLocation.X = 52;
+    g_sBox1.m_cLocation.Y = 12;
+    g_sBox1.startTimer = false;
+    g_sBox2.m_cLocation.X = 56;
+    g_sBox2.m_cLocation.Y = 9;
+    g_sBox2.startTimer = false;
+    g_sBox3.m_cLocation.X = 60;
+    g_sBox3.m_cLocation.Y = 15;
+    g_sBox3.startTimer = false;
+    g_sBox4.m_cLocation.X = 64;
+    g_sBox4.m_cLocation.Y = 10;
+    g_sBox4.startTimer = false;
+    g_sBox5.m_cLocation.X = 68;
+    g_sBox5.m_cLocation.Y = 14;
+    g_sBox5.startTimer = false;
+    g_sBox6.m_cLocation.X = 72;
+    g_sBox6.m_cLocation.Y = 11;
+    g_sBox6.startTimer = false;
+
+    //Dungeon Cell Skull spot the difference
+    g_sBox.m_cLocation.X = 39;
+    g_sBox.m_cLocation.Y = 12;
+    g_sBox.startTimer = false;
+
+
+
     // Set precision for floating point output
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Medical_Facility_Animation;
+    g_eGameState = S_Dungeon_Stealth_1;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -316,6 +355,14 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_BattleScreen: gameplayKBHandler(keyboardEvent);
         break;
+    
+    //minigame
+    case S_wireGame: gameplayKBHandler(keyboardEvent);
+        break;
+
+    //Death
+    case S_Boss_Room_Animation: gameplayKBHandler(keyboardEvent);
+        break;
     }
 }
 
@@ -378,6 +425,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_Boss_Battle_Room: gameplayMouseHandler(mouseEvent);
         break;
     case S_BattleScreen: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_wireGame: gameplayMouseHandler(mouseEvent);
         break;
     }
 }
@@ -480,7 +529,6 @@ void update(double dt)
     g_dkillRaymond += dt;
     g_dslashRobert += dt;
     g_dkillRobert += dt;
-    deathAnimation += dt;
 
 
     switch (g_eGameState)
@@ -526,7 +574,9 @@ void update(double dt)
         break;
     case S_Boss_Battle_Room: updateGame();
         break;
-
+        //minigame
+    case S_wireGame: updateGame();
+        break;
 
     //Animations
     case S_Path_Area_Animation: Update_Path_Area();
@@ -568,6 +618,10 @@ void update(double dt)
     case S_slashRobert: Update_slashRobert();
         break;
     case S_killRobert: Update_killRobert();
+        break;
+    case S_slashTutWasp: Update_slashTutWasp();
+        break;
+    case S_killTutWasp: killTutWasp();
         break;
     }
 }
@@ -2228,7 +2282,8 @@ void Dungeon_Stealth3_Animation()
 //HAVE NOT PUT DTTIME INTO RENDERED AREA
 void Update_Boss_Room_Animation()
 {
-    if (g_dBossTime > 48.3)
+
+    if (g_sChar.nextDialogue == 999)
     {
         g_eGameState = S_Boss_Battle_Room;
     }
@@ -2236,6 +2291,8 @@ void Update_Boss_Room_Animation()
 }
 void Boss_Room_Animation()
 {
+   
+    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.boss_room(g_Console);
@@ -2248,11 +2305,13 @@ void Boss_Room_Animation()
     d.Y = 27;
     Cutscene.drawgrid(g_Console, 40, 21, 'H'); //Robert
     Cutscene.drawgrid(g_Console, 40, 3, 'R'); //Raymond
-    if (g_dBossTime > 0.3)
+    if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 0)
     {
         g_Console.writeToBuffer(c, "Raymond: It seems that the person I have been searching for", 0x0F);
-        g_Console.writeToBuffer(d, "         came to me instead.", 0x0F);
-        if (g_dBossTime > 5.3)
+        g_Console.writeToBuffer(d, "         came to me instead.", 0x0F); 
+        g_sChar.nextDialogue++;
+        
+        if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 1)
         {
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
@@ -2967,7 +3026,6 @@ void killWasp()
         }
     }
 }
-
 
 void Update_slashPig()
 {
@@ -3794,6 +3852,283 @@ void killRobert()
     }
 }
 
+void Update_slashTutWasp()
+{
+    if (g_dslashTutWasp > 3)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+void slashTutWasp()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    COORD c;
+    renderCharacter();
+    Sprites.Tutorial_Wasp(g_Console, 0);
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Tutorial Wasp=", 0x0A);
+    Cutscene.drawgrid(g_Console, 68, 5, '/');
+    if (g_dslashTutWasp > 0.05)
+    {
+        Cutscene.drawgrid(g_Console, 67, 6, '|');
+        if (g_dslashTutWasp > 0.10)
+        {
+            Cutscene.drawgrid(g_Console, 66, 6, '_');
+            Cutscene.drawgrid(g_Console, 65, 7, '/');
+            Cutscene.drawgrid(g_Console, 66, 7, '/');
+            if (g_dslashTutWasp > 0.15)
+            {
+                Cutscene.drawgrid(g_Console, 64, 7, '_');
+                Cutscene.drawgrid(g_Console, 63, 8, '/');
+                Cutscene.drawgrid(g_Console, 64, 8, '/');
+                if (g_dslashTutWasp > 0.20)
+                {
+                    Cutscene.drawgrid(g_Console, 62, 8, '_');
+                    Cutscene.drawgrid(g_Console, 61, 9, '/');
+                    Cutscene.drawgrid(g_Console, 62, 9, '/');
+                    if (g_dslashTutWasp > 0.25)
+                    {
+                        Cutscene.drawgrid(g_Console, 60, 9, '_');
+                        Cutscene.drawgrid(g_Console, 59, 10, '/');
+                        Cutscene.drawgrid(g_Console, 60, 10, '/');
+                        if (g_dslashTutWasp > 0.30)
+                        {
+                            Cutscene.drawgrid(g_Console, 58, 10, '_');
+                            Cutscene.drawgrid(g_Console, 57, 11, '/');
+                            Cutscene.drawgrid(g_Console, 58, 11, '/');
+                            if (g_dslashTutWasp > 0.35)
+                            {
+                                Cutscene.drawgrid(g_Console, 56, 11, '_');
+                                if (g_dslashTutWasp > 0.40)
+                                {
+                                    Cutscene.drawgrid(g_Console, 55, 12, '/');
+                                    if (g_dslashTutWasp > 0.45)
+                                    {
+                                        Cutscene.drawgrid(g_Console, 54, 12, '_');
+                                        if (g_dslashTutWasp > 0.50)
+                                        {
+                                            Cutscene.drawgrid(g_Console, 53, 12, '_');
+                                            Cutscene.cleargrid(g_Console, 68, 5);
+                                            if (g_dslashTutWasp > 0.55)
+                                            {
+                                                Cutscene.drawgridG(g_Console, 67, 6, '_');
+                                                if (g_dslashTutWasp > 0.60)
+                                                {
+                                                    Cutscene.drawgridG(g_Console, 66, 6, '_');
+                                                    Cutscene.drawgridG(g_Console, 65, 7, ' ');
+                                                    Cutscene.drawgridG(g_Console, 66, 7, ' ');
+                                                    if (g_dslashTutWasp > 0.65)
+                                                    {
+                                                        Cutscene.drawgridG(g_Console, 64, 7, '/');
+                                                        Cutscene.drawgridG(g_Console, 63, 8, '|');
+                                                        Cutscene.drawgridG(g_Console, 64, 8, ' ');
+                                                        if (g_dslashTutWasp > 0.70)
+                                                        {
+                                                            Cutscene.drawgridG(g_Console, 62, 8, '_');
+                                                            Cutscene.drawgrid(g_Console, 61, 9, ' ');
+                                                            Cutscene.drawgridG(g_Console, 62, 9, '_');
+                                                            if (g_dslashTutWasp > 0.75)
+                                                            {
+                                                                Cutscene.drawgridG(g_Console, 60, 9, ' ');
+                                                                Cutscene.drawgridG(g_Console, 59, 10, '_');
+                                                                Cutscene.drawgridG(g_Console, 60, 10, '_');
+                                                                if (g_dslashTutWasp > 0.80)
+                                                                {
+                                                                    Cutscene.drawgridG(g_Console, 58, 10, '_');
+                                                                    Cutscene.drawgridG(g_Console, 57, 11, '_');
+                                                                    Cutscene.drawgridG(g_Console, 58, 11, '_');
+                                                                    if (g_dslashTutWasp > 0.85)
+                                                                    {
+                                                                        Cutscene.drawgridG(g_Console, 56, 11, '_');
+                                                                        if (g_dslashTutWasp > 0.90)
+                                                                        {
+                                                                            Cutscene.drawgridG(g_Console, 55, 11, '|');
+                                                                            if (g_dslashTutWasp > 0.95)
+                                                                            {
+                                                                                Cutscene.cleargrid(g_Console, 54, 12);
+                                                                                if (g_dslashTutWasp > 1.00)
+                                                                                {
+                                                                                    Cutscene.cleargrid(g_Console, 53, 12);
+                                                                                    if (g_dslashTutWasp > 1.05)
+                                                                                    {
+                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                        Sprites.Tutorial_Wasp(g_Console, 2);
+                                                                                        if (g_dslashTutWasp > 1.1)
+                                                                                        {
+                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                            Sprites.Tutorial_Wasp(g_Console, 4);
+                                                                                            if (g_dslashTutWasp > 1.15)
+                                                                                            {
+                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                Sprites.Tutorial_Wasp(g_Console, 2);
+                                                                                                if (g_dslashTutWasp > 1.20)
+                                                                                                {
+                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                    Sprites.Tutorial_Wasp(g_Console, 0);
+                                                                                                    if (g_dslashTutWasp > 1.25)
+                                                                                                    {
+                                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                                        Sprites.Tutorial_Wasp(g_Console, -2);
+                                                                                                        if (g_dslashTutWasp > 1.30)
+                                                                                                        {
+                                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                                            Sprites.Tutorial_Wasp(g_Console, -4);
+                                                                                                            if (g_dslashTutWasp > 1.35)
+                                                                                                            {
+                                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                                Sprites.Tutorial_Wasp(g_Console, -2);
+                                                                                                                if (g_dslashTutWasp > 1.40)
+                                                                                                                {
+                                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                                    Sprites.Tutorial_Wasp(g_Console, 0);
+                                                                                                                    if (g_dslashTutWasp > 1.45)
+                                                                                                                    {
+                                                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                                                        Sprites.Tutorial_Wasp(g_Console, 1);
+                                                                                                                        if (g_dslashTutWasp > 1.50)
+                                                                                                                        {
+                                                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                                                            Sprites.Tutorial_Wasp(g_Console, 2);
+                                                                                                                            if (g_dslashTutWasp > 1.55)
+                                                                                                                            {
+                                                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                                                Sprites.Tutorial_Wasp(g_Console, 1);
+                                                                                                                                if (g_dslashTutWasp > 1.60)
+                                                                                                                                {
+                                                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                                                    Sprites.Tutorial_Wasp(g_Console, 0);
+                                                                                                                                    if (g_dslashTutWasp > 1.65)
+                                                                                                                                    {
+                                                                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                                                                        Sprites.Tutorial_Wasp(g_Console, -1);
+                                                                                                                                        if (g_dslashTutWasp > 1.70)
+                                                                                                                                        {
+                                                                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                                                                            Sprites.Tutorial_Wasp(g_Console, -2);
+                                                                                                                                            if (g_dslashTutWasp > 1.75)
+                                                                                                                                            {
+                                                                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                                                                Sprites.Tutorial_Wasp(g_Console, -1);
+                                                                                                                                                if (g_dslashTutWasp > 1.80)
+                                                                                                                                                {
+                                                                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                                                                    Sprites.Tutorial_Wasp(g_Console, 0);
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+void Update_killTuTWasp()
+{
+    if (g_dkillTutWasp > 3)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+void killTutWasp()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    COORD c;
+    renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Tutorial Wasp=", 0x0A);
+    Sprites.Tutorial_Wasp(g_Console, 0);
+    if (g_dkillTutWasp > 1.95)
+    {
+        Cutscene.clearSpriteLine(g_Console, 2);
+        if (g_dkillTutWasp > 2.0)
+        {
+            Cutscene.clearSpriteLine(g_Console, 3);
+            if (g_dkillTutWasp > 2.05)
+            {
+                Cutscene.clearSpriteLine(g_Console, 4);
+                if (g_dkillTutWasp > 2.10)
+                {
+                    Cutscene.clearSpriteLine(g_Console, 5);
+                    if (g_dkillTutWasp > 2.15)
+                    {
+                        Cutscene.clearSpriteLine(g_Console, 6);
+                        if (g_dkillTutWasp > 2.20)
+                        {
+                            Cutscene.clearSpriteLine(g_Console, 7);
+                            if (g_dkillTutWasp > 2.25)
+                            {
+                                Cutscene.clearSpriteLine(g_Console, 8);
+                                if (g_dkillTutWasp > 2.30)
+                                {
+                                    Cutscene.clearSpriteLine(g_Console, 9);
+                                    if (g_dkillTutWasp > 2.35)
+                                    {
+                                        Cutscene.clearSpriteLine(g_Console, 10);
+                                        if (g_dkillTutWasp > 2.40)
+                                        {
+                                            Cutscene.clearSpriteLine(g_Console, 11);
+                                            if (g_dkillTutWasp > 2.45)
+                                            {
+                                                Cutscene.clearSpriteLine(g_Console, 12);
+                                                if (g_dkillTutWasp > 2.50)
+                                                {
+                                                    Cutscene.clearSpriteLine(g_Console, 13);
+                                                    if (g_dkillTutWasp > 2.55)
+                                                    {
+                                                        Cutscene.clearSpriteLine(g_Console, 14);
+                                                        if (g_dkillTutWasp > 2.60)
+                                                        {
+                                                            Cutscene.clearSpriteLine(g_Console, 15);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
@@ -3831,8 +4166,8 @@ void moveCharacter()
     {
         int i = g_sChar.m_cLocation.X;
         int j = g_sChar.m_cLocation.Y;
-        //int m = g_sEnemy.m_cLocation.X;
-        //int n = g_sEnemy.m_cLocation.Y;
+        int m = g_sBox.m_cLocation.X;
+        int n = g_sBox.m_cLocation.Y;
         if (rMap.Grid[j - 1][i] != '|')
         {
             if (rMap.Grid[j - 1][i] != '#')
@@ -3847,7 +4182,10 @@ void moveCharacter()
                             {
                                 if (rMap.Grid[j - 1][i] != '/')
                                 {
-                                    g_sChar.m_cLocation.Y--;
+                                    if (rMap.Grid[j - 1][i] != '&')
+                                    {
+                                        g_sChar.m_cLocation.Y--;
+                                    }
                                 }
                             }
                         }
@@ -3941,7 +4279,10 @@ void moveCharacter()
                             {
                                 if (rMap.Grid[j][i - 1] != '/')
                                 {
-                                    g_sChar.m_cLocation.X--;
+                                    if (rMap.Grid[j][i - 1] != '&')
+                                    {
+                                        g_sChar.m_cLocation.X--;
+                                    }
                                 }
                             }
                         }
@@ -4041,7 +4382,10 @@ void moveCharacter()
                             {
                                 if (rMap.Grid[j + 1][i] != '/')
                                 {
-                                    g_sChar.m_cLocation.Y++;
+                                    if (rMap.Grid[j + 1][i] != '&')
+                                    {
+                                        g_sChar.m_cLocation.Y++;
+                                    }
                                 }
                             }
                         }
@@ -4134,7 +4478,10 @@ void moveCharacter()
                             {
                                 if (rMap.Grid[j][i + 1] != '/')
                                 {
-                                    g_sChar.m_cLocation.X++;
+                                    if (rMap.Grid[j][i + 1] != '&')
+                                    {
+                                        g_sChar.m_cLocation.X++;
+                                    }
                                 }
                             }
                         }
@@ -4294,6 +4641,10 @@ void render()
     case S_Boss_Battle_Room: renderMap_Boss_Battle_Room();
         break;
 
+        //minigame
+    case S_wireGame: renderMap_wireGame();
+        break;
+
     //Animations
     case S_Protest_Area_Animation: Protest_Area_Animation();
         break;
@@ -4336,6 +4687,10 @@ void render()
     case S_slashRobert: slashRobert();
         break;
     case S_killRobert: killRobert();
+        break;
+    case S_slashTutWasp: slashTutWasp();
+        break;
+    case S_killTutWasp: killTutWasp();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
@@ -4678,11 +5033,22 @@ void renderMap_OAF()
 
 void renderMap_IAF1()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility1(g_Console);
     renderCharacter();  // renders the character into the buffer
     //IAF2
+    if (g_sBox1.startTimer == true && g_sBox2.startTimer == true && g_sBox3.startTimer == true && g_sBox4.startTimer == true && g_sBox5.startTimer == true && g_sBox6.startTimer == true)
+    {
+        for (int j = 17; j < 23; j++)
+        {
+            c.X = 2;
+            c.Y = j;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0A);
+        }
+    }
+
     if ((g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.Y == 19 || g_sChar.m_cLocation.Y == 20 || g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 2)
     {
         g_dPathTime = 0.0;
@@ -4705,6 +5071,15 @@ void renderMap_IAF1()
         g_eGameState = S_OAF;
         g_sChar.m_cLocation.X = 57;
         g_sChar.m_cLocation.Y = 18;
+    }
+
+    //wire game
+    if (g_sChar.m_cLocation.X == 56 && g_sChar.m_cLocation.Y == 4)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_wireGame;
+        g_sChar.m_cLocation.X = 7;
+        g_sChar.m_cLocation.Y = 12;
     }
 }
 
@@ -4752,7 +5127,7 @@ void renderMap_IAF4()
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility4(g_Console);
     renderCharacter();  // renders the character into the buffer
-    //Back to IAF1
+    
     if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {
         g_dPathTime = 0.0;
@@ -4782,10 +5157,109 @@ void renderMap_Inside_Medical_Facility()
 //change this gamestate
 void renderMap_Dungeon_Cell()
 {
+    COORD c;
+    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_cell(g_Console);
+    if (g_sBox.startTimer == true)
+    {
+        for (int i = 32; i < 46; i++)
+        {
+            c.X = i;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
     renderCharacter();  // renders the character into the buffer
+    c.X = 13;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 4;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 13;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+
+    c.X = 66;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 73;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 75;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    //skull correct
+    c.X = 73;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 66;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+    c.X = 23;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 56;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 39;
+    c.Y = 22;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+    renderBox();
+
+    
+
+    if ((g_sChar.m_cLocation.X == g_sBox.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
+        {
+            g_sBox.m_cLocation.Y--;
+            if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
+            {   
+                g_sBox.startTimer = true;
+                
+            }   
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
+        {
+            g_sBox.m_cLocation.Y++;
+            if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
+            {
+                g_sBox.startTimer = true;
+                
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox.m_cLocation.X--;
+            if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
+            {
+                g_sBox.startTimer = true;
+                
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
+        {
+            g_sBox.m_cLocation.X++;
+            if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
+            {
+                g_sBox.startTimer = true;
+                
+            }
+        }
+    }
+
     //to DS1
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
@@ -4796,7 +5270,29 @@ void renderMap_Dungeon_Cell()
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
     }
+
+    //fake skull drawings
+    if ((g_sChar.m_cLocation.X == 13 && g_sChar.m_cLocation.Y == 20) || (g_sChar.m_cLocation.X == 13 && g_sChar.m_cLocation.Y == 10) || (g_sChar.m_cLocation.X == 6 && g_sChar.m_cLocation.Y == 12) || (g_sChar.m_cLocation.X == 4 && g_sChar.m_cLocation.Y == 15) || (g_sChar.m_cLocation.X == 6 && g_sChar.m_cLocation.Y == 18) || (g_sChar.m_cLocation.X == 23 && g_sChar.m_cLocation.Y == 21) || (g_sChar.m_cLocation.X == 39 && g_sChar.m_cLocation.Y == 22) || (g_sChar.m_cLocation.X == 56 && g_sChar.m_cLocation.Y == 21) || (g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == 20) || (g_sChar.m_cLocation.X == 75 && g_sChar.m_cLocation.Y == 15) || (g_sChar.m_cLocation.X == 73 && g_sChar.m_cLocation.Y == 12) || (g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == 10))
+    {
+        rMap.initialise(g_Console);
+        rMap.Border(g_Console);
+        mini.skull_game(g_Console);
+    }
+    //real skull drawings
+    if (g_sChar.m_cLocation.X == 73 && g_sChar.m_cLocation.Y == 18)
+    {
+        rMap.initialise(g_Console);
+        rMap.Border(g_Console);
+        mini.trueSkull(g_Console);
+    }
 }
+void renderBox()
+{
+    g_Console.writeToBuffer(g_sBox.m_cLocation, '[', 0x0D);
+
+}
+
+
 void renderMap_DS1()
 {
     rMap.initialise(g_Console);
@@ -6484,18 +6980,6 @@ void RenderBattleScreen()
     {
         killGuard();
     }
-    if (g_sMutantWasp.startTimer == true)
-    {
-        killWasp();
-    }
-    if (g_sMutantWasp2.startTimer == true)
-    {
-        killWasp();
-    }
-    if (g_sChar.entityDie == true)
-    {
-        killRobert();
-    }
 }
 
 void UpdateBattleScreen()
@@ -6574,7 +7058,6 @@ void UpdateBattleScreen()
 
     }
 }
-
 
 void renderCharacter()
 {
@@ -8030,7 +8513,6 @@ void render_Main_Menu()
         g_bQuitGame = true;
     }
 }
-//fried stickbug (* q  *
 
 void RenderGameOver()
 {
