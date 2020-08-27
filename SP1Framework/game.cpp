@@ -137,6 +137,9 @@ void init(void)
     g_sChar.startTimer = true;
     g_sChar.resetTimer = false;
     g_sGuard.startTimer = false;
+    g_sMutantWasp.startTimer = false;
+    g_sMutantWasp.entityDie = false;
+
     /*
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
     Pig.setEnemy(1, 1, 15, 3, 'E');
@@ -239,7 +242,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_1;
+    g_eGameState = S_Medical_Facility_Animation;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -6980,6 +6983,409 @@ void RenderBattleScreen()
     {
         killGuard();
     }
+    if (g_sMutantWasp.startTimer == true)
+    {
+        killWasp();
+    }
+    if (g_sMutantWasp2.startTimer == true)
+    {
+        killWasp();
+    }
+    if (g_sChar.entityDie == true)
+    {
+        killRobert();
+    }
+}
+
+void renderMap_wireGame()
+{
+    COORD c;
+
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    mini.wire_game(g_Console);
+    
+    //Border
+    for (int i = 51; i < 78; i++)
+    {
+        c.Y = 7;
+        c.X = i;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '-', 0x0F);
+    }
+
+    for (int i = 51; i < 78; i++)
+    {
+        c.Y = 17;
+        c.X = i;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '-', 0x0F);
+    }
+
+    //Gate 1
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 54;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0C);
+    }
+
+    //Gate 2
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 58;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0B);
+    }
+
+    //Gate 3
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 62;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0A);
+    }
+
+    //Gate 4
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 66;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0C);
+    }
+
+    //Gate 5
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 70;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0B);
+    }
+    
+    //Gate 6
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 74;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0A);
+    }
+
+    //Letters & Numbers
+    c.Y = 6;
+    c.X = 52;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'A', 0x0C);
+    c.X = 56;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '3', 0x0B);
+    c.X = 60;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'B', 0x0A);
+    c.X = 64;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '2', 0x0C);
+    c.X = 68;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'C', 0x0B);
+    c.X = 72;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '1', 0x0A);
+
+    //Door to get back to IAF1
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 77;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0D);
+    }
+
+    if (g_sBox1.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 54;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox2.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 58;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox3.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 62;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox4.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 66;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox5.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 70;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox6.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 74;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    renderCharacter();  // renders the character into the buffer
+    renderBoxes();
+
+    //box 1
+    if ((g_sChar.m_cLocation.X == g_sBox1.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox1.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox1.m_cLocation.Y--;
+            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18)) 
+            {
+                g_sBox1.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox1.m_cLocation.Y++;
+            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            {
+                g_sBox1.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox1.m_cLocation.X--;
+            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            {
+                g_sBox1.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox1.m_cLocation.X++;
+            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            {
+                g_sBox1.startTimer = true;
+            }
+        }
+    }
+
+    //box 4
+    if ((g_sChar.m_cLocation.X == g_sBox4.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox4.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox4.m_cLocation.Y--;
+            if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
+            {
+                g_sBox4.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox4.m_cLocation.Y++;
+            if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
+            {
+                g_sBox4.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox4.m_cLocation.X--;
+            if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
+            {
+                g_sBox4.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox4.m_cLocation.X++;
+            if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
+            {
+                g_sBox4.startTimer = true;
+            }
+        }
+    }
+    //box 2
+    if ((g_sChar.m_cLocation.X == g_sBox2.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox2.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox2.m_cLocation.Y--;
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48)) 
+            {
+                g_sBox2.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox2.m_cLocation.Y++;
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
+            {
+                g_sBox2.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox2.m_cLocation.X--;
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
+            {
+                g_sBox2.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox2.m_cLocation.X++;
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
+            {
+                g_sBox2.startTimer = true;
+            }
+        }
+    }
+
+    //box 5
+    if ((g_sChar.m_cLocation.X == g_sBox5.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox5.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox5.m_cLocation.Y--;
+            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            {
+                g_sBox5.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox5.m_cLocation.Y++;
+            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            {
+                g_sBox5.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox5.m_cLocation.X--;
+            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            {
+                g_sBox5.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox5.m_cLocation.X++;
+            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            {
+                g_sBox5.startTimer = true;
+            }
+        }
+    }
+
+    //box 3
+    if ((g_sChar.m_cLocation.X == g_sBox3.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox3.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox3.m_cLocation.Y--;
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            {
+                g_sBox3.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox3.m_cLocation.Y++;
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            {
+                g_sBox3.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox3.m_cLocation.X--;
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            {
+                g_sBox3.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox3.m_cLocation.X++;
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            {
+                g_sBox3.startTimer = true;
+            }
+        }
+    }
+
+    //box 6
+    if ((g_sChar.m_cLocation.X == g_sBox6.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox6.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox6.m_cLocation.Y--;
+            if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
+            {
+                g_sBox6.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox6.m_cLocation.Y++;
+            if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
+            {
+                g_sBox6.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox6.m_cLocation.X--;
+            if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
+            {
+                g_sBox6.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox6.m_cLocation.X++;
+            if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
+            {
+                g_sBox6.startTimer = true;
+            }
+        }
+    }
+
+    if ((g_sChar.m_cLocation.Y == 8 || g_sChar.m_cLocation.Y == 9 || g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.Y == 15 || g_sChar.m_cLocation.Y == 16) && g_sChar.m_cLocation.X == 77)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_IAF1;
+        g_sChar.m_cLocation.X = 56;
+        g_sChar.m_cLocation.Y = 5;
+    }
+}
+
+void renderBoxes()
+{
+    g_Console.writeToBuffer(g_sBox1.m_cLocation, '[', 0x0C);
+    g_Console.writeToBuffer(g_sBox2.m_cLocation, '[', 0x0B);
+    g_Console.writeToBuffer(g_sBox3.m_cLocation, '[', 0x0A);
+    g_Console.writeToBuffer(g_sBox4.m_cLocation, '[', 0x0C);
+    g_Console.writeToBuffer(g_sBox5.m_cLocation, '[', 0x0B);
+    g_Console.writeToBuffer(g_sBox6.m_cLocation, '[', 0x0A);
 }
 
 void UpdateBattleScreen()
