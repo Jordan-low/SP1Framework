@@ -78,6 +78,39 @@ void Cutscenes::stickmanLeft(Console& g_Console, int x, int y)
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x04);
 }
 
+void Cutscenes::movingBlock(Console& g_Console, int x, int y)
+{
+	COORD c;
+
+	c.X = x;
+	c.Y = y + 1;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0D);
+	c.X = x + 8;
+	c.Y = y + 1;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0D);
+	for (int i = x; i < (x + 9); i++)
+	{
+		c.X = i;
+		c.Y = y;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0D);
+	}
+
+	for (int i = (x+1); i < (x + 8); i++)
+	{
+		c.X = i;
+		c.Y = y + 1;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0D);
+	}
+
+	for (int i = x; i < (x+9); i++)
+	{
+		c.X = i;
+		c.Y = y - 1;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0D);
+	}
+	
+}
+
 void Cutscenes::cleargrid(Console& g_Console, int x, int y)
 {
 	COORD c;
