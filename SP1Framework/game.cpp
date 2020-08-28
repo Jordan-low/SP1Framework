@@ -54,7 +54,7 @@ double collectTime;
 double deathAnimation;
 double laserTime;
 
-Sound s;
+bool music;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -5251,6 +5251,12 @@ void Update_phase2Battle()
 }
 void phase2Battle()
 {
+    while (music == false)
+    {
+        PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
+        music = true;
+    }
+    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     //drawLaser(g_Console, 20, 0, 0);
