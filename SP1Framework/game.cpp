@@ -13,6 +13,7 @@
 #include "Dialogue.h"
 #include "drawSprites.h"
 #include "Minigame.h"
+#include "Sound.h"
 
 using namespace std;
 
@@ -53,7 +54,7 @@ double collectTime;
 double deathAnimation;
 double laserTime;
 
-
+Sound s;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -1418,6 +1419,7 @@ void Orphanage_Animation()
                                             if (g_dElapsedTime > 4.2)
                                             {
                                                 g_Console.writeToBuffer(c, "Caretaker: Argh!!!", 0x0F, 100);
+                                                
                                                 if (g_dElapsedTime > 10)
                                                 {
                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -9046,7 +9048,6 @@ void renderInputEvents()
 void render_Main_Menu()
 {
     COORD c; COORD d;
-
     //Print R (ROBERT)
     int i;
     int j;
