@@ -255,7 +255,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Inside_Medical_Facility;
+    g_eGameState = S_Dungeon_Cell;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -5708,6 +5708,10 @@ void renderMap_Dungeon_Cell()
     c.Y = 22;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
 
+    c.X = 26;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'L', 0x0D);
+
     renderBox();
 
     
@@ -5776,6 +5780,13 @@ void renderMap_Dungeon_Cell()
         rMap.initialise(g_Console);
         rMap.Border(g_Console);
         mini.trueSkull(g_Console);
+    }
+
+    if (g_sChar.m_cLocation.X == 26 && g_sChar.m_cLocation.Y == 9)
+    {
+        rMap.initialise(g_Console);
+        rMap.Border(g_Console);
+        mini.letter(g_Console);
     }
 }
 void renderBox()

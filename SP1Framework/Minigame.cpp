@@ -363,3 +363,25 @@ void Minigame::trueSkull(Console& g_Console)
 		g_Console.writeToBuffer(c, '_', 0x1A);
 	}
 }
+
+void Minigame::letter(Console& g_Console)
+{
+	COORD c;
+	c.X = 12;
+	c.Y = 6;
+	g_Console.writeToBuffer(c,"Spot the difference in all the skulls you see", 0x0F, 100);
+	c.Y = 7;
+	g_Console.writeToBuffer(c, "From there, push the pink coloured box '['", 0x0F, 100);
+	c.Y = 8;
+	g_Console.writeToBuffer(c, "onto the different skull.", 0x0F, 100);
+	c.Y = 9;
+	g_Console.writeToBuffer(c, "This way, you'll be able to exit the cell.", 0x0F, 100);
+	c.Y = 10;
+	g_Console.writeToBuffer(c, "Once again, best of luck Robert,", 0x0F, 100);
+	c.Y = 11;
+	g_Console.writeToBuffer(c, "I'll see you in the second dungeon room.", 0x0F, 100);
+	c.X = 48;
+	c.Y = 14;
+	g_Console.writeToBuffer(c, "-Ell", 0x0F, 100);
+
+}
