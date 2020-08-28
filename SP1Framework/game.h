@@ -118,6 +118,10 @@ struct SGameChar : public Enemy
     bool enemyDie;
     bool InvenActive;
     bool itemActive;
+    bool showItemUsed;
+    bool showItemNotUsed;
+    bool showItem;
+    bool collected;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
