@@ -37,6 +37,17 @@ void Cutscenes::drawgridLaserRight(Console& g_Console, int x, int y)
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x04);
 }
 
+void Cutscenes::drawgridLaserLeft(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '/', 0x04);
+	c.X = x + 3;
+	c.Y = y - 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x04);
+}
+
 void Cutscenes::cleargrid(Console& g_Console, int x, int y)
 {
 	COORD c;
