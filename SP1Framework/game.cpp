@@ -4977,6 +4977,93 @@ void drawLaser(Console &g_Console, int j, int k)
         }
     }
 }
+void drawHoriLaser(Console& g_Console, int k)
+{
+    if (g_dphase2Time > 1)
+    {
+        Cutscene.drawgrid(g_Console, 2, 2 + k, '^');
+        if (g_dphase2Time > 0.05)
+        {
+            Cutscene.drawgrid(g_Console, 3, 3 + k, '^');
+            if (g_dphase2Time > 1.1)
+            {
+                Cutscene.drawgrid(g_Console, 4, 4 + k, '^');
+                if (g_dphase2Time > 1.15)
+                {
+                    Cutscene.drawgridLaserRight(g_Console, 5, 5 + k);
+                    if (g_dphase2Time > 1.20)
+                    {
+                        Cutscene.drawgridLaserRight(g_Console, 6, 6 + k);
+                        if (g_dphase2Time > 1.25)
+                        {
+                            Cutscene.drawgridLaserRight(g_Console, 7, 7 + k);
+                            if (g_dphase2Time > 1.30)
+                            {
+                                Cutscene.drawgridLaserRight(g_Console, 8, 8 + k);
+                                if (g_dphase2Time > 1.35)
+                                {
+                                    Cutscene.drawgridLaserRight(g_Console, 9, 9 + k);
+                                    if (g_dphase2Time > 1.40)
+                                    {
+                                        Cutscene.drawgridLaserRight(g_Console, 10, 10 + k);
+                                        if (g_dphase2Time > 1.45)
+                                        {
+                                            Cutscene.drawgridLaserRight(g_Console, 11, 11 + k);
+                                            if (g_dphase2Time > 1.50)
+                                            {
+                                                Cutscene.drawgridLaserRight(g_Console, 12, 12 + k);
+                                                if (g_dphase2Time > 1.55)
+                                                {
+                                                    Cutscene.drawgridLaserRight(g_Console, 13, 13 + k);
+                                                    if (g_dphase2Time > 1.60)
+                                                    {
+                                                        Cutscene.drawgridLaserRight(g_Console, 14, 14 + k);
+                                                        if (g_dphase2Time > 1.65)
+                                                        {
+                                                            Cutscene.drawgridLaserRight(g_Console, 15, 15 + k);
+                                                            if (g_dphase2Time > 1.70)
+                                                            {
+                                                                Cutscene.drawgridLaserRight(g_Console, 16, 16 + k);
+                                                                if (g_dphase2Time > 1.75)
+                                                                {
+                                                                    Cutscene.drawgridLaserRight(g_Console, 17, 17 + k);
+                                                                    if (g_dphase2Time > 1.80)
+                                                                    {
+                                                                        Cutscene.drawgridLaserRight(g_Console, 18, 18 + k);
+                                                                        if (g_dphase2Time > 1.85)
+                                                                        {
+                                                                            Cutscene.drawgridLaserRight(g_Console, 19, 19 + k);
+                                                                            if (g_dphase2Time > 1.90)
+                                                                            {
+                                                                                Cutscene.drawgridLaserRight(g_Console, 20, 20 + k);
+                                                                                if (g_dphase2Time > 1.95)
+                                                                                {
+                                                                                    Cutscene.drawgridLaserRight(g_Console, 21, 21 + k);
+                                                                                    if (g_dphase2Time > 2.00)
+                                                                                    {
+                                                                                        Cutscene.drawgridLaserRight(g_Console, 22, 22 + k);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 void Update_phase2Battle()
 {
     processUserInput();
@@ -4994,6 +5081,7 @@ void Update_phase2Battle()
 }
 void phase2Battle()
 {
+    srand((unsigned)time(0));
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     COORD c;
@@ -5011,6 +5099,7 @@ void phase2Battle()
     }
     if (g_sLaser.resetTimer == true)
     {
+
         if (g_sLaser.counter == true)
         {
             randnum = rand() % 70 + 1;
@@ -5021,6 +5110,8 @@ void phase2Battle()
         drawLaser(g_Console, randnum, 0);
         drawLaser(g_Console, randnum2, 0);
         drawLaser(g_Console, randnum3, 0);
+        //drawHoriLaser(g_Console, randnum3);
+
 
         //g_sLaser.resetTimer = false;
 
