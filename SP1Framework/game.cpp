@@ -172,7 +172,7 @@ void init(void)
     g_sMutantWasp.SetH(25);
     g_sMutantWasp.SetD(5);
     g_sMutantWasp2.SetH(25);
-    g_sMutantWasp2.SetD(5);
+    g_sMutantWasp2.SetD(100);
 
     g_sChar.Poison = false;
     g_sRaymond.SetH(120);
@@ -253,10 +253,9 @@ void init(void)
 
 
     // Set precision for floating point output
-    g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_MENU_UI;
+    g_eGameState = S_Inside_Medical_Facility;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -607,6 +606,8 @@ void update(double dt)
         //Animations
     case S_Start_Animation: Update_starting_cutscene();
         break;
+    case S_Protest_Area_Animation: Update_Protest_Area();
+        break;
     case S_Path_Area_Animation: Update_Path_Area();
         break;
     case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
@@ -670,7 +671,7 @@ void UpdateGameOver()
 
 void Update_starting_cutscene()
 {
-    if (g_dStartScene > 22)
+    if (g_dStartScene > 8)
     {
         g_eGameState = S_Orphanage_Animation;
     }
@@ -1815,7 +1816,7 @@ void Update_IAF3()
 {
     if (g_dIAF3Time > 47)
     {
-        g_eGameState = S_GAME;
+        g_eGameState = S_IAF3;
     }
     processUserInput();
 }
