@@ -4892,152 +4892,152 @@ void killTutWasp()
 }
 void drawLaser(Console &g_Console, int j)
 {    
-    if (g_dphase2Time > 1)
+    if (g_dphase2Time > 1.00)
     {
         Cutscene.drawgrid(g_Console, 2 + j, 2, '\\');
         if (g_sChar.m_cLocation.X == (2 + j) && g_sChar.m_cLocation.Y == 2)
         {
-            g_eGameState = S_Path_Area;
+            g_sChar.SetH(g_sChar.GetH() - 5);
         }
-        if (g_dphase2Time > 0.05)
+        if (g_dphase2Time > 1.05)
         {
             Cutscene.drawgrid(g_Console, 3 + j, 3, '\\');
             if (g_sChar.m_cLocation.X == (3 + j) && g_sChar.m_cLocation.Y == 3)
             {
-                g_eGameState = S_Path_Area;
+                g_sChar.SetH(g_sChar.GetH() - 5);
             }
             if (g_dphase2Time > 1.1)
             {
                 Cutscene.drawgrid(g_Console, 4 + j, 4, '\\');
                 if (g_sChar.m_cLocation.X == (4 + j) && g_sChar.m_cLocation.Y == 4)
                 {
-                    g_eGameState = S_Path_Area;
+                    g_sChar.SetH(g_sChar.GetH() - 5);
                 }
                 if (g_dphase2Time > 1.15 )
                 {
                     Cutscene.drawgridLaserRight(g_Console, 5 + j, 5);
                     if (g_sChar.m_cLocation.X == (5 + j) && g_sChar.m_cLocation.Y == 5)
                     {
-                        g_eGameState = S_Path_Area;
+                        g_sChar.SetH(g_sChar.GetH() - 5);
                     }
                     if (g_dphase2Time > 1.20)
                     {
                         Cutscene.drawgridLaserRight(g_Console, 6 + j, 6);
                         if (g_sChar.m_cLocation.X == (6 + j) && g_sChar.m_cLocation.Y == 6)
                         {
-                            g_eGameState = S_Path_Area;
+                            g_sChar.SetH(g_sChar.GetH() - 5);
                         }
                         if (g_dphase2Time > 1.25)
                         {
                             Cutscene.drawgridLaserRight(g_Console, 7 + j, 7);
                             if (g_sChar.m_cLocation.X == (7 + j) && g_sChar.m_cLocation.Y == 7)
                             {
-                                g_eGameState = S_Path_Area;
+                                g_sChar.SetH(g_sChar.GetH() - 5);
                             }
                             if (g_dphase2Time > 1.30)
                             {
                                 Cutscene.drawgridLaserRight(g_Console, 8 + j, 8);
                                 if (g_sChar.m_cLocation.X == (8 + j) && g_sChar.m_cLocation.Y == 8)
                                 {
-                                    g_eGameState = S_Path_Area;
+                                    g_sChar.SetH(g_sChar.GetH() - 5);
                                 }
                                 if (g_dphase2Time > 1.35)
                                 {
                                     Cutscene.drawgridLaserRight(g_Console, 9 + j, 9);
                                     if (g_sChar.m_cLocation.X == (9 + j) && g_sChar.m_cLocation.Y == 9)
                                     {
-                                        g_eGameState = S_Path_Area;
+                                        g_sChar.SetH(g_sChar.GetH() - 5);
                                     }
                                     if (g_dphase2Time > 1.40)
                                     {
                                         Cutscene.drawgridLaserRight(g_Console, 10 + j, 10);
                                         if (g_sChar.m_cLocation.X == (10 + j) && g_sChar.m_cLocation.Y == 10)
                                         {
-                                            g_eGameState = S_Path_Area;
+                                            g_sChar.SetH(g_sChar.GetH() - 5);
                                         }
                                         if (g_dphase2Time > 1.45)
                                         {
                                             Cutscene.drawgridLaserRight(g_Console, 11 + j, 11);
                                             if (g_sChar.m_cLocation.X == (11 + j) && g_sChar.m_cLocation.Y == 11)
                                             {
-                                                g_eGameState = S_Path_Area;
+                                                g_sChar.SetH(g_sChar.GetH() - 5);
                                             }
                                             if (g_dphase2Time > 1.50)
                                             {
                                                 Cutscene.drawgridLaserRight(g_Console, 12 + j, 12);
                                                 if (g_sChar.m_cLocation.X == (12 + j) && g_sChar.m_cLocation.Y == 12)
                                                 {
-                                                    g_eGameState = S_Path_Area;
+                                                    g_sChar.SetH(g_sChar.GetH() - 5);
                                                 }
                                                 if (g_dphase2Time > 1.55)
                                                 {
                                                     Cutscene.drawgridLaserRight(g_Console, 13 + j, 13);
                                                     if (g_sChar.m_cLocation.X == (13 + j) && g_sChar.m_cLocation.Y == 13)
                                                     {
-                                                        g_eGameState = S_Path_Area;
+                                                        g_sChar.SetH(g_sChar.GetH() - 5);
                                                     }
                                                     if (g_dphase2Time > 1.60)
                                                     {
                                                         Cutscene.drawgridLaserRight(g_Console, 14 + j, 14);
                                                         if (g_sChar.m_cLocation.X == (14 + j) && g_sChar.m_cLocation.Y == 14)
                                                         {
-                                                            g_eGameState = S_Path_Area;
+                                                            g_sChar.SetH(g_sChar.GetH() - 5);
                                                         }
                                                         if (g_dphase2Time > 1.65)
                                                         {
                                                             Cutscene.drawgridLaserRight(g_Console, 15 + j, 15);
                                                             if (g_sChar.m_cLocation.X == (15 + j) && g_sChar.m_cLocation.Y == 15)
                                                             {
-                                                                g_eGameState = S_Path_Area;
+                                                                g_sChar.SetH(g_sChar.GetH() - 5);
                                                             }
                                                             if (g_dphase2Time > 1.70)
                                                             {
                                                                 Cutscene.drawgridLaserRight(g_Console, 16 + j, 16);
                                                                 if (g_sChar.m_cLocation.X == (16 + j) && g_sChar.m_cLocation.Y == 16)
                                                                 {
-                                                                    g_eGameState = S_Path_Area;
+                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
                                                                 }
                                                                 if (g_dphase2Time > 1.75)
                                                                 {
                                                                     Cutscene.drawgridLaserRight(g_Console, 17 + j, 17);
                                                                     if (g_sChar.m_cLocation.X == (17 + j) && g_sChar.m_cLocation.Y == 17)
                                                                     {
-                                                                        g_eGameState = S_Path_Area;
+                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
                                                                     }
                                                                     if (g_dphase2Time > 1.80)
                                                                     {
                                                                         Cutscene.drawgridLaserRight(g_Console, 18 + j, 18);
                                                                         if (g_sChar.m_cLocation.X == (18 + j) && g_sChar.m_cLocation.Y == 18)
                                                                         {
-                                                                            g_eGameState = S_Path_Area;
+                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
                                                                         }
                                                                         if (g_dphase2Time > 1.85)
                                                                         {
                                                                             Cutscene.drawgridLaserRight(g_Console, 19 + j, 19);
                                                                             if (g_sChar.m_cLocation.X == (19 + j) && g_sChar.m_cLocation.Y == 19)
                                                                             {
-                                                                                g_eGameState = S_Path_Area;
+                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
                                                                             }
                                                                             if (g_dphase2Time > 1.90)
                                                                             {
                                                                                 Cutscene.drawgridLaserRight(g_Console, 20 + j, 20);
                                                                                 if (g_sChar.m_cLocation.X == (20 + j) && g_sChar.m_cLocation.Y == 20)
                                                                                 {
-                                                                                    g_eGameState = S_Path_Area;
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
                                                                                 }
                                                                                 if (g_dphase2Time > 1.95)
                                                                                 {
                                                                                     Cutscene.drawgridLaserRight(g_Console, 21 + j, 21);
                                                                                     if (g_sChar.m_cLocation.X == (21 + j) && g_sChar.m_cLocation.Y == 21)
                                                                                     {
-                                                                                        g_eGameState = S_Path_Area;
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
                                                                                     }
                                                                                     if (g_dphase2Time > 2.00)
                                                                                     {
                                                                                         Cutscene.drawgridLaserRight(g_Console, 22 + j, 22);
                                                                                         if (g_sChar.m_cLocation.X == (22 + j) && g_sChar.m_cLocation.Y == 22)
                                                                                         {
-                                                                                            g_eGameState = S_Path_Area;
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
                                                                                         }
                                                                                     }
                                                                                 }
@@ -5064,152 +5064,724 @@ void drawLaser(Console &g_Console, int j)
 
 void drawLaser2(Console& g_Console, int j)
 {
-    if (g_dphase2Time > 1)
+    if (g_dphase2Time > 1.00)
     {
         Cutscene.drawgrid(g_Console, 77 - j, 2, '/');
         if (g_sChar.m_cLocation.X == (77 - j) && g_sChar.m_cLocation.Y == 2)
         {
-            g_eGameState = S_Path_Area;
+            g_sChar.SetH(g_sChar.GetH() - 5);
         }
-        if (g_dphase2Time > 0.05)
+        if (g_dphase2Time > 1.05)
         {
             Cutscene.drawgrid(g_Console, 76 - j, 3, '/');
             if (g_sChar.m_cLocation.X == (76 - j) && g_sChar.m_cLocation.Y == 3)
             {
-                g_eGameState = S_Path_Area;
+                g_sChar.SetH(g_sChar.GetH() - 5);
             }
             if (g_dphase2Time > 1.1)
             {
                 Cutscene.drawgrid(g_Console, 75 - j, 4, '/');
                 if (g_sChar.m_cLocation.X == (75 - j) && g_sChar.m_cLocation.Y == 4)
                 {
-                    g_eGameState = S_Path_Area;
+                    g_sChar.SetH(g_sChar.GetH() - 5);
                 }
                 if (g_dphase2Time > 1.15)
                 {
                     Cutscene.drawgridLaserLeft(g_Console, 74 - j, 5);
                     if (g_sChar.m_cLocation.X == (74 - j) && g_sChar.m_cLocation.Y == 5)
                     {
-                        g_eGameState = S_Path_Area;
+                        g_sChar.SetH(g_sChar.GetH() - 5);
                     }
                     if (g_dphase2Time > 1.20)
                     {
                         Cutscene.drawgridLaserLeft(g_Console, 73 - j, 6);
                         if (g_sChar.m_cLocation.X == (73 - j) && g_sChar.m_cLocation.Y == 6)
                         {
-                            g_eGameState = S_Path_Area;
+                            g_sChar.SetH(g_sChar.GetH() - 5);
                         }
                         if (g_dphase2Time > 1.25)
                         {
                             Cutscene.drawgridLaserLeft(g_Console, 72 - j, 7);
                             if (g_sChar.m_cLocation.X == (72 - j) && g_sChar.m_cLocation.Y == 7)
                             {
-                                g_eGameState = S_Path_Area;
+                                g_sChar.SetH(g_sChar.GetH() - 5);
                             }
                             if (g_dphase2Time > 1.30)
                             {
                                 Cutscene.drawgridLaserLeft(g_Console, 71 - j, 8);
                                 if (g_sChar.m_cLocation.X == (71 - j) && g_sChar.m_cLocation.Y == 8)
                                 {
-                                    g_eGameState = S_Path_Area;
+                                    g_sChar.SetH(g_sChar.GetH() - 5);
                                 }
                                 if (g_dphase2Time > 1.35)
                                 {
                                     Cutscene.drawgridLaserLeft(g_Console, 70 - j, 9);
                                     if (g_sChar.m_cLocation.X == (70 - j) && g_sChar.m_cLocation.Y == 9)
                                     {
-                                        g_eGameState = S_Path_Area;
+                                        g_sChar.SetH(g_sChar.GetH() - 5);
                                     }
                                     if (g_dphase2Time > 1.40)
                                     {
                                         Cutscene.drawgridLaserLeft(g_Console, (69 - j), 10);
                                         if (g_sChar.m_cLocation.X == (69 - j) && g_sChar.m_cLocation.Y == 10)
                                         {
-                                            g_eGameState = S_Path_Area;
+                                            g_sChar.SetH(g_sChar.GetH() - 5);
                                         }
                                         if (g_dphase2Time > 1.45)
                                         {
                                             Cutscene.drawgridLaserLeft(g_Console, (68 - j), 11);
                                             if (g_sChar.m_cLocation.X == (68 - j) && g_sChar.m_cLocation.Y == 11)
                                             {
-                                                g_eGameState = S_Path_Area;
+                                                g_sChar.SetH(g_sChar.GetH() - 5);
                                             }
                                             if (g_dphase2Time > 1.50)
                                             {
                                                 Cutscene.drawgridLaserLeft(g_Console, (67 - j), 12);
                                                 if (g_sChar.m_cLocation.X == (67 - j) && g_sChar.m_cLocation.Y == 12)
                                                 {
-                                                    g_eGameState = S_Path_Area;
+                                                    g_sChar.SetH(g_sChar.GetH() - 5);
                                                 }
                                                 if (g_dphase2Time > 1.55)
                                                 {
                                                     Cutscene.drawgridLaserLeft(g_Console, (66 - j), 13);
                                                     if (g_sChar.m_cLocation.X == (66 - j) && g_sChar.m_cLocation.Y == 13)
                                                     {
-                                                        g_eGameState = S_Path_Area;
+                                                        g_sChar.SetH(g_sChar.GetH() - 5);
                                                     }
                                                     if (g_dphase2Time > 1.60)
                                                     {
                                                         Cutscene.drawgridLaserLeft(g_Console, (65 - j), 14);
                                                         if (g_sChar.m_cLocation.X == (65 - j) && g_sChar.m_cLocation.Y == 14)
                                                         {
-                                                            g_eGameState = S_Path_Area;
+                                                            g_sChar.SetH(g_sChar.GetH() - 5);
                                                         }
                                                         if (g_dphase2Time > 1.65)
                                                         {
                                                             Cutscene.drawgridLaserLeft(g_Console, (64 - j), 15);
                                                             if (g_sChar.m_cLocation.X == (64 - j) && g_sChar.m_cLocation.Y == 15)
                                                             {
-                                                                g_eGameState = S_Path_Area;
+                                                                g_sChar.SetH(g_sChar.GetH() - 5);
                                                             }
                                                             if (g_dphase2Time > 1.70)
                                                             {
                                                                 Cutscene.drawgridLaserLeft(g_Console, (63 - j), 16);
                                                                 if (g_sChar.m_cLocation.X == (63 - j) && g_sChar.m_cLocation.Y == 16)
                                                                 {
-                                                                    g_eGameState = S_Path_Area;
+                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
                                                                 }
                                                                 if (g_dphase2Time > 1.75)
                                                                 {
                                                                     Cutscene.drawgridLaserLeft(g_Console, (62 - j), 17);
                                                                     if (g_sChar.m_cLocation.X == (62 - j) && g_sChar.m_cLocation.Y == 17)
                                                                     {
-                                                                        g_eGameState = S_Path_Area;
+                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
                                                                     }
                                                                     if (g_dphase2Time > 1.80)
                                                                     {
                                                                         Cutscene.drawgridLaserLeft(g_Console, (61 - j), 18);
                                                                         if (g_sChar.m_cLocation.X == (61 - j) && g_sChar.m_cLocation.Y == 18)
                                                                         {
-                                                                            g_eGameState = S_Path_Area;
+                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
                                                                         }
                                                                         if (g_dphase2Time > 1.85)
                                                                         {
                                                                             Cutscene.drawgridLaserLeft(g_Console, (60 - j), 19);
                                                                             if (g_sChar.m_cLocation.X == (60 - j) && g_sChar.m_cLocation.Y == 19)
                                                                             {
-                                                                                g_eGameState = S_Path_Area;
+                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
                                                                             }
                                                                             if (g_dphase2Time > 1.90)
                                                                             {
                                                                                 Cutscene.drawgridLaserLeft(g_Console, (59 - j), 20);
                                                                                 if (g_sChar.m_cLocation.X == (59 - j) && g_sChar.m_cLocation.Y == 20)
                                                                                 {
-                                                                                    g_eGameState = S_Path_Area;
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
                                                                                 }
                                                                                 if (g_dphase2Time > 1.95)
                                                                                 {
                                                                                     Cutscene.drawgridLaserLeft(g_Console, (58 - j), 21);
                                                                                     if (g_sChar.m_cLocation.X == (58 - j) && g_sChar.m_cLocation.Y == 21)
                                                                                     {
-                                                                                        g_eGameState = S_Path_Area;
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
                                                                                     }
                                                                                     if (g_dphase2Time > 2.00)
                                                                                     {
                                                                                         Cutscene.drawgridLaserLeft(g_Console, (57 - j), 22);
                                                                                         if (g_sChar.m_cLocation.X == (57 - j) && g_sChar.m_cLocation.Y == 22)
                                                                                         {
-                                                                                            g_eGameState = S_Path_Area;
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void drawLaser3(Console& g_Console, int j)
+{
+    if (g_dphase2Time > 1.00)
+    {
+        Cutscene.stickmanLeft(g_Console, 2, j);
+        if (g_sChar.m_cLocation.X == 2 && g_sChar.m_cLocation.Y == j)
+        {
+            g_sChar.SetH(g_sChar.GetH() - 5);
+        }
+        if (g_dphase2Time > 1.05)
+        {
+            Cutscene.stickmanLeft(g_Console, 3, j);
+            if (g_sChar.m_cLocation.X == 3 && g_sChar.m_cLocation.Y == j)
+            {
+                g_sChar.SetH(g_sChar.GetH() - 5);
+            }
+            if (g_dphase2Time > 1.10)
+            {
+                Cutscene.stickmanLeft(g_Console, 4, j);
+                if (g_sChar.m_cLocation.X == 4 && g_sChar.m_cLocation.Y == j)
+                {
+                    g_sChar.SetH(g_sChar.GetH() - 5);
+                }
+                if (g_dphase2Time > 1.15)
+                {
+                    Cutscene.stickmanLeft(g_Console, 5, j);
+                    if (g_sChar.m_cLocation.X == 5 && g_sChar.m_cLocation.Y == j)
+                    {
+                        g_sChar.SetH(g_sChar.GetH() - 5);
+                    }
+                    if (g_dphase2Time > 1.20)
+                    {
+                        Cutscene.stickmanLeft(g_Console, 6, j);
+                        if (g_sChar.m_cLocation.X == 6 && g_sChar.m_cLocation.Y == j)
+                        {
+                            g_sChar.SetH(g_sChar.GetH() - 5);
+                        }
+                        if (g_dphase2Time > 1.25)
+                        {
+                            Cutscene.stickmanLeft(g_Console, 7, j);
+                            if (g_sChar.m_cLocation.X == 7 && g_sChar.m_cLocation.Y == j)
+                            {
+                                g_sChar.SetH(g_sChar.GetH() - 5);
+                            }
+                            if (g_dphase2Time > 1.30)
+                            {
+                                Cutscene.stickmanLeft(g_Console, 8, j);
+                                if (g_sChar.m_cLocation.X == 8 && g_sChar.m_cLocation.Y == j)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                }
+                                if (g_dphase2Time > 1.35)
+                                {
+                                    Cutscene.stickmanLeft(g_Console, 9, j);
+                                    if (g_sChar.m_cLocation.X == 9 && g_sChar.m_cLocation.Y == j)
+                                    {
+                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                    }
+                                    if (g_dphase2Time > 1.40)
+                                    {
+                                        Cutscene.stickmanLeft(g_Console, 10, j);
+                                        if (g_sChar.m_cLocation.X == 10 && g_sChar.m_cLocation.Y == j)
+                                        {
+                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                        }
+                                        if (g_dphase2Time > 1.45)
+                                        {
+                                            Cutscene.stickmanLeft(g_Console, 11, j);
+                                            if (g_sChar.m_cLocation.X == 11 && g_sChar.m_cLocation.Y == j)
+                                            {
+                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                            }
+                                            if (g_dphase2Time > 1.50)
+                                            {
+                                                Cutscene.stickmanLeft(g_Console, 12, j);
+                                                if (g_sChar.m_cLocation.X == 12 && g_sChar.m_cLocation.Y == j)
+                                                {
+                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                }
+                                                if (g_dphase2Time > 1.55)
+                                                {
+                                                    Cutscene.stickmanLeft(g_Console, 13, j);
+                                                    if (g_sChar.m_cLocation.X == 13 && g_sChar.m_cLocation.Y == j)
+                                                    {
+                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                    }
+                                                    if (g_dphase2Time > 1.60)
+                                                    {
+                                                        Cutscene.stickmanLeft(g_Console, 14, j);
+                                                        if (g_sChar.m_cLocation.X == 14 && g_sChar.m_cLocation.Y == j)
+                                                        {
+                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                        }
+                                                        if (g_dphase2Time > 1.65)
+                                                        {
+                                                            Cutscene.stickmanLeft(g_Console, 15, j);
+                                                            if (g_sChar.m_cLocation.X == 15 && g_sChar.m_cLocation.Y == j)
+                                                            {
+                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                            }
+                                                            if (g_dphase2Time > 1.70)
+                                                            {
+                                                                Cutscene.stickmanLeft(g_Console, 16, j);
+                                                                if (g_sChar.m_cLocation.X == 16 && g_sChar.m_cLocation.Y == j)
+                                                                {
+                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                }
+                                                                if (g_dphase2Time > 1.75)
+                                                                {
+                                                                    Cutscene.stickmanLeft(g_Console, 17, j);
+                                                                    if (g_sChar.m_cLocation.X == 17 && g_sChar.m_cLocation.Y == j)
+                                                                    {
+                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                    }
+                                                                    if (g_dphase2Time > 1.80)
+                                                                    {
+                                                                        Cutscene.stickmanLeft(g_Console, 18, j);
+                                                                        if (g_sChar.m_cLocation.X == 18 && g_sChar.m_cLocation.Y == j)
+                                                                        {
+                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                        }
+                                                                        if (g_dphase2Time > 1.85)
+                                                                        {
+                                                                            Cutscene.stickmanLeft(g_Console, 19, j);
+                                                                            if (g_sChar.m_cLocation.X == 19 && g_sChar.m_cLocation.Y == j)
+                                                                            {
+                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                            }
+                                                                            if (g_dphase2Time > 1.90)
+                                                                            {
+                                                                                Cutscene.stickmanLeft(g_Console, 20, j);
+                                                                                if (g_sChar.m_cLocation.X == 20 && g_sChar.m_cLocation.Y == j)
+                                                                                {
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                }
+                                                                                if (g_dphase2Time > 1.95)
+                                                                                {
+                                                                                    Cutscene.stickmanLeft(g_Console, 21, j);
+                                                                                    if (g_sChar.m_cLocation.X == 21 && g_sChar.m_cLocation.Y == j)
+                                                                                    {
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                    }
+                                                                                    if (g_dphase2Time > 2.00)
+                                                                                    {
+                                                                                        Cutscene.stickmanLeft(g_Console, 22, j);
+                                                                                        if (g_sChar.m_cLocation.X == 22 && g_sChar.m_cLocation.Y == j)
+                                                                                        {
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                        }
+                                                                                        if (g_dphase2Time > 2.05)
+                                                                                        {
+                                                                                            Cutscene.stickmanLeft(g_Console, 23, j);
+                                                                                            if (g_sChar.m_cLocation.X == 23 && g_sChar.m_cLocation.Y == j)
+                                                                                            {
+                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                            }
+                                                                                            if (g_dphase2Time > 2.10)
+                                                                                            {
+                                                                                                Cutscene.stickmanLeft(g_Console, 24, j);
+                                                                                                if (g_sChar.m_cLocation.X == 24 && g_sChar.m_cLocation.Y == j)
+                                                                                                {
+                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                }
+                                                                                                if (g_dphase2Time > 2.15)
+                                                                                                {
+                                                                                                    Cutscene.stickmanLeft(g_Console, 25, j);
+                                                                                                    if (g_sChar.m_cLocation.X == 25 && g_sChar.m_cLocation.Y == j)
+                                                                                                    {
+                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                    }
+                                                                                                    if (g_dphase2Time > 2.20)
+                                                                                                    {
+                                                                                                        Cutscene.stickmanLeft(g_Console, 26, j);
+                                                                                                        if (g_sChar.m_cLocation.X == 26 && g_sChar.m_cLocation.Y == j)
+                                                                                                        {
+                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                        }
+                                                                                                        if (g_dphase2Time > 2.25)
+                                                                                                        {
+                                                                                                            Cutscene.stickmanLeft(g_Console, 27, j);
+                                                                                                            if (g_sChar.m_cLocation.X == 27 && g_sChar.m_cLocation.Y == j)
+                                                                                                            {
+                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                            }
+                                                                                                            if (g_dphase2Time > 2.30)
+                                                                                                            {
+                                                                                                                Cutscene.stickmanLeft(g_Console, 28, j);
+                                                                                                                if (g_sChar.m_cLocation.X == 28 && g_sChar.m_cLocation.Y == j)
+                                                                                                                {
+                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                }
+                                                                                                                if (g_dphase2Time > 2.35)
+                                                                                                                {
+                                                                                                                    Cutscene.stickmanLeft(g_Console, 29, j);
+                                                                                                                    if (g_sChar.m_cLocation.X == 29 && g_sChar.m_cLocation.Y == j)
+                                                                                                                    {
+                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                    }
+                                                                                                                    if (g_dphase2Time > 2.40)
+                                                                                                                    {
+                                                                                                                        Cutscene.stickmanLeft(g_Console, 30, j);
+                                                                                                                        if (g_sChar.m_cLocation.X == 30 && g_sChar.m_cLocation.Y == j)
+                                                                                                                        {
+                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                        }
+                                                                                                                        if (g_dphase2Time > 2.45)
+                                                                                                                        {
+                                                                                                                            Cutscene.stickmanLeft(g_Console, 31, j);
+                                                                                                                            if (g_sChar.m_cLocation.X == 31 && g_sChar.m_cLocation.Y == j)
+                                                                                                                            {
+                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                            }
+                                                                                                                            if (g_dphase2Time > 2.50)
+                                                                                                                            {
+                                                                                                                                Cutscene.stickmanLeft(g_Console, 32, j);
+                                                                                                                                if (g_sChar.m_cLocation.X == 32 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                {
+                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                }
+                                                                                                                                if (g_dphase2Time > 2.55)
+                                                                                                                                {
+                                                                                                                                    Cutscene.stickmanLeft(g_Console, 33, j);
+                                                                                                                                    if (g_sChar.m_cLocation.X == 33 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                    {
+                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                    }
+                                                                                                                                    if (g_dphase2Time > 2.60)
+                                                                                                                                    {
+                                                                                                                                        Cutscene.stickmanLeft(g_Console, 34, j);
+                                                                                                                                        if (g_sChar.m_cLocation.X == 34 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                        {
+                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                        }
+                                                                                                                                        if (g_dphase2Time > 2.65)
+                                                                                                                                        {
+                                                                                                                                            Cutscene.stickmanLeft(g_Console, 35, j);
+                                                                                                                                            if (g_sChar.m_cLocation.X == 35 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                            {
+                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                            }
+                                                                                                                                            if (g_dphase2Time > 2.70)
+                                                                                                                                            {
+                                                                                                                                                Cutscene.stickmanLeft(g_Console, 36, j);
+                                                                                                                                                if (g_sChar.m_cLocation.X == 36 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                {
+                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                }
+                                                                                                                                                if (g_dphase2Time > 2.75)
+                                                                                                                                                {
+                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 37, j);
+                                                                                                                                                    if (g_sChar.m_cLocation.X == 37 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                    {
+                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                    }
+                                                                                                                                                    if (g_dphase2Time > 2.80)
+                                                                                                                                                    {
+                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 38, j);
+                                                                                                                                                        if (g_sChar.m_cLocation.X == 38 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                        {
+                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                        }
+                                                                                                                                                        if (g_dphase2Time > 2.85)
+                                                                                                                                                        {
+                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 39, j);
+                                                                                                                                                            if (g_sChar.m_cLocation.X == 39 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                            {
+                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                            }
+                                                                                                                                                            if (g_dphase2Time > 2.90)
+                                                                                                                                                            {
+                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 40, j);
+                                                                                                                                                                if (g_sChar.m_cLocation.X == 40 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                {
+                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                }
+                                                                                                                                                                if (g_dphase2Time > 2.95)
+                                                                                                                                                                {
+                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 41, j);
+                                                                                                                                                                    if (g_sChar.m_cLocation.X == 41 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                    {
+                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                    }
+                                                                                                                                                                    if (g_dphase2Time > 3.00)
+                                                                                                                                                                    {
+                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 42, j);
+                                                                                                                                                                        if (g_sChar.m_cLocation.X == 42 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                        {
+                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                        }
+                                                                                                                                                                        if (g_dphase2Time > 3.05)
+                                                                                                                                                                        {
+                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 43, j);
+                                                                                                                                                                            if (g_sChar.m_cLocation.X == 43 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                            {
+                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                            }
+                                                                                                                                                                            if (g_dphase2Time > 3.10)
+                                                                                                                                                                            {
+                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 44, j);
+                                                                                                                                                                                if (g_sChar.m_cLocation.X == 44 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                {
+                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                }
+                                                                                                                                                                                if (g_dphase2Time > 3.15)
+                                                                                                                                                                                {
+                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 45, j);
+                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 45 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                    {
+                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                    }
+                                                                                                                                                                                    if (g_dphase2Time > 3.20)
+                                                                                                                                                                                    {
+                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 46, j);
+                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 46 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                        {
+                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                        }
+                                                                                                                                                                                        if (g_dphase2Time > 3.25)
+                                                                                                                                                                                        {
+                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 47, j);
+                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 47 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                            {
+                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                            }
+                                                                                                                                                                                            if (g_dphase2Time > 3.30)
+                                                                                                                                                                                            {
+                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 48, j);
+                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 48 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                {
+                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                }
+                                                                                                                                                                                                if (g_dphase2Time > 3.35)
+                                                                                                                                                                                                {
+                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 49, j);
+                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 49 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                    if (g_dphase2Time > 3.40)
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 50, j);
+                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 50 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                        if (g_dphase2Time > 3.45)
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 51, j);
+                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 51 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                            if (g_dphase2Time > 3.50)
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 52, j);
+                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 52 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                                if (g_dphase2Time > 3.55)
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 53, j);
+                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 53 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                    if (g_dphase2Time > 3.60)
+                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 54, j);
+                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 54 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                        if (g_dphase2Time > 3.65)
+                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 55, j);
+                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 55 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                            if (g_dphase2Time > 3.70)
+                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 56, j);
+                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 56 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                if (g_dphase2Time > 3.75)
+                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 57, j);
+                                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 57 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                    if (g_dphase2Time > 3.80)
+                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 58, j);
+                                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 58 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                        if (g_dphase2Time > 3.85)
+                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 59, j);
+                                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 59 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                            if (g_dphase2Time > 3.90)
+                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 60, j);
+                                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 60 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                if (g_dphase2Time > 3.95)
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 61, j);
+                                                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 61 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                    if (g_dphase2Time > 4.00)
+                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 62, j);
+                                                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 62 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                        if (g_dphase2Time > 4.05)
+                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 63, j);
+                                                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 63 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                            if (g_dphase2Time > 4.10)
+                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 64, j);
+                                                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                if (g_dphase2Time > 4.15)
+                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 65, j);
+                                                                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                    if (g_dphase2Time > 4.20)
+                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 66, j);
+                                                                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                        if (g_dphase2Time > 4.25)
+                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 67, j);
+                                                                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 67 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                            if (g_dphase2Time > 4.30)
+                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 68, j);
+                                                                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 68 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                if (g_dphase2Time > 4.35)
+                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 69, j);
+                                                                                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 69 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                    if (g_dphase2Time > 4.40)
+                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 70, j);
+                                                                                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 70 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                        if (g_dphase2Time > 4.45)
+                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 71, j);
+                                                                                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 71 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                            if (g_dphase2Time > 4.50)
+                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 72, j);
+                                                                                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 72 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 5);
+                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                }
+                                                                                                                                                                                            }
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        }
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
                                                                                         }
                                                                                     }
                                                                                 }
@@ -5243,7 +5815,7 @@ void Update_phase2Battle()
         g_sLaser.startTimer = false;  
 
     }
-    if (g_dphase2Time > 2)
+    if (g_dphase2Time > 6)
     {
         g_sLaser.startTimer = true;
     }
@@ -5265,6 +5837,7 @@ void phase2Battle()
     {
         drawLaser(g_Console, 5);
         drawLaser2(g_Console, 2);
+        drawLaser3(g_Console, 3);
         //g_sLaser.resetTimer = false;
     }    
     

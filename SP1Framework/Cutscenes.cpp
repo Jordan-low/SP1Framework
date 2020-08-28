@@ -48,6 +48,26 @@ void Cutscenes::drawgridLaserLeft(Console& g_Console, int x, int y)
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x04);
 }
 
+void Cutscenes::stickmanLeft(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '>', 0x04);
+	c.X = x + 1;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x04);
+	c.X = x + 2;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x04);
+	c.X = x + 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x04);
+	c.X = x + 4;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x04);
+	c.X = x + 5;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x04);
+	c.X = x - 1;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x04);
+}
+
 void Cutscenes::cleargrid(Console& g_Console, int x, int y)
 {
 	COORD c;
