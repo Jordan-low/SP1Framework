@@ -680,6 +680,7 @@ void Update_starting_cutscene()
 
 void starting_cutscene()
 {
+    rMap.initialise(g_Console);
     COORD c;
     if (g_dStartScene > 0.5)
     {
