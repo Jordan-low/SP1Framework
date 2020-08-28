@@ -47,6 +47,8 @@ double resetTime;
 double playerDMGTime;
 double enemyDMGTime;
 double InvenTime;
+double playerInvenTime;
+double collectTime;
 double deathAnimation;
 
 
@@ -171,6 +173,9 @@ void init(void)
     g_sChar.InvenActive = false;
     g_sChar.itemActive = false;
     g_sInven.startTimer = false;
+    g_sInven.resetTimer = false;
+    g_sInven.showItemUsed = false;
+    g_sInven.showItemNotUsed = false;
     g_sChar.CP1 = false;
     g_sChar.CP2 = false;
     g_sChar.CP3 = false;
@@ -524,6 +529,8 @@ void update(double dt)
     playerDMGTime += dt;
     enemyDMGTime += dt;
     InvenTime += dt;
+    playerInvenTime += dt;
+    collectTime += dt;
     g_dslashWasp += dt;
     g_dkillWasp += dt;
     g_dslashPig += dt;
@@ -5069,6 +5076,7 @@ void renderMap_Townsquare()
 
 void renderMap_Protest_Area()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
@@ -5086,6 +5094,96 @@ void renderMap_Protest_Area()
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
+    }
+    if ((g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 3) || (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 5) || (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 6) || (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 5) || (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 9) || (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 8))
+    {
+        int BoxItemChance = 0;
+        if ((g_sChar.collected == false) && (g_sChar.startTimer == true))
+        {
+            if (BoxItemChance == 1)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 2)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 3)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 4)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 5)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 6)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+                }
+            }
+            else
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You got stickbugged.", 0x0F, 100);
+                }
+            }
+            g_sChar.showItem = false;
+            g_sChar.startTimer = false;
+            g_sChar.resetTimer = true;
+            collectTime = 0.0;
+            g_sChar.collected = true;
+        }
+    }
+    if ((collectTime > 3) && (g_sChar.collected == true))
+    {
+        g_sChar.collected == false;
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                          ", 0x0F, 100);
+        collectTime = 0.0;
     }
 }
 
@@ -5788,97 +5886,6 @@ void renderMap_DS1()
         g_sChar.m_cLocation.Y = 21;
         g_sChar.m_cLocation.X = 62;
     }
-    COORD c;
-    int BoxItemChance = 0;
-    BoxItemChance = (rand() % 5) + 1;
-    if (BoxItemChance == 0)
-    {
-        if (PlayerInv.pickup(item4))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item4->setItemName("Bread");
-        }
-        else {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Bread"), 100);
-
-        if (PlayerInv.pickup(item5))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item5->setItemName("Burger");
-        }
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Burger"), 100);
-
-        if (PlayerInv.pickup(item6))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item6->setItemName("Taco");
-        }
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Taco"), 100);
-
-        if (PlayerInv.pickup(item7))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item7->setItemName("Cake");
-        }
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Cake"), 100);
-
-        if (PlayerInv.pickup(item8))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item8->setItemName("Medicine");
-        }
-
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Medicine"), 100);
-    }
-
 }
 
 void renderMap_GuardStealth()
@@ -6676,7 +6683,7 @@ void RenderBattleScreen()
 
     }
 
-    /*
+    
     if (g_sChar.InvenActive == true)
     {
         rMap.Road2(g_Console, 3, 24, 74);
@@ -6843,48 +6850,37 @@ void RenderBattleScreen()
         c.Y = 27;
         g_Console.writeToBuffer(c, PlayerInv.checkInventory("Medicine"), 100);
 
-        //g_eGameState = S_Townsquare;
+        //g_eGameState = S_Townsquare;*/
     }
-    */
-    if (g_sChar.itemActive == true)
+    
+    if (g_sInven.startTimer == true && g_sChar.InvenActive == true && g_sChar.itemActive == true)
     {
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 13))))
         {
-            if (g_sInven.startTimer == true)
+            if (g_sChar.GetH() < 50)
             {
-                c.X = 5;
-                c.Y = 25;
-                g_Console.writeToBuffer(c, "Raw Meat was used.", 0x0F, 100);
+                UpdateHealth = g_sChar.GetH() + 5;
+                g_sInven.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
             }
-            UpdateHealth = g_sChar.GetH() + 5;
-            if (g_sChar.GetH() == 50)
+            else if (g_sChar.GetH() == 50)
             {
-                if (g_sInven.startTimer == true)
-                {
-                    c.X = 5;
-                    c.Y = 25;
-                    g_Console.writeToBuffer(c, "Raw Meat was not used.", 0x0F, 100);
-                }
+                g_sInven.showItemNotUsed = true;
             }
-            g_sChar.SetH(UpdateHealth);
-            if (UpdateHealth > 50)
+            else if (UpdateHealth > 50)
             {
                 g_sChar.SetH(50);
-                if (g_sInven.startTimer == true)
-                {
-                    c.X = 5;
-                    c.Y = 25;
-                    g_Console.writeToBuffer(c, "Raw Meat was not used.", 0x0F, 100);
-                }
+                g_sInven.showItemNotUsed = true;
             }
-            InvenTime = 0.0;
             g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+            InvenTime = 0.0;
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
+            playerInvenTime = 0.0;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 13))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 13))))
         {
-            g_sInven.startTimer = true;
             c.X = 5;
             c.Y = 25;
             g_Console.writeToBuffer(c, "Stinger was used.", 0x0F, 100);
@@ -6893,9 +6889,8 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 28))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 28))))
         {
-            g_sInven.startTimer = true;
             c.X = 5;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Guard Armor was used.", 100);
@@ -6904,7 +6899,7 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 28))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 28))))
         {
             g_sInven.startTimer = true;
             c.X = 5;
@@ -6924,7 +6919,7 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 46))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 46))))
         {
             g_sInven.startTimer = true;
             c.X = 5;
@@ -6945,13 +6940,12 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 46))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 46))))
         {
-            g_sInven.startTimer = true;
             c.X = 5;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Taco was used.", 100);
-            UpdateHealth = g_sChar.GetH() + 25;//hi
+            UpdateHealth = g_sChar.GetH() + 25;
             g_sChar.SetH(UpdateHealth);
             if (g_sChar.GetH() == 50)
             {
@@ -6966,7 +6960,7 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 61))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 61))))
         {
             g_sInven.startTimer = true;
             c.X = 5;
@@ -6980,9 +6974,14 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
         {
             //Poison Status
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+        {
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
@@ -7505,10 +7504,12 @@ void renderBoxes()
 void UpdateBattleScreen()
 {
     processUserInput();
-    if ((InvenTime > 2) && (g_sChar.itemActive == true))
+    if (g_sInven.resetTimer == true)
     {
-        g_sInven.startTimer = false;
-        InvenTime = 0;
+        if (InvenTime > 2)
+        {
+            g_sInven.startTimer = true;
+        }
     }
 
     if (g_sChar.resetTimer == true)
@@ -7517,6 +7518,26 @@ void UpdateBattleScreen()
         {
             g_sChar.startTimer = true;
         }
+    }
+
+    if ((playerInvenTime > 3) && (g_sInven.showItemUsed == true))
+    {
+        g_sInven.showItemUsed = false;
+        COORD c;
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        playerInvenTime = 0.0;
+    }
+
+    if ((playerInvenTime > 3) && (g_sInven.showItemNotUsed == true))
+    {
+        g_sInven.showItemNotUsed = false;
+        COORD c;
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        playerInvenTime = 0.0;
     }
     if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
     {

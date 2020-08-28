@@ -124,6 +124,10 @@ struct SGameChar : public Enemy
     bool entityDie;
     bool InvenActive;
     bool itemActive;
+    bool showItemUsed;
+    bool showItemNotUsed;
+    bool showItem;
+    bool collected;
     bool CP1;
     bool CP2;
     bool CP3;
