@@ -27,7 +27,9 @@ public:
     //animations for raymond battle phase 2
     void drawgridLaserRight(Console& g_Console, int x, int y);
     void drawgridLaserLeft(Console& g_Console, int x, int y);
-    
+    void stickmanLeft(Console& g_Console, int x, int y);
+
+
     //crowd animations for protest area
     void CrowdStandstill(Console& g_Console);
     void CrowdStandstillclear(Console& g_Console);
