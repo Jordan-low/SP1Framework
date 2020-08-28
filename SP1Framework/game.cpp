@@ -101,7 +101,7 @@ Map eMap;
 drawSprites Sprites;
 Cutscenes Cutscene;
 Dialogue Dialogues;
-Enemy Guardz;
+Entity Ent;
 Minigame mini;
 //Inventory Stuff
 Inventory PlayerInv;
@@ -123,6 +123,7 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sChar.entityDied = false;
     g_sLaser.faceLeft = false;
     laserTime = 0.0;
     g_sLaser.m_cLocation.X = 3;
@@ -224,6 +225,8 @@ void init(void)
     g_sChar.takenBackpack = false;
     g_sChar.takenExtinguisher = false;
     g_sChar.Orp_Dialogue = false;
+    g_sChar.animationPlayed = false;
+    g_sChar.enterArea = false;
 
     //Wire minigame
     g_sBox1.m_cLocation.X = 52;
@@ -256,7 +259,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_MENU_UI;
+    g_eGameState = S_phase2Battle;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -1983,6 +1986,8 @@ void Update_Dungeon_Cell()
     if (g_dDungeonTime > 38.7)
     {
         g_eGameState = S_Dungeon_Cell;
+        g_sChar.m_cLocation.X = 30;
+        g_sChar.m_cLocation.Y = 9;
     }
     processUserInput();
 }
@@ -1991,15 +1996,57 @@ void Dungeon_Cell_Animation()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_cell(g_Console);
-    COORD c;
-    COORD d;
-    renderCharacter();
+    COORD c; COORD d;
+    c.X = 13;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 4;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 13;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+
+    c.X = 66;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 73;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 75;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    //skull correct
+    c.X = 73;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 66;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+    c.X = 23;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 56;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 39;
+    c.Y = 22;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
     c.X = 5;
     c.Y = 26;
     d.X = 5;
     d.Y = 27;
     //drawing Robert
-    Cutscene.drawgrid(g_Console, 40, 13, (char)12);
+    Cutscene.drawgrid(g_Console, 40, 13, (char)1);
     if (g_dDungeonTime > 0.3)
     {
         //drawing Ell
@@ -2288,6 +2335,7 @@ void Update_IAF3()
 {
     if (g_dIAF3Time > 47)
     {
+        g_sChar.animationPlayed = true;
         g_eGameState = S_IAF3;
     }
     processUserInput();
@@ -3000,7 +3048,7 @@ void Dungeon_Stealth3_Animation()
 void Update_Boss_Room_Animation()
 {
 
-    if (g_sChar.nextDialogue == 999)
+    if (g_dBossTime > 48.9)
     {
         g_eGameState = S_Boss_Battle_Room;
     }
@@ -3008,8 +3056,6 @@ void Update_Boss_Room_Animation()
 }
 void Boss_Room_Animation()
 {
-   
-    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.boss_room(g_Console);
@@ -3022,13 +3068,13 @@ void Boss_Room_Animation()
     d.Y = 27;
     Cutscene.drawgrid(g_Console, 40, 21, 'H'); //Robert
     Cutscene.drawgrid(g_Console, 40, 3, 'R'); //Raymond
-    if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 0)
+    if (g_dBossTime > 1)
     {
         g_Console.writeToBuffer(c, "Raymond: It seems that the person I have been searching for", 0x0F);
         g_Console.writeToBuffer(d, "         came to me instead.", 0x0F); 
         g_sChar.nextDialogue++;
         
-        if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 1)
+        if (g_dBossTime > 5)
         {
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
@@ -4849,66 +4895,150 @@ void drawLaser(Console &g_Console, int j, int k)
     if (g_dphase2Time > 1)
     {
         Cutscene.drawgrid(g_Console, 2 + j, 2 + k, '\\');
+        if (g_sChar.m_cLocation.X == (2 + j) && g_sChar.m_cLocation.Y == (2 + k))
+        {
+            g_eGameState = S_Path_Area;
+        }
         if (g_dphase2Time > 0.05)
         {
             Cutscene.drawgrid(g_Console, 3 + j, 3 + k, '\\');
+            if (g_sChar.m_cLocation.X == (3 + j) && g_sChar.m_cLocation.Y == (3 + k))
+            {
+                g_eGameState = S_Path_Area;
+            }
             if (g_dphase2Time > 1.1)
             {
                 Cutscene.drawgrid(g_Console, 4 + j, 4 + k, '\\');
+                if (g_sChar.m_cLocation.X == (4 + j) && g_sChar.m_cLocation.Y == (4 + k))
+                {
+                    g_eGameState = S_Path_Area;
+                }
                 if (g_dphase2Time > 1.15 )
                 {
                     Cutscene.drawgridLaserRight(g_Console, 5 + j, 5 + k);
+                    if (g_sChar.m_cLocation.X == (5 + j) && g_sChar.m_cLocation.Y == (5 + k))
+                    {
+                        g_eGameState = S_Path_Area;
+                    }
                     if (g_dphase2Time > 1.20)
                     {
                         Cutscene.drawgridLaserRight(g_Console, 6 + j, 6 + k);
+                        if (g_sChar.m_cLocation.X == (6 + j) && g_sChar.m_cLocation.Y == (6 + k))
+                        {
+                            g_eGameState = S_Path_Area;
+                        }
                         if (g_dphase2Time > 1.25)
                         {
                             Cutscene.drawgridLaserRight(g_Console, 7 + j, 7 + k);
+                            if (g_sChar.m_cLocation.X == (7 + j) && g_sChar.m_cLocation.Y == (7 + k))
+                            {
+                                g_eGameState = S_Path_Area;
+                            }
                             if (g_dphase2Time > 1.30)
                             {
                                 Cutscene.drawgridLaserRight(g_Console, 8 + j, 8 + k);
+                                if (g_sChar.m_cLocation.X == (8 + j) && g_sChar.m_cLocation.Y == (8 + k))
+                                {
+                                    g_eGameState = S_Path_Area;
+                                }
                                 if (g_dphase2Time > 1.35)
                                 {
                                     Cutscene.drawgridLaserRight(g_Console, 9 + j, 9 + k);
+                                    if (g_sChar.m_cLocation.X == (9 + j) && g_sChar.m_cLocation.Y == (9 + k))
+                                    {
+                                        g_eGameState = S_Path_Area;
+                                    }
                                     if (g_dphase2Time > 1.40)
                                     {
                                         Cutscene.drawgridLaserRight(g_Console, 10 + j, 10 + k);
+                                        if (g_sChar.m_cLocation.X == (10 + j) && g_sChar.m_cLocation.Y == (10 + k))
+                                        {
+                                            g_eGameState = S_Path_Area;
+                                        }
                                         if (g_dphase2Time > 1.45)
                                         {
                                             Cutscene.drawgridLaserRight(g_Console, 11 + j, 11 + k);
+                                            if (g_sChar.m_cLocation.X == (11 + j) && g_sChar.m_cLocation.Y == (11 + k))
+                                            {
+                                                g_eGameState = S_Path_Area;
+                                            }
                                             if (g_dphase2Time > 1.50)
                                             {
                                                 Cutscene.drawgridLaserRight(g_Console, 12 + j, 12 + k);
+                                                if (g_sChar.m_cLocation.X == (12 + j) && g_sChar.m_cLocation.Y == (12 + k))
+                                                {
+                                                    g_eGameState = S_Path_Area;
+                                                }
                                                 if (g_dphase2Time > 1.55)
                                                 {
                                                     Cutscene.drawgridLaserRight(g_Console, 13 + j, 13 + k);
+                                                    if (g_sChar.m_cLocation.X == (13 + j) && g_sChar.m_cLocation.Y == (13 + k))
+                                                    {
+                                                        g_eGameState = S_Path_Area;
+                                                    }
                                                     if (g_dphase2Time > 1.60)
                                                     {
                                                         Cutscene.drawgridLaserRight(g_Console, 14 + j, 14 + k);
+                                                        if (g_sChar.m_cLocation.X == (14 + j) && g_sChar.m_cLocation.Y == (14 + k))
+                                                        {
+                                                            g_eGameState = S_Path_Area;
+                                                        }
                                                         if (g_dphase2Time > 1.65)
                                                         {
                                                             Cutscene.drawgridLaserRight(g_Console, 15 + j, 15 + k);
+                                                            if (g_sChar.m_cLocation.X == (15 + j) && g_sChar.m_cLocation.Y == (15 + k))
+                                                            {
+                                                                g_eGameState = S_Path_Area;
+                                                            }
                                                             if (g_dphase2Time > 1.70)
                                                             {
                                                                 Cutscene.drawgridLaserRight(g_Console, 16 + j, 16 + k);
+                                                                if (g_sChar.m_cLocation.X == (16 + j) && g_sChar.m_cLocation.Y == (16 + k))
+                                                                {
+                                                                    g_eGameState = S_Path_Area;
+                                                                }
                                                                 if (g_dphase2Time > 1.75)
                                                                 {
                                                                     Cutscene.drawgridLaserRight(g_Console, 17 + j, 17 + k);
+                                                                    if (g_sChar.m_cLocation.X == (17 + j) && g_sChar.m_cLocation.Y == (17 + k))
+                                                                    {
+                                                                        g_eGameState = S_Path_Area;
+                                                                    }
                                                                     if (g_dphase2Time > 1.80)
                                                                     {
                                                                         Cutscene.drawgridLaserRight(g_Console, 18 + j, 18 + k);
+                                                                        if (g_sChar.m_cLocation.X == (18 + j) && g_sChar.m_cLocation.Y == (18 + k))
+                                                                        {
+                                                                            g_eGameState = S_Path_Area;
+                                                                        }
                                                                         if (g_dphase2Time > 1.85)
                                                                         {
                                                                             Cutscene.drawgridLaserRight(g_Console, 19 + j, 19 + k);
+                                                                            if (g_sChar.m_cLocation.X == (19 + j) && g_sChar.m_cLocation.Y == (19 + k))
+                                                                            {
+                                                                                g_eGameState = S_Path_Area;
+                                                                            }
                                                                             if (g_dphase2Time > 1.90)
                                                                             {
                                                                                 Cutscene.drawgridLaserRight(g_Console, 20 + j, 20 + k);
+                                                                                if (g_sChar.m_cLocation.X == (20 + j) && g_sChar.m_cLocation.Y == (20 + k))
+                                                                                {
+                                                                                    g_eGameState = S_Path_Area;
+                                                                                }
                                                                                 if (g_dphase2Time > 1.95)
                                                                                 {
                                                                                     Cutscene.drawgridLaserRight(g_Console, 21 + j, 21 + k);
+                                                                                    if (g_sChar.m_cLocation.X == (21 + j) && g_sChar.m_cLocation.Y == (21 + k))
+                                                                                    {
+                                                                                        g_eGameState = S_Path_Area;
+                                                                                    }
                                                                                     if (g_dphase2Time > 2.00)
                                                                                     {
                                                                                         Cutscene.drawgridLaserRight(g_Console, 22 + j, 22 + k);
+                                                                                        if (g_sChar.m_cLocation.X == (22 + j) && g_sChar.m_cLocation.Y == (22 + k))
+                                                                                        {
+                                                                                            g_eGameState = S_Path_Area;
+                                                                                        }
                                                                                     }
                                                                                 }
                                                                             }
@@ -4935,19 +5065,16 @@ void Update_phase2Battle()
 {
     processUserInput();
     moveCharacter();
-    if (laserTime > 4)
+    if (laserTime > 1)
     {
-        g_sLaser.startTimer = true;
+        g_sLaser.startTimer = false;  
 
     }
-    if ((g_dphase2Time > 2) && (g_sLaser.resetTimer == true))
+    if (g_dphase2Time > 2)
     {
-        g_eGameState = S_Path_Area;
-        g_sLaser.startTimer = false;
-        g_sLaser.faceLeft = false;
-        laserTime = 0.0;
+        g_sLaser.startTimer = true;
     }
-    
+
 }
 void phase2Battle()
 {
@@ -4955,20 +5082,25 @@ void phase2Battle()
     rMap.Border(g_Console);
     //drawLaser(g_Console, 20, 0, 0);
     //drawLaser(g_Console, 40, 0);
+
     if (g_sLaser.startTimer == true)
     {
-        int randoms = rand() % 70 + 1;
         g_dphase2Time = 0.0;
         g_sLaser.resetTimer = true;
-        drawLaser(g_Console, 5, 0);
     }
-
+    if (g_sLaser.resetTimer == true)
+    {
+        drawLaser(g_Console, 5, 0);
+        //g_sLaser.resetTimer = false;
+    }    
+    
     rMap.boss_room(g_Console);
     int charHealth = g_sChar.GetH() - 5;
     g_sChar.SetH(charHealth);
     COORD c;
-    
     renderCharacter();
+
+
 
 }
 
@@ -5806,17 +5938,28 @@ void renderMap_Protest_Area()
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    c.X = 62;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&');
+
+    if (g_sChar.enterArea == true)
+    {
+        c.X = 62;
+        c.Y = 4;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'D');
+    }
+    if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 62)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Stealth_3;
+        g_sChar.m_cLocation.X = 69;
+        g_sChar.m_cLocation.Y = 3;
+    }
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
         g_dPathTime = 0.0;
         g_eGameState = S_Path_Area_Animation;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 21;
-    }
-    if (g_sChar.m_cLocation.Y == 62 && g_sChar.m_cLocation.X == 4)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
@@ -5914,11 +6057,22 @@ void renderMap_Protest_Area()
 
 void renderMap_Path_Area()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
 
+    if (g_sChar.animationPlayed == true)
+    {
+        int i = 77;
+        for (int j = 11; j < 15; j++)
+        {
+            c.X = i;
+            c.Y = j;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0A);
+        }
+    }
     //to OAF area
     if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44 || g_sChar.m_cLocation.X == 45))
     {
@@ -6135,6 +6289,7 @@ void renderMap_Dungeon_Cell()
         }
     }
     renderCharacter();  // renders the character into the buffer
+
     c.X = 13;
     c.Y = 10;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
@@ -6808,11 +6963,28 @@ void renderMap_GuardDirection()
 
 void renderMap_DS2()
 {
-
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth2(g_Console);
     renderCharacter();  // renders the character into the buffer
+    c.X = 8;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O');
+
+    c.X = 8;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, (char)12, 0x0F);
+
+    if ((g_sChar.m_cLocation.Y == 13) && (g_sChar.m_cLocation.X == 7) || (g_sChar.m_cLocation.Y == 12) && (g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 14) && (g_sChar.m_cLocation.X == 8))
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Ell: Avoid the guards and hide in the walls.");
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "     I'll get you out if you're in trouble, but don't count on me.");
+    }
     renderMap_GuardStealth();
     renderMap_GuardDirection();
     //back to DS1
@@ -6828,7 +7000,6 @@ void renderMap_DS2()
     {
         g_sChar.CP2 = false;
         g_sChar.CP3 = true;
-        g_dDungeonStealth3Time = 0.0;
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
@@ -6842,6 +7013,7 @@ void renderMap_DS3()
     rMap.dungeon_stealth3(g_Console);
     renderCharacter();  // renders the character into the buffer
     //back to DS2
+    g_sChar.enterArea = true;
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7))
     {
         g_dPathTime = 0.0;
@@ -6852,7 +7024,7 @@ void renderMap_DS3()
     //trigger animation
     if ((g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 57)
     {
-        g_dDungeonTime = 0.0;
+        g_dDungeonStealth3Time = 0.0;
         //must do count here, must get character to move after animation
         g_eGameState = S_Dungeon_Stealth3_Animation;
         g_sChar.m_cLocation.X = 60;
@@ -6861,6 +7033,7 @@ void renderMap_DS3()
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 5)
     {
         //ask if user wants to enter battle area
+        g_dBossTime = 0.0;
         g_eGameState = S_Boss_Room_Animation;
         g_sChar.m_cLocation.X = 40;
         g_sChar.m_cLocation.Y = 21;
@@ -7139,10 +7312,7 @@ void RenderBattleScreen()
                 int randHit = rand() % 4 + 1;
                 if (randHit == 1 || randHit == 2) // player gets hit
                 {
-                    int charhealth = g_sChar.GetH() - g_sMutantWasp.GetD(); // get player health
-                    string str_charhealth = to_string(charhealth);
-
-                    g_sChar.SetH(charhealth); // set player health to new health
+                    g_sChar.SetH(0); // set player health to new health
 
                     g_sChar.showEnemyDMG = true;
                     enemyDMGTime = 0.0;
@@ -7197,6 +7367,7 @@ void RenderBattleScreen()
                 {
                     g_dkillRobert = 0.0;
                     g_sChar.entityDie = true;
+                    g_sChar.entityDied = true;
                 }
 
             }
@@ -8021,11 +8192,23 @@ void UpdateBattleScreen()
         g_eGameState = S_Path_Area;
     }
 
-    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
+    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true) && (g_sChar.entityDied == false))
     {
+        g_sGuard.fight = false;
+        g_sGuard2.fight = false;
+        g_sGuard3.fight = false;
+        g_sMutantWasp.fight = false;
+        g_sMutantWasp2.fight = false;
+        g_sTutEnemy.fight = false;
+
         g_eGameState = S_Game_Over; // show game over screen after player die animation
     }
-
+    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true) && (g_sChar.entityDied == true))
+    {
+        g_dDungeonTime = 0.0;
+        g_eGameState = S_Dungeon_Cell_Animation;
+        g_sMutantWasp2.fight = false;
+    }
     if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
     {
         //g_eGameState = S_Townsquare;
@@ -10785,6 +10968,8 @@ void RenderGameOver()
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 22)) && ((g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40))))
         {
             g_bQuitGame = true;
+            g_sChar.m_cLocation.X = 4;
+            g_sChar.m_cLocation.Y = 18;
         }
 
     }
