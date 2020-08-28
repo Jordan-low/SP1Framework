@@ -56,7 +56,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -102,6 +102,7 @@
     <ClCompile Include="Poison.cpp" />
     <ClCompile Include="Raymond.cpp" />
     <ClCompile Include="Ally.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="TutEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +129,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Poison.h" />
     <ClInclude Include="Raymond.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="TutEnemy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
