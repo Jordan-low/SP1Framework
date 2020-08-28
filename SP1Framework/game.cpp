@@ -172,7 +172,7 @@ void init(void)
     g_sMutantWasp.SetH(25);
     g_sMutantWasp.SetD(5);
     g_sMutantWasp2.SetH(25);
-    g_sMutantWasp2.SetD(5);
+    g_sMutantWasp2.SetD(100);
 
     g_sChar.Poison = false;
     g_sRaymond.SetH(120);
@@ -253,10 +253,9 @@ void init(void)
 
 
     // Set precision for floating point output
-    g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_MENU_UI;
+    g_eGameState = S_Inside_Medical_Facility;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -606,6 +605,8 @@ void update(double dt)
 
         //Animations
     case S_Start_Animation: Update_starting_cutscene();
+        break;
+    case S_Protest_Area_Animation: Update_Protest_Area();
         break;
     case S_Path_Area_Animation: Update_Path_Area();
         break;
@@ -2285,7 +2286,7 @@ void Update_IAF3()
 {
     if (g_dIAF3Time > 47)
     {
-        g_eGameState = S_GAME;
+        g_eGameState = S_IAF3;
     }
     processUserInput();
 }
@@ -2549,7 +2550,7 @@ void Update_Medical_Facility_Animation()
 {
     if (g_dMedicalTime > 11.5)
     {
-        g_dMedical2Time = 0.0;
+        g_dMedicalTime = 0.0;
         g_sMutantWasp.fight = true;
         g_eGameState = S_BattleScreen;
     }
@@ -2710,6 +2711,7 @@ void Update_Medical_Facility_Part2_Animation()
 {
     if (g_dMedical2Time > 15.9)
     {
+        g_dDungeonTime = 0.0;
         g_eGameState = S_Dungeon_Cell_Animation;
     }
     processUserInput();
@@ -6074,10 +6076,13 @@ void renderMap_IAF4()
 }
 void renderMap_Inside_Medical_Facility()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.insideMedicalFacility(g_Console);
     renderCharacter();  // renders the character into the buffer
+   
+
     if ((g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {
         g_dPathTime = 0.0;
@@ -6085,10 +6090,30 @@ void renderMap_Inside_Medical_Facility()
         g_sChar.m_cLocation.X = 76;
         g_sChar.m_cLocation.Y = 12;
     }
-    if (g_sChar.m_cLocation.X == 10 && g_sChar.m_cLocation.Y == 11)
+    if ((g_sChar.m_cLocation.X == 33 && (g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 19)) || ((g_sChar.m_cLocation.X == 32 || g_sChar.m_cLocation.X == 34) && g_sChar.m_cLocation.Y == 20))
     {
+        g_dMedicalFightTime = 0.0;
         g_eGameState = S_Medical_Fight_Animation;
+        g_sChar.m_cLocation.X = 34;
+        g_sChar.m_cLocation.Y = 12;
     }
+    if (g_sChar.m_cLocation.X == 19 && g_sChar.m_cLocation.Y == 12)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Nurse: Sorry, we're busy dealing with the patients at the moment.", 0x0F, 100);
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "       Please leave.", 0x0F, 100);
+    }
+    if ((g_sChar.m_cLocation.X == 22 && (g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13)) || ((g_sChar.m_cLocation.X == 21 || g_sChar.m_cLocation.X == 23) && g_sChar.m_cLocation.Y == 12))
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Nurse: What are you doing behind the counter? This is for", 0x0F, 100);
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "       staff only!!", 0x0F, 100);
+    }
+
 }
 //change this gamestate
 void renderMap_Dungeon_Cell()
