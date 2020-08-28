@@ -7,8 +7,8 @@
 #include <iomanip>
 #include <sstream>
 #include "Map.h"
-#include "Andrew's Item.h"
-#include "Andrew's Inventory.h"
+#include "Item.h"
+#include "Inventory.h"
 #include "Cutscenes.h"
 #include "Dialogue.h"
 #include "drawSprites.h"
@@ -55,6 +55,7 @@ double deathAnimation;
 double laserTime;
 double laserTime2;
 double laserTime3;
+double movingBlockTime;
 int randnum;
 int randnum2;
 int randnum3;
@@ -66,6 +67,10 @@ int randnum8;
 int randstickman;
 int randstickman2;
 int randstickman3;
+int randBlock;
+int randBlock2;
+int randBlock3;
+int randCount;
 
 bool music;
 Sound s;
@@ -107,6 +112,7 @@ SGameChar   g_sBox6;
 SGameChar   g_sLaser;
 SGameChar   g_sLaser2;
 SGameChar   g_sLaser3;
+SGameChar   g_sMovingBlock;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -139,6 +145,7 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    randCount = 0;
     g_sChar.entityDied = false;
     g_sLaser.m_cLocation.X = 3;
     g_sLaser.m_cLocation.Y = 2;
@@ -270,6 +277,7 @@ void init(void)
     g_sLaser.startTimer = false;
     g_sLaser2.startTimer = false;
     g_sLaser3.startTimer = false;
+    g_sMovingBlock.startTimer = false;
 
 
     // Set precision for floating point output
@@ -576,6 +584,7 @@ void update(double dt)
     laserTime += dt;
     laserTime2 += dt;
     laserTime3 += dt;
+    movingBlockTime += dt;
 
     switch (g_eGameState)
     {
@@ -4907,7 +4916,7 @@ void killTutWasp()
         }
     }
 }
-void drawLaser(Console & g_Console, int j)
+void drawLaser(Console& g_Console, int j)
 {
     if (laserTime3 > 1.00)
     {
@@ -5108,7 +5117,7 @@ void drawLaser(Console & g_Console, int j)
     }
 }
 
-void drawLaser2(Console & g_Console, int j)
+void drawLaser2(Console& g_Console, int j)
 {
     if (laserTime2 > 0)
     {
@@ -5297,10 +5306,7 @@ void drawLaser2(Console & g_Console, int j)
                 }
             }
         }
-        
-
     }
-    
 }
 
 
@@ -5875,6 +5881,359 @@ void drawLaser3(Console& g_Console, int j)
         }
     }
 }
+
+
+void drawMovingBlock(Console& g_Console, int j)
+{
+    if (movingBlockTime > 1)
+    {
+        Cutscene.movingBlock(g_Console, 2 + j, 28);
+        if (movingBlockTime > 1.1)
+        {
+            Cutscene.movingBlock(g_Console, 2 + j, 27);
+            if (movingBlockTime > 1.2)
+            {
+                Cutscene.movingBlock(g_Console, 2 + j, 26);
+                if (movingBlockTime > 1.3)
+                {
+                    Cutscene.movingBlock(g_Console, 2 + j, 25);
+                    if (movingBlockTime > 1.4)
+                    {
+                        Cutscene.movingBlock(g_Console, 2 + j, 24);
+                        if (movingBlockTime > 1.5)
+                        {
+                            Cutscene.movingBlock(g_Console, 2 + j, 25);
+                            if (movingBlockTime > 1.6)
+                            {
+                                Cutscene.movingBlock(g_Console, 2 + j, 26);
+                                if (movingBlockTime > 1.7)
+                                {
+                                    Cutscene.movingBlock(g_Console, 2 + j, 25);
+                                    if (movingBlockTime > 1.8)
+                                    {
+                                        Cutscene.movingBlock(g_Console, 2 + j, 24);
+                                        if (movingBlockTime > 1.9)
+                                        {
+                                            Cutscene.movingBlock(g_Console, 2 + j, 25);
+                                            if (movingBlockTime > 2.0)
+                                            {
+                                                Cutscene.movingBlock(g_Console, 2 + j, 26);
+                                                if (movingBlockTime > 2.1)
+                                                {
+                                                    Cutscene.movingBlock(g_Console, 2 + j, 25);
+                                                    if (movingBlockTime > 2.2)
+                                                    {
+                                                        Cutscene.movingBlock(g_Console, 2 + j, 24);
+                                                        if (movingBlockTime > 2.3)
+                                                        {
+                                                            Cutscene.movingBlock(g_Console, 2 + j, 23);
+                                                            if (movingBlockTime > 2.35)
+                                                            {
+                                                                Cutscene.movingBlock(g_Console, 2 + j, 22);
+                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                {
+                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == 22)
+                                                                    {
+                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                    }
+                                                                }
+                                                                if (movingBlockTime > 2.40)
+                                                                {
+                                                                    Cutscene.movingBlock(g_Console, 2 + j, 21);
+                                                                    for (int n = 21; n < 23; n++)
+                                                                    {
+                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                        {
+                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                            {
+                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    if (movingBlockTime > 2.45)
+                                                                    {
+                                                                        Cutscene.movingBlock(g_Console, 2 + j, 20);
+                                                                        for (int n = 20; n < 23; n++)
+                                                                        {
+                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                            {
+                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                {
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        if (movingBlockTime > 2.5)
+                                                                        {
+                                                                            Cutscene.movingBlock(g_Console, 2 + j, 19);
+                                                                            for (int n = 19; n < 23; n++)
+                                                                            {
+                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                {
+                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                    {
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            if (movingBlockTime > 2.55)
+                                                                            {
+                                                                                Cutscene.movingBlock(g_Console, 2 + j, 18);
+                                                                                for (int n = 18; n < 23; n++)
+                                                                                {
+                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                    {
+                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                        {
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                if (movingBlockTime > 2.6)
+                                                                                {
+                                                                                    Cutscene.movingBlock(g_Console, 2 + j, 17);
+                                                                                    for (int n = 17; n < 23; n++)
+                                                                                    {
+                                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                                        {
+                                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                            {
+                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                    if (movingBlockTime > 2.65)
+                                                                                    {
+                                                                                        Cutscene.movingBlock(g_Console, 2 + j, 16);
+                                                                                        for (int n = 16; n < 23; n++)
+                                                                                        {
+                                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                                            {
+                                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                {
+                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                        if (movingBlockTime > 2.7)
+                                                                                        {
+                                                                                            Cutscene.movingBlock(g_Console, 2 + j, 15);
+                                                                                            for (int n = 15; n < 23; n++)
+                                                                                            {
+                                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                {
+                                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                    {
+                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                            if (movingBlockTime > 2.75)
+                                                                                            {
+                                                                                                Cutscene.movingBlock(g_Console, 2 + j, 14);
+                                                                                                for (int n = 14; n < 23; n++)
+                                                                                                {
+                                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                    {
+                                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                        {
+                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                                if (movingBlockTime > 2.8)
+                                                                                                {
+                                                                                                    Cutscene.movingBlock(g_Console, 2 + j, 13);
+                                                                                                    for (int n = 13; n < 23; n++)
+                                                                                                    {
+                                                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                        {
+                                                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                            {
+                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                    if (movingBlockTime > 2.85)
+                                                                                                    {
+                                                                                                        Cutscene.movingBlock(g_Console, 2 + j, 12);
+                                                                                                        for (int n = 12; n < 23; n++)
+                                                                                                        {
+                                                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                            {
+                                                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                {
+                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                        if (movingBlockTime > 2.9)
+                                                                                                        {
+                                                                                                            Cutscene.movingBlock(g_Console, 2 + j, 11);
+                                                                                                            for (int n = 11; n < 23; n++)
+                                                                                                            {
+                                                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                {
+                                                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                    {
+                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                            if (movingBlockTime > 2.95)
+                                                                                                            {
+                                                                                                                Cutscene.movingBlock(g_Console, 2 + j, 10);
+                                                                                                                for (int n = 10; n < 23; n++)
+                                                                                                                {
+                                                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                    {
+                                                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                        {
+                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                if (movingBlockTime > 3.00)
+                                                                                                                {
+                                                                                                                    Cutscene.movingBlock(g_Console, 2 + j, 9);
+                                                                                                                    for (int n = 9; n < 23; n++)
+                                                                                                                    {
+                                                                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                        {
+                                                                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                            {
+                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                    if (movingBlockTime > 3.05)
+                                                                                                                    {
+                                                                                                                        Cutscene.movingBlock(g_Console, 2 + j, 8);
+                                                                                                                        for (int n = 8; n < 23; n++)
+                                                                                                                        {
+                                                                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                            {
+                                                                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                {
+                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                        if (movingBlockTime > 3.1)
+                                                                                                                        {
+                                                                                                                            Cutscene.movingBlock(g_Console, 2 + j, 7);
+                                                                                                                            for (int n = 7; n < 23; n++)
+                                                                                                                            {
+                                                                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                {
+                                                                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                    {
+                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                            if (movingBlockTime > 3.15)
+                                                                                                                            {
+                                                                                                                                Cutscene.movingBlock(g_Console, 2 + j, 6);
+                                                                                                                                for (int n = 6; n < 23; n++)
+                                                                                                                                {
+                                                                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                    {
+                                                                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                        {
+                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                                if (movingBlockTime > 3.20)
+                                                                                                                                {
+                                                                                                                                    Cutscene.movingBlock(g_Console, 2 + j, 5);
+                                                                                                                                    for (int n = 5; n < 23; n++)
+                                                                                                                                    {
+                                                                                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                        {
+                                                                                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                            {
+                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                    if (movingBlockTime > 3.25)
+                                                                                                                                    {
+                                                                                                                                        Cutscene.movingBlock(g_Console, 2 + j, 4);
+                                                                                                                                        for (int n = 4; n < 23; n++)
+                                                                                                                                        {
+                                                                                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                            {
+                                                                                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                                {
+                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                        if (movingBlockTime > 3.30)
+                                                                                                                                        {
+                                                                                                                                            Cutscene.movingBlock(g_Console, 2 + j, 3);
+                                                                                                                                            for (int n = 3; n < 23; n++)
+                                                                                                                                            {
+                                                                                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                                {
+                                                                                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                                    {
+                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                            if (movingBlockTime > 3.35)
+                                                                                                                                            {
+                                                                                                                                                Cutscene.movingBlock(g_Console, 2 + j, 2);
+                                                                                                                                                for (int n = 2; n < 23; n++)
+                                                                                                                                                {
+                                                                                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                                    {
+                                                                                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                                        {
+                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                        }
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 void drawVertLaser(Console& g_Console, int k)
 {
     if (g_dphase2Time > 1)
@@ -5972,6 +6331,7 @@ void Update_phase2Battle()
         g_sLaser.startTimer = false;
         g_sLaser2.startTimer = false;
         g_sLaser3.startTimer = false;
+        g_sMovingBlock.startTimer = false;
     }
     if (g_dphase2Time > 5) // stickman
     {
@@ -5987,7 +6347,11 @@ void Update_phase2Battle()
     {
         g_sLaser3.startTimer = true;
         g_sLaser3.counter = true;
-
+    }
+    if (movingBlockTime > 4) //block thing
+    {
+        g_sMovingBlock.startTimer = true;
+        g_sMovingBlock.counter = true;
     }
 }
 void phase2Battle()
@@ -6000,6 +6364,12 @@ void phase2Battle()
         music = true;
     }
     */
+    /*while (music == false)
+    {
+        PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
+        music = true;
+    }*/
+
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     COORD c;
@@ -6009,7 +6379,7 @@ void phase2Battle()
     g_Console.writeToBuffer(c, "Your Health: " + charHealth, 0x0D, 100);
     //drawLaser(g_Console, 20, 0, 0);
     //drawLaser(g_Console, 40, 0);
-
+    /*
     if (g_sLaser.startTimer == true) // stickman work
     {
         g_dphase2Time = 0.0;
@@ -6038,7 +6408,7 @@ void phase2Battle()
         //drawLaser2(g_Console, 2);
         //g_sLaser.resetTimer = false;
     }
-    
+
     if (g_sLaser2.startTimer == true) // stickman work
     {
         laserTime2 = 0.0;
@@ -6082,7 +6452,7 @@ void phase2Battle()
             randnum5 = rand() % 70 + 1;
             randnum6 = rand() % 70 + 1;
             randnum7 = rand() % 70 + 1;
-            randnum8 = rand() % 70 + 1;            
+            randnum8 = rand() % 70 + 1;
             g_sLaser3.counter = false;
         }
 
@@ -6097,6 +6467,59 @@ void phase2Battle()
         //drawVertLaser(g_Console, 0);
 
         //g_sLaser.resetTimer = false;
+    }
+    */
+    if (g_sMovingBlock.startTimer == true) // stickman work
+    {
+        movingBlockTime = 0.0;
+        g_sMovingBlock.resetTimer = true;
+    }
+    if (g_sMovingBlock.resetTimer == true)
+    {
+        if (g_sMovingBlock.counter == true)
+        {
+            randBlock = rand() % 69 + 2;
+            randBlock2 = rand() % 69 + 2;
+            randBlock3 = rand() % 69 + 2;
+            g_sMovingBlock.counter = false;
+            /*
+            if (randCount != 3)
+            {
+                for (int i = randBlock; i < randBlock + 9; i++)
+                {
+                    if ((i % randBlock2 != 0) && (i % randBlock3 != 0))
+                    {
+                        randCount++;
+                    }
+                }
+                for (int i = randBlock2; i < randBlock2 + 9; i++)
+                {
+                    if ((i % randBlock != 0) && (i % randBlock3 != 0))
+                    {
+                        randCount++;
+                    }
+                }
+                for (int i = randBlock3; i < randBlock3 + 9; i++)
+                {
+                    if ((i % randBlock2 != 0) && (i % randBlock != 0))
+                    {
+                        randCount++;
+                    }
+                }
+            }
+            if (randCount == 3)
+            {
+                g_eGameState = S_Path_Area;
+                g_sMovingBlock.counter = false;
+            }
+            */
+
+
+        }
+        drawMovingBlock(g_Console, randBlock);
+        drawMovingBlock(g_Console, randBlock2);
+        drawMovingBlock(g_Console, randBlock3);
+
     }
     renderCharacter();
     rMap.boss_room(g_Console);

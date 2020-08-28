@@ -1,13 +1,22 @@
 #pragma once
-#include "Items.h"
-//j
-/*class Inventory
+#include "Item.h"
+#include "string"
+
+class Inventory : public Item
 {
 private:
-	Items **items;
+	Item* playerItems[8];
+	int Quantity;
+	const int MAX = 8;
 
 public:
 	Inventory();
-	virtual ~Inventory();
-};*/
-
+	//void setInventory(std::string n, int q);
+	//std::string getNameID();
+	//int getQuantity();
+	//void updateInventory();
+	int checkInventory(std::string n);
+	~Inventory();
+	bool pickup(Item* add);
+	bool Consumed(Item* use);
+};

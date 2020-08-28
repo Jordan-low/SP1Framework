@@ -251,7 +251,7 @@ void drawVertLaser(Console& g_Console, int k);
 void drawLaser(Console& g_Console, int j);
 void drawLaser2(Console& g_Console, int j);
 void drawLaser3(Console& g_Console, int j);
-
+void drawMovingBlock(Console& g_Console, int j);
 
 //Raymond Battle Paths
 void Update_phase2Battle();

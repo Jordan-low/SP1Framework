@@ -45,21 +45,6 @@
     <ClCompile Include="Damage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TutEnemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Raymond.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Pig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MutantWasp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Guard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,34 +54,22 @@
     <ClCompile Include="Ally.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Poison.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Items.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Consumable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Dialogue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Minigame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Andrew%27s Inventory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Andrew%27s Item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="drawSprites.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,25 +89,7 @@
     <ClInclude Include="Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Damage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TutEnemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Raymond.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MutantWasp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Guard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
@@ -143,19 +98,7 @@
     <ClInclude Include="Cutscenes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ally.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Poison.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Items.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Consumable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dialogue.h">
@@ -164,16 +107,16 @@
     <ClInclude Include="Minigame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Andrew%27s Inventory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Andrew%27s Item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="drawSprites.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
