@@ -664,6 +664,7 @@ void Update_starting_animation()
 
 void starting_animation()
 {
+    rMap.initialise(g_Console);
     COORD c;
     if (g_dStartScene > 0.5)
     {
