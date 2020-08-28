@@ -41,11 +41,14 @@ double g_dkillRobert;
 double g_dslashTutWasp;
 double g_dkillTutWasp;
 double GuardDetectTime;
+double g_dphase2Time;
 double startTime;
 double resetTime;
 double playerDMGTime;
 double enemyDMGTime;
 double InvenTime;
+double playerInvenTime;
+double collectTime;
 double deathAnimation;
 
 
@@ -169,6 +172,9 @@ void init(void)
     g_sChar.InvenActive = false;
     g_sChar.itemActive = false;
     g_sInven.startTimer = false;
+    g_sInven.resetTimer = false;
+    g_sInven.showItemUsed = false;
+    g_sInven.showItemNotUsed = false;
     g_sChar.CP1 = false;
     g_sChar.CP2 = false;
     g_sChar.CP3 = false;
@@ -241,7 +247,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Path_Area_Animation;
+    g_eGameState = S_Medical_Facility_Animation;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -523,6 +529,8 @@ void update(double dt)
     playerDMGTime += dt;
     enemyDMGTime += dt;
     InvenTime += dt;
+    playerInvenTime += dt;
+    collectTime += dt;
     g_dslashWasp += dt;
     g_dkillWasp += dt;
     g_dslashPig += dt;
@@ -531,8 +539,6 @@ void update(double dt)
     g_dkillRaymond += dt;
     g_dslashRobert += dt;
     g_dkillRobert += dt;
-    g_dslashTutWasp += dt;
-    g_dkillTutWasp += dt;
 
 
     switch (g_eGameState)
@@ -549,7 +555,7 @@ void update(double dt)
         break;
     case S_GAME: updateGame();
         break;
-    //Areas of the game
+        //Areas of the game
     case S_Townsquare: updateGame();
         break;
     case S_Protest_Area: updateGame();
@@ -582,7 +588,7 @@ void update(double dt)
     case S_wireGame: updateGame();
         break;
 
-    //Animations
+        //Animations
     case S_Path_Area_Animation: Update_Path_Area();
         break;
     case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
@@ -602,9 +608,9 @@ void update(double dt)
     case S_BattleScreen: UpdateBattleScreen();
         break;
 
-    //Battle Animations
-    //case S_SlashGuard: Update_slashGuard();
-        //break;
+        //Battle Animations
+        //case S_SlashGuard: Update_slashGuard();
+            //break;
     case S_KillGuard: Update_killGuard();
         break;
     case S_slashWasp: Update_slashWasp();
@@ -625,7 +631,11 @@ void update(double dt)
         break;
     case S_slashTutWasp: Update_slashTutWasp();
         break;
-    case S_killTutWasp: killTutWasp();
+    case S_killTutWasp: Update_killTutWasp();
+        break;
+
+        //Battle Phase 2 Raymond
+    case S_phase2Battle: Update_phase2Battle();
         break;
     }
 }
@@ -2688,7 +2698,6 @@ void Update_killGuard()
   //  }
     processUserInput();
 }
-
 void killGuard()
 {
     //rMap.initialise(g_Console);
@@ -4058,7 +4067,7 @@ void slashTutWasp()
         }
     }
 }
-void Update_killTuTWasp()
+void Update_killTutWasp()
 {
     if (g_dkillTutWasp > 3)
     {
@@ -4118,6 +4127,110 @@ void killTutWasp()
                                                         if (g_dkillTutWasp > 2.60)
                                                         {
                                                             Cutscene.clearSpriteLine(g_Console, 15);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Update_phase2Battle()
+{
+    if (g_dphase2Time > 100)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+void phase2Battle()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.boss_room(g_Console);
+    COORD c;
+    renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+
+    if (g_dphase2Time > 1)
+    {
+        Cutscene.drawgrid(g_Console, 2, 2, '\\');
+        if (g_dphase2Time > 1.05)
+        {
+            Cutscene.drawgrid(g_Console, 3, 3, '\\');
+            if (g_dphase2Time > 1.1)
+            {
+                Cutscene.drawgrid(g_Console, 4, 4, '\\');
+                if (g_dphase2Time > 1.15)
+                {
+                    Cutscene.drawgridLaserRight(g_Console, 5, 5);
+                    if (g_dphase2Time > 1.20)
+                    {
+                        Cutscene.drawgridLaserRight(g_Console, 6, 6);
+                        if (g_dphase2Time > 1.25)
+                        {
+                            Cutscene.drawgridLaserRight(g_Console, 7, 7);
+                            if (g_dphase2Time > 1.30)
+                            {
+                                Cutscene.drawgridLaserRight(g_Console, 8, 8);
+                                if (g_dphase2Time > 1.35)
+                                {
+                                    Cutscene.drawgridLaserRight(g_Console, 9, 9);
+                                    if (g_dphase2Time > 1.40)
+                                    {
+                                        Cutscene.drawgridLaserRight(g_Console, 10, 10);
+                                        if (g_dphase2Time > 1.45)
+                                        {
+                                            Cutscene.drawgridLaserRight(g_Console, 11, 11);
+                                            if (g_dphase2Time > 1.50)
+                                            {
+                                                Cutscene.drawgridLaserRight(g_Console, 12, 12);
+                                                if (g_dphase2Time > 1.55)
+                                                {
+                                                    Cutscene.drawgridLaserRight(g_Console, 13, 13);
+                                                    if (g_dphase2Time > 1.60)
+                                                    {
+                                                        Cutscene.drawgridLaserRight(g_Console, 14, 14);
+                                                        if (g_dphase2Time > 1.65)
+                                                        {
+                                                            Cutscene.drawgridLaserRight(g_Console, 15, 15);
+                                                            if (g_dphase2Time > 1.70)
+                                                            {
+                                                                Cutscene.drawgridLaserRight(g_Console, 16, 16);
+                                                                if (g_dphase2Time > 1.75)
+                                                                {
+                                                                    Cutscene.drawgridLaserRight(g_Console, 17, 17);
+                                                                    if (g_dphase2Time > 1.80)
+                                                                    {
+                                                                        Cutscene.drawgridLaserRight(g_Console, 18, 18);
+                                                                        if (g_dphase2Time > 1.85)
+                                                                        {
+                                                                            Cutscene.drawgridLaserRight(g_Console, 19, 19);
+                                                                            if (g_dphase2Time > 1.90)
+                                                                            {
+                                                                                Cutscene.drawgridLaserRight(g_Console, 20, 20);
+                                                                                if (g_dphase2Time > 1.95)
+                                                                                {
+                                                                                    Cutscene.drawgridLaserRight(g_Console, 21, 21);
+                                                                                    if (g_dphase2Time > 2.00)
+                                                                                    {
+                                                                                        Cutscene.drawgridLaserRight(g_Console, 22, 22);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -4697,6 +4810,10 @@ void render()
         break;
     case S_killTutWasp: killTutWasp();
         break;
+
+        //Raymond phase 2 battle
+    case S_phase2Battle: phase2Battle();
+        break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
@@ -4957,6 +5074,7 @@ void renderMap_Townsquare()
 
 void renderMap_Protest_Area()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
@@ -4974,6 +5092,96 @@ void renderMap_Protest_Area()
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
+    }
+    if ((g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 3) || (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 5) || (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 6) || (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 5) || (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 9) || (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 8))
+    {
+        int BoxItemChance = 0;
+        if ((g_sChar.collected == false) && (g_sChar.startTimer == true))
+        {
+            if (BoxItemChance == 1)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 2)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 3)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 4)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 5)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 6)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+                }
+            }
+            else
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You got stickbugged.", 0x0F, 100);
+                }
+            }
+            g_sChar.showItem = false;
+            g_sChar.startTimer = false;
+            g_sChar.resetTimer = true;
+            collectTime = 0.0;
+            g_sChar.collected = true;
+        }
+    }
+    if ((collectTime > 3) && (g_sChar.collected == true))
+    {
+        g_sChar.collected == false;
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                          ", 0x0F, 100);
+        collectTime = 0.0;
     }
 }
 
@@ -5676,97 +5884,6 @@ void renderMap_DS1()
         g_sChar.m_cLocation.Y = 21;
         g_sChar.m_cLocation.X = 62;
     }
-    COORD c;
-    int BoxItemChance = 0;
-    BoxItemChance = (rand() % 5) + 1;
-    if (BoxItemChance == 0)
-    {
-        if (PlayerInv.pickup(item4))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item4->setItemName("Bread");
-        }
-        else {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Bread"), 100);
-
-        if (PlayerInv.pickup(item5))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item5->setItemName("Burger");
-        }
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Burger"), 100);
-
-        if (PlayerInv.pickup(item6))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item6->setItemName("Taco");
-        }
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Taco"), 100);
-
-        if (PlayerInv.pickup(item7))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item7->setItemName("Cake");
-        }
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Cake"), 100);
-
-        if (PlayerInv.pickup(item8))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item8->setItemName("Medicine");
-        }
-
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Medicine"), 100);
-    }
-
 }
 
 void renderMap_GuardStealth()
@@ -5798,6 +5915,7 @@ void update_GuardDirection()
         g_sChar.faceLeft = false;
         g_sChar.faceRight = true;
     }
+
     if (GuardDetectTime > 8)
     {
         g_sGuard4.startTimer = true;
@@ -5935,7 +6053,6 @@ void renderMap_DS2()
     rMap.dungeon_stealth2(g_Console);
     renderCharacter();  // renders the character into the buffer
     renderMap_GuardStealth();
-
     renderMap_GuardDirection();
     //back to DS1
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8))
@@ -6657,7 +6774,7 @@ void RenderBattleScreen()
 
     }
 
-    /*
+    
     if (g_sChar.InvenActive == true)
     {
         rMap.Road2(g_Console, 3, 24, 74);
@@ -6824,48 +6941,37 @@ void RenderBattleScreen()
         c.Y = 27;
         g_Console.writeToBuffer(c, PlayerInv.checkInventory("Medicine"), 100);
 
-        //g_eGameState = S_Townsquare;
+        //g_eGameState = S_Townsquare;*/
     }
-    */
-    if (g_sChar.itemActive == true)
+    
+    if (g_sInven.startTimer == true && g_sChar.InvenActive == true && g_sChar.itemActive == true)
     {
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 13))))
         {
-            if (g_sInven.startTimer == true)
+            if (g_sChar.GetH() < 50)
             {
-                c.X = 5;
-                c.Y = 25;
-                g_Console.writeToBuffer(c, "Raw Meat was used.", 0x0F, 100);
+                UpdateHealth = g_sChar.GetH() + 5;
+                g_sInven.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
             }
-            UpdateHealth = g_sChar.GetH() + 5;
-            if (g_sChar.GetH() == 50)
+            else if (g_sChar.GetH() == 50)
             {
-                if (g_sInven.startTimer == true)
-                {
-                    c.X = 5;
-                    c.Y = 25;
-                    g_Console.writeToBuffer(c, "Raw Meat was not used.", 0x0F, 100);
-                }
+                g_sInven.showItemNotUsed = true;
             }
-            g_sChar.SetH(UpdateHealth);
-            if (UpdateHealth > 50)
+            else if (UpdateHealth > 50)
             {
                 g_sChar.SetH(50);
-                if (g_sInven.startTimer == true)
-                {
-                    c.X = 5;
-                    c.Y = 25;
-                    g_Console.writeToBuffer(c, "Raw Meat was not used.", 0x0F, 100);
-                }
+                g_sInven.showItemNotUsed = true;
             }
-            InvenTime = 0.0;
             g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+            InvenTime = 0.0;
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
+            playerInvenTime = 0.0;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 13))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 13))))
         {
-            g_sInven.startTimer = true;
             c.X = 5;
             c.Y = 25;
             g_Console.writeToBuffer(c, "Stinger was used.", 0x0F, 100);
@@ -6874,9 +6980,8 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 28))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 28))))
         {
-            g_sInven.startTimer = true;
             c.X = 5;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Guard Armor was used.", 100);
@@ -6885,7 +6990,7 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 28))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 28))))
         {
             g_sInven.startTimer = true;
             c.X = 5;
@@ -6905,7 +7010,7 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 46))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 46))))
         {
             g_sInven.startTimer = true;
             c.X = 5;
@@ -6926,13 +7031,12 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 46))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 46))))
         {
-            g_sInven.startTimer = true;
             c.X = 5;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Taco was used.", 100);
-            UpdateHealth = g_sChar.GetH() + 25;//hi
+            UpdateHealth = g_sChar.GetH() + 25;
             g_sChar.SetH(UpdateHealth);
             if (g_sChar.GetH() == 50)
             {
@@ -6947,7 +7051,7 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 61))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 61))))
         {
             g_sInven.startTimer = true;
             c.X = 5;
@@ -6961,9 +7065,14 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
         {
             //Poison Status
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+        {
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
@@ -7570,6 +7679,82 @@ void renderBoxes()
     g_Console.writeToBuffer(g_sBox6.m_cLocation, '[', 0x0A);
 }
 
+void UpdateBattleScreen()
+{
+    processUserInput();
+    if ((InvenTime > 2) && (g_sChar.itemActive == true))
+    {
+        g_sInven.startTimer = false;
+        InvenTime = 0;
+    }
+
+    if (g_sChar.resetTimer == true)
+    {
+        if (startTime > 5)
+        {
+            g_sChar.startTimer = true;
+        }
+    }
+    if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
+    {
+        g_sGuard.fight = false; // to stop the fighting after enemy die
+        g_sGuard.entityDie = true; // make this bool true so that the character will move to (-1,-1)
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+        g_sChar.unlockDoorDS1 = true;
+    }
+    if ((g_dkillGuard > 6) && (g_sGuard2.startTimer == true))
+    {
+        g_sGuard2.fight = false; // to stop the fighting after enemy die
+        g_sGuard2.entityDie = true; // make this bool true so that the character will move to (-1,-1)
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+    }
+    if ((g_dkillGuard > 6) && (g_sGuard3.startTimer == true))
+    {
+        g_sGuard3.fight = false; // to stop the fighting after enemy die
+        g_sGuard3.entityDie = true; // make this bool true so that the character will move to (-1,-1)
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+    }
+    if ((g_dkillWasp > 6) && (g_sMutantWasp.startTimer == true))
+    {
+        g_sMutantWasp.fight = false;
+        g_sMutantWasp.startTimer = false;
+        g_sMutantWasp2.fight = true;
+        g_eGameState = S_BattleScreen;
+        Sprites.Battle_Wasp(g_Console, 0);
+    }
+    if ((g_dkillWasp > 6) && (g_sMutantWasp2.startTimer == true))
+    {
+        g_sMutantWasp2.fight = false;
+        g_dMedical2Time = 0.0;
+        g_eGameState = S_Medical_Facility_Part2_Animation;
+    }
+    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
+    {
+        g_eGameState = S_Game_Over; // show game over screen after player die animation
+    }
+
+    if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
+    {
+        //g_eGameState = S_Townsquare;
+        g_sChar.showPlayerDMG = false;
+        playerDMGTime = 0.0;
+        COORD c;
+        c.X = 3;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+    if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
+    {
+        g_sChar.showEnemyDMG = false;
+        enemyDMGTime = 0.0;
+        COORD c;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+}
 
 void renderCharacter()
 {
