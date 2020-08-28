@@ -17,6 +17,7 @@
 using namespace std;
 
 double g_dElapsedTime;
+double g_dStartScene;
 double g_dChildrenTime;
 double g_dProtestTime;
 double g_dDungeonTime;
@@ -247,7 +248,7 @@ void init(void)
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Medical_Facility_Animation;
+    g_eGameState = S_Start_Animation;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -511,6 +512,7 @@ void update(double dt)
     // get the delta time
     g_dElapsedTime += dt;
     g_dDeltaTime = dt;
+    g_dStartScene += dt;
     g_dChildrenTime += dt;
     g_dProtestTime += dt;
     g_dDungeonTime += dt;
@@ -589,6 +591,7 @@ void update(double dt)
         break;
 
         //Animations
+    case S_Start_Animation: Update_starting_cutscene();
     case S_Path_Area_Animation: Update_Path_Area();
         break;
     case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
@@ -649,6 +652,216 @@ void UpdateGameOver()
 }
 
 //Animated Cutscenes here
+
+void Update_starting_animation()
+{
+    if (g_dStartScene > 22)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+
+void starting_animation()
+{
+    COORD c;
+    if (g_dStartScene > 0.5)
+    {
+        c.X = 25;
+        c.Y = 13;
+        g_Console.writeToBuffer(c, "The world went through an economic crisis due to all the things that are happening around the globe.");
+        if (g_dStartScene > 1.0)
+        {
+            clearScreen();
+            c.Y = 12;
+            g_Console.writeToBuffer(c, "The world went through an economic crisis due to all the things that are happening around the globe.");
+            c.Y = 13;
+            g_Console.writeToBuffer(c, "Natural disasters due to multiple factors such as climate changes and population distribution which greatly");
+
+            if (g_dStartScene > 1.5)
+            {
+                clearScreen();
+                c.Y = 11;
+                g_Console.writeToBuffer(c, "The world went through an economic crisis due to all the things that are happening around the globe.");
+                c.Y = 12;
+                g_Console.writeToBuffer(c, "Natural disasters due to multiple factors such as climate changes and population distribution which greatly");
+                c.Y = 13;
+                g_Console.writeToBuffer(c, "affected the country have caused mass panic and the country to suffer huge losses.");
+                if (g_dStartScene > 2.0)
+                {
+                    clearScreen();
+                    c.Y = 10;
+                    g_Console.writeToBuffer(c, "The world went through an economic crisis due to all the things that are happening around the globe.");
+                    c.Y = 11;
+                    g_Console.writeToBuffer(c, "Natural disasters due to multiple factors such as climate changes and population distribution which greatly");
+                    c.Y = 12;
+                    g_Console.writeToBuffer(c, "affected the country have caused mass panic and the country to suffer huge losses.");
+                    c.Y = 13;
+                    g_Console.writeToBuffer(c, "The government then turned corrupt and blamed each other for their losses.");
+                    if (g_dStartScene > 2.0)
+                    {
+                        clearScreen();
+                        c.Y = 9;
+                        g_Console.writeToBuffer(c, "The world went through an economic crisis due to all the things that are happening around the globe.");
+                        c.Y = 10;
+                        g_Console.writeToBuffer(c, "Natural disasters due to multiple factors such as climate changes and population distribution which greatly");
+                        c.Y = 11;
+                        g_Console.writeToBuffer(c, "affected the country have caused mass panic and the country to suffer huge losses.");
+                        c.Y = 12;
+                        g_Console.writeToBuffer(c, "The government then turned corrupt and blamed each other for their losses.");
+                        c.Y = 13;
+                        g_Console.writeToBuffer(c, "Government officials only worried about their personal gain and were apathetic towards the citizens’ struggle.");
+                        if (g_dStartScene > 2.5)
+                        {
+                            clearScreen();
+                            c.Y = 8;
+                            g_Console.writeToBuffer(c, "The world went through an economic crisis due to all the things that are happening around the globe.");
+                            c.Y = 9;
+                            g_Console.writeToBuffer(c, "Natural disasters due to multiple factors such as climate changes and population distribution which greatly");
+                            c.Y = 10;
+                            g_Console.writeToBuffer(c, "affected the country have caused mass panic and the country to suffer huge losses.");
+                            c.Y = 11;
+                            g_Console.writeToBuffer(c, "The government then turned corrupt and blamed each other for their losses.");
+                            c.Y = 12;
+                            g_Console.writeToBuffer(c, "Government officials only worried about their personal gain and were apathetic towards the citizens’ struggle.");
+                            c.Y = 13;
+                            g_Console.writeToBuffer(c, "And so many other countries were hoping to invade and conquer the country while it was in chaos.");
+                            if (g_dStartScene > 3.0)
+                            {
+                                clearScreen();
+                                c.Y = 7;
+                                g_Console.writeToBuffer(c, "The world went through an economic crisis due to all the things that are happening around the globe.");
+                                c.Y = 8;
+                                g_Console.writeToBuffer(c, "Natural disasters due to multiple factors such as climate changes and population distribution which greatly");
+                                c.Y = 9;
+                                g_Console.writeToBuffer(c, "affected the country have caused mass panic and the country to suffer huge losses.");
+                                c.Y = 10;
+                                g_Console.writeToBuffer(c, "The government then turned corrupt and blamed each other for their losses.");
+                                c.Y = 11;
+                                g_Console.writeToBuffer(c, "Government officials only worried about their personal gain and were apathetic towards the citizens’ struggle.");
+                                c.Y = 12;
+                                g_Console.writeToBuffer(c, "And so many other countries were hoping to invade and conquer the country while it was in chaos.");
+                                c.Y = 13;
+                                g_Console.writeToBuffer(c, "This greatly increased the tension between countries which eventually led to a world war.");
+                                if (g_dStartScene > 3.5)
+                                {
+                                    clearScreen();
+                                    c.Y = 7;
+                                    g_Console.writeToBuffer(c, "Natural disasters due to multiple factors such as climate changes and population distribution which greatly");
+                                    c.Y = 8;
+                                    g_Console.writeToBuffer(c, "affected the country have caused mass panic and the country to suffer huge losses.");
+                                    c.Y = 9;
+                                    g_Console.writeToBuffer(c, "The government then turned corrupt and blamed each other for their losses.");
+                                    c.Y = 10;
+                                    g_Console.writeToBuffer(c, "Government officials only worried about their personal gain and were apathetic towards the citizens’ struggle.");
+                                    c.Y = 11;
+                                    g_Console.writeToBuffer(c, "And so many other countries were hoping to invade and conquer the country while it was in chaos.");
+                                    c.Y = 12;
+                                    g_Console.writeToBuffer(c, "This greatly increased the tension between countries which eventually led to a world war.");
+                                    c.Y = 13;
+                                    g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets evolved and turned into man eating monsters.");
+                                    if (g_dStartScene > 4.0)
+                                    {
+                                        clearScreen();
+                                        c.Y = 7;
+                                        g_Console.writeToBuffer(c, "affected the country have caused mass panic and the country to suffer huge losses.");
+                                        c.Y = 8;
+                                        g_Console.writeToBuffer(c, "The government then turned corrupt and blamed each other for their losses.");
+                                        c.Y = 9;
+                                        g_Console.writeToBuffer(c, "Government officials only worried about their personal gain and were apathetic towards the citizens’ struggle.");
+                                        c.Y = 10;
+                                        g_Console.writeToBuffer(c, "And so many other countries were hoping to invade and conquer the country while it was in chaos.");
+                                        c.Y = 11;
+                                        g_Console.writeToBuffer(c, "This greatly increased the tension between countries which eventually led to a world war.");
+                                        c.Y = 12;
+                                        g_Console.writeToBuffer(c, "In addition, as if god was mocking humans, hornets evolved and turned into man eating monsters.");
+                                        c.Y = 13;
+                                        g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against all odds to try and salvage what is left of this world.");
+                                        if (g_dStartScene > 4.5)
+                                        {
+                                            clearScreen();
+                                            c.Y = 7;
+                                            g_Console.writeToBuffer(c, "The government then turned corrupt and blamed each other for their losses.");
+                                            c.Y = 8;
+                                            g_Console.writeToBuffer(c, "Government officials only worried about their personal gain and were apathetic towards the citizens’ struggle.");
+                                            c.Y = 9;
+                                            g_Console.writeToBuffer(c, "And so many other countries were hoping to invade and conquer the country while it was in chaos.");
+                                            c.Y = 10;
+                                            g_Console.writeToBuffer(c, "This greatly increased the tension between countries which eventually led to a world war.");
+                                            c.Y = 11;
+                                            g_Console.writeToBuffer(c, "In addition, as if god was mocking humans, hornets evolved and turned into man eating monsters.");
+                                            c.Y = 12;
+                                            g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against all odds to try and salvage what is left of this world.");
+                                            c.Y = 13;
+                                            g_Console.writeToBuffer(c, "He has to use whatever whatever limited resources he has to restore the world to is peaceful state.");
+                                            if (g_dStartScene > 5.0)
+                                            {
+                                                clearScreen();
+                                                c.Y = 7;
+                                                g_Console.writeToBuffer(c, "Government officials only worried about their personal gain and were apathetic towards the citizens’ struggle.");
+                                                c.Y = 8;
+                                                g_Console.writeToBuffer(c, "And so many other countries were hoping to invade and conquer the country while it was in chaos.");
+                                                c.Y = 9;
+                                                g_Console.writeToBuffer(c, "This greatly increased the tension between countries which eventually led to a world war.");
+                                                c.Y = 10;
+                                                g_Console.writeToBuffer(c, "In addition, as if god was mocking humans, hornets evolved and turned into man eating monsters.");
+                                                c.Y = 11;
+                                                g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against all odds to try and salvage what is left of this world.");
+                                                c.Y = 12;
+                                                g_Console.writeToBuffer(c, "He has to use whatever whatever limited resources he has to restore the world to is peaceful state.");
+                                                if (g_dStartScene > 5.5)
+                                                {
+                                                    clearScreen();
+                                                    c.Y = 7;
+                                                    g_Console.writeToBuffer(c, "And so many other countries were hoping to invade and conquer the country while it was in chaos.");
+                                                    c.Y = 8;
+                                                    g_Console.writeToBuffer(c, "This greatly increased the tension between countries which eventually led to a world war.");
+                                                    c.Y = 9;
+                                                    g_Console.writeToBuffer(c, "In addition, as if god was mocking humans, hornets evolved and turned into man eating monsters.");
+                                                    c.Y = 10;
+                                                    g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against all odds to try and salvage what is left of this world.");        
+                                                    if (g_dStartScene > 6.0)
+                                                    {
+                                                        clearScreen();
+                                                        c.Y = 7;
+                                                        g_Console.writeToBuffer(c, "This greatly increased the tension between countries which eventually led to a world war.");
+                                                        c.Y = 8;
+                                                        g_Console.writeToBuffer(c, "In addition, as if god was mocking humans, hornets evolved and turned into man eating monsters.");
+                                                        c.Y = 9;
+                                                        g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against all odds to try and salvage what is left of this world.");
+                                                        if (g_dStartScene > 6.5)
+                                                        {
+                                                            clearScreen();
+                                                            c.Y = 7;
+                                                            g_Console.writeToBuffer(c, "In addition, as if god was mocking humans, hornets evolved and turned into man eating monsters.");
+                                                            c.Y = 8;
+                                                            g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against all odds to try and salvage what is left of this world.");
+                                                            if (g_dStartScene > 7.0)
+                                                            {
+                                                                clearScreen();
+                                                                c.Y = 7;
+                                                                g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against all odds to try and salvage what is left of this world.");
+                                                                if (g_dStartScene > 7.5)
+                                                                {
+                                                                    clearScreen();
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 void Update_Orphanage_Animation()
 {
     if (g_dElapsedTime > 22)
