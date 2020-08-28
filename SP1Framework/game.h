@@ -87,7 +87,6 @@ enum EGAMESTATES
     S_killTutWasp,
     //Boss Fight
     S_phase2Battle,
-
     S_COUNT
 
     
@@ -132,6 +131,7 @@ struct SGameChar : public Enemy
     bool CP2;
     bool CP3;
     int nextDialogue;
+    int laserCount;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
@@ -239,6 +239,8 @@ void Update_slashTutWasp();
 void slashTutWasp();
 void Update_killTutWasp();
 void killTutWasp();
+void drawLaser(Console &g_Console, int j, int k);
+
 
 //Raymond Battle Paths
 void Update_phase2Battle();
