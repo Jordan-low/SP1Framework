@@ -12,6 +12,7 @@
 #include "Cutscenes.h"
 #include "Dialogue.h"
 #include "drawSprites.h"
+#include "Minigame.h"
 
 using namespace std;
 
@@ -32,18 +33,23 @@ double g_dkillGuard;
 double g_dslashWasp;
 double g_dkillWasp;
 double g_dslashPig;
-double g_dkillPig;
+double g_dkillPig;;
 double g_dslashRaymond;
 double g_dkillRaymond;
 double g_dslashRobert;
 double g_dkillRobert;
+double g_dslashTutWasp;
+double g_dkillTutWasp;
 double GuardDetectTime;
 double startTime;
 double resetTime;
 double playerDMGTime;
 double enemyDMGTime;
 double InvenTime;
+double playerInvenTime;
+double collectTime;
 double deathAnimation;
+
 
 
 SKeyEvent g_skKeyEvent[K_COUNT];
@@ -74,6 +80,13 @@ SGameChar   g_sNPC5;
 SGameChar   g_sNPC6;
 SGameChar   g_sNPC7;
 SGameChar   g_sInven;
+SGameChar   g_sBox;
+SGameChar   g_sBox1;
+SGameChar   g_sBox2;
+SGameChar   g_sBox3;
+SGameChar   g_sBox4;
+SGameChar   g_sBox5;
+SGameChar   g_sBox6;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -85,6 +98,7 @@ drawSprites Sprites;
 Cutscenes Cutscene;
 Dialogue Dialogues;
 Enemy Guardz;
+Minigame mini;
 //Inventory Stuff
 Inventory PlayerInv;
 Item* item1 = new Item;
@@ -105,16 +119,18 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sChar.nextDialogue = 0;
     g_sGuard4.startTimer = true;
     g_sChar.faceLeft = true;
     g_sChar.faceRight = false;
-    g_sGuard.enemyDie = false;
-    g_sGuard2.enemyDie = false;
-    g_sGuard3.enemyDie = false;
+    g_sGuard.entityDie = false;
+    g_sGuard2.entityDie = false;
+    g_sGuard3.entityDie = false;
+    g_sChar.entityDie = false;
 
-    g_sGuard.fightGuard = false;
-    g_sGuard2.fightGuard = false;
-    g_sGuard3.fightGuard = false;
+    g_sGuard.fight = false;
+    g_sGuard2.fight = false;
+    g_sGuard3.fight = false;
 
     g_sChar.count = 0;
     g_sChar.unlockDoorDS1 = false;
@@ -123,6 +139,9 @@ void init(void)
     g_sChar.startTimer = true;
     g_sChar.resetTimer = false;
     g_sGuard.startTimer = false;
+    g_sMutantWasp.startTimer = false;
+    g_sMutantWasp.entityDie = false;
+
     /*
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
     Pig.setEnemy(1, 1, 15, 3, 'E');
@@ -131,7 +150,7 @@ void init(void)
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
     g_sChar.SetH(50);
-    g_sChar.SetD(25);
+    g_sChar.SetD(50);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -144,6 +163,8 @@ void init(void)
     g_sTutEnemy.SetD(2);
     g_sMutantWasp.SetH(25);
     g_sMutantWasp.SetD(5);
+    g_sMutantWasp2.SetH(25);
+    g_sMutantWasp2.SetD(5);
 
     g_sChar.Poison = false;
     g_sRaymond.SetH(120);
@@ -151,6 +172,9 @@ void init(void)
     g_sChar.InvenActive = false;
     g_sChar.itemActive = false;
     g_sInven.startTimer = false;
+    g_sInven.resetTimer = false;
+    g_sInven.showItemUsed = false;
+    g_sInven.showItemNotUsed = false;
     g_sChar.CP1 = false;
     g_sChar.CP2 = false;
     g_sChar.CP3 = false;
@@ -191,11 +215,39 @@ void init(void)
     g_sChar.takenBackpack = false;
     g_sChar.takenExtinguisher = false;
     g_sChar.Orp_Dialogue = false;
+
+    //Wire minigame
+    g_sBox1.m_cLocation.X = 52;
+    g_sBox1.m_cLocation.Y = 12;
+    g_sBox1.startTimer = false;
+    g_sBox2.m_cLocation.X = 56;
+    g_sBox2.m_cLocation.Y = 9;
+    g_sBox2.startTimer = false;
+    g_sBox3.m_cLocation.X = 60;
+    g_sBox3.m_cLocation.Y = 15;
+    g_sBox3.startTimer = false;
+    g_sBox4.m_cLocation.X = 64;
+    g_sBox4.m_cLocation.Y = 10;
+    g_sBox4.startTimer = false;
+    g_sBox5.m_cLocation.X = 68;
+    g_sBox5.m_cLocation.Y = 14;
+    g_sBox5.startTimer = false;
+    g_sBox6.m_cLocation.X = 72;
+    g_sBox6.m_cLocation.Y = 11;
+    g_sBox6.startTimer = false;
+
+    //Dungeon Cell Skull spot the difference
+    g_sBox.m_cLocation.X = 39;
+    g_sBox.m_cLocation.Y = 12;
+    g_sBox.startTimer = false;
+
+
+
     // Set precision for floating point output
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_killRaymond;
+    g_eGameState = S_Medical_Facility_Animation;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -311,6 +363,14 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_BattleScreen: gameplayKBHandler(keyboardEvent);
         break;
+    
+    //minigame
+    case S_wireGame: gameplayKBHandler(keyboardEvent);
+        break;
+
+    //Death
+    case S_Boss_Room_Animation: gameplayKBHandler(keyboardEvent);
+        break;
     }
 }
 
@@ -373,6 +433,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_Boss_Battle_Room: gameplayMouseHandler(mouseEvent);
         break;
     case S_BattleScreen: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_wireGame: gameplayMouseHandler(mouseEvent);
         break;
     }
 }
@@ -467,6 +529,8 @@ void update(double dt)
     playerDMGTime += dt;
     enemyDMGTime += dt;
     InvenTime += dt;
+    playerInvenTime += dt;
+    collectTime += dt;
     g_dslashWasp += dt;
     g_dkillWasp += dt;
     g_dslashPig += dt;
@@ -475,7 +539,6 @@ void update(double dt)
     g_dkillRaymond += dt;
     g_dslashRobert += dt;
     g_dkillRobert += dt;
-    deathAnimation += dt;
 
 
     switch (g_eGameState)
@@ -521,7 +584,9 @@ void update(double dt)
         break;
     case S_Boss_Battle_Room: updateGame();
         break;
-
+        //minigame
+    case S_wireGame: updateGame();
+        break;
 
     //Animations
     case S_Path_Area_Animation: Update_Path_Area();
@@ -563,6 +628,10 @@ void update(double dt)
     case S_slashRobert: Update_slashRobert();
         break;
     case S_killRobert: Update_killRobert();
+        break;
+    case S_slashTutWasp: Update_slashTutWasp();
+        break;
+    case S_killTutWasp: killTutWasp();
         break;
     }
 }
@@ -1208,7 +1277,7 @@ void Update_Dungeon_Cell()
 {
     if (g_dDungeonTime > 38.7)
     {
-        g_eGameState = S_GAME;
+        g_eGameState = S_Dungeon_Cell;
     }
     processUserInput();
 }
@@ -1600,7 +1669,8 @@ void Update_Medical_Fight_Animation()
 {
     if (g_dMedicalFightTime > 31.8)
     {
-        g_eGameState = S_GAME;
+        g_dMedicalTime = 0.0;
+        g_eGameState = S_Medical_Facility_Animation;
     }
     processUserInput();
 }
@@ -1776,7 +1846,9 @@ void Update_Medical_Facility_Animation()
 {
     if (g_dMedicalTime > 11.5)
     {
-        g_eGameState = S_GAME;
+        g_dMedical2Time = 0.0;
+        g_sMutantWasp.fight = true;
+        g_eGameState = S_BattleScreen;
     }
     processUserInput();
 }
@@ -1935,7 +2007,7 @@ void Update_Medical_Facility_Part2_Animation()
 {
     if (g_dMedical2Time > 15.9)
     {
-        g_eGameState = S_GAME;
+        g_eGameState = S_Dungeon_Cell_Animation;
     }
     processUserInput();
 }
@@ -2057,8 +2129,8 @@ void Dungeon_Stealth3_Animation()
     c.Y = 26;
     d.X = 5;
     d.Y = 27;
-    Cutscene.drawgrid(g_Console, 38, 12, 'R'); //Raymond
-    Cutscene.drawgrid(g_Console, 40, 12, 'L'); //Lacky
+    Cutscene.drawgrid(g_Console, 38, 12, (char)12); //Raymond
+    Cutscene.drawgrid(g_Console, 40, 12, (char)12); //Lacky
     if (g_dDungeonStealth3Time > 0.3)
     {
         g_Console.writeToBuffer(c, "Raymond: I want you to keep this secret between us,", 0x0F);
@@ -2116,64 +2188,64 @@ void Dungeon_Stealth3_Animation()
                                             g_Console.writeToBuffer(c, "Robot: Beep bop boop", 0x0F);
                                             Cutscene.cleargrid(g_Console, 38, 12);
                                             Cutscene.cleargrid(g_Console, 40, 12);
-                                            Cutscene.drawgrid(g_Console, 33, 11, 'R');
-                                            Cutscene.drawgrid(g_Console, 43, 12, 'L');
+                                            Cutscene.drawgrid(g_Console, 33, 11, (char)12);
+                                            Cutscene.drawgrid(g_Console, 43, 12, (char)12);
                                             if (g_dDungeonStealth3Time > 48.9)
                                             {
                                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                 Cutscene.cleargrid(g_Console, 33, 11);
                                                 Cutscene.cleargrid(g_Console, 43, 12);
-                                                Cutscene.drawgrid(g_Console, 29, 10, 'R');
-                                                Cutscene.drawgrid(g_Console, 46, 12, 'L');
+                                                Cutscene.drawgrid(g_Console, 29, 10, (char)12);
+                                                Cutscene.drawgrid(g_Console, 46, 12, (char)12);
                                                 if (g_dDungeonStealth3Time > 49.2)
                                                 {
                                                     Cutscene.cleargrid(g_Console, 29, 10);
                                                     Cutscene.cleargrid(g_Console, 46, 12);
-                                                    Cutscene.drawgrid(g_Console, 24, 9, 'R');
-                                                    Cutscene.drawgrid(g_Console, 49, 12, 'L');
+                                                    Cutscene.drawgrid(g_Console, 24, 9, (char)12);
+                                                    Cutscene.drawgrid(g_Console, 49, 12, (char)12);
                                                     if (g_dDungeonStealth3Time > 49.5)
                                                     {
                                                         Cutscene.cleargrid(g_Console, 24, 9);
                                                         Cutscene.cleargrid(g_Console, 49, 12);
-                                                        Cutscene.drawgrid(g_Console, 20, 8, 'R');
-                                                        Cutscene.drawgrid(g_Console, 52, 12, 'L');
+                                                        Cutscene.drawgrid(g_Console, 20, 8, (char)12);
+                                                        Cutscene.drawgrid(g_Console, 52, 12, (char)12);
                                                         if (g_dDungeonStealth3Time > 49.8)
                                                         {
                                                             Cutscene.cleargrid(g_Console, 20, 8);
                                                             Cutscene.cleargrid(g_Console, 52, 12);
-                                                            Cutscene.drawgrid(g_Console, 16, 7, 'R');
-                                                            Cutscene.drawgrid(g_Console, 55, 12, 'L');
+                                                            Cutscene.drawgrid(g_Console, 16, 7, (char)12);
+                                                            Cutscene.drawgrid(g_Console, 55, 12, (char)12);
                                                             if (g_dDungeonStealth3Time > 50.1)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 16, 7);
                                                                 Cutscene.cleargrid(g_Console, 55, 12);
-                                                                Cutscene.drawgrid(g_Console, 12, 6, 'R');
-                                                                Cutscene.drawgrid(g_Console, 58, 12, 'L');
+                                                                Cutscene.drawgrid(g_Console, 12, 6, (char)12);
+                                                                Cutscene.drawgrid(g_Console, 58, 12, (char)12);
                                                                 if (g_dDungeonStealth3Time > 50.4)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 12, 6);
                                                                     Cutscene.cleargrid(g_Console, 58, 12);
-                                                                    Cutscene.drawgrid(g_Console, 9, 5, 'R');
-                                                                    Cutscene.drawgrid(g_Console, 61, 11, 'L');
+                                                                    Cutscene.drawgrid(g_Console, 9, 5, (char)12);
+                                                                    Cutscene.drawgrid(g_Console, 61, 11, (char)12);
                                                                     if (g_dDungeonStealth3Time > 50.7)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 9, 5);
                                                                         Cutscene.cleargrid(g_Console, 61, 11);
-                                                                        Cutscene.drawgrid(g_Console, 5, 4, 'R');
-                                                                        Cutscene.drawgrid(g_Console, 61, 9, 'L');
+                                                                        Cutscene.drawgrid(g_Console, 5, 4, (char)12);
+                                                                        Cutscene.drawgrid(g_Console, 61, 9, (char)12);
                                                                         if (g_dDungeonStealth3Time > 50.7)
                                                                         {
                                                                             Cutscene.cleargrid(g_Console, 5, 4);
                                                                             Cutscene.cleargrid(g_Console, 61, 9);
-                                                                            Cutscene.drawgrid(g_Console, 61, 7, 'L');
+                                                                            Cutscene.drawgrid(g_Console, 61, 7, (char)12);
                                                                             if (g_dDungeonStealth3Time > 50.7)
                                                                             {
                                                                                 Cutscene.cleargrid(g_Console, 61, 7);
-                                                                                Cutscene.drawgrid(g_Console, 61, 5, 'L');
+                                                                                Cutscene.drawgrid(g_Console, 61, 5, (char)12);
                                                                                 if (g_dDungeonStealth3Time > 51.0)
                                                                                 {
                                                                                     Cutscene.cleargrid(g_Console, 61, 5);
-                                                                                    Cutscene.drawgrid(g_Console, 61, 3, 'L');
+                                                                                    Cutscene.drawgrid(g_Console, 61, 3, (char)12);
                                                                                     if (g_dDungeonStealth3Time > 51.3)
                                                                                     {
                                                                                         Cutscene.cleargrid(g_Console, 61, 3);
@@ -2181,7 +2253,7 @@ void Dungeon_Stealth3_Animation()
                                                                                         {
                                                                                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                                                             g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
-                                                                                            g_Console.writeToBuffer(c, "Robert: It seems like mayor Raymond was the mastermind", 0x0F);
+                                                                                            g_Console.writeToBuffer(c, "Robert: It seems like Mayor Raymond was the mastermind", 0x0F);
                                                                                             g_Console.writeToBuffer(d, "        behind all these incidents afterall.", 0x0F);
                                                                                             if (g_dDungeonStealth3Time > 57.6)
                                                                                             {
@@ -2220,14 +2292,17 @@ void Dungeon_Stealth3_Animation()
 //HAVE NOT PUT DTTIME INTO RENDERED AREA
 void Update_Boss_Room_Animation()
 {
-    if (g_dBossTime > 48.3)
+
+    if (g_sChar.nextDialogue == 999)
     {
-        g_eGameState = S_GAME;
+        g_eGameState = S_Boss_Battle_Room;
     }
     processUserInput();
 }
 void Boss_Room_Animation()
 {
+   
+    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.boss_room(g_Console);
@@ -2240,11 +2315,13 @@ void Boss_Room_Animation()
     d.Y = 27;
     Cutscene.drawgrid(g_Console, 40, 21, 'H'); //Robert
     Cutscene.drawgrid(g_Console, 40, 3, 'R'); //Raymond
-    if (g_dBossTime > 0.3)
+    if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 0)
     {
         g_Console.writeToBuffer(c, "Raymond: It seems that the person I have been searching for", 0x0F);
-        g_Console.writeToBuffer(d, "         came to me instead.", 0x0F);
-        if (g_dBossTime > 5.3)
+        g_Console.writeToBuffer(d, "         came to me instead.", 0x0F); 
+        g_sChar.nextDialogue++;
+        
+        if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 1)
         {
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
@@ -2422,7 +2499,7 @@ void slashGuard()
     //rMap.initialise(g_Console);
     //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
+    //renderCharacter();
     Sprites.drawGuard(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
@@ -2622,8 +2699,8 @@ void killGuard()
     //rMap.initialise(g_Console);
     //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
-    Sprites.drawGuard(g_Console, 0);
+    //renderCharacter();
+    //Sprites.drawGuard(g_Console, 0);
     if (g_dkillGuard > 1.95)
     {
         Cutscene.clearSpriteLine(g_Console, 2);
@@ -2686,17 +2763,17 @@ void Update_slashWasp()
 {
     if (g_dslashWasp > 3)
     {
-        g_eGameState = S_GAME;
+        //g_eGameState = S_GAME;
     }
     processUserInput();
 }
 void slashWasp()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
-    Sprites.Battle_Wasp(g_Console, 0);
+    //renderCharacter();
+    //Sprites.Battle_Wasp(g_Console, 0);
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
@@ -2888,20 +2965,20 @@ void Update_killWasp()
 {
     if (g_dkillWasp > 3)
     {
-        g_eGameState = S_GAME;
+        //g_eGameState = S_GAME;
     }
     processUserInput();
 }
 void killWasp()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
+    //renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
-    Sprites.Battle_Wasp(g_Console, 0);
+    //Sprites.Battle_Wasp(g_Console, 0);
     if (g_dkillWasp > 1.95)
     {
         Cutscene.clearSpriteLine(g_Console, 2);
@@ -2960,7 +3037,6 @@ void killWasp()
     }
 }
 
-
 void Update_slashPig()
 {
     if (g_dslashPig > 3)
@@ -2971,14 +3047,14 @@ void Update_slashPig()
 }
 void slashPig()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
+    //renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Pig=", 0x0A);
-    Sprites.pig(g_Console, 0);
+    //Sprites.pig(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
     if (g_dslashPig > 0.05)
@@ -3175,14 +3251,14 @@ void Update_killPig()
 }
 void killPig()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
+    //renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Pig=", 0x0A);
-    Sprites.pig(g_Console, 0);
+    //Sprites.pig(g_Console, 0);
     if (g_dkillPig > 1.95)
     {
         Cutscene.clearSpriteLine(g_Console, 2);
@@ -3251,14 +3327,14 @@ void Update_slashRaymond()
 }
 void slashRaymond()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+   // rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
+   //renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
-    Sprites.Battle_Raymond(g_Console, 0);
+  //  Sprites.Battle_Raymond(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
     if (g_dslashRaymond > 0.05)
@@ -3453,14 +3529,14 @@ void Update_killRaymond()
 }
 void killRaymond()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
+   // renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
-    Sprites.Battle_Raymond(g_Console, 0);
+    //Sprites.Battle_Raymond(g_Console, 0);
     if (g_dkillRaymond > 1.95)
     {
         Cutscene.clearSpriteLine(g_Console, 2);
@@ -3529,152 +3605,152 @@ void Update_slashRobert()
 {
     if (g_dslashRobert > 3)
     {
-        g_eGameState = S_GAME;
+        //g_eGameState = S_GAME;
     }
     processUserInput();
 }
 void slashRobert()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
+    //renderCharacter();
     Sprites.drawRobert(g_Console, 0);
-    rMap.Battle_Screen(g_Console);
+    //rMap.Battle_Screen(g_Console);
     Cutscene.drawgrid(g_Console, 20, 5, '/');
     //next
-    if (g_dslashGuard > 0.05)
+    if (g_dslashRobert > 0.05)
     {
         Cutscene.drawgrid(g_Console, 19, 6, '|');
-        if (g_dslashGuard > 0.10)
+        if (g_dslashRobert > 0.10)
         {
             Cutscene.drawgrid(g_Console, 18, 6, '_');
             Cutscene.drawgrid(g_Console, 17, 7, '/');
             Cutscene.drawgrid(g_Console, 18, 7, '/');
-            if (g_dslashGuard > 0.15)
+            if (g_dslashRobert > 0.15)
             {
                 Cutscene.drawgrid(g_Console, 16, 7, '_');
                 Cutscene.drawgrid(g_Console, 15, 8, '/');
                 Cutscene.drawgrid(g_Console, 16, 8, '/');
-                if (g_dslashGuard > 0.20)
+                if (g_dslashRobert > 0.20)
                 {
                     Cutscene.drawgrid(g_Console, 14, 8, '_');
                     Cutscene.drawgrid(g_Console, 13, 9, '/');
                     Cutscene.drawgrid(g_Console, 14, 9, '/');
-                    if (g_dslashGuard > 0.25)
+                    if (g_dslashRobert > 0.25)
                     {
                         Cutscene.drawgrid(g_Console, 12, 9, '_');
                         Cutscene.drawgrid(g_Console, 11, 10, '/');
                         Cutscene.drawgrid(g_Console, 12, 10, '/');
-                        if (g_dslashGuard > 0.30)
+                        if (g_dslashRobert > 0.30)
                         {
                             Cutscene.drawgrid(g_Console, 10, 10, '_');
-                            if (g_dslashGuard > 0.35)
+                            if (g_dslashRobert > 0.35)
                             {
                                 Cutscene.drawgrid(g_Console, 9, 11, '/');
-                                if (g_dslashGuard > 0.4)
+                                if (g_dslashRobert > 0.4)
                                 {
                                     Cutscene.drawgrid(g_Console, 8, 11, '_');
-                                    if (g_dslashGuard > 0.45)
+                                    if (g_dslashRobert > 0.45)
                                     {
                                         Cutscene.drawgrid(g_Console, 7, 11, '_');
                                         Cutscene.cleargrid(g_Console, 20, 5);
-                                        if (g_dslashGuard > 0.5)
+                                        if (g_dslashRobert > 0.5)
                                         {
                                             Cutscene.cleargrid(g_Console, 19, 6);
-                                            if (g_dslashGuard > 0.55)
+                                            if (g_dslashRobert > 0.55)
                                             {
                                                 Cutscene.drawgridG(g_Console, 18, 6, ' ');
                                                 Cutscene.drawgridG(g_Console, 17, 7, ' ');
                                                 Cutscene.drawgridG(g_Console, 18, 7, ' ');
-                                                if (g_dslashGuard > 0.60)
+                                                if (g_dslashRobert > 0.60)
                                                 {
                                                     Cutscene.drawgridG(g_Console, 16, 7, '\\');
                                                     Cutscene.drawgridG(g_Console, 15, 8, ' ');
                                                     Cutscene.drawgridG(g_Console, 16, 8, ' ');
-                                                    if (g_dslashGuard > 0.65)
+                                                    if (g_dslashRobert > 0.65)
                                                     {
                                                         Cutscene.drawgridG(g_Console, 14, 8, ' ');
                                                         Cutscene.drawgrid(g_Console, 13, 9, ' ');
                                                         Cutscene.drawgrid(g_Console, 14, 9, ' ');
-                                                        if (g_dslashGuard > 0.70)
+                                                        if (g_dslashRobert > 0.70)
                                                         {
                                                             Cutscene.drawgrid(g_Console, 12, 9, ' ');
                                                             Cutscene.drawgridG(g_Console, 11, 10, '\\');
                                                             Cutscene.drawgridG(g_Console, 12, 10, '/');
-                                                            if (g_dslashGuard > 0.75)
+                                                            if (g_dslashRobert > 0.75)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 10, 10);
-                                                                if (g_dslashGuard > 0.80)
+                                                                if (g_dslashRobert > 0.80)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 9, 11);
-                                                                    if (g_dslashGuard > 0.85)
+                                                                    if (g_dslashRobert > 0.85)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 8, 11);
-                                                                        if (g_dslashGuard > 0.90)
+                                                                        if (g_dslashRobert > 0.90)
                                                                         {
                                                                             Cutscene.cleargrid(g_Console, 7, 11);
-                                                                            if (g_dslashGuard > 0.95)
+                                                                            if (g_dslashRobert > 0.95)
                                                                             {
                                                                                 Cutscene.clearRobertSprite(g_Console);
                                                                                 Sprites.drawRobert(g_Console, 2);
-                                                                                if (g_dslashGuard > 1.0)
+                                                                                if (g_dslashRobert > 1.0)
                                                                                 {
                                                                                     Cutscene.clearRobertSprite(g_Console);
                                                                                     Sprites.drawRobert(g_Console, 4);
-                                                                                    if (g_dslashGuard > 1.05)
+                                                                                    if (g_dslashRobert > 1.05)
                                                                                     {
                                                                                         Cutscene.clearRobertSprite(g_Console);
                                                                                         Sprites.drawRobert(g_Console, 2);
-                                                                                        if (g_dslashGuard > 1.10)
+                                                                                        if (g_dslashRobert > 1.10)
                                                                                         {
                                                                                             Cutscene.clearRobertSprite(g_Console);
                                                                                             Sprites.drawRobert(g_Console, 0);
-                                                                                            if (g_dslashGuard > 1.15)
+                                                                                            if (g_dslashRobert > 1.15)
                                                                                             {
                                                                                                 Cutscene.clearRobertSprite(g_Console);
                                                                                                 Sprites.drawRobert(g_Console, -2);
-                                                                                                if (g_dslashGuard > 1.20)
+                                                                                                if (g_dslashRobert > 1.20)
                                                                                                 {
                                                                                                     Cutscene.clearRobertSprite(g_Console);
                                                                                                     Sprites.drawRobert(g_Console, -4);
-                                                                                                    if (g_dslashGuard > 1.25)
+                                                                                                    if (g_dslashRobert > 1.25)
                                                                                                     {
                                                                                                         Cutscene.clearRobertSprite(g_Console);
                                                                                                         Sprites.drawRobert(g_Console, -2);
-                                                                                                        if (g_dslashGuard > 1.3)
+                                                                                                        if (g_dslashRobert > 1.3)
                                                                                                         {
                                                                                                             Cutscene.clearRobertSprite(g_Console);
                                                                                                             Sprites.drawRobert(g_Console, 0);
-                                                                                                            if (g_dslashGuard > 1.35)
+                                                                                                            if (g_dslashRobert > 1.35)
                                                                                                             {
                                                                                                                 Cutscene.clearRobertSprite(g_Console);
                                                                                                                 Sprites.drawRobert(g_Console, 1);
-                                                                                                                if (g_dslashGuard > 1.40)
+                                                                                                                if (g_dslashRobert > 1.40)
                                                                                                                 {
                                                                                                                     Cutscene.clearRobertSprite(g_Console);
                                                                                                                     Sprites.drawRobert(g_Console, 2);
-                                                                                                                    if (g_dslashGuard > 1.45)
+                                                                                                                    if (g_dslashRobert > 1.45)
                                                                                                                     {
                                                                                                                         Cutscene.clearRobertSprite(g_Console);
                                                                                                                         Sprites.drawRobert(g_Console, 1);
-                                                                                                                        if (g_dslashGuard > 1.50)
+                                                                                                                        if (g_dslashRobert > 1.50)
                                                                                                                         {
                                                                                                                             Cutscene.clearRobertSprite(g_Console);
                                                                                                                             Sprites.drawRobert(g_Console, 0);
-                                                                                                                            if (g_dslashGuard > 1.55)
+                                                                                                                            if (g_dslashRobert > 1.55)
                                                                                                                             {
                                                                                                                                 Cutscene.clearRobertSprite(g_Console);
                                                                                                                                 Sprites.drawRobert(g_Console, -1);
-                                                                                                                                if (g_dslashGuard > 1.60)
+                                                                                                                                if (g_dslashRobert > 1.60)
                                                                                                                                 {
                                                                                                                                     Cutscene.clearRobertSprite(g_Console);
                                                                                                                                     Sprites.drawRobert(g_Console, -2);
-                                                                                                                                    if (g_dslashGuard > 1.65)
+                                                                                                                                    if (g_dslashRobert > 1.65)
                                                                                                                                     {
                                                                                                                                         Cutscene.clearRobertSprite(g_Console);
                                                                                                                                         Sprites.drawRobert(g_Console, -1);
-                                                                                                                                        if (g_dslashGuard > 1.70)
+                                                                                                                                        if (g_dslashRobert > 1.70)
                                                                                                                                         {
                                                                                                                                             Cutscene.clearRobertSprite(g_Console);
                                                                                                                                             Sprites.drawRobert(g_Console, 0);
@@ -3717,17 +3793,17 @@ void Update_killRobert()
 {
     if (g_dkillRobert > 3)
     {
-        g_eGameState = S_GAME;
+        //g_eGameState = S_GAME;
     }
     processUserInput();
 }
 void killRobert()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    // rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
-    Sprites.drawRobert(g_Console, 0);
+    //renderCharacter();
+    //Sprites.drawRobert(g_Console, 0);
     if (g_dkillRobert > 1.95)
     {
         Cutscene.clearRobertSpriteLine(g_Console, 2);
@@ -3786,6 +3862,283 @@ void killRobert()
     }
 }
 
+void Update_slashTutWasp()
+{
+    if (g_dslashTutWasp > 3)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+void slashTutWasp()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    COORD c;
+    renderCharacter();
+    Sprites.Tutorial_Wasp(g_Console, 0);
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Tutorial Wasp=", 0x0A);
+    Cutscene.drawgrid(g_Console, 68, 5, '/');
+    if (g_dslashTutWasp > 0.05)
+    {
+        Cutscene.drawgrid(g_Console, 67, 6, '|');
+        if (g_dslashTutWasp > 0.10)
+        {
+            Cutscene.drawgrid(g_Console, 66, 6, '_');
+            Cutscene.drawgrid(g_Console, 65, 7, '/');
+            Cutscene.drawgrid(g_Console, 66, 7, '/');
+            if (g_dslashTutWasp > 0.15)
+            {
+                Cutscene.drawgrid(g_Console, 64, 7, '_');
+                Cutscene.drawgrid(g_Console, 63, 8, '/');
+                Cutscene.drawgrid(g_Console, 64, 8, '/');
+                if (g_dslashTutWasp > 0.20)
+                {
+                    Cutscene.drawgrid(g_Console, 62, 8, '_');
+                    Cutscene.drawgrid(g_Console, 61, 9, '/');
+                    Cutscene.drawgrid(g_Console, 62, 9, '/');
+                    if (g_dslashTutWasp > 0.25)
+                    {
+                        Cutscene.drawgrid(g_Console, 60, 9, '_');
+                        Cutscene.drawgrid(g_Console, 59, 10, '/');
+                        Cutscene.drawgrid(g_Console, 60, 10, '/');
+                        if (g_dslashTutWasp > 0.30)
+                        {
+                            Cutscene.drawgrid(g_Console, 58, 10, '_');
+                            Cutscene.drawgrid(g_Console, 57, 11, '/');
+                            Cutscene.drawgrid(g_Console, 58, 11, '/');
+                            if (g_dslashTutWasp > 0.35)
+                            {
+                                Cutscene.drawgrid(g_Console, 56, 11, '_');
+                                if (g_dslashTutWasp > 0.40)
+                                {
+                                    Cutscene.drawgrid(g_Console, 55, 12, '/');
+                                    if (g_dslashTutWasp > 0.45)
+                                    {
+                                        Cutscene.drawgrid(g_Console, 54, 12, '_');
+                                        if (g_dslashTutWasp > 0.50)
+                                        {
+                                            Cutscene.drawgrid(g_Console, 53, 12, '_');
+                                            Cutscene.cleargrid(g_Console, 68, 5);
+                                            if (g_dslashTutWasp > 0.55)
+                                            {
+                                                Cutscene.drawgridG(g_Console, 67, 6, '_');
+                                                if (g_dslashTutWasp > 0.60)
+                                                {
+                                                    Cutscene.drawgridG(g_Console, 66, 6, '_');
+                                                    Cutscene.drawgridG(g_Console, 65, 7, ' ');
+                                                    Cutscene.drawgridG(g_Console, 66, 7, ' ');
+                                                    if (g_dslashTutWasp > 0.65)
+                                                    {
+                                                        Cutscene.drawgridG(g_Console, 64, 7, '/');
+                                                        Cutscene.drawgridG(g_Console, 63, 8, '|');
+                                                        Cutscene.drawgridG(g_Console, 64, 8, ' ');
+                                                        if (g_dslashTutWasp > 0.70)
+                                                        {
+                                                            Cutscene.drawgridG(g_Console, 62, 8, '_');
+                                                            Cutscene.drawgrid(g_Console, 61, 9, ' ');
+                                                            Cutscene.drawgridG(g_Console, 62, 9, '_');
+                                                            if (g_dslashTutWasp > 0.75)
+                                                            {
+                                                                Cutscene.drawgridG(g_Console, 60, 9, ' ');
+                                                                Cutscene.drawgridG(g_Console, 59, 10, '_');
+                                                                Cutscene.drawgridG(g_Console, 60, 10, '_');
+                                                                if (g_dslashTutWasp > 0.80)
+                                                                {
+                                                                    Cutscene.drawgridG(g_Console, 58, 10, '_');
+                                                                    Cutscene.drawgridG(g_Console, 57, 11, '_');
+                                                                    Cutscene.drawgridG(g_Console, 58, 11, '_');
+                                                                    if (g_dslashTutWasp > 0.85)
+                                                                    {
+                                                                        Cutscene.drawgridG(g_Console, 56, 11, '_');
+                                                                        if (g_dslashTutWasp > 0.90)
+                                                                        {
+                                                                            Cutscene.drawgridG(g_Console, 55, 11, '|');
+                                                                            if (g_dslashTutWasp > 0.95)
+                                                                            {
+                                                                                Cutscene.cleargrid(g_Console, 54, 12);
+                                                                                if (g_dslashTutWasp > 1.00)
+                                                                                {
+                                                                                    Cutscene.cleargrid(g_Console, 53, 12);
+                                                                                    if (g_dslashTutWasp > 1.05)
+                                                                                    {
+                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                        Sprites.Tutorial_Wasp(g_Console, 2);
+                                                                                        if (g_dslashTutWasp > 1.1)
+                                                                                        {
+                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                            Sprites.Tutorial_Wasp(g_Console, 4);
+                                                                                            if (g_dslashTutWasp > 1.15)
+                                                                                            {
+                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                Sprites.Tutorial_Wasp(g_Console, 2);
+                                                                                                if (g_dslashTutWasp > 1.20)
+                                                                                                {
+                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                    Sprites.Tutorial_Wasp(g_Console, 0);
+                                                                                                    if (g_dslashTutWasp > 1.25)
+                                                                                                    {
+                                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                                        Sprites.Tutorial_Wasp(g_Console, -2);
+                                                                                                        if (g_dslashTutWasp > 1.30)
+                                                                                                        {
+                                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                                            Sprites.Tutorial_Wasp(g_Console, -4);
+                                                                                                            if (g_dslashTutWasp > 1.35)
+                                                                                                            {
+                                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                                Sprites.Tutorial_Wasp(g_Console, -2);
+                                                                                                                if (g_dslashTutWasp > 1.40)
+                                                                                                                {
+                                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                                    Sprites.Tutorial_Wasp(g_Console, 0);
+                                                                                                                    if (g_dslashTutWasp > 1.45)
+                                                                                                                    {
+                                                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                                                        Sprites.Tutorial_Wasp(g_Console, 1);
+                                                                                                                        if (g_dslashTutWasp > 1.50)
+                                                                                                                        {
+                                                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                                                            Sprites.Tutorial_Wasp(g_Console, 2);
+                                                                                                                            if (g_dslashTutWasp > 1.55)
+                                                                                                                            {
+                                                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                                                Sprites.Tutorial_Wasp(g_Console, 1);
+                                                                                                                                if (g_dslashTutWasp > 1.60)
+                                                                                                                                {
+                                                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                                                    Sprites.Tutorial_Wasp(g_Console, 0);
+                                                                                                                                    if (g_dslashTutWasp > 1.65)
+                                                                                                                                    {
+                                                                                                                                        Cutscene.clearSprite(g_Console);
+                                                                                                                                        Sprites.Tutorial_Wasp(g_Console, -1);
+                                                                                                                                        if (g_dslashTutWasp > 1.70)
+                                                                                                                                        {
+                                                                                                                                            Cutscene.clearSprite(g_Console);
+                                                                                                                                            Sprites.Tutorial_Wasp(g_Console, -2);
+                                                                                                                                            if (g_dslashTutWasp > 1.75)
+                                                                                                                                            {
+                                                                                                                                                Cutscene.clearSprite(g_Console);
+                                                                                                                                                Sprites.Tutorial_Wasp(g_Console, -1);
+                                                                                                                                                if (g_dslashTutWasp > 1.80)
+                                                                                                                                                {
+                                                                                                                                                    Cutscene.clearSprite(g_Console);
+                                                                                                                                                    Sprites.Tutorial_Wasp(g_Console, 0);
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+void Update_killTuTWasp()
+{
+    if (g_dkillTutWasp > 3)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+void killTutWasp()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    COORD c;
+    renderCharacter();
+    c.X = 3;
+    c.Y = 2;
+    g_Console.writeToBuffer(c, "=Tutorial Wasp=", 0x0A);
+    Sprites.Tutorial_Wasp(g_Console, 0);
+    if (g_dkillTutWasp > 1.95)
+    {
+        Cutscene.clearSpriteLine(g_Console, 2);
+        if (g_dkillTutWasp > 2.0)
+        {
+            Cutscene.clearSpriteLine(g_Console, 3);
+            if (g_dkillTutWasp > 2.05)
+            {
+                Cutscene.clearSpriteLine(g_Console, 4);
+                if (g_dkillTutWasp > 2.10)
+                {
+                    Cutscene.clearSpriteLine(g_Console, 5);
+                    if (g_dkillTutWasp > 2.15)
+                    {
+                        Cutscene.clearSpriteLine(g_Console, 6);
+                        if (g_dkillTutWasp > 2.20)
+                        {
+                            Cutscene.clearSpriteLine(g_Console, 7);
+                            if (g_dkillTutWasp > 2.25)
+                            {
+                                Cutscene.clearSpriteLine(g_Console, 8);
+                                if (g_dkillTutWasp > 2.30)
+                                {
+                                    Cutscene.clearSpriteLine(g_Console, 9);
+                                    if (g_dkillTutWasp > 2.35)
+                                    {
+                                        Cutscene.clearSpriteLine(g_Console, 10);
+                                        if (g_dkillTutWasp > 2.40)
+                                        {
+                                            Cutscene.clearSpriteLine(g_Console, 11);
+                                            if (g_dkillTutWasp > 2.45)
+                                            {
+                                                Cutscene.clearSpriteLine(g_Console, 12);
+                                                if (g_dkillTutWasp > 2.50)
+                                                {
+                                                    Cutscene.clearSpriteLine(g_Console, 13);
+                                                    if (g_dkillTutWasp > 2.55)
+                                                    {
+                                                        Cutscene.clearSpriteLine(g_Console, 14);
+                                                        if (g_dkillTutWasp > 2.60)
+                                                        {
+                                                            Cutscene.clearSpriteLine(g_Console, 15);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 void splashScreenWait()    // waits for time to pass in splash screen
 {
@@ -3823,8 +4176,8 @@ void moveCharacter()
     {
         int i = g_sChar.m_cLocation.X;
         int j = g_sChar.m_cLocation.Y;
-        //int m = g_sEnemy.m_cLocation.X;
-        //int n = g_sEnemy.m_cLocation.Y;
+        int m = g_sBox.m_cLocation.X;
+        int n = g_sBox.m_cLocation.Y;
         if (rMap.Grid[j - 1][i] != '|')
         {
             if (rMap.Grid[j - 1][i] != '#')
@@ -3839,7 +4192,10 @@ void moveCharacter()
                             {
                                 if (rMap.Grid[j - 1][i] != '/')
                                 {
-                                    g_sChar.m_cLocation.Y--;
+                                    if (rMap.Grid[j - 1][i] != '&')
+                                    {
+                                        g_sChar.m_cLocation.Y--;
+                                    }
                                 }
                             }
                         }
@@ -3933,7 +4289,10 @@ void moveCharacter()
                             {
                                 if (rMap.Grid[j][i - 1] != '/')
                                 {
-                                    g_sChar.m_cLocation.X--;
+                                    if (rMap.Grid[j][i - 1] != '&')
+                                    {
+                                        g_sChar.m_cLocation.X--;
+                                    }
                                 }
                             }
                         }
@@ -4033,7 +4392,10 @@ void moveCharacter()
                             {
                                 if (rMap.Grid[j + 1][i] != '/')
                                 {
-                                    g_sChar.m_cLocation.Y++;
+                                    if (rMap.Grid[j + 1][i] != '&')
+                                    {
+                                        g_sChar.m_cLocation.Y++;
+                                    }
                                 }
                             }
                         }
@@ -4126,7 +4488,10 @@ void moveCharacter()
                             {
                                 if (rMap.Grid[j][i + 1] != '/')
                                 {
-                                    g_sChar.m_cLocation.X++;
+                                    if (rMap.Grid[j][i + 1] != '&')
+                                    {
+                                        g_sChar.m_cLocation.X++;
+                                    }
                                 }
                             }
                         }
@@ -4286,6 +4651,10 @@ void render()
     case S_Boss_Battle_Room: renderMap_Boss_Battle_Room();
         break;
 
+        //minigame
+    case S_wireGame: renderMap_wireGame();
+        break;
+
     //Animations
     case S_Protest_Area_Animation: Protest_Area_Animation();
         break;
@@ -4328,6 +4697,10 @@ void render()
     case S_slashRobert: slashRobert();
         break;
     case S_killRobert: killRobert();
+        break;
+    case S_slashTutWasp: slashTutWasp();
+        break;
+    case S_killTutWasp: killTutWasp();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
@@ -4589,6 +4962,7 @@ void renderMap_Townsquare()
 
 void renderMap_Protest_Area()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
@@ -4606,6 +4980,96 @@ void renderMap_Protest_Area()
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
+    }
+    if ((g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 3) || (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 5) || (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 6) || (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 5) || (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 9) || (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 8))
+    {
+        int BoxItemChance = 0;
+        if ((g_sChar.collected == false) && (g_sChar.startTimer == true))
+        {
+            if (BoxItemChance == 1)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 2)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 3)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 4)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 5)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+                }
+            }
+            else if (BoxItemChance == 6)
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+                }
+            }
+            else
+            {
+                g_sChar.showItem = true;
+                if (g_sChar.showItem == true)
+                {
+                    c.X = 5;
+                    c.Y = 26;
+                    g_Console.writeToBuffer(c, "You got stickbugged.", 0x0F, 100);
+                }
+            }
+            g_sChar.showItem = false;
+            g_sChar.startTimer = false;
+            g_sChar.resetTimer = true;
+            collectTime = 0.0;
+            g_sChar.collected = true;
+        }
+    }
+    if ((collectTime > 3) && (g_sChar.collected == true))
+    {
+        g_sChar.collected == false;
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                          ", 0x0F, 100);
+        collectTime = 0.0;
     }
 }
 
@@ -4670,11 +5134,22 @@ void renderMap_OAF()
 
 void renderMap_IAF1()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility1(g_Console);
     renderCharacter();  // renders the character into the buffer
     //IAF2
+    if (g_sBox1.startTimer == true && g_sBox2.startTimer == true && g_sBox3.startTimer == true && g_sBox4.startTimer == true && g_sBox5.startTimer == true && g_sBox6.startTimer == true)
+    {
+        for (int j = 17; j < 23; j++)
+        {
+            c.X = 2;
+            c.Y = j;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0A);
+        }
+    }
+
     if ((g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.Y == 19 || g_sChar.m_cLocation.Y == 20 || g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 2)
     {
         g_dPathTime = 0.0;
@@ -4697,6 +5172,15 @@ void renderMap_IAF1()
         g_eGameState = S_OAF;
         g_sChar.m_cLocation.X = 57;
         g_sChar.m_cLocation.Y = 18;
+    }
+
+    //wire game
+    if (g_sChar.m_cLocation.X == 56 && g_sChar.m_cLocation.Y == 4)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_wireGame;
+        g_sChar.m_cLocation.X = 7;
+        g_sChar.m_cLocation.Y = 12;
     }
 }
 
@@ -4744,7 +5228,7 @@ void renderMap_IAF4()
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility4(g_Console);
     renderCharacter();  // renders the character into the buffer
-    //Back to IAF1
+    
     if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {
         g_dPathTime = 0.0;
@@ -4766,14 +5250,117 @@ void renderMap_Inside_Medical_Facility()
         g_sChar.m_cLocation.X = 76;
         g_sChar.m_cLocation.Y = 12;
     }
+    if (g_sChar.m_cLocation.X == 10 && g_sChar.m_cLocation.Y == 11)
+    {
+        g_eGameState = S_Medical_Fight_Animation;
+    }
 }
 //change this gamestate
 void renderMap_Dungeon_Cell()
 {
+    COORD c;
+    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_cell(g_Console);
+    if (g_sBox.startTimer == true)
+    {
+        for (int i = 32; i < 46; i++)
+        {
+            c.X = i;
+            c.Y = 8;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
     renderCharacter();  // renders the character into the buffer
+    c.X = 13;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 4;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 13;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+
+    c.X = 66;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 73;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 75;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    //skull correct
+    c.X = 73;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 66;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+    c.X = 23;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 56;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 39;
+    c.Y = 22;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+    renderBox();
+
+    
+
+    if ((g_sChar.m_cLocation.X == g_sBox.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
+        {
+            g_sBox.m_cLocation.Y--;
+            if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
+            {   
+                g_sBox.startTimer = true;
+                
+            }   
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
+        {
+            g_sBox.m_cLocation.Y++;
+            if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
+            {
+                g_sBox.startTimer = true;
+                
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox.m_cLocation.X--;
+            if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
+            {
+                g_sBox.startTimer = true;
+                
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
+        {
+            g_sBox.m_cLocation.X++;
+            if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
+            {
+                g_sBox.startTimer = true;
+                
+            }
+        }
+    }
+
     //to DS1
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
@@ -4784,26 +5371,62 @@ void renderMap_Dungeon_Cell()
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
     }
+
+    //fake skull drawings
+    if ((g_sChar.m_cLocation.X == 13 && g_sChar.m_cLocation.Y == 20) || (g_sChar.m_cLocation.X == 13 && g_sChar.m_cLocation.Y == 10) || (g_sChar.m_cLocation.X == 6 && g_sChar.m_cLocation.Y == 12) || (g_sChar.m_cLocation.X == 4 && g_sChar.m_cLocation.Y == 15) || (g_sChar.m_cLocation.X == 6 && g_sChar.m_cLocation.Y == 18) || (g_sChar.m_cLocation.X == 23 && g_sChar.m_cLocation.Y == 21) || (g_sChar.m_cLocation.X == 39 && g_sChar.m_cLocation.Y == 22) || (g_sChar.m_cLocation.X == 56 && g_sChar.m_cLocation.Y == 21) || (g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == 20) || (g_sChar.m_cLocation.X == 75 && g_sChar.m_cLocation.Y == 15) || (g_sChar.m_cLocation.X == 73 && g_sChar.m_cLocation.Y == 12) || (g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == 10))
+    {
+        rMap.initialise(g_Console);
+        rMap.Border(g_Console);
+        mini.skull_game(g_Console);
+    }
+    //real skull drawings
+    if (g_sChar.m_cLocation.X == 73 && g_sChar.m_cLocation.Y == 18)
+    {
+        rMap.initialise(g_Console);
+        rMap.Border(g_Console);
+        mini.trueSkull(g_Console);
+    }
 }
+void renderBox()
+{
+    g_Console.writeToBuffer(g_sBox.m_cLocation, '[', 0x0D);
+
+}
+
+
 void renderMap_DS1()
 {
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth1(g_Console);
-    if (g_sGuard.enemyDie == true)
+    if (g_sGuard.entityDie == true)
     {
         g_sGuard.m_cLocation.Y = -1;
         g_sGuard.m_cLocation.X = -1;
+        g_sGuard.startTimer = false;
     }
-    if (g_sGuard2.enemyDie == true)
+    if (g_sGuard2.entityDie == true)
     {
         g_sGuard2.m_cLocation.Y = -1;
         g_sGuard2.m_cLocation.X = -1;
+        g_sGuard2.startTimer = false;
     }
-    if (g_sGuard3.enemyDie == true)
+    if (g_sGuard3.entityDie == true)
     {
         g_sGuard3.m_cLocation.Y = -1;
         g_sGuard3.m_cLocation.X = -1;
+        g_sGuard3.startTimer = false;
+    }
+    if (g_sChar.unlockDoorDS1 == true)
+    {
+        COORD c;
+
+        for (int i = 0; i < 10; i++)
+        {
+            c.X = 27 + i;
+            c.Y = 14;
+            rMap.Animation(g_Console, c.X, c.Y, ' ');
+        }
     }
     renderCharacter();
     //g_sChar.m_cLocation.Y = 18;
@@ -4826,17 +5449,7 @@ void renderMap_DS1()
         g_sChar.m_cLocation.X = 6;
         g_sChar.m_cLocation.Y = 3;
     }
-    if (g_sChar.unlockDoorDS1 == true)
-    {
-        COORD c;
 
-        for (int i = 0; i < 10; i++)
-        {
-            c.X = 27 + i;
-            c.Y = 14;
-            rMap.Animation(g_Console, c.X, c.Y, ' ');
-        }
-    }
     if (g_sGuard.xLeft == true)
     {
         int i = g_sGuard.m_cLocation.X;
@@ -5136,121 +5749,29 @@ void renderMap_DS1()
                 }
             }
         }
-    }
+    } 
+    //fight guard
     if ((g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard.m_cLocation.X))
     {
-        g_sGuard.fightGuard = true;
+        g_sGuard.fight = true;
         g_eGameState = S_BattleScreen;
         g_sChar.m_cLocation.Y = 5;
         g_sChar.m_cLocation.X = 37;
     }
     if ((g_sChar.m_cLocation.Y + 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.m_cLocation.X))
     {
-        g_sGuard2.fightGuard = true;
-        g_sChar.count = 0;
+        g_sGuard2.fight = true;
         g_eGameState = S_BattleScreen;
-        g_sChar.m_cLocation.Y = 13;
-        g_sChar.m_cLocation.X = 35;
+        g_sChar.m_cLocation.Y = 16;
+        g_sChar.m_cLocation.X = 28;
     }
     if ((g_sChar.m_cLocation.Y + 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.m_cLocation.X))
     {
-        g_sGuard3.fightGuard = true;
-        g_sChar.count = 0;
+        g_sGuard3.fight = true;
         g_eGameState = S_BattleScreen;
         g_sChar.m_cLocation.Y = 21;
-        g_sChar.m_cLocation.X = 50;
+        g_sChar.m_cLocation.X = 62;
     }
-    COORD c;
-    int BoxItemChance = 0;
-    BoxItemChance = (rand() % 5) + 1;
-    if (BoxItemChance == 0)
-    {
-        if (PlayerInv.pickup(item4))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item4->setItemName("Bread");
-        }
-        else {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Bread"), 100);
-
-        if (PlayerInv.pickup(item5))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item5->setItemName("Burger");
-        }
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Burger"), 100);
-
-        if (PlayerInv.pickup(item6))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item6->setItemName("Taco");
-        }
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Taco"), 100);
-
-        if (PlayerInv.pickup(item7))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item7->setItemName("Cake");
-        }
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Cake"), 100);
-
-        if (PlayerInv.pickup(item8))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item Added", 100);
-            item8->setItemName("Medicine");
-        }
-
-        else
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Not enough space.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Medicine"), 100);
-    }
-
 }
 
 void renderMap_GuardStealth()
@@ -5491,7 +6012,8 @@ void renderMap_Boss_Battle_Room()
 void RenderBattleScreen()
 {
     COORD c;
-    
+
+
     int UpdateDmg = 0;
     int UpdateHealth = 0;
     if (g_sTutEnemy.GetH() == 0 || g_sMutantWasp.GetH() == 0)
@@ -5531,7 +6053,7 @@ void RenderBattleScreen()
         c.Y = 27;
         g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
     }
-       
+
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     c.X = 11;
@@ -5539,14 +6061,206 @@ void RenderBattleScreen()
     string str_charhealth = to_string(g_sChar.GetH());
     g_Console.writeToBuffer(c, "Your Health: " + str_charhealth, 0x0A, 100);
 
+    if (g_sMutantWasp.fight == true)
+    {
+        Sprites.Battle_Wasp(g_Console, 0);
+        c.X = 53;
+        c.Y = 0;
+        string str_wasphealth = to_string(g_sMutantWasp.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_wasphealth, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sMutantWasp.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
+
+                }
+                if (randHit > 1) // guard gets hit
+                {
+                    int wasphealth = g_sMutantWasp.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sMutantWasp.SetH(wasphealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashWasp = 0.0;
+                }
+
+                /*
+                if (g_sGuard.GetH() <= 0)
+                {
+                    Item GuardArmor;
+
+                    GuardArmor.setItemName("Guard Armor");
+
+                    Item* item3 = new Item;
+                    if (PlayerInv.pickup(item3))
+                    {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Item Added", 100);
+                    }
+                    else {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Not enough space.", 100);
+                    }
+
+                    c.X = 5;
+                    c.Y = 27;
+                    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+                }
+                */
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                if (g_sMutantWasp.GetH() <= 0)
+                {
+                    g_dkillWasp = 0.0;
+                    g_sMutantWasp.startTimer = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
+
+            }
+        }
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+            slashWasp();
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_waspDMG = to_string(g_sMutantWasp.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
+            slashRobert();
+        }
+    }
+    if (g_sMutantWasp2.fight == true)
+    {
+        Sprites.Battle_Wasp(g_Console, 0);
+        c.X = 53;
+        c.Y = 0;
+        string str_wasphealth = to_string(g_sMutantWasp2.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_wasphealth, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sMutantWasp.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
+
+                }
+                if (randHit > 1) // guard gets hit
+                {
+                    int wasphealth = g_sMutantWasp2.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sMutantWasp2.SetH(wasphealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashWasp = 0.0;
+                }
+
+                /*
+                if (g_sGuard.GetH() <= 0)
+                {
+                    Item GuardArmor;
+
+                    GuardArmor.setItemName("Guard Armor");
+
+                    Item* item3 = new Item;
+                    if (PlayerInv.pickup(item3))
+                    {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Item Added", 100);
+                    }
+                    else {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Not enough space.", 100);
+                    }
+
+                    c.X = 5;
+                    c.Y = 27;
+                    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+                }
+                */
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                if (g_sMutantWasp2.GetH() <= 0)
+                {
+                    g_dkillWasp = 0.0;
+                    g_sMutantWasp2.startTimer = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
+
+            }
+        }
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+            slashWasp();
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_waspDMG = to_string(g_sMutantWasp2.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
+            slashRobert();
+        }
+
+    }
     // fight guard 1
-    if (g_sGuard.fightGuard == true)
+    if (g_sGuard.fight == true)
     {
         Sprites.drawGuard(g_Console, 0);
-        //rMap.pig(g_Console);
-        //rMap.Battle_Wasp(g_Console);
-        //rMap.Battle_Raymond(g_Console);
-        //renderCharacter();  // renders the character into the buffer
 
         c.X = 53;
         c.Y = 0;
@@ -5566,9 +6280,10 @@ void RenderBattleScreen()
 
                     g_sChar.showEnemyDMG = true;
                     enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
 
                 }
-                if (randHit > 1) // player gets hit
+                if (randHit > 1) // guard gets hit
                 {
                     int guardhealth = g_sGuard.GetH() - g_sChar.GetD(); // get enemy health
                     //string str_guardhealth = to_string(guardhealth);
@@ -5610,9 +6325,13 @@ void RenderBattleScreen()
                 if (g_sGuard.GetH() <= 0)
                 {
                     g_dkillGuard = 0.0;
-                    //deathAnimation = 0.0;
                     g_sGuard.startTimer = true;
-                    g_sChar.showPlayerDMG = true;
+                    //g_sChar.showPlayerDMG = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
                 }
 
             }
@@ -5625,7 +6344,7 @@ void RenderBattleScreen()
             c.Y = 25;
             string str_charDMG = to_string(g_sChar.GetD());
 
-            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100); 
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
             slashGuard();
         }
         if (g_sChar.showEnemyDMG == true)
@@ -5636,9 +6355,10 @@ void RenderBattleScreen()
             string str_guardDMG = to_string(g_sGuard.GetD());
 
             g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
+            slashRobert();
         }
     }
-    if (g_sGuard2.fightGuard == true)
+    if (g_sGuard2.fight == true)
     {
         Sprites.drawGuard(g_Console, 0);
         //rMap.pig(g_Console);
@@ -5654,8 +6374,8 @@ void RenderBattleScreen()
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
             {
-                int randHit = rand() % 2 + 1;
-                if (randHit == 1) // player gets hit
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
                 {
                     int charhealth = g_sChar.GetH() - g_sGuard2.GetD(); // get player health
                     string str_charhealth = to_string(charhealth);
@@ -5664,6 +6384,7 @@ void RenderBattleScreen()
 
                     g_sChar.showEnemyDMG = true;
                     enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
 
                 }
 
@@ -5674,8 +6395,8 @@ void RenderBattleScreen()
 
                     g_sGuard2.SetH(guardhealth);
                     g_sChar.showPlayerDMG = true;
-
-
+                    g_dslashGuard = 0.0;
+                    playerDMGTime = 0.0;
                 }
                 /*
                 if (g_sGuard2.GetH() <= 0)
@@ -5705,19 +6426,20 @@ void RenderBattleScreen()
                 startTime = 0.0;
                 g_sChar.resetTimer = true;
                 g_sChar.startTimer = false;
-                playerDMGTime = 0.0;
                 g_sChar.count = 1;
+                if (g_sGuard2.GetH() <= 0)
+                {
+                    g_dkillGuard = 0.0;
+                    //deathAnimation = 0.0;
+                    g_sGuard2.startTimer = true;
+                    //g_sChar.showPlayerDMG = true;
 
-            }
-        }
-        if (g_sChar.count == 1)
-        {
-            if (g_sGuard2.GetH() <= 0)
-            {
-                g_sGuard2.enemyDie = true;
-                g_sGuard2.fightGuard = false;
-                g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-                g_sChar.unlockDoorDS1 = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
             }
         }
 
@@ -5729,6 +6451,7 @@ void RenderBattleScreen()
             string str_charDMG = to_string(g_sChar.GetD());
 
             g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+            slashGuard();
 
         }
         if (g_sChar.showEnemyDMG == true)
@@ -5739,9 +6462,10 @@ void RenderBattleScreen()
             string str_guardDMG = to_string(g_sGuard2.GetD());
 
             g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
+            slashRobert();
         }
     }
-    if (g_sGuard3.fightGuard == true)
+    if (g_sGuard3.fight == true)
     {
         Sprites.drawGuard(g_Console, 0);
         //rMap.pig(g_Console);
@@ -5757,8 +6481,8 @@ void RenderBattleScreen()
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
             {
-                int randHit = rand() % 2 + 1;
-                if (randHit == 1) // player gets hit
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
                 {
                     int charhealth = g_sChar.GetH() - g_sGuard3.GetD(); // get player health
                     string str_charhealth = to_string(charhealth);
@@ -5767,6 +6491,7 @@ void RenderBattleScreen()
 
                     g_sChar.showEnemyDMG = true;
                     enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
 
                 }
                 if (randHit > 1) // player gets hit
@@ -5776,7 +6501,8 @@ void RenderBattleScreen()
 
                     g_sGuard3.SetH(guardhealth); // set enemy health to new health
                     g_sChar.showPlayerDMG = true;
-
+                    playerDMGTime = 0.0;
+                    g_dslashGuard = 0.0;
                 }
                 /*
                 if (g_sGuard2.GetH() <= 0)
@@ -5806,19 +6532,17 @@ void RenderBattleScreen()
                 startTime = 0.0;
                 g_sChar.resetTimer = true;
                 g_sChar.startTimer = false;
-                playerDMGTime = 0.0;
                 g_sChar.count = 1;
-
-            }
-        }
-        if (g_sChar.count == 1)
-        {
-            if (g_sGuard3.GetH() <= 0)
-            {
-                g_sGuard3.enemyDie = true;
-                g_sGuard3.fightGuard = false;
-                g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-                g_sChar.unlockDoorDS1 = true;
+                if (g_sGuard3.GetH() <= 0)
+                {
+                    g_dkillGuard = 0.0;
+                    g_sGuard3.startTimer = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
             }
         }
 
@@ -5830,24 +6554,22 @@ void RenderBattleScreen()
             string str_charDMG = to_string(g_sChar.GetD());
 
             g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
-
+            slashGuard();
         }
         if (g_sChar.showEnemyDMG == true)
         {
             COORD c;
             c.X = 3;
             c.Y = 26;
-            string str_guardDMG = to_string(g_sGuard3.GetD());
+            string str_guardDMG = to_string(g_sGuard.GetD());
 
             g_Console.writeToBuffer(c, "Enemy Dealt: " + str_guardDMG, 0x0F, 100);
+            slashRobert();
         }
-       
+
     }
-    if (g_sChar.GetH() <= 0)
-    {
-        g_eGameState = S_Game_Over; // if guard kills player
-    }
-    /*
+
+    
     if (g_sChar.InvenActive == true)
     {
         rMap.Road2(g_Console, 3, 24, 74);
@@ -5884,7 +6606,7 @@ void RenderBattleScreen()
     {
         g_sChar.InvenActive = true;
         g_sChar.itemActive = true;
-        
+
         /*if (PlayerInv.Consumed(item1))
         {
             c.X = 8;
@@ -5893,7 +6615,7 @@ void RenderBattleScreen()
             UpdateDmg = g_sChar.GetD() + 5;
             g_sChar.SetD(UpdateDmg);
         }
-        
+
         else
         {
             c.X = 8;
@@ -6014,48 +6736,37 @@ void RenderBattleScreen()
         c.Y = 27;
         g_Console.writeToBuffer(c, PlayerInv.checkInventory("Medicine"), 100);
 
-        //g_eGameState = S_Townsquare;
+        //g_eGameState = S_Townsquare;*/
     }
-    */
-    if (g_sChar.itemActive == true)
+    
+    if (g_sInven.startTimer == true && g_sChar.InvenActive == true && g_sChar.itemActive == true)
     {
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 13))))
         {
-            if (g_sInven.startTimer == true)
+            if (g_sChar.GetH() < 50)
             {
-                c.X = 5;
-                c.Y = 25;
-                g_Console.writeToBuffer(c, "Raw Meat was used.", 0x0F, 100);
+                UpdateHealth = g_sChar.GetH() + 5;
+                g_sInven.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
             }
-            UpdateHealth = g_sChar.GetH() + 5;
-            if (g_sChar.GetH() == 50)
+            else if (g_sChar.GetH() == 50)
             {
-                if (g_sInven.startTimer == true)
-                {
-                    c.X = 5;
-                    c.Y = 25;
-                    g_Console.writeToBuffer(c, "Raw Meat was not used.", 0x0F, 100);
-                }
+                g_sInven.showItemNotUsed = true;
             }
-            g_sChar.SetH(UpdateHealth);
-            if (UpdateHealth > 50)
+            else if (UpdateHealth > 50)
             {
                 g_sChar.SetH(50);
-                if (g_sInven.startTimer == true)
-                {
-                    c.X = 5;
-                    c.Y = 25;
-                    g_Console.writeToBuffer(c, "Raw Meat was not used.", 0x0F, 100);
-                }
+                g_sInven.showItemNotUsed = true;
             }
-            InvenTime = 0.0;
             g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+            InvenTime = 0.0;
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
+            playerInvenTime = 0.0;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 13))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 13))))
         {
-            g_sInven.startTimer = true;
             c.X = 5;
             c.Y = 25;
             g_Console.writeToBuffer(c, "Stinger was used.", 0x0F, 100);
@@ -6064,9 +6775,8 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 28))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 28))))
         {
-            g_sInven.startTimer = true;
             c.X = 5;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Guard Armor was used.", 100);
@@ -6075,7 +6785,7 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 28))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 28))))
         {
             g_sInven.startTimer = true;
             c.X = 5;
@@ -6095,7 +6805,7 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 46))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 46))))
         {
             g_sInven.startTimer = true;
             c.X = 5;
@@ -6116,9 +6826,8 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 46))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 46))))
         {
-            g_sInven.startTimer = true;
             c.X = 5;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Taco was used.", 100);
@@ -6137,7 +6846,7 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 61))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 61))))
         {
             g_sInven.startTimer = true;
             c.X = 5;
@@ -6151,11 +6860,16 @@ void RenderBattleScreen()
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
         {
-        //Poison Status
-        g_sChar.InvenActive = false;
-        g_sChar.itemActive = false;
+            //Poison Status
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+        }
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+        {
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
         }
     }
 
@@ -6202,7 +6916,7 @@ void RenderBattleScreen()
                 c.X = 5;
                 c.Y = 27;
                 g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
-                
+
             }
 
             startTime = 0.0;
@@ -6213,9 +6927,9 @@ void RenderBattleScreen()
             g_sChar.count = 1;
 
         }
-        
+
     }
-    
+
 
     if (g_sChar.GetH() <= 0)
     {
@@ -6260,15 +6974,428 @@ void RenderBattleScreen()
     {
         killGuard();
     }
+    if (g_sGuard2.startTimer == true)
+    {
+        killGuard();
+    }
+    if (g_sGuard3.startTimer == true)
+    {
+        killGuard();
+    }
+    if (g_sMutantWasp.startTimer == true)
+    {
+        killWasp();
+    }
+    if (g_sMutantWasp2.startTimer == true)
+    {
+        killWasp();
+    }
+    if (g_sChar.entityDie == true)
+    {
+        killRobert();
+    }
+}
+
+void renderMap_wireGame()
+{
+    COORD c;
+
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    mini.wire_game(g_Console);
+    
+    //Border
+    for (int i = 51; i < 78; i++)
+    {
+        c.Y = 7;
+        c.X = i;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '-', 0x0F);
+    }
+
+    for (int i = 51; i < 78; i++)
+    {
+        c.Y = 17;
+        c.X = i;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '-', 0x0F);
+    }
+
+    //Gate 1
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 54;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0C);
+    }
+
+    //Gate 2
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 58;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0B);
+    }
+
+    //Gate 3
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 62;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0A);
+    }
+
+    //Gate 4
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 66;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0C);
+    }
+
+    //Gate 5
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 70;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0B);
+    }
+    
+    //Gate 6
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 74;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0A);
+    }
+
+    //Letters & Numbers
+    c.Y = 6;
+    c.X = 52;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'A', 0x0C);
+    c.X = 56;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '3', 0x0B);
+    c.X = 60;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'B', 0x0A);
+    c.X = 64;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '2', 0x0C);
+    c.X = 68;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'C', 0x0B);
+    c.X = 72;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '1', 0x0A);
+
+    //Door to get back to IAF1
+    for (int j = 8; j < 17; j++)
+    {
+        c.Y = j;
+        c.X = 77;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0D);
+    }
+
+    if (g_sBox1.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 54;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox2.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 58;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox3.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 62;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox4.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 66;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox5.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 70;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    if (g_sBox6.startTimer == true)
+    {
+        for (int j = 8; j < 17; j++)
+        {
+            c.Y = j;
+            c.X = 74;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = ' ', 0x0F);
+        }
+    }
+    renderCharacter();  // renders the character into the buffer
+    renderBoxes();
+
+    //box 1
+    if ((g_sChar.m_cLocation.X == g_sBox1.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox1.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox1.m_cLocation.Y--;
+            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18)) 
+            {
+                g_sBox1.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox1.m_cLocation.Y++;
+            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            {
+                g_sBox1.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox1.m_cLocation.X--;
+            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            {
+                g_sBox1.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox1.m_cLocation.X++;
+            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            {
+                g_sBox1.startTimer = true;
+            }
+        }
+    }
+
+    //box 4
+    if ((g_sChar.m_cLocation.X == g_sBox4.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox4.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox4.m_cLocation.Y--;
+            if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
+            {
+                g_sBox4.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox4.m_cLocation.Y++;
+            if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
+            {
+                g_sBox4.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox4.m_cLocation.X--;
+            if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
+            {
+                g_sBox4.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox4.m_cLocation.X++;
+            if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
+            {
+                g_sBox4.startTimer = true;
+            }
+        }
+    }
+    //box 2
+    if ((g_sChar.m_cLocation.X == g_sBox2.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox2.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox2.m_cLocation.Y--;
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48)) 
+            {
+                g_sBox2.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox2.m_cLocation.Y++;
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
+            {
+                g_sBox2.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox2.m_cLocation.X--;
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
+            {
+                g_sBox2.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox2.m_cLocation.X++;
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
+            {
+                g_sBox2.startTimer = true;
+            }
+        }
+    }
+
+    //box 5
+    if ((g_sChar.m_cLocation.X == g_sBox5.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox5.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox5.m_cLocation.Y--;
+            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            {
+                g_sBox5.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox5.m_cLocation.Y++;
+            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            {
+                g_sBox5.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox5.m_cLocation.X--;
+            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            {
+                g_sBox5.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox5.m_cLocation.X++;
+            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            {
+                g_sBox5.startTimer = true;
+            }
+        }
+    }
+
+    //box 3
+    if ((g_sChar.m_cLocation.X == g_sBox3.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox3.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox3.m_cLocation.Y--;
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            {
+                g_sBox3.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox3.m_cLocation.Y++;
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            {
+                g_sBox3.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox3.m_cLocation.X--;
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            {
+                g_sBox3.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox3.m_cLocation.X++;
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            {
+                g_sBox3.startTimer = true;
+            }
+        }
+    }
+
+    //box 6
+    if ((g_sChar.m_cLocation.X == g_sBox6.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox6.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        {
+            g_sBox6.m_cLocation.Y--;
+            if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
+            {
+                g_sBox6.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
+        {
+            g_sBox6.m_cLocation.Y++;
+            if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
+            {
+                g_sBox6.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBox6.m_cLocation.X--;
+            if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
+            {
+                g_sBox6.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
+        {
+            g_sBox6.m_cLocation.X++;
+            if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
+            {
+                g_sBox6.startTimer = true;
+            }
+        }
+    }
+
+    if ((g_sChar.m_cLocation.Y == 8 || g_sChar.m_cLocation.Y == 9 || g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.Y == 15 || g_sChar.m_cLocation.Y == 16) && g_sChar.m_cLocation.X == 77)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_IAF1;
+        g_sChar.m_cLocation.X = 56;
+        g_sChar.m_cLocation.Y = 5;
+    }
+}
+
+void renderBoxes()
+{
+    g_Console.writeToBuffer(g_sBox1.m_cLocation, '[', 0x0C);
+    g_Console.writeToBuffer(g_sBox2.m_cLocation, '[', 0x0B);
+    g_Console.writeToBuffer(g_sBox3.m_cLocation, '[', 0x0A);
+    g_Console.writeToBuffer(g_sBox4.m_cLocation, '[', 0x0C);
+    g_Console.writeToBuffer(g_sBox5.m_cLocation, '[', 0x0B);
+    g_Console.writeToBuffer(g_sBox6.m_cLocation, '[', 0x0A);
 }
 
 void UpdateBattleScreen()
 {
     processUserInput();
-    if ((InvenTime > 2) && (g_sChar.itemActive == true))
+    if (g_sInven.resetTimer == true)
     {
-        g_sInven.startTimer = false;
-        InvenTime = 0;
+        if (InvenTime > 2)
+        {
+            g_sInven.startTimer = true;
+        }
     }
 
     if (g_sChar.resetTimer == true)
@@ -6278,27 +7405,73 @@ void UpdateBattleScreen()
             g_sChar.startTimer = true;
         }
     }
+
+    if ((playerInvenTime > 3) && (g_sInven.showItemUsed == true))
+    {
+        g_sInven.showItemUsed = false;
+        COORD c;
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        playerInvenTime = 0.0;
+    }
+
+    if ((playerInvenTime > 3) && (g_sInven.showItemNotUsed == true))
+    {
+        g_sInven.showItemNotUsed = false;
+        COORD c;
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        playerInvenTime = 0.0;
+    }
     if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
     {
-        g_sGuard.enemyDie = true;
-        g_sGuard.fightGuard = false;
+        g_sGuard.fight = false; // to stop the fighting after enemy die
+        g_sGuard.entityDie = true; // make this bool true so that the character will move to (-1,-1)
         g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
         g_sChar.unlockDoorDS1 = true;
-        //killGuard();
     }
-    if ((g_dkillGuard > 15) && (g_sGuard.startTimer == true))
+    if ((g_dkillGuard > 6) && (g_sGuard2.startTimer == true))
     {
-        
+        g_sGuard2.fight = false; // to stop the fighting after enemy die
+        g_sGuard2.entityDie = true; // make this bool true so that the character will move to (-1,-1)
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
     }
+    if ((g_dkillGuard > 6) && (g_sGuard3.startTimer == true))
+    {
+        g_sGuard3.fight = false; // to stop the fighting after enemy die
+        g_sGuard3.entityDie = true; // make this bool true so that the character will move to (-1,-1)
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+    }
+    if ((g_dkillWasp > 6) && (g_sMutantWasp.startTimer == true))
+    {
+        g_sMutantWasp.fight = false;
+        g_sMutantWasp.startTimer = false;
+        g_sMutantWasp2.fight = true;
+        g_eGameState = S_BattleScreen;
+        Sprites.Battle_Wasp(g_Console, 0);
+    }
+    if ((g_dkillWasp > 6) && (g_sMutantWasp2.startTimer == true))
+    {
+        g_sMutantWasp2.fight = false;
+        g_dMedical2Time = 0.0;
+        g_eGameState = S_Medical_Facility_Part2_Animation;
+    }
+    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
+    {
+        g_eGameState = S_Game_Over; // show game over screen after player die animation
+    }
+
     if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
     {
         //g_eGameState = S_Townsquare;
         g_sChar.showPlayerDMG = false;
+        playerDMGTime = 0.0;
         COORD c;
         c.X = 3;
         c.Y = 25;
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-        playerDMGTime = 0.0;
 
     }
     if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
@@ -6308,12 +7481,10 @@ void UpdateBattleScreen()
         COORD c;
         c.X = 3;
         c.Y = 26;
-
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
 
     }
 }
-
 
 void renderCharacter()
 {
@@ -7358,6 +8529,7 @@ void render_Main_Menu()
     c.Y = 9;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
 
+
     c.X = 36;
     c.Y = 9;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
@@ -7376,7 +8548,7 @@ void render_Main_Menu()
 
     c.X = 29;
     c.Y = 10;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '_');
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '/');
 
     j = 10;
     for (int i = 30; i < 35; i++)
@@ -7768,7 +8940,6 @@ void render_Main_Menu()
         g_bQuitGame = true;
     }
 }
-//fried stickbug (* q  *
 
 void RenderGameOver()
 {

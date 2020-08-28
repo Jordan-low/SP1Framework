@@ -8,6 +8,7 @@ class drawSprites :
 public:
 	void drawGuard(Console& g_Console, int k);
 	void drawRobert(Console& g_Console, int k);
+	void Tutorial_Wasp(Console& g_Console, int k);
 	void Battle_Wasp(Console& g_Console, int k);
 	void Battle_Raymond(Console& g_Console, int k);
 	void pig(Console& g_Console, int k);
