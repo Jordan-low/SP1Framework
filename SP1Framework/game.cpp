@@ -5993,12 +5993,13 @@ void Update_phase2Battle()
 void phase2Battle()
 {
     srand((unsigned)time(0));
+    /*
     while (music == false)
     {
         PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
         music = true;
     }
-
+    */
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     COORD c;
