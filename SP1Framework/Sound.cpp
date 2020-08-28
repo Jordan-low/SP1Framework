@@ -4,9 +4,9 @@
 
 using namespace std;
 
-void Sound::sound()
+void Sound::bossPhase2()
 {
 
-	bool music = PlaySound(TEXT("sound.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	
 }

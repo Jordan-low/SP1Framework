@@ -2,7 +2,7 @@
 
 void Cutscenes::animate(Console& g_Console)
 {
-	printmap(g_Console); 
+	printmap(g_Console);
 }
 
 void Cutscenes::nextdialogue(Console& g_Console)
@@ -58,7 +58,25 @@ void Cutscenes::drawgridLaserUp(Console& g_Console, int x, int y)
 	c.Y = y - 1;
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x04);
 }
-
+void Cutscenes::stickmanLeft(Console& g_Console, int x, int y)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '>', 0x04);
+	c.X = x + 1;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x04);
+	c.X = x + 2;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x04);
+	c.X = x + 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x04);
+	c.X = x + 4;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x04);
+	c.X = x + 5;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x04);
+	c.X = x - 1;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x04);
+}
 
 void Cutscenes::cleargrid(Console& g_Console, int x, int y)
 {
@@ -127,7 +145,7 @@ void Cutscenes::clearScreen(Console& g_Console)
 		{
 			c.X = i;
 			c.Y = j;
-			g_Console.writeToBuffer(c,' ', 0x00);
+			g_Console.writeToBuffer(c, ' ', 0x00);
 		}
 	}
 }
@@ -154,14 +172,14 @@ void Cutscenes::orphanageCaretakerCutscene(Console& g_Console)
 	//caretaker stumbling
 	cleargrid(g_Console, 11, 7);
 	drawgrid(g_Console, 9, 7, (char)12);
-	animate(g_Console); 
+	animate(g_Console);
 	cleargrid(g_Console, 9, 7);
 	drawgrid(g_Console, 13, 7, (char)12);
-	animate(g_Console); 
+	animate(g_Console);
 	cleargrid(g_Console, 13, 7);
 	drawgrid(g_Console, 11, 7, (char)12);
 	printmap(g_Console);
-	
+
 	//fire appearing
 	//fire appearing
 	j = 6;
@@ -507,7 +525,7 @@ void Cutscenes::medical_fight(Console& g_Console)
 	animate(g_Console);
 
 	//Robert walks to a patient 1 and gives medicine
-	
+
 	//drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
 	//drawgrid(g_Console, 34, 13, 'E'); //Ell
 	c.X = 5;
@@ -635,7 +653,7 @@ void Cutscenes::medical_fight(Console& g_Console)
 	drawgrid(g_Console, 31, 15, (char)12);
 	animate(g_Console);
 	cleargrid(g_Console, 31, 15);
-	
+
 	drawgrid(g_Console, 35, 16, (char)12);
 	c.X = 5;
 	c.Y = 24;
