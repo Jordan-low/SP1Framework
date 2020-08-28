@@ -13,6 +13,7 @@
 #include "Dialogue.h"
 #include "drawSprites.h"
 #include "Minigame.h"
+#include "Sound.h"
 
 using namespace std;
 
@@ -52,10 +53,13 @@ double playerInvenTime;
 double collectTime;
 double deathAnimation;
 double laserTime;
+double laserTime2;
 int randnum;
 int randnum2;
 int randnum3;
+int randnum4;
 
+Sound s;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -69,7 +73,7 @@ SGameChar   g_sPig3;
 SGameChar   g_sGuard;
 SGameChar   g_sGuard2;
 SGameChar   g_sGuard3;
-SGameChar   g_sGuard4; 
+SGameChar   g_sGuard4;
 SGameChar   g_sGuard5;
 SGameChar   g_sGuard6;
 SGameChar   g_sGuard7;
@@ -92,6 +96,7 @@ SGameChar   g_sBox4;
 SGameChar   g_sBox5;
 SGameChar   g_sBox6;
 SGameChar   g_sLaser;
+SGameChar   g_sLaser2;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -125,8 +130,6 @@ Item* item8 = new Item;
 void init(void)
 {
     g_sChar.entityDied = false;
-    g_sLaser.faceLeft = false;
-    laserTime = 0.0;
     g_sLaser.m_cLocation.X = 3;
     g_sLaser.m_cLocation.Y = 2;
 
@@ -254,7 +257,8 @@ void init(void)
     g_sBox.m_cLocation.Y = 12;
     g_sBox.startTimer = false;
 
-    g_sLaser.startTimer = false;
+    g_sLaser.startTimer = false; 
+    g_sLaser2.startTimer = false;
 
 
     // Set precision for floating point output
@@ -378,11 +382,11 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_phase2Battle: gameplayKBHandler(keyboardEvent);
         break;
-    //minigame
+        //minigame
     case S_wireGame: gameplayKBHandler(keyboardEvent);
         break;
 
-    //Death
+        //Death
     case S_Boss_Room_Animation: gameplayKBHandler(keyboardEvent);
         break;
     }
@@ -559,6 +563,7 @@ void update(double dt)
     g_dkillTutWasp += dt;
     g_dphase2Time += dt;
     laserTime += dt;
+    laserTime2 += dt;
 
 
     switch (g_eGameState)
@@ -1266,7 +1271,7 @@ void starting_cutscene()
                                                                                                                             c.Y = 8;
                                                                                                                             g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                             c.Y = 9;
-                                                                                                                            g_Console.writeToBuffer(c, "peaceful state."); 
+                                                                                                                            g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                             if (g_dStartScene > 30.5)
                                                                                                                             {
                                                                                                                                 clearScreen();
@@ -1290,35 +1295,35 @@ void starting_cutscene()
                                                                                                                                     c.Y = 6;
                                                                                                                                     g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                                     c.Y = 7;
-                                                                                                                                     g_Console.writeToBuffer(c, "peaceful state.");
-                                                                                                                                     if (g_dStartScene > 32.5)
-                                                                                                                                     {
-                                                                                                                                         clearScreen();
-                                                                                                                                         c.Y = 4;
-                                                                                                                                         g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
-                                                                                                                                         c.Y = 5;
-                                                                                                                                         g_Console.writeToBuffer(c, "he has to help restore the world back to its");
-                                                                                                                                         c.Y = 6;
-                                                                                                                                         g_Console.writeToBuffer(c, "peaceful state.");
-                                                                                                                                         if (g_dStartScene > 33.5)
-                                                                                                                                         {
-                                                                                                                                             clearScreen();
-                                                                                                                                             c.Y = 4;
-                                                                                                                                             g_Console.writeToBuffer(c, "he has to help restore the world back to its");
-                                                                                                                                             c.Y = 5;
-                                                                                                                                             g_Console.writeToBuffer(c, "peaceful state.");
-                                                                                                                                             if (g_dStartScene > 34.5)
-                                                                                                                                             {
-                                                                                                                                                 clearScreen();
-                                                                                                                                                 c.Y = 4;
-                                                                                                                                                 g_Console.writeToBuffer(c, "peaceful state.");
-                                                                                                                                                 if (g_dStartScene > 35.5)
-                                                                                                                                                 {
-                                                                                                                                                     clearScreen();
-                                                                                                                                                 }
-                                                                                                                                             }
-                                                                                                                                         }
-                                                                                                                                     }
+                                                                                                                                    g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                                    if (g_dStartScene > 32.5)
+                                                                                                                                    {
+                                                                                                                                        clearScreen();
+                                                                                                                                        c.Y = 4;
+                                                                                                                                        g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                                                        c.Y = 5;
+                                                                                                                                        g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                                        c.Y = 6;
+                                                                                                                                        g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                                        if (g_dStartScene > 33.5)
+                                                                                                                                        {
+                                                                                                                                            clearScreen();
+                                                                                                                                            c.Y = 4;
+                                                                                                                                            g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                                            c.Y = 5;
+                                                                                                                                            g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                                            if (g_dStartScene > 34.5)
+                                                                                                                                            {
+                                                                                                                                                clearScreen();
+                                                                                                                                                c.Y = 4;
+                                                                                                                                                g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                                                if (g_dStartScene > 35.5)
+                                                                                                                                                {
+                                                                                                                                                    clearScreen();
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
                                                                                                                                 }
                                                                                                                             }
                                                                                                                         }
@@ -1420,6 +1425,7 @@ void Orphanage_Animation()
                                             if (g_dElapsedTime > 4.2)
                                             {
                                                 g_Console.writeToBuffer(c, "Caretaker: Argh!!!", 0x0F, 100);
+
                                                 if (g_dElapsedTime > 10)
                                                 {
                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -3071,9 +3077,9 @@ void Boss_Room_Animation()
     if (g_dBossTime > 1)
     {
         g_Console.writeToBuffer(c, "Raymond: It seems that the person I have been searching for", 0x0F);
-        g_Console.writeToBuffer(d, "         came to me instead.", 0x0F); 
+        g_Console.writeToBuffer(d, "         came to me instead.", 0x0F);
         g_sChar.nextDialogue++;
-        
+
         if (g_dBossTime > 5)
         {
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -3440,10 +3446,10 @@ void slashGuard()
 }
 void Update_killGuard()
 {
-   // if (g_dkillGuard > 3)
-   // {
-       // g_eGameState = S_GAME;
-  //  }
+    // if (g_dkillGuard > 3)
+    // {
+        // g_eGameState = S_GAME;
+   //  }
     processUserInput();
 }
 void killGuard()
@@ -4082,11 +4088,11 @@ void slashRaymond()
     //rMap.initialise(g_Console);
    // rMap.Border(g_Console);
     COORD c;
-   //renderCharacter();
+    //renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
-  //  Sprites.Battle_Raymond(g_Console, 0);
+    //  Sprites.Battle_Raymond(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
     if (g_dslashRaymond > 0.05)
@@ -4284,7 +4290,7 @@ void killRaymond()
     //rMap.initialise(g_Console);
     //rMap.Border(g_Console);
     COORD c;
-   // renderCharacter();
+    // renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
@@ -4890,158 +4896,163 @@ void killTutWasp()
         }
     }
 }
-void drawLaser(Console &g_Console, int j, int k)
-{    
-    if (g_dphase2Time > 1)
-    {
-        Cutscene.drawgrid(g_Console, 2 + j, 2 + k, '\\');
-        if (g_dphase2Time > 0.05)
-        {
-            Cutscene.drawgrid(g_Console, 3 + j, 3 + k, '\\');
-            if (g_dphase2Time > 1.1)
-            {
-                Cutscene.drawgrid(g_Console, 4 + j, 4 + k, '\\');
-                if (g_dphase2Time > 1.15 )
-                {
-                    Cutscene.drawgridLaserRight(g_Console, 5 + j, 5 + k);
-                    if (g_dphase2Time > 1.20)
-                    {
-                        Cutscene.drawgridLaserRight(g_Console, 6 + j, 6 + k);
-                        if (g_dphase2Time > 1.25)
-                        {
-                            Cutscene.drawgridLaserRight(g_Console, 7 + j, 7 + k);
-                            if (g_dphase2Time > 1.30)
-                            {
-                                Cutscene.drawgridLaserRight(g_Console, 8 + j, 8 + k);
-                                if (g_dphase2Time > 1.35)
-                                {
-                                    Cutscene.drawgridLaserRight(g_Console, 9 + j, 9 + k);
-                                    if (g_dphase2Time > 1.40)
-                                    {
-                                        Cutscene.drawgridLaserRight(g_Console, 10 + j, 10 + k);
-                                        if (g_dphase2Time > 1.45)
-                                        {
-                                            Cutscene.drawgridLaserRight(g_Console, 11 + j, 11 + k);
-                                            if (g_dphase2Time > 1.50)
-                                            {
-                                                Cutscene.drawgridLaserRight(g_Console, 12 + j, 12 + k);
-                                                if (g_dphase2Time > 1.55)
-                                                {
-                                                    Cutscene.drawgridLaserRight(g_Console, 13 + j, 13 + k);
-                                                    if (g_dphase2Time > 1.60)
-                                                    {
-                                                        Cutscene.drawgridLaserRight(g_Console, 14 + j, 14 + k);
-                                                        if (g_dphase2Time > 1.65)
-                                                        {
-                                                            Cutscene.drawgridLaserRight(g_Console, 15 + j, 15 + k);
-                                                            if (g_dphase2Time > 1.70)
-                                                            {
-                                                                Cutscene.drawgridLaserRight(g_Console, 16 + j, 16 + k);
-                                                                if (g_dphase2Time > 1.75)
-                                                                {
-                                                                    Cutscene.drawgridLaserRight(g_Console, 17 + j, 17 + k);
-                                                                    if (g_dphase2Time > 1.80)
-                                                                    {
-                                                                        Cutscene.drawgridLaserRight(g_Console, 18 + j, 18 + k);
-                                                                        if (g_dphase2Time > 1.85)
-                                                                        {
-                                                                            Cutscene.drawgridLaserRight(g_Console, 19 + j, 19 + k);
-                                                                            if (g_dphase2Time > 1.90)
-                                                                            {
-                                                                                Cutscene.drawgridLaserRight(g_Console, 20 + j, 20 + k);
-                                                                                if (g_dphase2Time > 1.95)
-                                                                                {
-                                                                                    Cutscene.drawgridLaserRight(g_Console, 21 + j, 21 + k);
-                                                                                    if (g_dphase2Time > 2.00)
-                                                                                    {
-                                                                                        Cutscene.drawgridLaserRight(g_Console, 22 + j, 22 + k);
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-void drawHoriLaser(Console& g_Console, int k)
+void drawLaser(Console& g_Console, int j)
 {
     if (g_dphase2Time > 1)
     {
-        Cutscene.drawgrid(g_Console, 2, 2 + k, '^');
+        Cutscene.drawgrid(g_Console, 2 + j, 2, '\\');
+        if (g_sChar.m_cLocation.X == (2 + j) && g_sChar.m_cLocation.Y == 2)
+        {
+            g_sChar.SetH(g_sChar.GetH() - 2);
+        }
         if (g_dphase2Time > 0.05)
         {
-            Cutscene.drawgrid(g_Console, 3, 3 + k, '^');
+            Cutscene.drawgrid(g_Console, 3 + j, 3, '\\');
+            if (g_sChar.m_cLocation.X == (3 + j) && g_sChar.m_cLocation.Y == 3)
+            {
+                g_sChar.SetH(g_sChar.GetH() - 2);
+            }
             if (g_dphase2Time > 1.1)
             {
-                Cutscene.drawgrid(g_Console, 4, 4 + k, '^');
+                Cutscene.drawgrid(g_Console, 4 + j, 4, '\\');
+                if (g_sChar.m_cLocation.X == (4 + j) && g_sChar.m_cLocation.Y == 4)
+                {
+                    g_sChar.SetH(g_sChar.GetH() - 2);
+                }
                 if (g_dphase2Time > 1.15)
                 {
-                    Cutscene.drawgridLaserRight(g_Console, 5, 5 + k);
+                    Cutscene.drawgridLaserRight(g_Console, 5 + j, 5);
+                    if (g_sChar.m_cLocation.X == (5 + j) && g_sChar.m_cLocation.Y == 5)
+                    {
+                        g_sChar.SetH(g_sChar.GetH() - 2);
+                    }
                     if (g_dphase2Time > 1.20)
                     {
-                        Cutscene.drawgridLaserRight(g_Console, 6, 6 + k);
+                        Cutscene.drawgridLaserRight(g_Console, 6 + j, 6);
+                        if (g_sChar.m_cLocation.X == (6 + j) && g_sChar.m_cLocation.Y == 6)
+                        {
+                            g_sChar.SetH(g_sChar.GetH() - 2);
+                        }
                         if (g_dphase2Time > 1.25)
                         {
-                            Cutscene.drawgridLaserRight(g_Console, 7, 7 + k);
+                            Cutscene.drawgridLaserRight(g_Console, 7 + j, 7);
+                            if (g_sChar.m_cLocation.X == (7 + j) && g_sChar.m_cLocation.Y == 7)
+                            {
+                                g_sChar.SetH(g_sChar.GetH() - 2);
+                            }
                             if (g_dphase2Time > 1.30)
                             {
-                                Cutscene.drawgridLaserRight(g_Console, 8, 8 + k);
+                                Cutscene.drawgridLaserRight(g_Console, 8 + j, 8);
+                                if (g_sChar.m_cLocation.X == (8 + j) && g_sChar.m_cLocation.Y == 8)
+                                {
+                                    g_eGameState = S_Path_Area;
+                                }
                                 if (g_dphase2Time > 1.35)
                                 {
-                                    Cutscene.drawgridLaserRight(g_Console, 9, 9 + k);
+                                    Cutscene.drawgridLaserRight(g_Console, 9 + j, 9);
+                                    if (g_sChar.m_cLocation.X == (9 + j) && g_sChar.m_cLocation.Y == 9)
+                                    {
+                                                    g_sChar.SetH(g_sChar.GetH() - 2);
+                                    }
                                     if (g_dphase2Time > 1.40)
                                     {
-                                        Cutscene.drawgridLaserRight(g_Console, 10, 10 + k);
+                                        Cutscene.drawgridLaserRight(g_Console, 10 + j, 10);
+                                        if (g_sChar.m_cLocation.X == (10 + j) && g_sChar.m_cLocation.Y == 10)
+                                        {
+                                                        g_sChar.SetH(g_sChar.GetH() - 2);
+                                        }
                                         if (g_dphase2Time > 1.45)
                                         {
-                                            Cutscene.drawgridLaserRight(g_Console, 11, 11 + k);
+                                            Cutscene.drawgridLaserRight(g_Console, 11 + j, 11);
+                                            if (g_sChar.m_cLocation.X == (11 + j) && g_sChar.m_cLocation.Y == 11)
+                                            {
+                                                g_sChar.SetH(g_sChar.GetH() - 2);
+                                            }
                                             if (g_dphase2Time > 1.50)
                                             {
-                                                Cutscene.drawgridLaserRight(g_Console, 12, 12 + k);
+                                                Cutscene.drawgridLaserRight(g_Console, 12 + j, 12);
+                                                if (g_sChar.m_cLocation.X == (12 + j) && g_sChar.m_cLocation.Y == 12)
+                                                {
+                                                    g_sChar.SetH(g_sChar.GetH() - 2);
+                                                }
                                                 if (g_dphase2Time > 1.55)
                                                 {
-                                                    Cutscene.drawgridLaserRight(g_Console, 13, 13 + k);
+                                                    Cutscene.drawgridLaserRight(g_Console, 13 + j, 13);
+                                                    if (g_sChar.m_cLocation.X == (13 + j) && g_sChar.m_cLocation.Y == 13)
+                                                    {
+                                                        g_sChar.SetH(g_sChar.GetH() - 2);
+                                                    }
                                                     if (g_dphase2Time > 1.60)
                                                     {
-                                                        Cutscene.drawgridLaserRight(g_Console, 14, 14 + k);
+                                                        Cutscene.drawgridLaserRight(g_Console, 14 + j, 14);
+                                                        if (g_sChar.m_cLocation.X == (14 + j) && g_sChar.m_cLocation.Y == 14)
+                                                        {
+                                                            g_sChar.SetH(g_sChar.GetH() - 2);
+                                                        }
                                                         if (g_dphase2Time > 1.65)
                                                         {
-                                                            Cutscene.drawgridLaserRight(g_Console, 15, 15 + k);
+                                                            Cutscene.drawgridLaserRight(g_Console, 15 + j, 15);
+                                                            if (g_sChar.m_cLocation.X == (15 + j) && g_sChar.m_cLocation.Y == 15)
+                                                            {
+                                                                g_sChar.SetH(g_sChar.GetH() - 2);
+                                                            }
                                                             if (g_dphase2Time > 1.70)
                                                             {
-                                                                Cutscene.drawgridLaserRight(g_Console, 16, 16 + k);
+                                                                Cutscene.drawgridLaserRight(g_Console, 16 + j, 16);
+                                                                if (g_sChar.m_cLocation.X == (16 + j) && g_sChar.m_cLocation.Y == 16)
+                                                                {
+                                                                    g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                }
                                                                 if (g_dphase2Time > 1.75)
                                                                 {
-                                                                    Cutscene.drawgridLaserRight(g_Console, 17, 17 + k);
+                                                                    Cutscene.drawgridLaserRight(g_Console, 17 + j, 17);
+                                                                    if (g_sChar.m_cLocation.X == (17 + j) && g_sChar.m_cLocation.Y == 17)
+                                                                    {
+                                                                        g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                    }
                                                                     if (g_dphase2Time > 1.80)
                                                                     {
-                                                                        Cutscene.drawgridLaserRight(g_Console, 18, 18 + k);
+                                                                        Cutscene.drawgridLaserRight(g_Console, 18 + j, 18);
+                                                                        if (g_sChar.m_cLocation.X == (18 + j) && g_sChar.m_cLocation.Y == 18)
+                                                                        {
+                                                                            g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                        }
                                                                         if (g_dphase2Time > 1.85)
                                                                         {
-                                                                            Cutscene.drawgridLaserRight(g_Console, 19, 19 + k);
+                                                                            Cutscene.drawgridLaserRight(g_Console, 19 + j, 19);
+                                                                            if (g_sChar.m_cLocation.X == (19 + j) && g_sChar.m_cLocation.Y == 19)
+                                                                            {
+                                                                                g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                            }
                                                                             if (g_dphase2Time > 1.90)
                                                                             {
-                                                                                Cutscene.drawgridLaserRight(g_Console, 20, 20 + k);
+                                                                                Cutscene.drawgridLaserRight(g_Console, 20 + j, 20);
+                                                                                if (g_sChar.m_cLocation.X == (20 + j) && g_sChar.m_cLocation.Y == 20)
+                                                                                {
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                                }
                                                                                 if (g_dphase2Time > 1.95)
                                                                                 {
-                                                                                    Cutscene.drawgridLaserRight(g_Console, 21, 21 + k);
+                                                                                    Cutscene.drawgridLaserRight(g_Console, 21 + j, 21);
+                                                                                    if (g_sChar.m_cLocation.X == (21 + j) && g_sChar.m_cLocation.Y == 21)
+                                                                                    {
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                                    }
                                                                                     if (g_dphase2Time > 2.00)
                                                                                     {
-                                                                                        Cutscene.drawgridLaserRight(g_Console, 22, 22 + k);
+                                                                                        Cutscene.drawgridLaserRight(g_Console, 22 + j, 22);
+                                                                                        if (g_sChar.m_cLocation.X == (22 + j) && g_sChar.m_cLocation.Y == 22)
+                                                                                        {
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                                        }
+                                                                                        if (g_dphase2Time > 2.05)
+                                                                                        {
+                                                                                            Cutscene.drawgridLaserRight(g_Console, 23 + j, 23);
+                                                                                            if (g_sChar.m_cLocation.X == (23 + j) && g_sChar.m_cLocation.Y == 23)
+                                                                                            {
+                                                                                                g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                                            }
+                                                                                        }
                                                                                     }
                                                                                 }
                                                                             }
@@ -5064,20 +5075,293 @@ void drawHoriLaser(Console& g_Console, int k)
         }
     }
 }
+
+void drawLaser2(Console& g_Console, int j)
+{
+    if (laserTime2 > 0.1)
+    {
+        Cutscene.drawgrid(g_Console, 77 - j, 2, '/');
+        if (g_sChar.m_cLocation.X == (77 - j) && g_sChar.m_cLocation.Y == 2)
+        {
+            g_sChar.SetH(g_sChar.GetH() - 2);
+        }
+        if (laserTime2 > 0.05)
+        {
+            Cutscene.drawgrid(g_Console, 76 - j, 3, '/');
+            if (g_sChar.m_cLocation.X == (76 - j) && g_sChar.m_cLocation.Y == 3)
+            {
+                g_sChar.SetH(g_sChar.GetH() - 2);
+            }
+            if (laserTime2 > 0.1)
+            {
+                Cutscene.drawgrid(g_Console, 75 - j, 4, '/');
+                if (g_sChar.m_cLocation.X == (75 - j) && g_sChar.m_cLocation.Y == 4)
+                {
+                    g_sChar.SetH(g_sChar.GetH() - 2);
+                }
+                if (laserTime2 > 0.15)
+                {
+                    Cutscene.drawgridLaserLeft(g_Console, 74 - j, 5);
+                    if (g_sChar.m_cLocation.X == (74 - j) && g_sChar.m_cLocation.Y == 5)
+                    {
+                        g_sChar.SetH(g_sChar.GetH() - 2);
+                    }
+                    if (laserTime2 > 0.20)
+                    {
+                        Cutscene.drawgridLaserLeft(g_Console, 73 - j, 6);
+                        if (g_sChar.m_cLocation.X == (73 - j) && g_sChar.m_cLocation.Y == 6)
+                        {
+                            g_sChar.SetH(g_sChar.GetH() - 2);
+                        }
+                        if (laserTime2 > 0.25)
+                        {
+                            Cutscene.drawgridLaserLeft(g_Console, 72 - j, 7);
+                            if (g_sChar.m_cLocation.X == (72 - j) && g_sChar.m_cLocation.Y == 7)
+                            {
+                                g_sChar.SetH(g_sChar.GetH() - 2);
+                            }
+                            if (laserTime2 > 0.30)
+                            {
+                                Cutscene.drawgridLaserLeft(g_Console, 71 - j, 8);
+                                if (g_sChar.m_cLocation.X == (71 - j) && g_sChar.m_cLocation.Y == 8)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 2);
+                                }
+                                if (laserTime2 > 0.35)
+                                {
+                                    Cutscene.drawgridLaserLeft(g_Console, 70 - j, 9);
+                                    if (g_sChar.m_cLocation.X == (70 - j) && g_sChar.m_cLocation.Y == 9)
+                                    {
+                                        g_sChar.SetH(g_sChar.GetH() - 2);
+                                    }
+                                    if (laserTime2 > 0.40)
+                                    {
+                                        Cutscene.drawgridLaserLeft(g_Console, (69 - j), 10);
+                                        if (g_sChar.m_cLocation.X == (69 - j) && g_sChar.m_cLocation.Y == 10)
+                                        {
+                                            g_sChar.SetH(g_sChar.GetH() - 2);
+                                        }
+                                        if (laserTime2 > 0.45)
+                                        {
+                                            Cutscene.drawgridLaserLeft(g_Console, (68 - j), 11);
+                                            if (g_sChar.m_cLocation.X == (68 - j) && g_sChar.m_cLocation.Y == 11)
+                                            {
+                                                g_sChar.SetH(g_sChar.GetH() - 2);
+                                            }
+                                            if (laserTime2 > 0.50)
+                                            {
+                                                Cutscene.drawgridLaserLeft(g_Console, (67 - j), 12);
+                                                if (g_sChar.m_cLocation.X == (67 - j) && g_sChar.m_cLocation.Y == 12)
+                                                {
+                                                    g_sChar.SetH(g_sChar.GetH() - 2);
+                                                }
+                                                if (laserTime2 > 0.55)
+                                                {
+                                                    Cutscene.drawgridLaserLeft(g_Console, (66 - j), 13);
+                                                    if (g_sChar.m_cLocation.X == (66 - j) && g_sChar.m_cLocation.Y == 13)
+                                                    {
+                                                        g_sChar.SetH(g_sChar.GetH() - 2);
+                                                    }
+                                                    if (laserTime2 > 0.60)
+                                                    {
+                                                        Cutscene.drawgridLaserLeft(g_Console, (65 - j), 14);
+                                                        if (g_sChar.m_cLocation.X == (65 - j) && g_sChar.m_cLocation.Y == 14)
+                                                        {
+                                                            g_sChar.SetH(g_sChar.GetH() - 2);
+                                                        }
+                                                        if (laserTime2 > 0.65)
+                                                        {
+                                                            Cutscene.drawgridLaserLeft(g_Console, (64 - j), 15);
+                                                            if (g_sChar.m_cLocation.X == (64 - j) && g_sChar.m_cLocation.Y == 15)
+                                                            {
+                                                                g_sChar.SetH(g_sChar.GetH() - 2);
+                                                            }
+                                                            if (laserTime2 > 0.70)
+                                                            {
+                                                                Cutscene.drawgridLaserLeft(g_Console, (63 - j), 16);
+                                                                if (g_sChar.m_cLocation.X == (63 - j) && g_sChar.m_cLocation.Y == 16)
+                                                                {
+                                                                    g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                }
+                                                                if (laserTime2 > 0.75)
+                                                                {
+                                                                    Cutscene.drawgridLaserLeft(g_Console, (62 - j), 17);
+                                                                    if (g_sChar.m_cLocation.X == (62 - j) && g_sChar.m_cLocation.Y == 17)
+                                                                    {
+                                                                        g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                    }
+                                                                    if (laserTime2 > 0.80)
+                                                                    {
+                                                                        Cutscene.drawgridLaserLeft(g_Console, (61 - j), 18);
+                                                                        if (g_sChar.m_cLocation.X == (61 - j) && g_sChar.m_cLocation.Y == 18)
+                                                                        {
+                                                                            g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                        }
+                                                                        if (laserTime2 > 0.85)
+                                                                        {
+                                                                            Cutscene.drawgridLaserLeft(g_Console, (60 - j), 19);
+                                                                            if (g_sChar.m_cLocation.X == (60 - j) && g_sChar.m_cLocation.Y == 19)
+                                                                            {
+                                                                                g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                            }
+                                                                            if (laserTime2 > 0.90)
+                                                                            {
+                                                                                Cutscene.drawgridLaserLeft(g_Console, (59 - j), 20);
+                                                                                if (g_sChar.m_cLocation.X == (59 - j) && g_sChar.m_cLocation.Y == 20)
+                                                                                {
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                                }
+                                                                                if (laserTime2 > 0.95)
+                                                                                {
+                                                                                    Cutscene.drawgridLaserLeft(g_Console, (58 - j), 21);
+                                                                                    if (g_sChar.m_cLocation.X == (58 - j) && g_sChar.m_cLocation.Y == 21)
+                                                                                    {
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                                    }
+                                                                                    if (laserTime2 > 1.00)
+                                                                                    {
+                                                                                        Cutscene.drawgridLaserLeft(g_Console, (57 - j), 22);
+                                                                                        if (g_sChar.m_cLocation.X == (57 - j) && g_sChar.m_cLocation.Y == 22)
+                                                                                        {
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                                        }
+                                                                                        if (laserTime2 > 1.05)
+                                                                                        {
+                                                                                            Cutscene.drawgridLaserLeft(g_Console, (56 - j), 23);
+                                                                                            if (g_sChar.m_cLocation.X == (56 - j) && g_sChar.m_cLocation.Y == 23)
+                                                                                            {
+                                                                                                g_sChar.SetH(g_sChar.GetH() - 2);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+void drawVertLaser(Console& g_Console, int k)
+{
+    if (g_dphase2Time > 1)
+    {
+        Cutscene.drawgridLaserUp(g_Console, k, 2);
+        if (g_dphase2Time > 0.05)
+        {
+            Cutscene.drawgridLaserUp(g_Console, k, 3);
+            if (g_dphase2Time > 1.1)
+            {
+                Cutscene.drawgridLaserUp(g_Console, k, 4);
+                if (g_dphase2Time > 1.15)
+                {
+                    Cutscene.drawgridLaserUp(g_Console, k, 5);
+                    if (g_dphase2Time > 1.20)
+                    {
+                        Cutscene.drawgridLaserUp(g_Console, k, 6);
+                        if (g_dphase2Time > 1.25)
+                        {
+                            Cutscene.drawgridLaserUp(g_Console, k, 7);
+                            if (g_dphase2Time > 1.30)
+                            {
+                                Cutscene.drawgridLaserUp(g_Console, k, 8);
+                                if (g_dphase2Time > 1.35)
+                                {
+                                    Cutscene.drawgridLaserUp(g_Console, k, 9);
+                                    if (g_dphase2Time > 1.40)
+                                    {
+                                        Cutscene.drawgridLaserUp(g_Console, k, 10);
+                                        if (g_dphase2Time > 1.45)
+                                        {
+                                            Cutscene.drawgridLaserUp(g_Console, k, 11);
+                                            if (g_dphase2Time > 1.50)
+                                            {
+                                                Cutscene.drawgridLaserUp(g_Console, k, 12);
+                                                if (g_dphase2Time > 1.55)
+                                                {
+                                                    Cutscene.drawgridLaserUp(g_Console, k, 13);
+                                                    if (g_dphase2Time > 1.60)
+                                                    {
+                                                        Cutscene.drawgridLaserUp(g_Console, k, 14);
+                                                        if (g_dphase2Time > 1.65)
+                                                        {
+                                                            Cutscene.drawgridLaserUp(g_Console, k, 15);
+                                                            if (g_dphase2Time > 1.70)
+                                                            {
+                                                                Cutscene.drawgridLaserUp(g_Console, k, 16);
+                                                                if (g_dphase2Time > 1.75)
+                                                                {
+                                                                    Cutscene.drawgridLaserUp(g_Console, k, 17);
+                                                                    if (g_dphase2Time > 1.80)
+                                                                    {
+                                                                        Cutscene.drawgridLaserUp(g_Console, k, 18);
+                                                                        if (g_dphase2Time > 1.85)
+                                                                        {
+                                                                            Cutscene.drawgridLaserUp(g_Console, k, 19);
+                                                                            if (g_dphase2Time > 1.90)
+                                                                            {
+                                                                                Cutscene.drawgridLaserUp(g_Console, k, 20);
+                                                                                if (g_dphase2Time > 1.95)
+                                                                                {
+                                                                                    Cutscene.drawgridLaserUp(g_Console, k, 21);
+                                                                                    if (g_dphase2Time > 2.00)
+                                                                                    {
+                                                                                        Cutscene.drawgridLaserUp(g_Console, k, 22);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 void Update_phase2Battle()
 {
     processUserInput();
     moveCharacter();
-    if (laserTime > 1)
+    if (laserTime > 0)
     {
         g_sLaser.startTimer = false;
+        g_sLaser2.startTimer = false;
     }
     if (g_dphase2Time > 2)
     {
         g_sLaser.startTimer = true;
         g_sLaser.counter = true;
     }
-
+    if (laserTime2 > 1)
+    {
+        g_sLaser2.startTimer = true;
+        g_sLaser2.counter = true;
+    }
 }
 void phase2Battle()
 {
@@ -5105,27 +5389,49 @@ void phase2Battle()
             randnum = rand() % 70 + 1;
             randnum2 = rand() % 70 + 1;
             randnum3 = rand() % 70 + 1;
+            randnum4 = rand() % 70 + 1;
             g_sLaser.counter = false;
         }
-        drawLaser(g_Console, randnum, 0);
-        drawLaser(g_Console, randnum2, 0);
-        drawLaser(g_Console, randnum3, 0);
+        drawLaser(g_Console, randnum);
+        drawLaser(g_Console, randnum2);
+        drawLaser(g_Console, randnum3);
+        drawLaser(g_Console, randnum4);
+
         //drawHoriLaser(g_Console, randnum3);
 
+        drawVertLaser(g_Console, 0);
 
         //g_sLaser.resetTimer = false;
-
-    }    
-
-    if ((g_sChar.m_cLocation.Y == '\\') && (g_sChar.m_cLocation.X == '\\'))
+    }
+    if (g_sLaser2.startTimer == true)
     {
-        g_eGameState = S_Path_Area;
+        laserTime2 = 0.0;
+        g_sLaser2.resetTimer = true;
+    }
+    if (g_sLaser2.resetTimer == true)
+    {
+
+        if (g_sLaser2.counter == true)
+        {
+            randnum = rand() % 70 + 1;
+            randnum2 = rand() % 70 + 1;
+            randnum3 = rand() % 70 + 1;
+            randnum4 = rand() % 70 + 1;
+            g_sLaser2.counter = false;
+        }
+
+        //drawHoriLaser(g_Console, randnum3);
+        drawLaser2(g_Console, randnum);
+        drawLaser2(g_Console, randnum2);
+        drawLaser2(g_Console, randnum3);
+        drawLaser2(g_Console, randnum4);
+
+        //drawVertLaser(g_Console, 0);
+
+        //g_sLaser.resetTimer = false;
     }
     renderCharacter();
     rMap.boss_room(g_Console);
-
-
-
 }
 
 
@@ -5644,7 +5950,7 @@ void render()
     case S_wireGame: renderMap_wireGame();
         break;
 
-    //Animations
+        //Animations
     case S_Start_Animation: starting_cutscene();
         break;
     case S_Protest_Area_Animation: Protest_Area_Animation();
@@ -6245,7 +6551,7 @@ void renderMap_IAF4()
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility4(g_Console);
     renderCharacter();  // renders the character into the buffer
-    
+
     if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {
         g_dPathTime = 0.0;
@@ -6261,7 +6567,7 @@ void renderMap_Inside_Medical_Facility()
     rMap.Border(g_Console);
     rMap.insideMedicalFacility(g_Console);
     renderCharacter();  // renders the character into the buffer
-   
+
 
     if ((g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {
@@ -6299,7 +6605,7 @@ void renderMap_Inside_Medical_Facility()
 void renderMap_Dungeon_Cell()
 {
     COORD c;
-    
+
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_cell(g_Console);
@@ -6364,7 +6670,7 @@ void renderMap_Dungeon_Cell()
 
     renderBox();
 
-    
+
 
     if ((g_sChar.m_cLocation.X == g_sBox.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox.m_cLocation.Y)))
     {
@@ -6372,10 +6678,10 @@ void renderMap_Dungeon_Cell()
         {
             g_sBox.m_cLocation.Y--;
             if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
-            {   
+            {
                 g_sBox.startTimer = true;
-                
-            }   
+
+            }
         }
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
         {
@@ -6383,7 +6689,7 @@ void renderMap_Dungeon_Cell()
             if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
             {
                 g_sBox.startTimer = true;
-                
+
             }
         }
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
@@ -6392,7 +6698,7 @@ void renderMap_Dungeon_Cell()
             if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
             {
                 g_sBox.startTimer = true;
-                
+
             }
         }
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
@@ -6401,7 +6707,7 @@ void renderMap_Dungeon_Cell()
             if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
             {
                 g_sBox.startTimer = true;
-                
+
             }
         }
     }
@@ -6801,7 +7107,7 @@ void renderMap_DS1()
                 }
             }
         }
-    } 
+    }
     //fight guard
     if ((g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard.m_cLocation.X))
     {
@@ -6848,7 +7154,7 @@ void renderMap_GuardStealth()
 
 void update_GuardDirection()
 {
-    processUserInput(); 
+    processUserInput();
     moveCharacter();
     if (GuardDetectTime >= 4 && GuardDetectTime < 8)
     {
@@ -6874,7 +7180,7 @@ void renderMap_GuardDirection()
         g_sGuard4.startTimer = false;
     }
     if (g_sChar.faceLeft == true)
-    { 
+    {
         Cutscene.drawgrid(g_Console, 21, 3, '>');
         Cutscene.drawgrid(g_Console, 60, 3, '<');
         Cutscene.drawgrid(g_Console, 74, 11, 'V');
@@ -6933,14 +7239,14 @@ void renderMap_GuardDirection()
             }
         }
     }
-    
+
     if (g_sChar.faceRight == true)
     {
         Cutscene.drawgrid(g_Console, 23, 3, '<');
         Cutscene.drawgrid(g_Console, 58, 3, '>');
         Cutscene.drawgrid(g_Console, 74, 13, '^');
         Cutscene.drawgrid(g_Console, 60, 20, '<');
-        
+
         Cutscene.cleargrid(g_Console, 21, 3);
         Cutscene.cleargrid(g_Console, 60, 3);
         Cutscene.cleargrid(g_Console, 74, 11);
@@ -7730,7 +8036,7 @@ void RenderBattleScreen()
 
     }
 
-    
+
     if (g_sChar.InvenActive == true)
     {
         rMap.Road2(g_Console, 3, 24, 74);
@@ -7899,7 +8205,7 @@ void RenderBattleScreen()
 
         //g_eGameState = S_Townsquare;*/
     }
-    
+
     if (g_sInven.startTimer == true && g_sChar.InvenActive == true && g_sChar.itemActive == true)
     {
         if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 13))))
@@ -8263,7 +8569,7 @@ void renderMap_wireGame()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     mini.wire_game(g_Console);
-    
+
     //Border
     for (int i = 51; i < 78; i++)
     {
@@ -8318,7 +8624,7 @@ void renderMap_wireGame()
         c.X = 70;
         g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0B);
     }
-    
+
     //Gate 6
     for (int j = 8; j < 17; j++)
     {
@@ -8413,7 +8719,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
         {
             g_sBox1.m_cLocation.Y--;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18)) 
+            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -8486,7 +8792,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
         {
             g_sBox2.m_cLocation.Y--;
-            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48)) 
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
             {
                 g_sBox2.startTimer = true;
             }
@@ -8898,7 +9204,6 @@ void renderInputEvents()
 void render_Main_Menu()
 {
     COORD c; COORD d;
-
     //Print R (ROBERT)
     int i;
     int j;
