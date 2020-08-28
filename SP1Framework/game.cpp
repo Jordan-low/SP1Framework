@@ -122,6 +122,7 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sChar.entityDied = false;
     g_sLaser.faceLeft = false;
     laserTime = 0.0;
     g_sLaser.m_cLocation.X = 3;
@@ -157,7 +158,7 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-    g_sChar.SetH(50);
+    g_sChar.SetH(40);
     g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
@@ -255,7 +256,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Inside_Medical_Facility;
+    g_eGameState = S_Dungeon_Cell;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -1981,6 +1982,8 @@ void Update_Dungeon_Cell()
     if (g_dDungeonTime > 38.7)
     {
         g_eGameState = S_Dungeon_Cell;
+        g_sChar.m_cLocation.X = 30;
+        g_sChar.m_cLocation.Y = 9;
     }
     processUserInput();
 }
@@ -1989,15 +1992,57 @@ void Dungeon_Cell_Animation()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_cell(g_Console);
-    COORD c;
-    COORD d;
-    renderCharacter();
+    COORD c; COORD d;
+    c.X = 13;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 4;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 13;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+
+    c.X = 66;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 73;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 75;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    //skull correct
+    c.X = 73;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 66;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+    c.X = 23;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 56;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 39;
+    c.Y = 22;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
     c.X = 5;
     c.Y = 26;
     d.X = 5;
     d.Y = 27;
     //drawing Robert
-    Cutscene.drawgrid(g_Console, 40, 13, (char)12);
+    Cutscene.drawgrid(g_Console, 40, 13, (char)1);
     if (g_dDungeonTime > 0.3)
     {
         //drawing Ell
@@ -6133,6 +6178,7 @@ void renderMap_Dungeon_Cell()
         }
     }
     renderCharacter();  // renders the character into the buffer
+
     c.X = 13;
     c.Y = 10;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
@@ -7126,10 +7172,7 @@ void RenderBattleScreen()
                 int randHit = rand() % 4 + 1;
                 if (randHit == 1 || randHit == 2) // player gets hit
                 {
-                    int charhealth = g_sChar.GetH() - g_sMutantWasp.GetD(); // get player health
-                    string str_charhealth = to_string(charhealth);
-
-                    g_sChar.SetH(charhealth); // set player health to new health
+                    g_sChar.SetH(0); // set player health to new health
 
                     g_sChar.showEnemyDMG = true;
                     enemyDMGTime = 0.0;
@@ -7184,6 +7227,7 @@ void RenderBattleScreen()
                 {
                     g_dkillRobert = 0.0;
                     g_sChar.entityDie = true;
+                    g_sChar.entityDied = true;
                 }
 
             }
@@ -8008,11 +8052,23 @@ void UpdateBattleScreen()
         g_eGameState = S_Path_Area;
     }
 
-    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
+    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true) && (g_sChar.entityDied == false))
     {
+        g_sGuard.fight = false;
+        g_sGuard2.fight = false;
+        g_sGuard3.fight = false;
+        g_sMutantWasp.fight = false;
+        g_sMutantWasp2.fight = false;
+        g_sTutEnemy.fight = false;
+
         g_eGameState = S_Game_Over; // show game over screen after player die animation
     }
-
+    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true) && (g_sChar.entityDied == true))
+    {
+        g_dDungeonTime = 0.0;
+        g_eGameState = S_Dungeon_Cell_Animation;
+        g_sMutantWasp2.fight = false;
+    }
     if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
     {
         //g_eGameState = S_Townsquare;
@@ -10773,6 +10829,8 @@ void RenderGameOver()
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 22)) && ((g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40))))
         {
             g_bQuitGame = true;
+            g_sChar.m_cLocation.X = 4;
+            g_sChar.m_cLocation.Y = 18;
         }
 
     }

@@ -133,6 +133,7 @@ struct SGameChar : public Enemy
     bool CP3;
     int nextDialogue;
     int laserCount;
+    bool entityDied;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
