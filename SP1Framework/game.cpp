@@ -6223,6 +6223,10 @@ void renderMap_Dungeon_Cell()
     c.Y = 22;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
 
+    c.X = 26;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'L', 0x0D);
+
     renderBox();
 
     
@@ -6291,6 +6295,13 @@ void renderMap_Dungeon_Cell()
         rMap.initialise(g_Console);
         rMap.Border(g_Console);
         mini.trueSkull(g_Console);
+    }
+
+    if (g_sChar.m_cLocation.X == 26 && g_sChar.m_cLocation.Y == 9)
+    {
+        rMap.initialise(g_Console);
+        rMap.Border(g_Console);
+        mini.letter(g_Console);
     }
 }
 void renderBox()
