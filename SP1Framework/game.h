@@ -246,7 +246,8 @@ void Update_slashTutWasp();
 void slashTutWasp();
 void Update_killTutWasp();
 void killTutWasp();
-void drawLaser(Console &g_Console, int j, int k);
+void drawLaser(Console& g_Console, int j);
+void drawLaser2(Console& g_Console, int j);
 
 
 //Raymond Battle Paths
