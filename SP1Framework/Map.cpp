@@ -1244,6 +1244,31 @@ void Map::insideMedicalFacility(Console& g_Console)
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
+
+	//Medical People
+	c.X = 33;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 37;
+	c.Y = 7;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 55;
+	c.Y = 18;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 55;
+	c.Y = 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 66;
+	c.Y = 6;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 74;
+	c.Y = 18;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+
+	//Nurse
+	c.X = 22;
+	c.Y = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
 }
 void Map::dungeon_cell(Console& g_Console)
 {
