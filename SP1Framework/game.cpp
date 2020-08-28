@@ -51,6 +51,7 @@ double InvenTime;
 double playerInvenTime;
 double collectTime;
 double deathAnimation;
+double laserTime;
 
 
 
@@ -88,6 +89,7 @@ SGameChar   g_sBox3;
 SGameChar   g_sBox4;
 SGameChar   g_sBox5;
 SGameChar   g_sBox6;
+SGameChar   g_sLaser;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -120,6 +122,11 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    g_sLaser.faceLeft = false;
+    laserTime = 0.0;
+    g_sLaser.m_cLocation.X = 3;
+    g_sLaser.m_cLocation.Y = 2;
+
     g_sChar.nextDialogue = 0;
     g_sGuard4.startTimer = true;
     g_sChar.faceLeft = true;
@@ -242,13 +249,14 @@ void init(void)
     g_sBox.m_cLocation.Y = 12;
     g_sBox.startTimer = false;
 
+    g_sLaser.startTimer = false;
 
 
     // Set precision for floating point output
     g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Start_Animation;
+    g_eGameState = S_MENU_UI;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -364,7 +372,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_BattleScreen: gameplayKBHandler(keyboardEvent);
         break;
-    
+    case S_phase2Battle: gameplayKBHandler(keyboardEvent);
+        break;
     //minigame
     case S_wireGame: gameplayKBHandler(keyboardEvent);
         break;
@@ -437,6 +446,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
         break;
     case S_wireGame: gameplayMouseHandler(mouseEvent);
         break;
+    case S_phase2Battle: gameplayMouseHandler(mouseEvent);
     }
 }
 
@@ -541,6 +551,10 @@ void update(double dt)
     g_dkillRaymond += dt;
     g_dslashRobert += dt;
     g_dkillRobert += dt;
+    g_dslashTutWasp += dt;
+    g_dkillTutWasp += dt;
+    g_dphase2Time += dt;
+    laserTime += dt;
 
 
     switch (g_eGameState)
@@ -592,6 +606,7 @@ void update(double dt)
 
         //Animations
     case S_Start_Animation: Update_starting_cutscene();
+        break;
     case S_Path_Area_Animation: Update_Path_Area();
         break;
     case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
@@ -653,16 +668,16 @@ void UpdateGameOver()
 
 //Animated Cutscenes here
 
-void Update_starting_animation()
+void Update_starting_cutscene()
 {
     if (g_dStartScene > 22)
     {
-        g_eGameState = S_GAME;
+        g_eGameState = S_Orphanage_Animation;
     }
     processUserInput();
 }
 
-void starting_animation()
+void starting_cutscene()
 {
     rMap.initialise(g_Console);
     COORD c;
@@ -4356,88 +4371,71 @@ void killTutWasp()
         }
     }
 }
-
-void Update_phase2Battle()
-{
-    if (g_dphase2Time > 100)
-    {
-        g_eGameState = S_GAME;
-    }
-    processUserInput();
-}
-void phase2Battle()
-{
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
-    rMap.boss_room(g_Console);
-    COORD c;
-    renderCharacter();
-    c.X = 3;
-    c.Y = 2;
-
+void drawLaser(Console &g_Console, int j, int k)
+{    
     if (g_dphase2Time > 1)
     {
-        Cutscene.drawgrid(g_Console, 2, 2, '\\');
-        if (g_dphase2Time > 1.05)
+        Cutscene.drawgrid(g_Console, 2 + j, 2 + k, '\\');
+        if (g_dphase2Time > 0.05)
         {
-            Cutscene.drawgrid(g_Console, 3, 3, '\\');
+            Cutscene.drawgrid(g_Console, 3 + j, 3 + k, '\\');
             if (g_dphase2Time > 1.1)
             {
-                Cutscene.drawgrid(g_Console, 4, 4, '\\');
-                if (g_dphase2Time > 1.15)
+                Cutscene.drawgrid(g_Console, 4 + j, 4 + k, '\\');
+                if (g_dphase2Time > 1.15 )
                 {
-                    Cutscene.drawgridLaserRight(g_Console, 5, 5);
+                    Cutscene.drawgridLaserRight(g_Console, 5 + j, 5 + k);
                     if (g_dphase2Time > 1.20)
                     {
-                        Cutscene.drawgridLaserRight(g_Console, 6, 6);
+                        Cutscene.drawgridLaserRight(g_Console, 6 + j, 6 + k);
                         if (g_dphase2Time > 1.25)
                         {
-                            Cutscene.drawgridLaserRight(g_Console, 7, 7);
+                            Cutscene.drawgridLaserRight(g_Console, 7 + j, 7 + k);
                             if (g_dphase2Time > 1.30)
                             {
-                                Cutscene.drawgridLaserRight(g_Console, 8, 8);
+                                Cutscene.drawgridLaserRight(g_Console, 8 + j, 8 + k);
                                 if (g_dphase2Time > 1.35)
                                 {
-                                    Cutscene.drawgridLaserRight(g_Console, 9, 9);
+                                    Cutscene.drawgridLaserRight(g_Console, 9 + j, 9 + k);
                                     if (g_dphase2Time > 1.40)
                                     {
-                                        Cutscene.drawgridLaserRight(g_Console, 10, 10);
+                                        Cutscene.drawgridLaserRight(g_Console, 10 + j, 10 + k);
                                         if (g_dphase2Time > 1.45)
                                         {
-                                            Cutscene.drawgridLaserRight(g_Console, 11, 11);
+                                            Cutscene.drawgridLaserRight(g_Console, 11 + j, 11 + k);
                                             if (g_dphase2Time > 1.50)
                                             {
-                                                Cutscene.drawgridLaserRight(g_Console, 12, 12);
+                                                Cutscene.drawgridLaserRight(g_Console, 12 + j, 12 + k);
                                                 if (g_dphase2Time > 1.55)
                                                 {
-                                                    Cutscene.drawgridLaserRight(g_Console, 13, 13);
+                                                    Cutscene.drawgridLaserRight(g_Console, 13 + j, 13 + k);
                                                     if (g_dphase2Time > 1.60)
                                                     {
-                                                        Cutscene.drawgridLaserRight(g_Console, 14, 14);
+                                                        Cutscene.drawgridLaserRight(g_Console, 14 + j, 14 + k);
                                                         if (g_dphase2Time > 1.65)
                                                         {
-                                                            Cutscene.drawgridLaserRight(g_Console, 15, 15);
+                                                            Cutscene.drawgridLaserRight(g_Console, 15 + j, 15 + k);
                                                             if (g_dphase2Time > 1.70)
                                                             {
-                                                                Cutscene.drawgridLaserRight(g_Console, 16, 16);
+                                                                Cutscene.drawgridLaserRight(g_Console, 16 + j, 16 + k);
                                                                 if (g_dphase2Time > 1.75)
                                                                 {
-                                                                    Cutscene.drawgridLaserRight(g_Console, 17, 17);
+                                                                    Cutscene.drawgridLaserRight(g_Console, 17 + j, 17 + k);
                                                                     if (g_dphase2Time > 1.80)
                                                                     {
-                                                                        Cutscene.drawgridLaserRight(g_Console, 18, 18);
+                                                                        Cutscene.drawgridLaserRight(g_Console, 18 + j, 18 + k);
                                                                         if (g_dphase2Time > 1.85)
                                                                         {
-                                                                            Cutscene.drawgridLaserRight(g_Console, 19, 19);
+                                                                            Cutscene.drawgridLaserRight(g_Console, 19 + j, 19 + k);
                                                                             if (g_dphase2Time > 1.90)
                                                                             {
-                                                                                Cutscene.drawgridLaserRight(g_Console, 20, 20);
+                                                                                Cutscene.drawgridLaserRight(g_Console, 20 + j, 20 + k);
                                                                                 if (g_dphase2Time > 1.95)
                                                                                 {
-                                                                                    Cutscene.drawgridLaserRight(g_Console, 21, 21);
+                                                                                    Cutscene.drawgridLaserRight(g_Console, 21 + j, 21 + k);
                                                                                     if (g_dphase2Time > 2.00)
                                                                                     {
-                                                                                        Cutscene.drawgridLaserRight(g_Console, 22, 22);
+                                                                                        Cutscene.drawgridLaserRight(g_Console, 22 + j, 22 + k);
                                                                                     }
                                                                                 }
                                                                             }
@@ -4459,6 +4457,46 @@ void phase2Battle()
             }
         }
     }
+}
+void Update_phase2Battle()
+{
+    processUserInput();
+    moveCharacter();
+    if (laserTime > 4)
+    {
+        g_sLaser.startTimer = true;
+
+    }
+    if ((g_dphase2Time > 2) && (g_sLaser.resetTimer == true))
+    {
+        g_eGameState = S_Path_Area;
+        g_sLaser.startTimer = false;
+        g_sLaser.faceLeft = false;
+        laserTime = 0.0;
+    }
+    
+}
+void phase2Battle()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    //drawLaser(g_Console, 20, 0, 0);
+    //drawLaser(g_Console, 40, 0);
+    if (g_sLaser.startTimer == true)
+    {
+        int randoms = rand() % 70 + 1;
+        g_dphase2Time = 0.0;
+        g_sLaser.resetTimer = true;
+        drawLaser(g_Console, 5, 0);
+    }
+
+    rMap.boss_room(g_Console);
+    int charHealth = g_sChar.GetH() - 5;
+    g_sChar.SetH(charHealth);
+    COORD c;
+    
+    renderCharacter();
+
 }
 
 
@@ -4978,6 +5016,8 @@ void render()
         break;
 
     //Animations
+    case S_Start_Animation: starting_cutscene();
+        break;
     case S_Protest_Area_Animation: Protest_Area_Animation();
         break;
     case S_Dungeon_Cell_Animation: Dungeon_Cell_Animation();
@@ -5391,7 +5431,7 @@ void renderMap_Protest_Area()
     }
     if ((collectTime > 3) && (g_sChar.collected == true))
     {
-        g_sChar.collected == false;
+        g_sChar.collected = false;
         c.X = 5;
         c.Y = 26;
         g_Console.writeToBuffer(c, "                                          ", 0x0F, 100);
@@ -7893,13 +7933,15 @@ void renderBoxes()
     g_Console.writeToBuffer(g_sBox6.m_cLocation, '[', 0x0A);
 }
 
-void UpdateBattleScreen()
+/*void UpdateBattleScreen()
 {
     processUserInput();
-    if ((InvenTime > 2) && (g_sChar.itemActive == true))
+    if (g_sInven.resetTimer == true)
     {
-        g_sInven.startTimer = false;
-        InvenTime = 0;
+        if (InvenTime > 2)
+        {
+            g_sInven.startTimer = true;
+        }
     }
 
     if (g_sChar.resetTimer == true)
@@ -7908,6 +7950,26 @@ void UpdateBattleScreen()
         {
             g_sChar.startTimer = true;
         }
+    }
+
+    if ((playerInvenTime > 3) && (g_sInven.showItemUsed == true))
+    {
+        g_sInven.showItemUsed = false;
+        COORD c;
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        playerInvenTime = 0.0;
+    }
+
+    if ((playerInvenTime > 3) && (g_sInven.showItemNotUsed == true))
+    {
+        g_sInven.showItemNotUsed = false;
+        COORD c;
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        playerInvenTime = 0.0;
     }
     if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
     {
@@ -7968,8 +8030,7 @@ void UpdateBattleScreen()
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
 
     }
-}
-
+}*/
 void renderCharacter()
 {
     // Draw the location of the character
@@ -9417,7 +9478,7 @@ void render_Main_Menu()
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
     {
         g_dElapsedTime = 0.0;
-        g_eGameState = S_Orphanage_Animation;
+        g_eGameState = S_Start_Animation;
     }
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 21)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
     {
@@ -10217,7 +10278,7 @@ void RenderGameOver()
         //For Quit
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 22)) && ((g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40))))
         {
-            exit(0);
+            g_bQuitGame = true;
         }
 
     }
