@@ -85,7 +85,12 @@ enum EGAMESTATES
     S_killRobert,
     S_slashTutWasp,
     S_killTutWasp,
+    //Boss Fight
+    S_phase2Battle,
+
     S_COUNT
+
+    
 };
 
 // struct for the game character
@@ -228,8 +233,12 @@ void Update_killRobert();
 void killRobert();
 void Update_slashTutWasp();
 void slashTutWasp();
-void Update_killTuTWasp();
+void Update_killTutWasp();
 void killTutWasp();
+
+//Raymond Battle Paths
+void Update_phase2Battle();
+void phase2Battle();
 
 //Others
 void renderMap_GuardStealth();
