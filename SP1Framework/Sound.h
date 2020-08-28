@@ -9,6 +9,6 @@
 class Sound
 {
 public:
-	void sound();
+	void bossPhase2();
 };
 
