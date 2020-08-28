@@ -258,7 +258,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_2;
+    g_eGameState = S_MENU_UI;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -6945,6 +6945,7 @@ void renderMap_DS3()
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 5)
     {
         //ask if user wants to enter battle area
+        g_dBossTime = 0.0;
         g_eGameState = S_Boss_Room_Animation;
         g_sChar.m_cLocation.X = 40;
         g_sChar.m_cLocation.Y = 21;
