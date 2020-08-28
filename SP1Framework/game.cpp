@@ -158,7 +158,7 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-    g_sChar.SetH(40);
+    g_sChar.SetH(50);
     g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
@@ -224,6 +224,8 @@ void init(void)
     g_sChar.takenBackpack = false;
     g_sChar.takenExtinguisher = false;
     g_sChar.Orp_Dialogue = false;
+    g_sChar.animationPlayed = false;
+    g_sChar.enterArea = false;
 
     //Wire minigame
     g_sBox1.m_cLocation.X = 52;
@@ -256,7 +258,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Cell;
+    g_eGameState = S_Dungeon_Stealth_2;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -2331,6 +2333,7 @@ void Update_IAF3()
 {
     if (g_dIAF3Time > 47)
     {
+        g_sChar.animationPlayed = true;
         g_eGameState = S_IAF3;
     }
     processUserInput();
@@ -3043,7 +3046,7 @@ void Dungeon_Stealth3_Animation()
 void Update_Boss_Room_Animation()
 {
 
-    if (g_sChar.nextDialogue == 999)
+    if (g_dBossTime > 48.9)
     {
         g_eGameState = S_Boss_Battle_Room;
     }
@@ -3051,8 +3054,6 @@ void Update_Boss_Room_Animation()
 }
 void Boss_Room_Animation()
 {
-   
-    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.boss_room(g_Console);
@@ -3065,13 +3066,13 @@ void Boss_Room_Animation()
     d.Y = 27;
     Cutscene.drawgrid(g_Console, 40, 21, 'H'); //Robert
     Cutscene.drawgrid(g_Console, 40, 3, 'R'); //Raymond
-    if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 0)
+    if (g_dBossTime > 1)
     {
         g_Console.writeToBuffer(c, "Raymond: It seems that the person I have been searching for", 0x0F);
         g_Console.writeToBuffer(d, "         came to me instead.", 0x0F); 
         g_sChar.nextDialogue++;
         
-        if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 1)
+        if (g_dBossTime > 5)
         {
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
@@ -5849,17 +5850,28 @@ void renderMap_Protest_Area()
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    c.X = 62;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&');
+
+    if (g_sChar.enterArea == true)
+    {
+        c.X = 62;
+        c.Y = 4;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'D');
+    }
+    if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 62)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Stealth_3;
+        g_sChar.m_cLocation.X = 69;
+        g_sChar.m_cLocation.Y = 3;
+    }
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
         g_dPathTime = 0.0;
         g_eGameState = S_Path_Area_Animation;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 21;
-    }
-    if (g_sChar.m_cLocation.Y == 62 && g_sChar.m_cLocation.X == 4)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
@@ -5957,11 +5969,22 @@ void renderMap_Protest_Area()
 
 void renderMap_Path_Area()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
 
+    if (g_sChar.animationPlayed == true)
+    {
+        int i = 77;
+        for (int j = 11; j < 15; j++)
+        {
+            c.X = i;
+            c.Y = j;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0A);
+        }
+    }
     //to OAF area
     if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44 || g_sChar.m_cLocation.X == 45))
     {
@@ -6852,11 +6875,28 @@ void renderMap_GuardDirection()
 
 void renderMap_DS2()
 {
-
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth2(g_Console);
     renderCharacter();  // renders the character into the buffer
+    c.X = 8;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O');
+
+    c.X = 8;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, (char)12, 0x0F);
+
+    if ((g_sChar.m_cLocation.Y == 13) && (g_sChar.m_cLocation.X == 7) || (g_sChar.m_cLocation.Y == 12) && (g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 14) && (g_sChar.m_cLocation.X == 8))
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Ell: Avoid the guards and hide in the walls.");
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "     I'll get you out if you're in trouble, but don't count on me.");
+    }
     renderMap_GuardStealth();
     renderMap_GuardDirection();
     //back to DS1
@@ -6872,7 +6912,6 @@ void renderMap_DS2()
     {
         g_sChar.CP2 = false;
         g_sChar.CP3 = true;
-        g_dDungeonStealth3Time = 0.0;
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
@@ -6886,6 +6925,7 @@ void renderMap_DS3()
     rMap.dungeon_stealth3(g_Console);
     renderCharacter();  // renders the character into the buffer
     //back to DS2
+    g_sChar.enterArea = true;
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7))
     {
         g_dPathTime = 0.0;
@@ -6896,7 +6936,7 @@ void renderMap_DS3()
     //trigger animation
     if ((g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 57)
     {
-        g_dDungeonTime = 0.0;
+        g_dDungeonStealth3Time = 0.0;
         //must do count here, must get character to move after animation
         g_eGameState = S_Dungeon_Stealth3_Animation;
         g_sChar.m_cLocation.X = 60;

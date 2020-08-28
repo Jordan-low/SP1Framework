@@ -751,7 +751,7 @@ void Map::patharea(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x0A);
 	}
 }
 
