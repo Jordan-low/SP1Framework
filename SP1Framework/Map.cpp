@@ -439,18 +439,18 @@ void Map::orphanage(Console& g_Console)
 	//children
 	c.X = 56;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 64;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 62;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 50;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 }
 void Map::townsquare(Console& g_Console)
 {

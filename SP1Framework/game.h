@@ -59,6 +59,7 @@ enum EGAMESTATES
     S_Dungeon_Stealth_3,
     S_Boss_Battle_Room,
     //Animations
+    S_Start_Animation,
     S_Orphanage_Animation,
     S_Orphanage_Children_Animation,
     S_Protest_Area_Animation,
@@ -187,6 +188,8 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyb
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
 
 //Animations + Menu AI
+void Update_starting_cutscene();
+void starting_cutscene();
 void RenderGameOver();
 void Update_Orphanage_Animation();
 void Orphanage_Animation();
