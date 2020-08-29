@@ -73,6 +73,7 @@ enum EGAMESTATES
     S_Boss_Room_Animation,
     S_BattleScreen,
     S_wireGame,
+    S_Credits,
     //Battle animations
     S_SlashGuard,
     S_KillGuard,
@@ -219,6 +220,8 @@ void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
+void Update_Credits();
+void Credits();
 
 
 //Animate Battle
@@ -247,11 +250,14 @@ void slashTutWasp();
 void Update_killTutWasp();
 void killTutWasp();
 void drawLaser(Console &g_Console, int j);
-void drawVertLaser(Console& g_Console, int k);
+void drawBreakFloor(Console& g_Console, int k, int j);
 void drawLaser(Console& g_Console, int j);
 void drawLaser2(Console& g_Console, int j);
 void drawLaser3(Console& g_Console, int j);
 void drawMovingBlock(Console& g_Console, int j);
+void renderBomb();
+void updateBomb();
+void renderRaymond();
 
 //Raymond Battle Paths
 void Update_phase2Battle();

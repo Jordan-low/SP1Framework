@@ -56,6 +56,10 @@ double laserTime;
 double laserTime2;
 double laserTime3;
 double movingBlockTime;
+double breakFloorTime;
+double g_dCreditsTime;
+double bombTime;
+double raymondTime;
 int randnum;
 int randnum2;
 int randnum3;
@@ -70,7 +74,17 @@ int randstickman3;
 int randBlock;
 int randBlock2;
 int randBlock3;
+int randBreakFloor;
+int randBreakFloor2;
+int randBomb;
+int randBomb2;
 int randCount;
+int fightCount;
+int fightCount2;
+int fightCount3;
+int fightCount4;
+int fightCount5;
+int fightCount6;
 
 bool music;
 Sound s;
@@ -113,6 +127,8 @@ SGameChar   g_sLaser;
 SGameChar   g_sLaser2;
 SGameChar   g_sLaser3;
 SGameChar   g_sMovingBlock;
+SGameChar   g_sBreakFloor;
+SGameChar   g_sBomb;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -162,6 +178,13 @@ void init(void)
     g_sGuard.fight = false;
     g_sGuard2.fight = false;
     g_sGuard3.fight = false;
+    g_sLaser.fight = false;
+    g_sLaser2.fight = false;
+    g_sLaser3.fight = false;
+    g_sMovingBlock.fight = false;
+    g_sBreakFloor.fight = true;
+    g_sBomb.fight = false;
+    g_sRaymond.fight = false;
 
     g_sChar.count = 0;
     g_sChar.unlockDoorDS1 = false;
@@ -278,6 +301,18 @@ void init(void)
     g_sLaser2.startTimer = false;
     g_sLaser3.startTimer = false;
     g_sMovingBlock.startTimer = false;
+    g_sBreakFloor.startTimer = false;
+    g_sBomb.startTimer = false;
+    g_sRaymond.startTimer = false;
+    fightCount = 0;
+    fightCount2 = 0;
+    fightCount3 = 0;
+    fightCount4 = 0;
+    fightCount5 = 0;
+    fightCount6 = 0;
+    //bomb things
+    g_sBomb.m_cLocation.X = 58;
+    g_sBomb.m_cLocation.Y = 19;
 
     // Set precision for floating point output
 
@@ -297,12 +332,17 @@ void init(void)
     g_sGuard.m_cLocation.X = 44;
     g_sGuard.m_cLocation.Y = 10;
 
+    g_sRaymond.m_cLocation.X = 20;
+    g_sRaymond.m_cLocation.Y = 10;
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
     // remember to set your keyboard handler, so that your functions can be notified of input events
     g_Console.setKeyboardHandler(keyboardHandler);
     g_Console.setMouseHandler(mouseHandler);
+    srand((unsigned)time(0));
+
 }
 
 //--------------------------------------------------------------
@@ -584,6 +624,10 @@ void update(double dt)
     laserTime2 += dt;
     laserTime3 += dt;
     movingBlockTime += dt;
+    breakFloorTime += dt;
+    g_dCreditsTime += dt;
+    bombTime += dt;
+    raymondTime += dt;
 
     switch (g_eGameState)
     {
@@ -655,6 +699,8 @@ void update(double dt)
         break;
     case S_BattleScreen: UpdateBattleScreen();
         break;
+    case S_Credits: Update_Credits();
+        break;
 
         //Battle Animations
         //case S_SlashGuard: Update_slashGuard();
@@ -706,7 +752,6 @@ void Update_starting_cutscene()
     }
     processUserInput();
 }
-
 void starting_cutscene()
 {
     clearScreen();
@@ -6233,84 +6278,63 @@ void drawMovingBlock(Console& g_Console, int j)
     }
 }
 
-void drawVertLaser(Console& g_Console, int k)
+void drawBreakFloor(Console& g_Console, int k, int j)
 {
-    if (g_dphase2Time > 1)
+    if (breakFloorTime > 1)
     {
-        Cutscene.drawgridLaserUp(g_Console, k, 2);
-        if (g_dphase2Time > 0.05)
+        Cutscene.drawgridY(g_Console, k, j, '-');
+        if (breakFloorTime > 1.3)
         {
-            Cutscene.drawgridLaserUp(g_Console, k, 3);
-            if (g_dphase2Time > 1.1)
+            Cutscene.drawgridY(g_Console, k + 1, j, '-');
+            Cutscene.drawgridY(g_Console, k, j + 1, '|');
+            if (breakFloorTime > 1.5)
             {
-                Cutscene.drawgridLaserUp(g_Console, k, 4);
-                if (g_dphase2Time > 1.15)
+                Cutscene.drawgridY(g_Console, k + 2, j, '-');
+                Cutscene.drawgridY(g_Console, k - 1, j + 1, '_');
+                if (breakFloorTime > 2.0)
                 {
-                    Cutscene.drawgridLaserUp(g_Console, k, 5);
-                    if (g_dphase2Time > 1.20)
+                    Cutscene.drawgridY(g_Console, k + 3, j, '-');
+                    Cutscene.drawgridY(g_Console, k - 2, j + 2, '|');
+                    if (breakFloorTime > 2.3)
                     {
-                        Cutscene.drawgridLaserUp(g_Console, k, 6);
-                        if (g_dphase2Time > 1.25)
+                        Cutscene.breakFloor(g_Console, k, j);
+                        for (int n = j; n < (j + 1); n++)
                         {
-                            Cutscene.drawgridLaserUp(g_Console, k, 7);
-                            if (g_dphase2Time > 1.30)
+                            for (int m = k; m < (k + 11); m++)
                             {
-                                Cutscene.drawgridLaserUp(g_Console, k, 8);
-                                if (g_dphase2Time > 1.35)
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
                                 {
-                                    Cutscene.drawgridLaserUp(g_Console, k, 9);
-                                    if (g_dphase2Time > 1.40)
-                                    {
-                                        Cutscene.drawgridLaserUp(g_Console, k, 10);
-                                        if (g_dphase2Time > 1.45)
-                                        {
-                                            Cutscene.drawgridLaserUp(g_Console, k, 11);
-                                            if (g_dphase2Time > 1.50)
-                                            {
-                                                Cutscene.drawgridLaserUp(g_Console, k, 12);
-                                                if (g_dphase2Time > 1.55)
-                                                {
-                                                    Cutscene.drawgridLaserUp(g_Console, k, 13);
-                                                    if (g_dphase2Time > 1.60)
-                                                    {
-                                                        Cutscene.drawgridLaserUp(g_Console, k, 14);
-                                                        if (g_dphase2Time > 1.65)
-                                                        {
-                                                            Cutscene.drawgridLaserUp(g_Console, k, 15);
-                                                            if (g_dphase2Time > 1.70)
-                                                            {
-                                                                Cutscene.drawgridLaserUp(g_Console, k, 16);
-                                                                if (g_dphase2Time > 1.75)
-                                                                {
-                                                                    Cutscene.drawgridLaserUp(g_Console, k, 17);
-                                                                    if (g_dphase2Time > 1.80)
-                                                                    {
-                                                                        Cutscene.drawgridLaserUp(g_Console, k, 18);
-                                                                        if (g_dphase2Time > 1.85)
-                                                                        {
-                                                                            Cutscene.drawgridLaserUp(g_Console, k, 19);
-                                                                            if (g_dphase2Time > 1.90)
-                                                                            {
-                                                                                Cutscene.drawgridLaserUp(g_Console, k, 20);
-                                                                                if (g_dphase2Time > 1.95)
-                                                                                {
-                                                                                    Cutscene.drawgridLaserUp(g_Console, k, 21);
-                                                                                    if (g_dphase2Time > 2.00)
-                                                                                    {
-                                                                                        Cutscene.drawgridLaserUp(g_Console, k, 22);
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                        for (int n = (j + 1); n < (j + 4); n++)
+                        {
+                            for (int m = (k - 2); m < (k + 13); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                        for (int n = (j + 4); n < (j + 5); n++)
+                        {
+                            for (int m = (k - 1); m < (k + 12); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                        for (int n = (j + 5); n < (j + 6); n++)
+                        {
+                            for (int m = k; m < (k + 11); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
                                 }
                             }
                         }
@@ -6331,6 +6355,9 @@ void Update_phase2Battle()
         g_sLaser2.startTimer = false;
         g_sLaser3.startTimer = false;
         g_sMovingBlock.startTimer = false;
+        g_sBreakFloor.startTimer = false;
+        g_sRaymond.startTimer = false;
+
     }
     if (g_dphase2Time > 5) // stickman
     {
@@ -6352,17 +6379,31 @@ void Update_phase2Battle()
         g_sMovingBlock.startTimer = true;
         g_sMovingBlock.counter = true;
     }
+    if (breakFloorTime > 5) //break floor
+    {
+        g_sBreakFloor.startTimer = true;
+        g_sBreakFloor.counter = true;
+    }
+    if (raymondTime > 10)
+    {
+        g_sRaymond.startTimer = true;
+        g_sRaymond.counter = true;
+    }
 }
 void phase2Battle()
 {
-    srand((unsigned)time(0));
-    /*
-    while (music == false)
+    if ((fightCount == 1) && (fightCount2 == 1) && (fightCount3 == 1) && (fightCount4 == 1) && (fightCount5 == 1))
     {
-        PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
-        music = true;
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_eGameState = S_Game_Over;
+        }
+
     }
-    */
+    if ((g_sChar.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sChar.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for Raymond and Robert
+    {
+        g_sChar.SetH(g_sChar.GetH() - 1); // minus dmg if robert touch raymond
+    }
     /*while (music == false)
     {
         PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
@@ -6376,168 +6417,305 @@ void phase2Battle()
     c.Y = 0;
     string charHealth = to_string(g_sChar.GetH());
     g_Console.writeToBuffer(c, "Your Health: " + charHealth, 0x0D, 100);
+
     //drawLaser(g_Console, 20, 0, 0);
     //drawLaser(g_Console, 40, 0);
-    /*
-    if (g_sLaser.startTimer == true) // stickman work
+
+    if (g_sLaser.fight == true)
     {
-        g_dphase2Time = 0.0;
-        g_sLaser.resetTimer = true;
-    }
-    if (g_sLaser.resetTimer == true)
-    {
-        if (g_sLaser.counter == true)
+        fightCount = 1;
+        if (g_sLaser.startTimer == true) // stickman work
         {
-            randstickman = rand() % 22 + 2;
-            randstickman2 = rand() % 22 + 2;
-            randstickman3 = rand() % 22 + 2;
-
-            g_sLaser.counter = false;
+            g_dphase2Time = 0.0;
+            g_sLaser.resetTimer = true;
         }
-        drawLaser3(g_Console, randstickman);
-        drawLaser3(g_Console, randstickman2);
-        drawLaser3(g_Console, randstickman3);
-
-
-        //drawHoriLaser(g_Console, randnum3);
-
-        //drawVertLaser(g_Console, 0);
-
-        //drawLaser(g_Console, 5);
-        //drawLaser2(g_Console, 2);
-        //g_sLaser.resetTimer = false;
-    }
-
-    if (g_sLaser2.startTimer == true) // stickman work
-    {
-        laserTime2 = 0.0;
-        g_sLaser2.resetTimer = true;
-    }
-    if (g_sLaser2.resetTimer == true)
-    {
-
-        if (g_sLaser2.counter == true)
+        if (g_sLaser.resetTimer == true)
         {
-            randnum = rand() % 70 + 1;
-            randnum2 = rand() % 70 + 1;
-            randnum3 = rand() % 70 + 1;
-            randnum4 = rand() % 70 + 1;
-            g_sLaser2.counter = false;
+            if (g_sLaser.counter == true)
+            {
+                randstickman = rand() % 22 + 2;
+                randstickman2 = rand() % 22 + 2;
+                randstickman3 = rand() % 22 + 2;
+
+                g_sLaser.counter = false;
+            }
+            drawLaser3(g_Console, randstickman);
+            drawLaser3(g_Console, randstickman2);
+            drawLaser3(g_Console, randstickman3);
         }
-        drawLaser2(g_Console, randnum);
-        drawLaser2(g_Console, randnum2);
-        drawLaser2(g_Console, randnum3);
-        drawLaser2(g_Console, randnum4);
 
-        //drawHoriLaser(g_Console, randnum3);
+    } 
 
-        //drawVertLaser(g_Console, 0);
+    if (g_sLaser2.fight == true)
+    {
+        fightCount2 = 1;
+        if (g_sLaser2.startTimer == true) // stickman work
+        {
+            laserTime2 = 0.0;
+            g_sLaser2.resetTimer = true;
+        }
+        if (g_sLaser2.resetTimer == true)
+        {
 
-        //drawLaser(g_Console, 5);
-        //drawLaser2(g_Console, 2);
-        //g_sLaser.resetTimer = false;
+            if (g_sLaser2.counter == true)
+            {
+                randnum = rand() % 70 + 1;
+                randnum2 = rand() % 70 + 1;
+                randnum3 = rand() % 70 + 1;
+                randnum4 = rand() % 70 + 1;
+                g_sLaser2.counter = false;
+            }
+            drawLaser2(g_Console, randnum);
+            drawLaser2(g_Console, randnum2);
+            drawLaser2(g_Console, randnum3);
+            drawLaser2(g_Console, randnum4);
+        }
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_sLaser.fight = true;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+            c.X = 5;
+            c.Y = 26;
+            string ras = to_string(randPosX2);
+            g_Console.writeToBuffer(c, ras, 100);
+            // reset locations for bomb and raymond
+        }
     }
     
-    if (g_sLaser3.startTimer == true)
+    if (g_sLaser3.fight == true)
     {
-        laserTime3 = 0.0;
-        g_sLaser3.resetTimer = true;
-    }
-    if (g_sLaser3.resetTimer == true)
-    {
-
-        if (g_sLaser3.counter == true)
+        fightCount3 = 1;
+        if (g_sLaser3.startTimer == true)
         {
-            randnum5 = rand() % 70 + 1;
-            randnum6 = rand() % 70 + 1;
-            randnum7 = rand() % 70 + 1;
-            randnum8 = rand() % 70 + 1;
-            g_sLaser3.counter = false;
+            laserTime3 = 0.0;
+            g_sLaser3.resetTimer = true;
         }
-
-
-        drawLaser(g_Console, randnum5);
-        drawLaser(g_Console, randnum6);
-        drawLaser(g_Console, randnum7);
-        drawLaser(g_Console, randnum8);
-        //drawHoriLaser(g_Console, randnum3);
-
-
-        //drawVertLaser(g_Console, 0);
-
-        //g_sLaser.resetTimer = false;
-    }
-    */
-    if (g_sMovingBlock.startTimer == true) // stickman work
-    {
-        movingBlockTime = 0.0;
-        g_sMovingBlock.resetTimer = true;
-    }
-    if (g_sMovingBlock.resetTimer == true)
-    {
-        if (g_sMovingBlock.counter == true)
+        if (g_sLaser3.resetTimer == true)
         {
-            randBlock = rand() % 69 + 2;
-            randBlock2 = rand() % 69 + 2;
-            randBlock3 = rand() % 69 + 2;
-            /*
-            for (int i = randBlock; i < randBlock + 9; i++)
+
+            if (g_sLaser3.counter == true)
             {
-                if ((i != randBlock2) && (i != randBlock3))
-                {
-                    for (int j = randBlock2; i < randBlock2 + 9; j++)
-                    {
-                        if ((j != randBlock) && (j != randBlock3))
-                        {
-                            for (int k = randBlock3; k < randBlock3; k++)
-                            {
-                                if ((k != randBlock) && (k != randBlock2))
-                                {
-                                    g_sMovingBlock.counter = false;
-                                }
-                            }
-                        }
-                    }
-                }
+                randnum5 = rand() % 70 + 1;
+                randnum6 = rand() % 70 + 1;
+                randnum7 = rand() % 70 + 1;
+                randnum8 = rand() % 70 + 1;
+                g_sLaser3.counter = false;
             }
-            */
-            if (randCount != 3)
+
+
+            drawLaser(g_Console, randnum5);
+            drawLaser(g_Console, randnum6);
+            drawLaser(g_Console, randnum7);
+            drawLaser(g_Console, randnum8);
+            //drawHoriLaser(g_Console, randnum3);
+
+
+            //drawVertLaser(g_Console, 0);
+
+            //g_sLaser.resetTimer = false;
+        }
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_sMovingBlock.fight = true;
+            g_sBreakFloor.fight = true;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+            c.X = 5;
+            c.Y = 26;
+            string ras = to_string(randPosX2);
+            g_Console.writeToBuffer(c, ras, 100);
+            // reset locations for bomb and raymond
+        }
+        
+    }
+    
+    if (g_sMovingBlock.fight == true)
+    {
+        fightCount4 = 1;
+        if (g_sMovingBlock.startTimer == true) // stickman work
+        {
+            movingBlockTime = 0.0;
+            g_sMovingBlock.resetTimer = true;
+        }
+        if (g_sMovingBlock.resetTimer == true)
+        {
+            if (g_sMovingBlock.counter == true)
             {
-                for (int i = randBlock; i < randBlock + 9; i++)
-                {
-                    if ((i != randBlock2) && (i != randBlock3))
-                    {
-                        randCount++;
-                    }
-                }
-                for (int i = randBlock2; i < randBlock2 + 9; i++)
-                {
-                    if ((i != randBlock) && (i != randBlock3))
-                    {
-                        randCount++;
-                    }
-                }
-                for (int i = randBlock3; i < randBlock3 + 9; i++)
-                {
-                    if ((i != randBlock) && (i != randBlock2))
-                    {
-                        randCount++;
-                    }
-                }
-            }
-            if (randCount == 3)
-            {
-                g_eGameState = S_Path_Area;
+                randBlock = rand() % 69 + 2;
+                randBlock2 = rand() % 69 + 2;
+                randBlock3 = rand() % 69 + 2;
                 g_sMovingBlock.counter = false;
             }
+            drawMovingBlock(g_Console, randBlock);
+            drawMovingBlock(g_Console, randBlock2);
+            drawMovingBlock(g_Console, randBlock3);
         }
-        drawMovingBlock(g_Console, randBlock);
-        drawMovingBlock(g_Console, randBlock2);
-        drawMovingBlock(g_Console, randBlock3);
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            //g_sLaser.fight = true;
+            g_sLaser2.fight = true;
+            g_sLaser3.fight = true;
+            g_sBreakFloor.collected = false;
+            g_sBreakFloor.fight = false;
+            g_sMovingBlock.fight = false;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
 
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+            c.X = 5;
+            c.Y = 26;
+            string ras = to_string(randPosX2);
+            g_Console.writeToBuffer(c, ras, 100);
+            // reset locations for bomb and raymond
+        }
+
+    }
+    if (g_sBreakFloor.fight == true)
+    {
+        g_sBreakFloor.collected = true;
+        if (g_sBreakFloor.startTimer == true) // stickman work
+        {
+            breakFloorTime = 0.0;
+            g_sBreakFloor.resetTimer = true;
+        }
+        if (g_sBreakFloor.resetTimer == true)
+        {
+            if (g_sBreakFloor.counter == true)
+            {
+                randBreakFloor = rand() % (22 - 2 + 1);
+                randBreakFloor2 = rand() % (19 - 2 + 1) + 2;
+                g_sBreakFloor.counter = false;
+            }
+            drawBreakFloor(g_Console, randBreakFloor, randBreakFloor2);
+            drawBreakFloor(g_Console, randBreakFloor2, randBreakFloor);
+            //drawLaser3(g_Console, randstickman2);
+            //drawLaser3(g_Console, randstickman3);
+        }
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_sMovingBlock.fight = true;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+
+            // reset locations for bomb and raymond
+        }
+    }
+    if (g_sBreakFloor.collected == true)
+    {
+        fightCount5 = 1;
+    }
+    else
+    {
+        fightCount5 = 0;
     }
     renderCharacter();
     rMap.boss_room(g_Console);
+
+    renderBomb();
+    if ((g_sChar.m_cLocation.X == g_sBomb.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBomb.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
+        {
+            if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 1] == ' ') // check if bomb == ' '
+                g_sBomb.m_cLocation.X++;
+        }
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 3)
+        {
+            if (rMap.Grid[g_sBomb.m_cLocation.Y - 1][g_sBomb.m_cLocation.X] == ' ')
+            {
+                g_sBomb.m_cLocation.Y--;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
+        {
+            if (rMap.Grid[g_sBomb.m_cLocation.Y + 1][g_sBomb.m_cLocation.X] == ' ')
+            {
+                g_sBomb.m_cLocation.Y++;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X - 1] == ' ')
+            {
+                g_sBomb.m_cLocation.X--;
+
+            }
+        }
+    }
+
+  
+    renderRaymond();
+    if (g_sRaymond.startTimer == true)
+    {
+        raymondTime = 0.0;
+        g_sRaymond.resetTimer = true;
+    }
+    if (g_sRaymond.resetTimer == true)
+    {
+        if (g_sRaymond.counter == true)
+        {
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            c.X = 5;
+            c.Y = 27;
+            string ras = to_string(randPosX);
+            g_Console.writeToBuffer(c, ras, 100);
+
+            g_sRaymond.counter = false;
+        }
+    }
+}
+void updateBomb()
+{
+
+}
+
+void renderRaymond()
+{
+    g_Console.writeToBuffer(g_sRaymond.m_cLocation, 'R', 0x0C);
+}
+
+void renderBomb()
+{
+    g_Console.writeToBuffer(g_sBomb.m_cLocation, 'B', 0x0B);
 }
 
 
@@ -6911,7 +7089,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
-                    g_sGuard.xRight = true;
+                    g_sGuard.xLeft = true; 
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
@@ -6933,7 +7111,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
-                    g_sGuard2.xRight = true;
+                    g_sGuard2.xLeft = true; 
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
@@ -7078,6 +7256,8 @@ void render()
     case S_Boss_Room_Animation: Boss_Room_Animation();
         break;
     case S_BattleScreen: RenderBattleScreen();
+        break;
+    case S_Credits: Credits();
         break;
 
         //render battle animations
@@ -8137,8 +8317,6 @@ void renderMap_DS1()
                 }
             }
         }
-
-
     }
     if (g_sGuard3.xRight == true)
     {
@@ -8163,7 +8341,6 @@ void renderMap_DS1()
                 }
             }
         }
-
     }
     if (g_sGuard3.xUp == true)
     {
@@ -9668,6 +9845,13 @@ void UpdateBattleScreen()
     }
 }
 
+void Update_Credits()
+{
+}
+void Credits()
+{
+}
+
 void renderMap_wireGame()
 {
     COORD c;
@@ -9822,10 +10006,10 @@ void renderMap_wireGame()
     //box 1
     if ((g_sChar.m_cLocation.X == g_sBox1.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox1.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox1.m_cLocation.Y--;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -9833,7 +10017,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
         {
             g_sBox1.m_cLocation.Y++;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -9841,7 +10025,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             g_sBox1.m_cLocation.X--;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -9849,7 +10033,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
         {
             g_sBox1.m_cLocation.X++;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -9859,7 +10043,7 @@ void renderMap_wireGame()
     //box 4
     if ((g_sChar.m_cLocation.X == g_sBox4.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox4.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox4.m_cLocation.Y--;
             if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
@@ -9895,7 +10079,7 @@ void renderMap_wireGame()
     //box 2
     if ((g_sChar.m_cLocation.X == g_sBox2.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox2.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox2.m_cLocation.Y--;
             if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
@@ -9932,10 +10116,10 @@ void renderMap_wireGame()
     //box 5
     if ((g_sChar.m_cLocation.X == g_sBox5.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox5.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox5.m_cLocation.Y--;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -9943,7 +10127,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
         {
             g_sBox5.m_cLocation.Y++;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -9951,7 +10135,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             g_sBox5.m_cLocation.X--;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -9959,7 +10143,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
         {
             g_sBox5.m_cLocation.X++;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -9969,10 +10153,10 @@ void renderMap_wireGame()
     //box 3
     if ((g_sChar.m_cLocation.X == g_sBox3.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox3.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox3.m_cLocation.Y--;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -9980,7 +10164,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
         {
             g_sBox3.m_cLocation.Y++;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -9988,7 +10172,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             g_sBox3.m_cLocation.X--;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -9996,7 +10180,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
         {
             g_sBox3.m_cLocation.X++;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -10006,7 +10190,7 @@ void renderMap_wireGame()
     //box 6
     if ((g_sChar.m_cLocation.X == g_sBox6.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox6.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox6.m_cLocation.Y--;
             if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
