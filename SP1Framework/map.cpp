@@ -818,6 +818,8 @@ void Map::outside_abandoned_facility(Console& g_Console)
 		c.Y = 4;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
+
+
 }
 void Map::insideAbandonedFacility1(Console& g_Console)
 {
@@ -1066,6 +1068,11 @@ void Map::insideAbandonedFacility4(Console& g_Console)
 		c.Y = 8;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
+
+	c.X = 40;
+	c.Y = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	Box(g_Console, 39, 9);
 }
 void Map::insideMedicalFacility(Console& g_Console)
 {

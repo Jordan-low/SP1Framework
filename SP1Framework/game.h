@@ -58,6 +58,7 @@ enum EGAMESTATES
     S_Dungeon_Stealth_2,
     S_Dungeon_Stealth_3,
     S_Boss_Battle_Room,
+    S_wireGame,
     //Animations
     S_Start_Animation,
     S_Orphanage_Animation,
@@ -71,8 +72,10 @@ enum EGAMESTATES
     S_Medical_Facility_Part2_Animation,
     S_Dungeon_Stealth3_Animation,
     S_Boss_Room_Animation,
+    S_Boss_Room_Mid_Animation,
+    S_Boss_Room_End_Animation,
+    S_Presentation_Animation,
     S_BattleScreen,
-    S_wireGame,
     S_Credits,
     //Battle animations
     S_SlashGuard,
@@ -138,6 +141,7 @@ struct SGameChar : public Enemy
     bool entityDied;
     bool animationPlayed;
     bool enterArea;
+    bool talkedOldMan;
     int randNum;
 };
 void init(void);      // initialize your variables, allocate memory, etc
@@ -156,7 +160,8 @@ void moveCharacter();       // moves the character, collision detection, physics
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void clearScreen();         // clears the current screen and draw from scratch 
 void renderSplashScreen();  // renders the splash screen
-void renderGame();          // renders the game stuff
+void renderGame();   
+// renders the game stuff
 //void renderMap();  // renders the map to the buffer first
 
 //Render areas + Battle screens
@@ -182,6 +187,7 @@ void renderMap_wireGame();
 void renderMap_NPC();       // render NPCs in Townsquare
 void renderCharacter();     // renders the character into the buffer.
 void renderEnemy();         // render enemy
+void renderPig();
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 void renderInputEvents();   // renders the status of input events
@@ -219,6 +225,12 @@ void Update_Dungeon_Stealth3_Animation();
 void Dungeon_Stealth3_Animation();
 void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
+void Update_Boss_Room_Mid_Animation();
+void Boss_Room_Mid_Animation();
+void Update_Boss_End_Animation();
+void Boss_End_Animation();
+void Update_Presentation_Animation();
+void Presentation_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
 void Update_Credits();

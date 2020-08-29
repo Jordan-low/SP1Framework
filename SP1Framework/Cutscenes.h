@@ -16,12 +16,13 @@ public:
     void drawgrid(Console& g_Console, int x, int y, char chara); //draws in red
     void drawgridG(Console& g_Console, int x, int y, char chara); //draws in green
     void drawgridY(Console& g_Console, int x, int y, char chara); //draws in green
-
+    void drawgridW(Console& g_Console, int x, int y, char chara);
     void cleargrid(Console& g_Console, int x, int y);
     void clearSprite(Console& g_Console);
     void clearRobertSprite(Console& g_Console);
     void clearSpriteLine(Console& g_Console, int y);
     void clearRobertSpriteLine(Console& g_Console, int y);
+    void clearRaymondSpriteLine(Console& g_Console, int y);
     void clearScreen(Console& g_Console);
 
     //animations for raymond battle phase 2
