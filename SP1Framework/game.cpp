@@ -1639,7 +1639,38 @@ void Credits()
                                                                         g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
                                                                         c.Y = 17;
                                                                         g_Console.writeToBuffer(c, "Written By: Ngiam");
-
+                                                                        if (g_dCreditsTime > 21.5)
+                                                                        {
+                                                                            Cutscene.clearScreen(g_Console);
+                                                                            c.Y = 7;
+                                                                            g_Console.writeToBuffer(c, "     Renee");
+                                                                            c.Y = 10;
+                                                                            g_Console.writeToBuffer(c, "      Music");
+                                                                            c.Y = 12;
+                                                                            g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                            c.Y = 13;
+                                                                            g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                            c.Y = 15;
+                                                                            g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                            c.Y = 16;
+                                                                            g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                            if (g_dCreditsTime > 21.5)
+                                                                            {
+                                                                                Cutscene.clearScreen(g_Console);
+                                                                                c.Y = 9;
+                                                                                g_Console.writeToBuffer(c, "      Music");
+                                                                                c.Y = 11;
+                                                                                g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                                c.Y = 12;
+                                                                                g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                                c.Y = 14;
+                                                                                g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                                c.Y = 15;
+                                                                                g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                                c.Y = 17;
+                                                                                g_Console.writeToBuffer(c, "\"\"");
+                                                                            }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
