@@ -78,6 +78,8 @@ int randBomb;
 int randBomb2;
 int randCount;
 
+bool mainMenu_music;
+bool orphanage_music;
 bool townsquare_music;
 bool phase2_music;
 bool credits_music;
@@ -1570,7 +1572,7 @@ void Credits()
                                                             c.Y = 15;
                                                             g_Console.writeToBuffer(c, "     Music");
                                                             c.Y = 17;
-                                                            g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                            g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
                                                             if (g_dCreditsTime > 17.5)
                                                             {
                                                                 Cutscene.clearScreen(g_Console);
@@ -1587,9 +1589,9 @@ void Credits()
                                                                 c.Y = 14;
                                                                 g_Console.writeToBuffer(c, "     Music");
                                                                 c.Y = 16;
-                                                                g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
                                                                 c.Y = 17;
-                                                                g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                 if (g_dCreditsTime > 18.5)
                                                                 {
                                                                     Cutscene.clearScreen(g_Console);
@@ -1604,9 +1606,12 @@ void Credits()
                                                                     c.Y = 13;
                                                                     g_Console.writeToBuffer(c, "     Music");
                                                                     c.Y = 15;
-                                                                    g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                    g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
                                                                     c.Y = 16;
-                                                                    g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                    g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                    c.X = 25;
+                                                                    c.Y = 17;
+                                                                    g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                     if (g_dCreditsTime > 19.5)
                                                                     {
                                                                         Cutscene.clearScreen(g_Console);
@@ -1619,14 +1624,16 @@ void Credits()
                                                                         c.Y = 12;
                                                                         g_Console.writeToBuffer(c, "     Music");
                                                                         c.Y = 14;
-                                                                        g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                        g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
                                                                         c.Y = 15;
-                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                        c.Y = 17;
-                                                                        g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                        g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                        c.X = 25;
+                                                                        c.Y = 16;
+                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                         if (g_dCreditsTime > 20.5)
                                                                         {
                                                                             Cutscene.clearScreen(g_Console);
+                                                                            c.X = 32;
                                                                             c.Y = 7;
                                                                             g_Console.writeToBuffer(c, "     Nicole");
                                                                             c.Y = 8;
@@ -1634,13 +1641,15 @@ void Credits()
                                                                             c.Y = 11;
                                                                             g_Console.writeToBuffer(c, "     Music");
                                                                             c.Y = 13;
-                                                                            g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                            g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
                                                                             c.Y = 14;
-                                                                            g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                            c.Y = 16;
-                                                                            g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                            g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                            c.X = 25;
+                                                                            c.Y = 15;
+                                                                            g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                            c.X = 32;
                                                                             c.Y = 17;
-                                                                            g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                            g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                             if (g_dCreditsTime > 21.5)
                                                                             {
                                                                                 Cutscene.clearScreen(g_Console);
@@ -1649,44 +1658,165 @@ void Credits()
                                                                                 c.Y = 10;
                                                                                 g_Console.writeToBuffer(c, "     Music");
                                                                                 c.Y = 12;
-                                                                                g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                                g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
                                                                                 c.Y = 13;
-                                                                                g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                                c.Y = 15;
-                                                                                g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                                g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                                c.X = 25;
+                                                                                c.Y = 14;
+                                                                                g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                c.X = 32;
                                                                                 c.Y = 16;
-                                                                                g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                                g_Console.writeToBuffer(c, "\"Retro Platforming\"");
+                                                                                c.X = 25;
+                                                                                c.Y = 17;
+                                                                                g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                 if (g_dCreditsTime > 21.5)
                                                                                 {
                                                                                     Cutscene.clearScreen(g_Console);
+                                                                                    c.X = 32;
                                                                                     c.Y = 9;
                                                                                     g_Console.writeToBuffer(c, "     Music");
                                                                                     c.Y = 11;
-                                                                                    g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                                    g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
                                                                                     c.Y = 12;
-                                                                                    g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                                    c.Y = 14;
-                                                                                    g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                                    g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                                    c.X = 25;
+                                                                                    c.Y = 13;
+                                                                                    g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                    c.X = 32;
                                                                                     c.Y = 15;
-                                                                                    g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                                    c.Y = 17;
-                                                                                    g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                    g_Console.writeToBuffer(c, "\"Retro Platforming\"");
+                                                                                    c.X = 25;
+                                                                                    c.Y = 16;
+                                                                                    g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                     if (g_dCreditsTime > 22.5)
                                                                                     {
                                                                                         Cutscene.clearScreen(g_Console);
+                                                                                        c.X = 32;
+                                                                                        c.Y = 8;
+                                                                                        g_Console.writeToBuffer(c, "     Music");
                                                                                         c.Y = 10;
-                                                                                        g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                                        g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
                                                                                         c.Y = 11;
-                                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                                        c.Y = 13;
-                                                                                        g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                                        g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                                        c.X = 25;
+                                                                                        c.Y = 12;
+                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                        c.X = 32;
                                                                                         c.Y = 14;
-                                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                                        c.Y = 16;
-                                                                                        g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
-                                                                                        c.X = 27;
+                                                                                        g_Console.writeToBuffer(c, "\"Retro Platforming\"");
+                                                                                        c.X = 25;
+                                                                                        c.Y = 15;
+                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                        c.X = 32;
                                                                                         c.Y = 17;
-                                                                                        g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
+                                                                                        g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                        if (g_dCreditsTime > 23.5)
+                                                                                        {
+                                                                                            Cutscene.clearScreen(g_Console);
+                                                                                            c.Y = 7;
+                                                                                            g_Console.writeToBuffer(c, "     Music");
+                                                                                            c.Y = 9;
+                                                                                            g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
+                                                                                            c.Y = 10;
+                                                                                            g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                                            c.X = 25;
+                                                                                            c.Y = 11;
+                                                                                            g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                            c.X = 32;
+                                                                                            c.Y = 13;
+                                                                                            g_Console.writeToBuffer(c, "\"Retro Platforming\"");
+                                                                                            c.X = 25;
+                                                                                            c.Y = 14;
+                                                                                            g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                            c.X = 32;
+                                                                                            c.Y = 16;
+                                                                                            g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                            c.X = 27;
+                                                                                            c.Y = 17;
+                                                                                            g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
+                                                                                            if (g_dCreditsTime > 24.5)
+                                                                                            {
+                                                                                                Cutscene.clearScreen(g_Console);
+                                                                                                c.Y = 8;
+                                                                                                g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
+                                                                                                c.Y = 9;
+                                                                                                g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                                                c.X = 25;
+                                                                                                c.Y = 10;
+                                                                                                g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                c.X = 32;
+                                                                                                c.Y = 12;
+                                                                                                g_Console.writeToBuffer(c, "\"Retro Platforming\"");
+                                                                                                c.X = 25;
+                                                                                                c.Y = 13;
+                                                                                                g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                c.X = 32;
+                                                                                                c.Y = 15;
+                                                                                                g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                                c.X = 27;
+                                                                                                c.Y = 16;
+                                                                                                g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
+                                                                                                c.X = 25;
+                                                                                                c.Y = 17;
+                                                                                                g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                if (g_dCreditsTime > 25.5)
+                                                                                                {
+                                                                                                    Cutscene.clearScreen(g_Console);
+                                                                                                    c.X = 32;
+                                                                                                    c.Y = 7;
+                                                                                                    g_Console.writeToBuffer(c, "\"8 Bit Retro Funk\"");
+                                                                                                    c.Y = 8;
+                                                                                                    g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                                                    c.X = 25;
+                                                                                                    c.Y = 9;
+                                                                                                    g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                    c.X = 32;
+                                                                                                    c.Y = 11;
+                                                                                                    g_Console.writeToBuffer(c, "\"Retro Platforming\"");
+                                                                                                    c.X = 25;
+                                                                                                    c.Y = 12;
+                                                                                                    g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                    c.X = 32;
+                                                                                                    c.Y = 14;
+                                                                                                    g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                                    c.X = 27;
+                                                                                                    c.Y = 15;
+                                                                                                    g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
+                                                                                                    c.X = 25;
+                                                                                                    c.Y = 16;
+                                                                                                    g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                    if (g_dCreditsTime > 26.5)
+                                                                                                    {
+                                                                                                        Cutscene.clearScreen(g_Console);
+                                                                                                        c.X = 32;
+                                                                                                        c.Y = 7;
+                                                                                                        g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                                                        c.X = 25;
+                                                                                                        c.Y = 8;
+                                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                        c.X = 32;
+                                                                                                        c.Y = 10;
+                                                                                                        g_Console.writeToBuffer(c, "\"Retro Platforming\"");
+                                                                                                        c.X = 25;
+                                                                                                        c.Y = 11;
+                                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                        c.X = 32;
+                                                                                                        c.Y = 13;
+                                                                                                        g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                                        c.X = 27;
+                                                                                                        c.Y = 14;
+                                                                                                        g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
+                                                                                                        c.X = 25;
+                                                                                                        c.Y = 15;
+                                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                        c.X = 32;
+                                                                                                        c.Y = 17;
+                                                                                                        g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
                                                                                     }
                                                                                 }
                                                                             }
@@ -1720,6 +1850,11 @@ void Update_Orphanage_Animation()
 }
 void Orphanage_Animation()
 {
+    while (orphanage_music == false)
+    {
+        PlaySound(TEXT("Retro Platforming VERY SLOW.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        orphanage_music = true;
+    }
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.orphanage(g_Console);
@@ -10623,6 +10758,11 @@ void renderInputEvents()
 
 void render_Main_Menu()
 {
+    while (mainMenu_music == false)
+    {
+        PlaySound(TEXT("Retro Platforming VERY SLOW.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        mainMenu_music = true;
+    }
     COORD c; COORD d;
     //Print R (ROBERT)
     int i;
