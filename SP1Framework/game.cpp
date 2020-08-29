@@ -32,6 +32,7 @@ double g_dMedical2Time;
 double g_dDungeonStealth3Time;
 double g_dBossTime;
 double g_dBossMiddleTime;
+double g_dBossEndTime;
 double g_dPresentationTime;
 double g_dslashGuard;
 double g_dkillGuard;
@@ -364,7 +365,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_BattleScreen;
+    g_eGameState = S_Boss_Room_End_Animation;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -647,6 +648,7 @@ void update(double dt)
     g_dDungeonStealth3Time += dt;
     g_dBossTime += dt;
     g_dBossMiddleTime += dt;
+    g_dBossEndTime += dt;
     g_dPresentationTime += dt;
     g_dslashGuard += dt;
     g_dkillGuard += dt;
@@ -747,6 +749,8 @@ void update(double dt)
     case S_Boss_Room_Animation: Update_Boss_Room_Animation();
         break;
     case S_Boss_Room_Mid_Animation: Update_Boss_Room_Mid_Animation();
+        break;
+    case S_Boss_Room_End_Animation: Update_Boss_End_Animation();
         break;
     case S_Presentation_Animation: Update_Presentation_Animation();
         break;
@@ -4501,9 +4505,90 @@ void Boss_Room_Mid_Animation()
     }
 }
 
+void Update_Boss_End_Animation()
+{
+    if (g_dBossEndTime > 33)
+    {
+        g_eGameState = S_Credits;
+    }
+    processUserInput();
+}
+void Boss_End_Animation()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.Battle_Screen(g_Console);
+    COORD c;
+    COORD d;
+    COORD e;
+    COORD f;
+    renderCharacter();
+    c.X = 5;
+    c.Y = 26;
+    d.X = 5;
+    d.Y = 27;
+    e.X = 23;
+    e.Y = 12;
+    f.X = 32;
+    f.Y = 14;
+    
+    if (g_dBossMiddleTime > 1)
+    {
+        g_Console.writeToBuffer(c, "And so... Raymond was defeated.", 0x0F);
+        if (g_dBossMiddleTime > 4)
+        {
+            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+            g_Console.writeToBuffer(c, "The people of the state cheered in unison.", 0x0F);
+            if (g_dBossMiddleTime > 8)
+            {
+                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                g_Console.writeToBuffer(c, "Robert was elected to become the next President, ", 0x0F);
+                g_Console.writeToBuffer(d, "where he would solve the people's issues with ease and passion.", 0x0F);
+                if (g_dBossMiddleTime > 12)
+                {
+                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                    g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
+                    g_Console.writeToBuffer(c, "Though there was still a small resistance amongst the people, ", 0x0F);
+                    g_Console.writeToBuffer(d, "life had majorly improved for everyone. ", 0x0F);
+                    if (g_dBossMiddleTime > 16)
+                    {
+                        g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                        g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
+                        g_Console.writeToBuffer(c, "Now with Robert controlling the people's hearts and minds alike,", 0x0F);
+                        g_Console.writeToBuffer(d, "he was sure to achieve his goal...", 0x0F);
+                        if (g_dBossMiddleTime > 20)
+                        {
+                            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                            g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
+                            g_Console.writeToBuffer(c, "At least that was what he thought...", 0x0F);
+                            g_Console.writeToBuffer(d, "His heart had been lured too deep with greed...", 0x0F);
+                            if (g_dBossMiddleTime > 23)
+                            {
+                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
+                                g_Console.writeToBuffer(c, "And so comes to the end of Robert's Rescue...", 0x0F);
+                                if (g_dBossMiddleTime > 27)
+                                {
+                                    g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                    rMap.initialise(g_Console);
+                                    g_Console.writeToBuffer(e, "R o b e r t 's   R e s c u e   2", 0x0F);
+                                    if (g_dBossMiddleTime > 30)
+                                    {
+                                        g_Console.writeToBuffer(f, "=Coming Soon?=", 0x0F);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 void Update_Presentation_Animation()
 {
-    if (g_dBossMiddleTime > 11.2)
+    if (g_dPresentationTime > 11.2)
     {
         g_eGameState = S_Boss_Battle_Room;
     }
@@ -4523,50 +4608,50 @@ void Presentation_Animation()
     d.Y = 27;
     Cutscene.drawgridW(g_Console, 39, 21, (char)1); //Robert
     Cutscene.drawgrid(g_Console, 41, 21, 'R'); //Raymond
-    if (g_dBossMiddleTime > 1)
+    if (g_dPresentationTime > 1)
     {
         Cutscene.cleargrid(g_Console, 41, 21);
         Cutscene.drawgrid(g_Console, 42, 21, 'R');
         g_Console.writeToBuffer(c, "Raymond: ...", 0x0F);
-        if (g_dBossMiddleTime > 3)
+        if (g_dPresentationTime > 3)
         {
             Cutscene.cleargrid(g_Console, 41, 21);
             Cutscene.drawgrid(g_Console, 42, 21, 'R');
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             g_Console.writeToBuffer(c, "Raymond: You're finally awake Robert! Oh how I've been waiting!!", 0x0F);
-            if (g_dBossMiddleTime > 6)
+            if (g_dPresentationTime > 6)
             {
                 Cutscene.cleargrid(g_Console, 42, 21);
                 Cutscene.drawgrid(g_Console, 43, 21, 'R');
                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
-                if (g_dBossMiddleTime > 6.3)
+                if (g_dPresentationTime > 6.3)
                 {
                     Cutscene.cleargrid(g_Console, 43, 21);
                     Cutscene.drawgrid(g_Console, 45, 21, 'R');
-                    if (g_dBossMiddleTime > 6.6)
+                    if (g_dPresentationTime > 6.6)
                     {
                         Cutscene.cleargrid(g_Console, 45, 21);
                         Cutscene.drawgrid(g_Console, 48, 21, 'R');
-                        if (g_dBossMiddleTime > 6.9)
+                        if (g_dPresentationTime > 6.9)
                         {
                             Cutscene.cleargrid(g_Console, 48, 21);
                             Cutscene.drawgrid(g_Console, 52, 21, 'R');
-                            if (g_dBossMiddleTime > 7.2)
+                            if (g_dPresentationTime > 7.2)
                             {
                                 Cutscene.cleargrid(g_Console, 52, 21);
                                 Cutscene.drawgrid(g_Console, 56, 21, 'R');
-                                if (g_dBossMiddleTime > 7.5)
+                                if (g_dPresentationTime > 7.5)
                                 {
                                     Cutscene.cleargrid(g_Console, 56, 21);
                                     Cutscene.drawgrid(g_Console, 60, 21, 'R');
-                                    if (g_dBossMiddleTime > 7.8)
+                                    if (g_dPresentationTime > 7.8)
                                     {
                                         Cutscene.cleargrid(g_Console, 60, 21);
                                         Cutscene.drawgrid(g_Console, 64, 21, 'R');
-                                        if (g_dBossMiddleTime > 8.1)
+                                        if (g_dPresentationTime > 8.1)
                                         {
-                                            g_Console.writeToBuffer(c, "Raymond: Come Robert! Let us have this unforgettable dance of a duel!!", 0x0F);
-                                            if (g_dBossMiddleTime > 11.1)
+                                            g_Console.writeToBuffer(c, "Raymond: Come Robert! Let us have this unforgettable ddance of a duel!!", 0x0F);
+                                            if (g_dPresentationTime > 11.1)
                                             {
                                                 Cutscene.cleargrid(g_Console, 64, 21);
                                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -8539,6 +8624,8 @@ void render()
     case S_Boss_Room_Animation: Boss_Room_Animation();
         break;
     case S_Boss_Room_Mid_Animation: Boss_Room_Mid_Animation();
+        break;
+    case S_Boss_Room_End_Animation: Boss_End_Animation();
         break;
     case S_Presentation_Animation: Presentation_Animation();
         break;
