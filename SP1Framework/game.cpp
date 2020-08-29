@@ -286,7 +286,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_phase2Battle;
+    g_eGameState = S_wireGame;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -9783,10 +9783,10 @@ void renderMap_wireGame()
     //box 1
     if ((g_sChar.m_cLocation.X == g_sBox1.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox1.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox1.m_cLocation.Y--;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -9794,7 +9794,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
         {
             g_sBox1.m_cLocation.Y++;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -9802,7 +9802,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             g_sBox1.m_cLocation.X--;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -9810,7 +9810,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
         {
             g_sBox1.m_cLocation.X++;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -9820,7 +9820,7 @@ void renderMap_wireGame()
     //box 4
     if ((g_sChar.m_cLocation.X == g_sBox4.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox4.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox4.m_cLocation.Y--;
             if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
@@ -9856,7 +9856,7 @@ void renderMap_wireGame()
     //box 2
     if ((g_sChar.m_cLocation.X == g_sBox2.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox2.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox2.m_cLocation.Y--;
             if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
@@ -9893,10 +9893,10 @@ void renderMap_wireGame()
     //box 5
     if ((g_sChar.m_cLocation.X == g_sBox5.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox5.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox5.m_cLocation.Y--;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -9904,7 +9904,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
         {
             g_sBox5.m_cLocation.Y++;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -9912,7 +9912,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             g_sBox5.m_cLocation.X--;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -9920,7 +9920,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
         {
             g_sBox5.m_cLocation.X++;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -9930,10 +9930,10 @@ void renderMap_wireGame()
     //box 3
     if ((g_sChar.m_cLocation.X == g_sBox3.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox3.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox3.m_cLocation.Y--;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -9941,7 +9941,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
         {
             g_sBox3.m_cLocation.Y++;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -9949,7 +9949,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             g_sBox3.m_cLocation.X--;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -9957,7 +9957,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
         {
             g_sBox3.m_cLocation.X++;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -9967,7 +9967,7 @@ void renderMap_wireGame()
     //box 6
     if ((g_sChar.m_cLocation.X == g_sBox6.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox6.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox6.m_cLocation.Y--;
             if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
