@@ -74,7 +74,8 @@ int randBlock2;
 int randBlock3;
 int randCount;
 
-bool music;
+bool phase2_music;
+bool credits_music;
 Sound s;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
@@ -287,7 +288,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_wireGame;
+    g_eGameState = S_phase2Battle;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -717,7 +718,7 @@ void Update_starting_cutscene()
 }
 void starting_cutscene()
 {
-    clearScreen();
+    Cutscene.clearScreen(g_Console);;
     COORD c;
     if (g_dStartScene > 0.5)
     {
@@ -726,7 +727,7 @@ void starting_cutscene()
         g_Console.writeToBuffer(c, "The world went through an economic");
         if (g_dStartScene > 1.5)
         {
-            clearScreen();
+            Cutscene.clearScreen(g_Console);;
             c.Y = 12;
             g_Console.writeToBuffer(c, "The world went through an economic");
             c.Y = 13;
@@ -734,7 +735,7 @@ void starting_cutscene()
 
             if (g_dStartScene > 2.5)
             {
-                clearScreen();
+                Cutscene.clearScreen(g_Console);;
                 c.Y = 11;
                 g_Console.writeToBuffer(c, "The world went through an economic");
                 c.Y = 12;
@@ -743,7 +744,7 @@ void starting_cutscene()
                 g_Console.writeToBuffer(c, "are happening around the globe.");
                 if (g_dStartScene > 3.5)
                 {
-                    clearScreen();
+                    Cutscene.clearScreen(g_Console);;
                     c.Y = 10;
                     g_Console.writeToBuffer(c, "The world went through an economic");
                     c.Y = 11;
@@ -754,7 +755,7 @@ void starting_cutscene()
                     g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                     if (g_dStartScene > 4.5)
                     {
-                        clearScreen();
+                        Cutscene.clearScreen(g_Console);;
                         c.Y = 9;
                         g_Console.writeToBuffer(c, "The world went through an economic");
                         c.Y = 10;
@@ -767,7 +768,7 @@ void starting_cutscene()
                         g_Console.writeToBuffer(c, "factors such as climate changes ");
                         if (g_dStartScene > 5.5)
                         {
-                            clearScreen();
+                            Cutscene.clearScreen(g_Console);;
                             c.Y = 8;
                             g_Console.writeToBuffer(c, "The world went through an economic");
                             c.Y = 9;
@@ -782,7 +783,7 @@ void starting_cutscene()
                             g_Console.writeToBuffer(c, "population distribution which");
                             if (g_dStartScene > 6.5)
                             {
-                                clearScreen();
+                                Cutscene.clearScreen(g_Console);;
                                 c.Y = 7;
                                 g_Console.writeToBuffer(c, "The world went through an economic");
                                 c.Y = 8;
@@ -799,7 +800,7 @@ void starting_cutscene()
                                 g_Console.writeToBuffer(c, "greatly affected the country have");
                                 if (g_dStartScene > 7.5)
                                 {
-                                    clearScreen();
+                                    Cutscene.clearScreen(g_Console);;
                                     c.Y = 6;
                                     g_Console.writeToBuffer(c, "The world went through an economic");
                                     c.Y = 7;
@@ -818,7 +819,7 @@ void starting_cutscene()
                                     g_Console.writeToBuffer(c, "caused mass panic and the country");
                                     if (g_dStartScene > 8.5)
                                     {
-                                        clearScreen();
+                                        Cutscene.clearScreen(g_Console);;
                                         c.Y = 5;
                                         g_Console.writeToBuffer(c, "The world went through an economic");
                                         c.Y = 6;
@@ -839,7 +840,7 @@ void starting_cutscene()
                                         g_Console.writeToBuffer(c, "to suffer huge losses.");
                                         if (g_dStartScene > 9.5)
                                         {
-                                            clearScreen();
+                                            Cutscene.clearScreen(g_Console);;
                                             c.Y = 4;
                                             g_Console.writeToBuffer(c, "The world went through an economic");
                                             c.Y = 5;
@@ -862,7 +863,7 @@ void starting_cutscene()
                                             g_Console.writeToBuffer(c, "government then turned corrupt");
                                             if (g_dStartScene > 10.5)
                                             {
-                                                clearScreen();
+                                                Cutscene.clearScreen(g_Console);;
                                                 c.Y = 4;
                                                 g_Console.writeToBuffer(c, "crisis due to all the things that");
                                                 c.Y = 5;
@@ -885,7 +886,7 @@ void starting_cutscene()
                                                 g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                 if (g_dStartScene > 11.5)
                                                 {
-                                                    clearScreen();
+                                                    Cutscene.clearScreen(g_Console);;
                                                     c.Y = 4;
                                                     g_Console.writeToBuffer(c, "are happening around the globe.");
                                                     c.Y = 5;
@@ -930,7 +931,7 @@ void starting_cutscene()
                                                         g_Console.writeToBuffer(c, "about their own personal gain and");
                                                         if (g_dStartScene > 13.5)
                                                         {
-                                                            clearScreen();
+                                                            Cutscene.clearScreen(g_Console);;
                                                             c.Y = 4;
                                                             g_Console.writeToBuffer(c, "factors such as climate changes");
                                                             c.Y = 5;
@@ -953,7 +954,7 @@ void starting_cutscene()
                                                             g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
                                                             if (g_dStartScene > 14.5)
                                                             {
-                                                                clearScreen();
+                                                                Cutscene.clearScreen(g_Console);;
                                                                 c.Y = 4;
                                                                 g_Console.writeToBuffer(c, "and population distribution which");
                                                                 c.Y = 5;
@@ -976,7 +977,7 @@ void starting_cutscene()
                                                                 g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                 if (g_dStartScene > 15.5)
                                                                 {
-                                                                    clearScreen();
+                                                                    Cutscene.clearScreen(g_Console);;
                                                                     c.Y = 4;
                                                                     g_Console.writeToBuffer(c, "greatly affected the country have");
                                                                     c.Y = 5;
@@ -999,7 +1000,7 @@ void starting_cutscene()
                                                                     g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                     if (g_dStartScene > 16.5)
                                                                     {
-                                                                        clearScreen();
+                                                                        Cutscene.clearScreen(g_Console);;
                                                                         c.Y = 4;
                                                                         g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                                         c.Y = 5;
@@ -1022,7 +1023,7 @@ void starting_cutscene()
                                                                         g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                         if (g_dStartScene > 17.5)
                                                                         {
-                                                                            clearScreen();
+                                                                            Cutscene.clearScreen(g_Console);;
                                                                             c.Y = 4;
                                                                             g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                                             c.Y = 5;
@@ -1045,7 +1046,7 @@ void starting_cutscene()
                                                                             g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                             if (g_dStartScene > 18.5)
                                                                             {
-                                                                                clearScreen();
+                                                                                Cutscene.clearScreen(g_Console);;
                                                                                 c.Y = 4;
                                                                                 g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
                                                                                 c.Y = 5;
@@ -1068,7 +1069,7 @@ void starting_cutscene()
                                                                                 g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                 if (g_dStartScene > 19.5)
                                                                                 {
-                                                                                    clearScreen();
+                                                                                    Cutscene.clearScreen(g_Console);;
                                                                                     c.Y = 4;
                                                                                     g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                                     c.Y = 5;
@@ -1091,7 +1092,7 @@ void starting_cutscene()
                                                                                     g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                     if (g_dStartScene > 20.5)
                                                                                     {
-                                                                                        clearScreen();
+                                                                                        Cutscene.clearScreen(g_Console);;
                                                                                         c.Y = 4;
                                                                                         g_Console.writeToBuffer(c, "Government officials only worried");
                                                                                         c.Y = 5;
@@ -1114,7 +1115,7 @@ void starting_cutscene()
                                                                                         g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                         if (g_dStartScene > 21.5)
                                                                                         {
-                                                                                            clearScreen();
+                                                                                            Cutscene.clearScreen(g_Console);;
                                                                                             c.Y = 4;
                                                                                             g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                                             c.Y = 5;
@@ -1137,7 +1138,7 @@ void starting_cutscene()
                                                                                             g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                             if (g_dStartScene > 22.5)
                                                                                             {
-                                                                                                clearScreen();
+                                                                                                Cutscene.clearScreen(g_Console);;
                                                                                                 c.Y = 4;
                                                                                                 g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
                                                                                                 c.Y = 5;
@@ -1160,7 +1161,7 @@ void starting_cutscene()
                                                                                                 g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                 if (g_dStartScene > 23.5)
                                                                                                 {
-                                                                                                    clearScreen();
+                                                                                                    Cutscene.clearScreen(g_Console);;
                                                                                                     c.Y = 4;
                                                                                                     g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                                     c.Y = 5;
@@ -1183,7 +1184,7 @@ void starting_cutscene()
                                                                                                     g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                     if (g_dStartScene > 24.5)
                                                                                                     {
-                                                                                                        clearScreen();
+                                                                                                        Cutscene.clearScreen(g_Console);;
                                                                                                         c.Y = 4;
                                                                                                         g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                                                         c.Y = 5;
@@ -1206,7 +1207,7 @@ void starting_cutscene()
                                                                                                         g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                         if (g_dStartScene > 25.5)
                                                                                                         {
-                                                                                                            clearScreen();
+                                                                                                            Cutscene.clearScreen(g_Console);;
                                                                                                             c.Y = 4;
                                                                                                             g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                                                             c.Y = 5;
@@ -1229,7 +1230,7 @@ void starting_cutscene()
                                                                                                             g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                             if (g_dStartScene > 26.5)
                                                                                                             {
-                                                                                                                clearScreen();
+                                                                                                                Cutscene.clearScreen(g_Console);;
                                                                                                                 c.Y = 4;
                                                                                                                 g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                                                 c.Y = 5;
@@ -1250,7 +1251,7 @@ void starting_cutscene()
                                                                                                                 g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                 if (g_dStartScene > 27.5)
                                                                                                                 {
-                                                                                                                    clearScreen();
+                                                                                                                    Cutscene.clearScreen(g_Console);;
                                                                                                                     c.Y = 4;
                                                                                                                     g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                                                     c.Y = 5;
@@ -1269,7 +1270,7 @@ void starting_cutscene()
                                                                                                                     g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                     if (g_dStartScene > 28.5)
                                                                                                                     {
-                                                                                                                        clearScreen();
+                                                                                                                        Cutscene.clearScreen(g_Console);;
                                                                                                                         c.Y = 4;
                                                                                                                         g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                                                         c.Y = 5;
@@ -1286,7 +1287,7 @@ void starting_cutscene()
                                                                                                                         g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                         if (g_dStartScene > 29.5)
                                                                                                                         {
-                                                                                                                            clearScreen();
+                                                                                                                            Cutscene.clearScreen(g_Console);;
                                                                                                                             c.Y = 4;
                                                                                                                             g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                                                             c.Y = 5;
@@ -1301,7 +1302,7 @@ void starting_cutscene()
                                                                                                                             g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                             if (g_dStartScene > 30.5)
                                                                                                                             {
-                                                                                                                                clearScreen();
+                                                                                                                                Cutscene.clearScreen(g_Console);;
                                                                                                                                 c.Y = 4;
                                                                                                                                 g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                                                 c.Y = 5;
@@ -1314,7 +1315,7 @@ void starting_cutscene()
                                                                                                                                 g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                 if (g_dStartScene > 31.5)
                                                                                                                                 {
-                                                                                                                                    clearScreen();
+                                                                                                                                    Cutscene.clearScreen(g_Console);;
                                                                                                                                     c.Y = 4;
                                                                                                                                     g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                                                     c.Y = 5;
@@ -1325,7 +1326,7 @@ void starting_cutscene()
                                                                                                                                     g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                     if (g_dStartScene > 32.5)
                                                                                                                                     {
-                                                                                                                                        clearScreen();
+                                                                                                                                        Cutscene.clearScreen(g_Console);;
                                                                                                                                         c.Y = 4;
                                                                                                                                         g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                                                         c.Y = 5;
@@ -1334,19 +1335,19 @@ void starting_cutscene()
                                                                                                                                         g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                         if (g_dStartScene > 33.5)
                                                                                                                                         {
-                                                                                                                                            clearScreen();
+                                                                                                                                            Cutscene.clearScreen(g_Console);;
                                                                                                                                             c.Y = 4;
                                                                                                                                             g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                                             c.Y = 5;
                                                                                                                                             g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                             if (g_dStartScene > 34.5)
                                                                                                                                             {
-                                                                                                                                                clearScreen();
+                                                                                                                                                Cutscene.clearScreen(g_Console);;
                                                                                                                                                 c.Y = 4;
                                                                                                                                                 g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                                 if (g_dStartScene > 35.5)
                                                                                                                                                 {
-                                                                                                                                                    clearScreen();
+                                                                                                                                                    Cutscene.clearScreen(g_Console);;
                                                                                                                                                 }
                                                                                                                                             }
                                                                                                                                         }
@@ -1379,6 +1380,271 @@ void starting_cutscene()
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+void Update_Credits()
+{
+    if (g_dCreditsTime > 36)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+void Credits()
+{
+    while (credits_music == false)
+    {
+        PlaySound(TEXT("Ancient Lullaby.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        credits_music = true;
+    }
+    Cutscene.clearScreen(g_Console);
+    COORD c;
+    if (g_dCreditsTime > 0.5)
+    {
+        c.X = 20;
+        c.Y = 12;
+        g_Console.writeToBuffer(c, "After defeating Raymond, Robert became");
+        c.Y = 13;
+        g_Console.writeToBuffer(c, "the President and sought to restore the");
+        c.Y = 14;
+        g_Console.writeToBuffer(c, "world back to its original state.");
+        if (g_dCreditsTime > 5.5)
+        {
+            Cutscene.clearScreen(g_Console);
+            c.X = 32;
+            c.Y = 17;
+            g_Console.writeToBuffer(c, "Development Team");
+            if (g_dCreditsTime > 6.5)
+            {
+                Cutscene.clearScreen(g_Console);
+                c.Y = 16;
+                g_Console.writeToBuffer(c, "Development Team");
+                if (g_dCreditsTime > 7.5)
+                {
+                    Cutscene.clearScreen(g_Console);
+                    c.Y = 15;
+                    g_Console.writeToBuffer(c, "Development Team");
+                    c.Y = 17;
+                    g_Console.writeToBuffer(c, "     Andrew");
+                    if (g_dCreditsTime > 8.5)
+                    {
+                        Cutscene.clearScreen(g_Console);
+                        c.Y = 14;
+                        g_Console.writeToBuffer(c, "Development Team");
+                        c.Y = 16;
+                        g_Console.writeToBuffer(c, "     Andrew");
+                        c.Y = 17;
+                        g_Console.writeToBuffer(c, "     Artus");
+                        if (g_dCreditsTime > 9.5)
+                        {
+                            Cutscene.clearScreen(g_Console);
+                            c.Y = 13;
+                            g_Console.writeToBuffer(c, "Development Team");
+                            c.Y = 15;
+                            g_Console.writeToBuffer(c, "     Andrew");
+                            c.Y = 16;
+                            g_Console.writeToBuffer(c, "     Artus");
+                            c.Y = 17;
+                            g_Console.writeToBuffer(c, "     Jordan");
+                            if (g_dCreditsTime > 10.5)
+                            {
+                                Cutscene.clearScreen(g_Console);
+                                c.Y = 12;
+                                g_Console.writeToBuffer(c, "Development Team");
+                                c.Y = 14;
+                                g_Console.writeToBuffer(c, "     Andrew");
+                                c.Y = 15;
+                                g_Console.writeToBuffer(c, "     Artus");
+                                c.Y = 16;
+                                g_Console.writeToBuffer(c, "     Jordan");
+                                c.Y = 17;
+                                g_Console.writeToBuffer(c, "     Nicole");
+                                if (g_dCreditsTime > 11.5)
+                                {
+                                    Cutscene.clearScreen(g_Console);
+                                    c.Y = 11;
+                                    g_Console.writeToBuffer(c, "Development Team");
+                                    c.Y = 13;
+                                    g_Console.writeToBuffer(c, "     Andrew");
+                                    c.Y = 14;
+                                    g_Console.writeToBuffer(c, "     Artus");
+                                    c.Y = 15;
+                                    g_Console.writeToBuffer(c, "     Jordan");
+                                    c.Y = 16;
+                                    g_Console.writeToBuffer(c, "     Nicole");
+                                    c.Y = 17;
+                                    g_Console.writeToBuffer(c, "     Renee");
+                                    if (g_dCreditsTime > 12.5)
+                                    {
+                                        Cutscene.clearScreen(g_Console);
+                                        c.Y = 10;
+                                        g_Console.writeToBuffer(c, "Development Team");
+                                        c.Y = 12;
+                                        g_Console.writeToBuffer(c, "     Andrew");
+                                        c.Y = 13;
+                                        g_Console.writeToBuffer(c, "     Artus");
+                                        c.Y = 14;
+                                        g_Console.writeToBuffer(c, "     Jordan");
+                                        c.Y = 15;
+                                        g_Console.writeToBuffer(c, "     Nicole");
+                                        c.Y = 16;
+                                        g_Console.writeToBuffer(c, "     Renee");
+                                        if (g_dCreditsTime > 13.5)
+                                        {
+                                            Cutscene.clearScreen(g_Console);
+                                            c.Y = 9;
+                                            g_Console.writeToBuffer(c, "Development Team");
+                                            c.Y = 11;
+                                            g_Console.writeToBuffer(c, "     Andrew");
+                                            c.Y = 12;
+                                            g_Console.writeToBuffer(c, "     Artus");
+                                            c.Y = 13;
+                                            g_Console.writeToBuffer(c, "     Jordan");
+                                            c.Y = 14;
+                                            g_Console.writeToBuffer(c, "     Nicole");
+                                            c.Y = 15;
+                                            g_Console.writeToBuffer(c, "     Renee");
+                                            if (g_dCreditsTime > 14.5)
+                                            {
+                                                Cutscene.clearScreen(g_Console);
+                                                c.Y = 8;
+                                                g_Console.writeToBuffer(c, "Development Team");
+                                                c.Y = 10;
+                                                g_Console.writeToBuffer(c, "     Andrew");
+                                                c.Y = 11;
+                                                g_Console.writeToBuffer(c, "     Artus");
+                                                c.Y = 12;
+                                                g_Console.writeToBuffer(c, "     Jordan");
+                                                c.Y = 13;
+                                                g_Console.writeToBuffer(c, "     Nicole");
+                                                c.Y = 14;
+                                                g_Console.writeToBuffer(c, "     Renee");
+                                                c.Y = 17;
+                                                g_Console.writeToBuffer(c, "      Music");
+                                                if (g_dCreditsTime > 15.5)
+                                                {
+                                                    Cutscene.clearScreen(g_Console);
+                                                    c.Y = 7;
+                                                    g_Console.writeToBuffer(c, "Development Team");
+                                                    c.Y = 9;
+                                                    g_Console.writeToBuffer(c, "     Andrew");
+                                                    c.Y = 10;
+                                                    g_Console.writeToBuffer(c, "     Artus");
+                                                    c.Y = 11;
+                                                    g_Console.writeToBuffer(c, "     Jordan");
+                                                    c.Y = 12;
+                                                    g_Console.writeToBuffer(c, "     Nicole");
+                                                    c.Y = 13;
+                                                    g_Console.writeToBuffer(c, "     Renee");
+                                                    c.Y = 16;
+                                                    g_Console.writeToBuffer(c, "      Music");
+                                                    if (g_dCreditsTime > 16.5)
+                                                    {
+                                                        Cutscene.clearScreen(g_Console);
+                                                        c.Y = 8;
+                                                        g_Console.writeToBuffer(c, "     Andrew");
+                                                        c.Y = 9;
+                                                        g_Console.writeToBuffer(c, "     Artus");
+                                                        c.Y = 10;
+                                                        g_Console.writeToBuffer(c, "     Jordan");
+                                                        c.Y = 11;
+                                                        g_Console.writeToBuffer(c, "     Nicole");
+                                                        c.Y = 12;
+                                                        g_Console.writeToBuffer(c, "     Renee");
+                                                        c.Y = 15;
+                                                        g_Console.writeToBuffer(c, "      Music");
+                                                        c.Y = 17;
+                                                        g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                        if (g_dCreditsTime > 17.5)
+                                                        {
+                                                            Cutscene.clearScreen(g_Console);
+                                                            c.Y = 7;
+                                                            g_Console.writeToBuffer(c, "     Andrew");
+                                                            c.Y = 8;
+                                                            g_Console.writeToBuffer(c, "     Artus");
+                                                            c.Y = 9;
+                                                            g_Console.writeToBuffer(c, "     Jordan");
+                                                            c.Y = 10;
+                                                            g_Console.writeToBuffer(c, "     Nicole");
+                                                            c.Y = 11;
+                                                            g_Console.writeToBuffer(c, "     Renee");
+                                                            c.Y = 14;
+                                                            g_Console.writeToBuffer(c, "      Music");
+                                                            c.Y = 16;
+                                                            g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                            c.Y = 17;
+                                                            g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                            if (g_dCreditsTime > 18.5)
+                                                            {
+                                                                Cutscene.clearScreen(g_Console);
+                                                                c.Y = 7;
+                                                                g_Console.writeToBuffer(c, "     Artus");
+                                                                c.Y = 8;
+                                                                g_Console.writeToBuffer(c, "     Jordan");
+                                                                c.Y = 9;
+                                                                g_Console.writeToBuffer(c, "     Nicole");
+                                                                c.Y = 10;
+                                                                g_Console.writeToBuffer(c, "     Renee");
+                                                                c.Y = 13;
+                                                                g_Console.writeToBuffer(c, "      Music");
+                                                                c.Y = 15;
+                                                                g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                c.Y = 16;
+                                                                g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                if (g_dCreditsTime > 19.5)
+                                                                {
+                                                                    Cutscene.clearScreen(g_Console);
+                                                                    c.Y = 7;
+                                                                    g_Console.writeToBuffer(c, "     Jordan");
+                                                                    c.Y = 8;
+                                                                    g_Console.writeToBuffer(c, "     Nicole");
+                                                                    c.Y = 9;
+                                                                    g_Console.writeToBuffer(c, "     Renee");
+                                                                    c.Y = 12;
+                                                                    g_Console.writeToBuffer(c, "      Music");
+                                                                    c.Y = 14;
+                                                                    g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                    c.Y = 15;
+                                                                    g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                    c.Y = 17;
+                                                                    g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                    if (g_dCreditsTime > 20.5)
+                                                                    {
+                                                                        Cutscene.clearScreen(g_Console);
+                                                                        c.Y = 7;
+                                                                        g_Console.writeToBuffer(c, "     Nicole");
+                                                                        c.Y = 8;
+                                                                        g_Console.writeToBuffer(c, "     Renee");
+                                                                        c.Y = 11;
+                                                                        g_Console.writeToBuffer(c, "      Music");
+                                                                        c.Y = 13;
+                                                                        g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                        c.Y = 14;
+                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                        c.Y = 16;
+                                                                        g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                        c.Y = 17;
+                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
+
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+            
                 }
             }
         }
@@ -6349,18 +6615,13 @@ void Update_phase2Battle()
 void phase2Battle()
 {
     srand((unsigned)time(0));
-    /*
-    while (music == false)
+
+    while (phase2_music == false)
     {
-        PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
-        music = true;
+        PlaySound(TEXT("For Peace.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        phase2_music = true;
     }
-    */
-    /*while (music == false)
-    {
-        PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
-        music = true;
-    }*/
+
 
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -9634,12 +9895,6 @@ void UpdateBattleScreen()
     }
 }
 
-void Update_Credits()
-{
-}
-void Credits()
-{
-}
 
 void renderMap_wireGame()
 {
