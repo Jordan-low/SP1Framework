@@ -345,7 +345,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Boss_Room_End_Animation;
+    g_eGameState = S_killRaymond;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -5681,7 +5681,7 @@ void slashRaymond()
 }
 void Update_killRaymond()
 {
-    if (g_dkillRaymond > 3)
+    if (g_dkillRaymond > 5)
     {
         g_eGameState = S_GAME;
     }
@@ -5691,59 +5691,66 @@ void killRaymond()
 {
     //rMap.initialise(g_Console);
     //rMap.Border(g_Console);
-    COORD c;
+    COORD c, d;
     // renderCharacter();
     c.X = 3;
     c.Y = 2;
+    d.X = 5;
+    d.Y = 26;
     g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
-    //Sprites.Battle_Raymond(g_Console, 0);
+    Sprites.Battle_Raymond(g_Console, -19);
+    g_Console.writeToBuffer(d, "Raymond: NOOOOOOO!!!!!", 0x0F);
     if (g_dkillRaymond > 1.95)
     {
-        Cutscene.clearSpriteLine(g_Console, 2);
+        Cutscene.clearRaymondSpriteLine(g_Console, 2);
         if (g_dkillRaymond > 2.0)
         {
-            Cutscene.clearSpriteLine(g_Console, 3);
+            Cutscene.clearRaymondSpriteLine(g_Console, 3);
             if (g_dkillRaymond > 2.05)
             {
-                Cutscene.clearSpriteLine(g_Console, 4);
+                Cutscene.clearRaymondSpriteLine(g_Console, 4);
                 if (g_dkillRaymond > 2.10)
                 {
-                    Cutscene.clearSpriteLine(g_Console, 5);
+                    Cutscene.clearRaymondSpriteLine(g_Console, 5);
                     if (g_dkillRaymond > 2.15)
                     {
-                        Cutscene.clearSpriteLine(g_Console, 6);
+                        Cutscene.clearRaymondSpriteLine(g_Console, 6);
                         if (g_dkillRaymond > 2.20)
                         {
-                            Cutscene.clearSpriteLine(g_Console, 7);
+                            Cutscene.clearRaymondSpriteLine(g_Console, 7);
                             if (g_dkillRaymond > 2.25)
                             {
-                                Cutscene.clearSpriteLine(g_Console, 8);
+                                Cutscene.clearRaymondSpriteLine(g_Console, 8);
                                 if (g_dkillRaymond > 2.30)
                                 {
-                                    Cutscene.clearSpriteLine(g_Console, 9);
+                                    Cutscene.clearRaymondSpriteLine(g_Console, 9);
                                     if (g_dkillRaymond > 2.35)
                                     {
-                                        Cutscene.clearSpriteLine(g_Console, 10);
+                                         Cutscene.clearRaymondSpriteLine(g_Console, 10);
                                         if (g_dkillRaymond > 2.40)
                                         {
-                                            Cutscene.clearSpriteLine(g_Console, 11);
+                                            Cutscene.clearRaymondSpriteLine(g_Console, 11);
                                             if (g_dkillRaymond > 2.45)
                                             {
-                                                Cutscene.clearSpriteLine(g_Console, 12);
+                                                Cutscene.clearRaymondSpriteLine(g_Console, 12);
                                                 if (g_dkillRaymond > 2.50)
                                                 {
-                                                    Cutscene.clearSpriteLine(g_Console, 13);
+                                                    Cutscene.clearRaymondSpriteLine(g_Console, 13);
                                                     if (g_dkillRaymond > 2.55)
                                                     {
-                                                        Cutscene.clearSpriteLine(g_Console, 14);
+                                                        Cutscene.clearRaymondSpriteLine(g_Console, 14);
                                                         if (g_dkillRaymond > 2.60)
                                                         {
-                                                            Cutscene.clearSpriteLine(g_Console, 15);
+                                                            Cutscene.clearRaymondSpriteLine(g_Console, 15);
                                                             if (g_dkillRaymond > 2.65)
                                                             {
-                                                                Cutscene.drawgridG(g_Console, 55, 16, '_');
-                                                                Cutscene.drawgridG(g_Console, 59, 16, '_');
-                                                                Cutscene.drawgridG(g_Console, 63, 16, '_');
+                                                                Cutscene.drawgridG(g_Console, 36, 16, '_');
+                                                                Cutscene.drawgridG(g_Console, 40, 16, '_');
+                                                                Cutscene.drawgridG(g_Console, 44, 16, '_');
+                                                                if (g_dkillRaymond > 3.5)
+                                                                {
+                                                                    g_Console.writeToBuffer(d, "                                                         ", 0x0F);
+                                                                }
                                                             }
                                                         }
                                                     }

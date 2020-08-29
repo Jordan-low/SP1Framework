@@ -253,6 +253,17 @@ void Cutscenes::clearRobertSpriteLine(Console& g_Console, int y)
 	}
 }
 
+void Cutscenes::clearRaymondSpriteLine(Console& g_Console, int y)
+{
+	COORD c;
+	for (int i = 3; i < 75; i++)
+	{
+		c.X = i;
+		c.Y = y;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0A);
+	}
+}
+
 void Cutscenes::clearScreen(Console& g_Console)
 {
 	COORD c;

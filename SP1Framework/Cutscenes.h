@@ -22,6 +22,7 @@ public:
     void clearRobertSprite(Console& g_Console);
     void clearSpriteLine(Console& g_Console, int y);
     void clearRobertSpriteLine(Console& g_Console, int y);
+    void clearRaymondSpriteLine(Console& g_Console, int y);
     void clearScreen(Console& g_Console);
 
     //animations for raymond battle phase 2
