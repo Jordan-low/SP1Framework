@@ -272,6 +272,7 @@ void init(void)
     g_sChar.Orp_Dialogue = false;
     g_sChar.animationPlayed = false;
     g_sChar.enterArea = false;
+    g_sChar.talkedOldMan = false;
 
     //Wire minigame
     g_sBox1.m_cLocation.X = 52;
@@ -318,7 +319,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_phase2Battle;
+    g_eGameState = S_IAF4;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -8061,6 +8062,16 @@ void renderMap_IAF1()
         }
     }
 
+    if (g_sChar.enterArea == true)
+    {
+        for (int j = 17; j < 23; j++)
+        {
+            c.X = 77;
+            c.Y = j;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0A);
+        }
+    }
+
     if ((g_sChar.m_cLocation.Y == 17 || g_sChar.m_cLocation.Y == 18 || g_sChar.m_cLocation.Y == 19 || g_sChar.m_cLocation.Y == 20 || g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 2)
     {
         g_dPathTime = 0.0;
@@ -8115,7 +8126,7 @@ void renderMap_IAF2()
         g_dIAF3Time = 0.0;
         g_eGameState = S_IAF3_Animation;
         g_sChar.m_cLocation.X = 40;
-        g_sChar.m_cLocation.Y = 21;
+        g_sChar.m_cLocation.Y = 7;
     }
 }
 void renderMap_IAF3()
@@ -8135,10 +8146,43 @@ void renderMap_IAF3()
 }
 void renderMap_IAF4()
 {
+    COORD c, d, e;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility4(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    if (((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13) && g_sChar.m_cLocation.X == 40) || ((g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 41) && g_sChar.m_cLocation.Y == 12))
+    {
+        if (g_sChar.talkedOldMan == false)
+        {
+            c.X = 2;
+            c.Y = 25;
+            g_Console.writeToBuffer(c, "Strange Old Man: Young man, are you going to fight Raymond? How Courageous!", 0x0F, 100);
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "                 I have lived for thousands of years and have", 0x0F, 100);
+            c.Y = 27;
+            g_Console.writeToBuffer(c, "                 never seen anyone as tyrannical as him.", 0x0F, 100);
+            c.Y = 28;
+            g_Console.writeToBuffer(c, "                 Here, lemme boost you to aid you on your journey.", 0x0F, 100);
+            g_sChar.SetH(100);
+            g_sChar.SetD(20);
+        }
+
+        else if (g_sChar.talkedOldMan == true)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "Strange Old Man: Get going now! You have to continue your journey!", 0x0F, 100);
+            c.Y = 27;
+            g_Console.writeToBuffer(c, "                 Go and fulfill your destiny!", 0x0F, 100);
+        }
+    }
+
+    if (g_sChar.m_cLocation.Y == 9 && g_sChar.m_cLocation.X == 40)
+    {
+        g_sChar.talkedOldMan = true;
+    }
 
     if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {

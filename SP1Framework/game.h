@@ -137,6 +137,7 @@ struct SGameChar : public Enemy
     bool entityDied;
     bool animationPlayed;
     bool enterArea;
+    bool talkedOldMan;
     int randNum;
 };
 void init(void);      // initialize your variables, allocate memory, etc
