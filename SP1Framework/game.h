@@ -247,7 +247,7 @@ void slashTutWasp();
 void Update_killTutWasp();
 void killTutWasp();
 void drawLaser(Console &g_Console, int j);
-void drawVertLaser(Console& g_Console, int k);
+void drawBreakFloor(Console& g_Console, int k, int j);
 void drawLaser(Console& g_Console, int j);
 void drawLaser2(Console& g_Console, int j);
 void drawLaser3(Console& g_Console, int j);

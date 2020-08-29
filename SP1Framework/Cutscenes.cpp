@@ -26,6 +26,14 @@ void Cutscenes::drawgridG(Console& g_Console, int x, int y, char chara)
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = chara, 0x0A);
 }
 
+void Cutscenes::drawgridY(Console& g_Console, int x, int y, char chara)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = chara, 0x0E);
+}
+
 void Cutscenes::drawgridLaserRight(Console& g_Console, int x, int y)
 {
 	COORD c;
@@ -109,6 +117,74 @@ void Cutscenes::movingBlock(Console& g_Console, int x, int y)
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = ' ', 0x0D);
 	}
 	
+}
+
+void Cutscenes::breakFloor(Console& g_Console, int x, int y)
+{
+	COORD c;
+
+	c.X = x;
+	c.Y = y;
+
+	//horizontal lines
+	for (int i = x; i < (x + 11); i++)
+	{
+		c.X = i;
+		c.Y = y;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0E);
+	}
+
+	for (int i = x; i < (x + 11); i++)
+	{
+		c.X = i;
+		c.Y = y + 5;
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0E);
+	}
+
+	//vertical lines
+	for (int j = (y + 2); j < (y + 4); j++)
+	{
+		for (int i = (x - 2); i < (x-1); i++)
+		{
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0E);
+		}
+	}
+
+	c.Y = y + 1;
+	c.X = x - 1;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0E);
+	c.X = x;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0E);
+
+	c.Y = y + 1;
+	c.X = x + 10;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0E);
+	c.X = x + 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0E);
+
+	c.Y = y + 4;
+	c.X = x - 1;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0E);
+	c.X = x;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0E);
+
+	c.Y = y + 4;
+	c.X = x + 10;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0E);
+	c.X = x + 11;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0E);
+
+	for (int j = (y + 2); j < (y + 4); j++)
+	{
+		for (int i = (x + 12); i < (x + 13); i++)
+		{
+			c.X = i;
+			c.Y = j;
+			g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '|', 0x0E);
+		}
+	}
 }
 
 void Cutscenes::cleargrid(Console& g_Console, int x, int y)

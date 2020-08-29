@@ -56,6 +56,7 @@ double laserTime;
 double laserTime2;
 double laserTime3;
 double movingBlockTime;
+double breakFloorTime;
 int randnum;
 int randnum2;
 int randnum3;
@@ -109,10 +110,11 @@ SGameChar   g_sBox3;
 SGameChar   g_sBox4;
 SGameChar   g_sBox5;
 SGameChar   g_sBox6;
-SGameChar   g_sLaser;
-SGameChar   g_sLaser2;
-SGameChar   g_sLaser3;
-SGameChar   g_sMovingBlock;
+SGameChar   g_sLaser;//jordan forced me to do this
+SGameChar   g_sLaser2;//jordan forced me to do this
+SGameChar   g_sLaser3;//jordan forced me to do this
+SGameChar   g_sMovingBlock;//jordan forced me to do this
+SGameChar   g_sBreakFloor;//jordan forced me to do this
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -278,6 +280,7 @@ void init(void)
     g_sLaser2.startTimer = false;
     g_sLaser3.startTimer = false;
     g_sMovingBlock.startTimer = false;
+    g_sBreakFloor.startTimer = false;
 
 
     // Set precision for floating point output
@@ -585,6 +588,7 @@ void update(double dt)
     laserTime2 += dt;
     laserTime3 += dt;
     movingBlockTime += dt;
+    breakFloorTime += dt;
 
     switch (g_eGameState)
     {
@@ -6234,84 +6238,63 @@ void drawMovingBlock(Console& g_Console, int j)
     }
 }
 
-void drawVertLaser(Console& g_Console, int k)
+void drawBreakFloor(Console& g_Console, int k, int j)
 {
-    if (g_dphase2Time > 1)
+    if (breakFloorTime > 1)
     {
-        Cutscene.drawgridLaserUp(g_Console, k, 2);
-        if (g_dphase2Time > 0.05)
+        Cutscene.drawgridY(g_Console, k, j, '-');
+        if (breakFloorTime > 1.3)
         {
-            Cutscene.drawgridLaserUp(g_Console, k, 3);
-            if (g_dphase2Time > 1.1)
+            Cutscene.drawgridY(g_Console, k + 1, j, '-');
+            Cutscene.drawgridY(g_Console, k, j + 1, '|');
+            if (breakFloorTime > 1.5)
             {
-                Cutscene.drawgridLaserUp(g_Console, k, 4);
-                if (g_dphase2Time > 1.15)
+                Cutscene.drawgridY(g_Console, k + 2, j, '-');
+                Cutscene.drawgridY(g_Console, k - 1, j + 1, '_');
+                if (breakFloorTime > 2.0)
                 {
-                    Cutscene.drawgridLaserUp(g_Console, k, 5);
-                    if (g_dphase2Time > 1.20)
+                    Cutscene.drawgridY(g_Console, k + 3, j, '-');
+                    Cutscene.drawgridY(g_Console, k - 2, j + 2, '|');
+                    if (breakFloorTime > 2.3)
                     {
-                        Cutscene.drawgridLaserUp(g_Console, k, 6);
-                        if (g_dphase2Time > 1.25)
+                        Cutscene.breakFloor(g_Console, k, j);
+                        for (int n = j; n < (j + 1); n++)
                         {
-                            Cutscene.drawgridLaserUp(g_Console, k, 7);
-                            if (g_dphase2Time > 1.30)
+                            for (int m = k; m < (k + 11); m++)
                             {
-                                Cutscene.drawgridLaserUp(g_Console, k, 8);
-                                if (g_dphase2Time > 1.35)
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
                                 {
-                                    Cutscene.drawgridLaserUp(g_Console, k, 9);
-                                    if (g_dphase2Time > 1.40)
-                                    {
-                                        Cutscene.drawgridLaserUp(g_Console, k, 10);
-                                        if (g_dphase2Time > 1.45)
-                                        {
-                                            Cutscene.drawgridLaserUp(g_Console, k, 11);
-                                            if (g_dphase2Time > 1.50)
-                                            {
-                                                Cutscene.drawgridLaserUp(g_Console, k, 12);
-                                                if (g_dphase2Time > 1.55)
-                                                {
-                                                    Cutscene.drawgridLaserUp(g_Console, k, 13);
-                                                    if (g_dphase2Time > 1.60)
-                                                    {
-                                                        Cutscene.drawgridLaserUp(g_Console, k, 14);
-                                                        if (g_dphase2Time > 1.65)
-                                                        {
-                                                            Cutscene.drawgridLaserUp(g_Console, k, 15);
-                                                            if (g_dphase2Time > 1.70)
-                                                            {
-                                                                Cutscene.drawgridLaserUp(g_Console, k, 16);
-                                                                if (g_dphase2Time > 1.75)
-                                                                {
-                                                                    Cutscene.drawgridLaserUp(g_Console, k, 17);
-                                                                    if (g_dphase2Time > 1.80)
-                                                                    {
-                                                                        Cutscene.drawgridLaserUp(g_Console, k, 18);
-                                                                        if (g_dphase2Time > 1.85)
-                                                                        {
-                                                                            Cutscene.drawgridLaserUp(g_Console, k, 19);
-                                                                            if (g_dphase2Time > 1.90)
-                                                                            {
-                                                                                Cutscene.drawgridLaserUp(g_Console, k, 20);
-                                                                                if (g_dphase2Time > 1.95)
-                                                                                {
-                                                                                    Cutscene.drawgridLaserUp(g_Console, k, 21);
-                                                                                    if (g_dphase2Time > 2.00)
-                                                                                    {
-                                                                                        Cutscene.drawgridLaserUp(g_Console, k, 22);
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                        for (int n = (j + 1); n < (j + 4); n++)
+                        {
+                            for (int m = (k - 2); m < (k + 13); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                        for (int n = (j + 4); n < (j + 5); n++)
+                        {
+                            for (int m = (k - 1); m < (k + 12); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                        for (int n = (j + 5); n < (j + 6); n++)
+                        {
+                            for (int m = k; m < (k + 11); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
                                 }
                             }
                         }
@@ -6332,6 +6315,7 @@ void Update_phase2Battle()
         g_sLaser2.startTimer = false;
         g_sLaser3.startTimer = false;
         g_sMovingBlock.startTimer = false;
+        g_sBreakFloor.startTimer = false;
     }
     if (g_dphase2Time > 5) // stickman
     {
@@ -6352,6 +6336,11 @@ void Update_phase2Battle()
     {
         g_sMovingBlock.startTimer = true;
         g_sMovingBlock.counter = true;
+    }
+    if (breakFloorTime > 5) // stickman
+    {
+        g_sBreakFloor.startTimer = true;
+        g_sBreakFloor.counter = true;
     }
 }
 void phase2Battle()
@@ -6482,45 +6471,32 @@ void phase2Battle()
             randBlock2 = rand() % 69 + 2;
             randBlock3 = rand() % 69 + 2;
             g_sMovingBlock.counter = false;
-            /*
-            if (randCount != 3)
-            {
-                for (int i = randBlock; i < randBlock + 9; i++)
-                {
-                    if ((i % randBlock2 != 0) && (i % randBlock3 != 0))
-                    {
-                        randCount++;
-                    }
-                }
-                for (int i = randBlock2; i < randBlock2 + 9; i++)
-                {
-                    if ((i % randBlock != 0) && (i % randBlock3 != 0))
-                    {
-                        randCount++;
-                    }
-                }
-                for (int i = randBlock3; i < randBlock3 + 9; i++)
-                {
-                    if ((i % randBlock2 != 0) && (i % randBlock != 0))
-                    {
-                        randCount++;
-                    }
-                }
-            }
-            if (randCount == 3)
-            {
-                g_eGameState = S_Path_Area;
-                g_sMovingBlock.counter = false;
-            }
-            */
-
-
         }
         drawMovingBlock(g_Console, randBlock);
         drawMovingBlock(g_Console, randBlock2);
         drawMovingBlock(g_Console, randBlock3);
-
     }
+
+    if (g_sBreakFloor.startTimer == true) // stickman work
+    {
+        breakFloorTime = 0.0;
+        g_sBreakFloor.resetTimer = true;
+    }
+    if (g_sBreakFloor.resetTimer == true)
+    {
+        if (g_sBreakFloor.counter == true)
+        {
+            randstickman = rand() % 22 + 2;
+            randstickman2 = rand() % 19 + 2;
+            //randstickman3 = rand() % 22 + 2;
+
+            g_sBreakFloor.counter = false;
+        }
+        drawBreakFloor(g_Console, randstickman, randstickman2);
+        //drawLaser3(g_Console, randstickman2);
+        //drawLaser3(g_Console, randstickman3);
+    }
+
     renderCharacter();
     rMap.boss_room(g_Console);
 }
