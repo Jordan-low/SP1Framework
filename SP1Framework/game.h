@@ -73,6 +73,7 @@ enum EGAMESTATES
     S_Boss_Room_Animation,
     S_BattleScreen,
     S_wireGame,
+    S_Credits,
     //Battle animations
     S_SlashGuard,
     S_KillGuard,
@@ -220,6 +221,8 @@ void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
+void Update_Credits();
+void Credits();
 
 
 //Animate Battle
