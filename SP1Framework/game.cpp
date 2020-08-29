@@ -80,6 +80,8 @@ int randBlock2;
 int randBlock3;
 int randBreakFloor;
 int randBreakFloor2;
+int randBreakFloor3;
+int randBreakFloor4;
 int randBomb;
 int randBomb2;
 int randCount;
@@ -215,6 +217,8 @@ void init(void)
     g_sBomb.fight = false;
     g_sRaymond.fight = false;
     g_sRaymondBoss.fight = false;
+    g_sRaymondBoss.counter = false;
+
 
 
     g_sChar.count = 0;
@@ -361,7 +365,6 @@ void init(void)
     //bomb things
     g_sBomb.m_cLocation.X = 58;
     g_sBomb.m_cLocation.Y = 19;
-
     // Set precision for floating point output
 
     // sets the initial state for the game
@@ -1484,7 +1487,7 @@ void Update_Credits()
 {
     if (g_dCreditsTime > 57.5)
     {
-        g_bQuitGame = true;
+        g_eGameState = S_MENU_UI;
     }
     processUserInput();
 }
@@ -2401,7 +2404,7 @@ void Credits()
                                                                                                                                                                                             g_Console.writeToBuffer(c, " Written By: Ngiam");
                                                                                                                                                                                             c.Y = 10;
                                                                                                                                                                                             g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                                            c.Y = 12;
+                                                                                                                                                                                            c.Y = 11;
                                                                                                                                                                                             g_Console.writeToBuffer(c, " Written By: Ngiam");
                                                                                                                                                                                             if (g_dCreditsTime > 48.5)
                                                                                                                                                                                             {
@@ -4509,6 +4512,7 @@ void Update_Boss_End_Animation()
 {
     if (g_dBossEndTime > 33)
     {
+        g_dCreditsTime = 5.2;
         g_eGameState = S_Credits;
     }
     processUserInput();
@@ -4522,7 +4526,7 @@ void Boss_End_Animation()
     COORD d;
     COORD e;
     COORD f;
-    renderCharacter();
+    //renderCharacter();
     c.X = 5;
     c.Y = 26;
     d.X = 5;
@@ -5702,7 +5706,7 @@ void slashRaymond()
 }
 void Update_killRaymond()
 {
-    if (g_dkillRaymond > 3)
+    if (g_dkillRaymond > 5)
     {
         g_eGameState = S_GAME;
     }
@@ -5711,60 +5715,67 @@ void Update_killRaymond()
 void killRaymond()
 {
     //rMap.initialise(g_Console);
-    //rMap.Border(g_Console);
-    COORD c;
+   // rMap.Border(g_Console);
+    COORD c, d;
     // renderCharacter();
     c.X = 3;
     c.Y = 2;
+    d.X = 5;
+    d.Y = 26;
     g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
-    //Sprites.Battle_Raymond(g_Console, 0);
+    Sprites.Battle_Raymond(g_Console, -19);
+    g_Console.writeToBuffer(d, "Raymond: NOOOOOOO!!!!!", 0x0F);
     if (g_dkillRaymond > 1.95)
     {
-        Cutscene.clearSpriteLine(g_Console, 2);
+        Cutscene.clearRaymondSpriteLine(g_Console, 2);
         if (g_dkillRaymond > 2.0)
         {
-            Cutscene.clearSpriteLine(g_Console, 3);
+            Cutscene.clearRaymondSpriteLine(g_Console, 3);
             if (g_dkillRaymond > 2.05)
             {
-                Cutscene.clearSpriteLine(g_Console, 4);
+                Cutscene.clearRaymondSpriteLine(g_Console, 4);
                 if (g_dkillRaymond > 2.10)
                 {
-                    Cutscene.clearSpriteLine(g_Console, 5);
+                    Cutscene.clearRaymondSpriteLine(g_Console, 5);
                     if (g_dkillRaymond > 2.15)
                     {
-                        Cutscene.clearSpriteLine(g_Console, 6);
+                        Cutscene.clearRaymondSpriteLine(g_Console, 6);
                         if (g_dkillRaymond > 2.20)
                         {
-                            Cutscene.clearSpriteLine(g_Console, 7);
+                            Cutscene.clearRaymondSpriteLine(g_Console, 7);
                             if (g_dkillRaymond > 2.25)
                             {
-                                Cutscene.clearSpriteLine(g_Console, 8);
+                                Cutscene.clearRaymondSpriteLine(g_Console, 8);
                                 if (g_dkillRaymond > 2.30)
                                 {
-                                    Cutscene.clearSpriteLine(g_Console, 9);
+                                    Cutscene.clearRaymondSpriteLine(g_Console, 9);
                                     if (g_dkillRaymond > 2.35)
                                     {
-                                        Cutscene.clearSpriteLine(g_Console, 10);
+                                         Cutscene.clearRaymondSpriteLine(g_Console, 10);
                                         if (g_dkillRaymond > 2.40)
                                         {
-                                            Cutscene.clearSpriteLine(g_Console, 11);
+                                            Cutscene.clearRaymondSpriteLine(g_Console, 11);
                                             if (g_dkillRaymond > 2.45)
                                             {
-                                                Cutscene.clearSpriteLine(g_Console, 12);
+                                                Cutscene.clearRaymondSpriteLine(g_Console, 12);
                                                 if (g_dkillRaymond > 2.50)
                                                 {
-                                                    Cutscene.clearSpriteLine(g_Console, 13);
+                                                    Cutscene.clearRaymondSpriteLine(g_Console, 13);
                                                     if (g_dkillRaymond > 2.55)
                                                     {
-                                                        Cutscene.clearSpriteLine(g_Console, 14);
+                                                        Cutscene.clearRaymondSpriteLine(g_Console, 14);
                                                         if (g_dkillRaymond > 2.60)
                                                         {
-                                                            Cutscene.clearSpriteLine(g_Console, 15);
+                                                            Cutscene.clearRaymondSpriteLine(g_Console, 15);
                                                             if (g_dkillRaymond > 2.65)
                                                             {
-                                                                Cutscene.drawgridG(g_Console, 55, 16, '_');
-                                                                Cutscene.drawgridG(g_Console, 59, 16, '_');
-                                                                Cutscene.drawgridG(g_Console, 63, 16, '_');
+                                                                Cutscene.drawgridG(g_Console, 36, 16, '_');
+                                                                Cutscene.drawgridG(g_Console, 40, 16, '_');
+                                                                Cutscene.drawgridG(g_Console, 44, 16, '_');
+                                                                if (g_dkillRaymond > 3.5)
+                                                                {
+                                                                    g_Console.writeToBuffer(d, "                                                         ", 0x0F);
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -7762,6 +7773,7 @@ void phase2Battle()
             g_sChar.showPlayerDMG = false;
             g_sChar.showEnemyDMG = false;
             g_sRaymondBoss.counter = true;
+            g_dkillRaymond = 0.0;
             g_eGameState = S_BattleScreen;
         }
 
@@ -7994,12 +8006,14 @@ void phase2Battle()
         {
             if (g_sBreakFloor.counter == true)
             {
-                randBreakFloor = rand() % (22 - 2 + 1);
-                randBreakFloor2 = rand() % (19 - 2 + 1) + 2;
+                randBreakFloor = rand() % (22 - 2 + 1) + 2;
+                randBreakFloor2 = rand() % (17 - 2 + 1) + 2;
+                randBreakFloor3 = rand() % (65 - 50 + 1) + 50;
+                randBreakFloor4 = rand() % (17 - 2 + 1) + 2;
                 g_sBreakFloor.counter = false;
             }
             drawBreakFloor(g_Console, randBreakFloor, randBreakFloor2);
-            drawBreakFloor(g_Console, randBreakFloor2, randBreakFloor);
+            drawBreakFloor(g_Console, randBreakFloor3, randBreakFloor4);
             //drawLaser3(g_Console, randstickman2);
             //drawLaser3(g_Console, randstickman3);
         }
@@ -11335,73 +11349,10 @@ void RenderBattleScreen()
 
     if (g_sRaymondBoss.counter == true)
     {
-        Sprites.Battle_Raymond(g_Console, 0);
-        Sprites.drawRobert(g_Console, 0);
-        c.X = 53;
-        c.Y = 0;
-        string str_raymondhealth = to_string(g_sRaymondBoss.GetH());
-        g_Console.writeToBuffer(c, "Boss Health: " + str_raymondhealth, 0x0A, 100);
-        if (g_sChar.startTimer == true)
-        {
-            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
-            {
-                int randHit = rand() % 4 + 1;
-                if (randHit == 1 || randHit == 2) // player gets hit
-                {
-                    int charhealth = g_sChar.GetH() - g_sRaymondBoss.GetD(); // get player health
-                    string str_charhealth = to_string(charhealth);
+        Sprites.Battle_Raymond(g_Console, -19);
 
-                    g_sChar.SetH(charhealth); // set player health to new health
-
-                    g_sChar.showEnemyDMG = true;
-                    enemyDMGTime = 0.0;
-                    g_dslashRobert = 0.0;
-                }
-                if (randHit > 1) // guard gets hit
-                {
-                    int raymondhealth = g_sRaymondBoss.GetH() - g_sChar.GetD(); // get enemy health
-                    //string str_guardhealth = to_string(guardhealth);
-
-                    g_sRaymondBoss.SetH(raymondhealth); // set enemy health to new health
-                    g_sChar.showPlayerDMG = true;
-                    playerDMGTime = 0.0;
-                    g_dslashRaymond = 0.0;
-                }
-                startTime = 0.0;
-                g_sChar.resetTimer = true;
-                g_sChar.startTimer = false;
-                if (g_sRaymondBoss.GetH() <= 0)
-                {
-                    g_dkillRaymond = 0.0;
-                    g_sRaymondBoss.startTimer = true;
-                }
-                if (g_sChar.GetH() <= 0)
-                {
-                    g_dkillRobert = 0.0;
-                    g_sChar.entityDie = true;
-                }
-            }
-        }
-        if (g_sChar.showPlayerDMG == true)
-        {
-            COORD c;
-            c.X = 3;
-            c.Y = 25;
-            string str_charDMG = to_string(g_sChar.GetD());
-
-            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
-            slashRaymond();
-        }
-        if (g_sChar.showEnemyDMG == true)
-        {
-            COORD c;
-            c.X = 3;
-            c.Y = 26;
-            string str_waspDMG = to_string(g_sRaymondBoss.GetD());
-
-            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
-            slashRobert();
-        }
+        g_sRaymondBoss.startTimer = true;
+       
     }
 
     if (g_sPig.fight == true)
@@ -12922,13 +12873,15 @@ void UpdateBattleScreen()
     if ((g_dkillWasp > 6) && (g_sMutantWasp2.startTimer == true))
     {
         g_sMutantWasp2.fight = false;
+        g_sMutantWasp2.startTimer = false;
         g_dMedical2Time = 0.0;
         g_eGameState = S_Medical_Facility_Part2_Animation;
     }
     if ((g_dkillRaymond > 6) && (g_sRaymondBoss.startTimer == true))  // raymond die
     {
         g_sRaymond.fight = false;
-        g_eGameState = S_Game_Over;
+        g_dBossEndTime = 0.0;
+        g_eGameState = S_Boss_Room_End_Animation;
     }
     if ((g_dkillPig > 6) && (g_sPig.startTimer == true))
     {
@@ -12951,6 +12904,12 @@ void UpdateBattleScreen()
     if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
     {
         g_eGameState = S_Game_Over; // show game over screen after player die animation
+    }
+    if ((g_dkillTutWasp > 6) && (g_sTutEnemy.startTimer == true))
+    {
+        g_sTutEnemy.fight = false;
+        g_sTutEnemy.startTimer = false;
+        g_eGameState = S_Path_Area; // show game over screen after player die animation
     }
 
     if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
