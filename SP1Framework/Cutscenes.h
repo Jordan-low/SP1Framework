@@ -15,6 +15,7 @@ public:
     void nextdialogue(Console& g_Console);
     void drawgrid(Console& g_Console, int x, int y, char chara); //draws in red
     void drawgridG(Console& g_Console, int x, int y, char chara); //draws in green
+    void drawgridY(Console& g_Console, int x, int y, char chara); //draws in green
 
     void cleargrid(Console& g_Console, int x, int y);
     void clearSprite(Console& g_Console);
@@ -29,6 +30,7 @@ public:
     void drawgridLaserUp(Console& g_Console, int x, int y);
     void stickmanLeft(Console& g_Console, int x, int y);
     void movingBlock(Console& g_Console, int x, int y);
+    void breakFloor(Console& g_Console, int x, int y);
 
     //crowd animations for protest area
     void CrowdStandstill(Console& g_Console);
