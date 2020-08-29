@@ -6,6 +6,8 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <cstdlib>
+#include <ctime>
 #include "Map.h"
 #include "Item.h"
 #include "Inventory.h"
@@ -49,7 +51,6 @@ double playerDMGTime;
 double enemyDMGTime;
 double InvenTime;
 double playerInvenTime;
-double collectTime;
 double deathAnimation;
 double laserTime;
 double laserTime2;
@@ -58,6 +59,8 @@ double movingBlockTime;
 double breakFloorTime;
 double g_dCreditsTime;
 double bombTime;
+double raymondTime;
+double showCollect;
 int randnum;
 int randnum2;
 int randnum3;
@@ -77,6 +80,12 @@ int randBreakFloor2;
 int randBomb;
 int randBomb2;
 int randCount;
+int fightCount;
+int fightCount2;
+int fightCount3;
+int fightCount4;
+int fightCount5;
+int fightCount6;
 
 bool mainMenu_music;
 bool orphanage_music;
@@ -111,6 +120,14 @@ SGameChar   g_sNPC5;
 SGameChar   g_sNPC6;
 SGameChar   g_sNPC7;
 SGameChar   g_sInven;
+SGameChar   g_sRawMeat;
+SGameChar   g_sBread;
+SGameChar   g_sBurger;
+SGameChar   g_sTaco;
+SGameChar   g_sCake;
+SGameChar   g_sMedicine;
+SGameChar   g_sStinger;
+SGameChar   g_sGuardArmor;
 SGameChar   g_sBox;
 SGameChar   g_sBox1;
 SGameChar   g_sBox2;
@@ -138,6 +155,14 @@ Entity Ent;
 Minigame mini;
 //Inventory Stuff
 Inventory PlayerInv;
+Inventory RawMeat;
+Inventory Bread;
+Inventory Burger;
+Inventory Taco;
+Inventory Cake;
+Inventory Medicine;
+Inventory Stinger;
+Inventory GuardArmor;
 Item* item1 = new Item;
 Item* item2 = new Item;
 Item* item3 = new Item;
@@ -173,6 +198,13 @@ void init(void)
     g_sGuard.fight = false;
     g_sGuard2.fight = false;
     g_sGuard3.fight = false;
+    g_sLaser.fight = false;
+    g_sLaser2.fight = false;
+    g_sLaser3.fight = false;
+    g_sMovingBlock.fight = false;
+    g_sBreakFloor.fight = true;
+    g_sBomb.fight = false;
+    g_sRaymond.fight = false;
 
     g_sChar.count = 0;
     g_sChar.unlockDoorDS1 = false;
@@ -291,15 +323,21 @@ void init(void)
     g_sMovingBlock.startTimer = false;
     g_sBreakFloor.startTimer = false;
     g_sBomb.startTimer = false;
-
+    g_sRaymond.startTimer = false;
+    fightCount = 0;
+    fightCount2 = 0;
+    fightCount3 = 0;
+    fightCount4 = 0;
+    fightCount5 = 0;
+    fightCount6 = 0;
     //bomb things
-    g_sBomb.m_cLocation.X = 40;
+    g_sBomb.m_cLocation.X = 58;
     g_sBomb.m_cLocation.Y = 19;
 
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Credits;
+    g_eGameState = S_Protest_Area;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -314,12 +352,17 @@ void init(void)
     g_sGuard.m_cLocation.X = 44;
     g_sGuard.m_cLocation.Y = 10;
 
+    g_sRaymond.m_cLocation.X = 20;
+    g_sRaymond.m_cLocation.Y = 10;
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
     // remember to set your keyboard handler, so that your functions can be notified of input events
     g_Console.setKeyboardHandler(keyboardHandler);
     g_Console.setMouseHandler(mouseHandler);
+    srand((unsigned)time(0));
+
 }
 
 //--------------------------------------------------------------
@@ -585,7 +628,6 @@ void update(double dt)
     enemyDMGTime += dt;
     InvenTime += dt;
     playerInvenTime += dt;
-    collectTime += dt;
     g_dslashWasp += dt;
     g_dkillWasp += dt;
     g_dslashPig += dt;
@@ -604,6 +646,8 @@ void update(double dt)
     breakFloorTime += dt;
     g_dCreditsTime += dt;
     bombTime += dt;
+    raymondTime += dt;
+    showCollect += dt;
 
     switch (g_eGameState)
     {
@@ -622,7 +666,7 @@ void update(double dt)
         //Areas of the game
     case S_Townsquare: updateGame();
         break;
-    case S_Protest_Area: updateGame();
+    case S_Protest_Area: Update_Protest_Area();
         break;
     case S_Path_Area: updateGame();
         break;
@@ -2156,11 +2200,13 @@ void Orphanage_Children_Animation()
 void Update_Protest_Area()
 {
 
+    COORD c;
     if (g_dProtestTime > 83.6)
     {
         g_eGameState = S_Protest_Area;
     }
     processUserInput();
+    moveCharacter();
 }
 void Protest_Area_Animation()
 {
@@ -2741,6 +2787,7 @@ void Dungeon_Cell_Animation()
 
 void Update_Path_Area()
 {
+    COORD c;
     if (g_dPathTime > 4.5)
     {
         g_sTutEnemy.fight = true;
@@ -6353,7 +6400,7 @@ void drawLaser3(Console& g_Console, int j)
 void drawMovingBlock(Console& g_Console, int j)
 {
     if (movingBlockTime > 1)
-    {
+    {                                                                                      
         Cutscene.movingBlock(g_Console, 2 + j, 28);
         if (movingBlockTime > 1.1)
         {
@@ -6779,6 +6826,8 @@ void Update_phase2Battle()
         g_sLaser3.startTimer = false;
         g_sMovingBlock.startTimer = false;
         g_sBreakFloor.startTimer = false;
+        g_sRaymond.startTimer = false;
+
     }
     if (g_dphase2Time > 5) // stickman
     {
@@ -6805,16 +6854,31 @@ void Update_phase2Battle()
         g_sBreakFloor.startTimer = true;
         g_sBreakFloor.counter = true;
     }
+    if (raymondTime > 10)
+    {
+        g_sRaymond.startTimer = true;
+        g_sRaymond.counter = true;
+    }
 }
 void phase2Battle()
 {
-    srand((unsigned)time(0));
+    if ((fightCount == 1) && (fightCount2 == 1) && (fightCount3 == 1) && (fightCount4 == 1) && (fightCount5 == 1))
+    {
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_eGameState = S_Game_Over;
+        }
 
-    while (phase2_music == false)
+    }
+    if ((g_sChar.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sChar.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for Raymond and Robert
+    {
+        g_sChar.SetH(g_sChar.GetH() - 1); // minus dmg if robert touch raymond
+    }
+    /*while (music == false)
     {
         PlaySound(TEXT("For Peace.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         phase2_music = true;
-    }
+    }*/
 
 
     rMap.initialise(g_Console);
@@ -6828,155 +6892,300 @@ void phase2Battle()
     //drawLaser(g_Console, 20, 0, 0);
     //drawLaser(g_Console, 40, 0);
 
-    /*if (g_sLaser.startTimer == true) // stickman work
+    if (g_sLaser.fight == true)
     {
-        g_dphase2Time = 0.0;
-        g_sLaser.resetTimer = true;
-    }
-    if (g_sLaser.resetTimer == true)
-    {
-        if (g_sLaser.counter == true)
+        fightCount = 1;
+        if (g_sLaser.startTimer == true) // stickman work
         {
-            randstickman = rand() % 22 + 2;
-            randstickman2 = rand() % 22 + 2;
-            randstickman3 = rand() % 22 + 2;
-
-            g_sLaser.counter = false;
+            g_dphase2Time = 0.0;
+            g_sLaser.resetTimer = true;
         }
-        drawLaser3(g_Console, randstickman);
-        drawLaser3(g_Console, randstickman2);
-        drawLaser3(g_Console, randstickman3);
-    }
-
-    if (g_sLaser2.startTimer == true) // stickman work
-    {
-        laserTime2 = 0.0;
-        g_sLaser2.resetTimer = true;
-    }
-    if (g_sLaser2.resetTimer == true)
-    {
-
-        if (g_sLaser2.counter == true)
+        if (g_sLaser.resetTimer == true)
         {
-            randnum = rand() % 70 + 1;
-            randnum2 = rand() % 70 + 1;
-            randnum3 = rand() % 70 + 1;
-            randnum4 = rand() % 70 + 1;
-            g_sLaser2.counter = false;
-        }
-        drawLaser2(g_Console, randnum);
-        drawLaser2(g_Console, randnum2);
-        drawLaser2(g_Console, randnum3);
-        drawLaser2(g_Console, randnum4);
-    }
+            if (g_sLaser.counter == true)
+            {
+                randstickman = rand() % 22 + 2;
+                randstickman2 = rand() % 22 + 2;
+                randstickman3 = rand() % 22 + 2;
 
-    if (g_sLaser3.startTimer == true)
-    {
-        laserTime3 = 0.0;
-        g_sLaser3.resetTimer = true;
-    }
-    if (g_sLaser3.resetTimer == true)
-    {
-
-        if (g_sLaser3.counter == true)
-        {
-            randnum5 = rand() % 70 + 1;
-            randnum6 = rand() % 70 + 1;
-            randnum7 = rand() % 70 + 1;
-            randnum8 = rand() % 70 + 1;
-            g_sLaser3.counter = false;
+                g_sLaser.counter = false;
+            }
+            drawLaser3(g_Console, randstickman);
+            drawLaser3(g_Console, randstickman2);
+            drawLaser3(g_Console, randstickman3);
         }
 
+    } 
 
-        drawLaser(g_Console, randnum5);
-        drawLaser(g_Console, randnum6);
-        drawLaser(g_Console, randnum7);
-        drawLaser(g_Console, randnum8);
-        //drawHoriLaser(g_Console, randnum3);
-
-
-        //drawVertLaser(g_Console, 0);
-
-        //g_sLaser.resetTimer = false;
-    }
-
-    if (g_sMovingBlock.startTimer == true) // stickman work
+    if (g_sLaser2.fight == true)
     {
-        movingBlockTime = 0.0;
-        g_sMovingBlock.resetTimer = true;
-    }
-    if (g_sMovingBlock.resetTimer == true)
-    {
-        if (g_sMovingBlock.counter == true)
+        fightCount2 = 1;
+        if (g_sLaser2.startTimer == true) // stickman work
         {
-            randBlock = rand() % 69 + 2;
-            randBlock2 = rand() % 69 + 2;
-            randBlock3 = rand() % 69 + 2;
-            g_sMovingBlock.counter = false;
+            laserTime2 = 0.0;
+            g_sLaser2.resetTimer = true;
         }
-        drawMovingBlock(g_Console, randBlock);
-        drawMovingBlock(g_Console, randBlock2);
-        drawMovingBlock(g_Console, randBlock3);
-    }
-
-    if (g_sBreakFloor.startTimer == true) // stickman work
-    {
-        breakFloorTime = 0.0;
-        g_sBreakFloor.resetTimer = true;
-    }
-    if (g_sBreakFloor.resetTimer == true)
-    {
-        if (g_sBreakFloor.counter == true)
+        if (g_sLaser2.resetTimer == true)
         {
-            randBreakFloor = rand() % 22 + 2;
-            randBreakFloor2 = rand() % 19 + 2;
-            g_sBreakFloor.counter = false;
-        }
-        drawBreakFloor(g_Console, randBreakFloor, randBreakFloor2);
-        drawBreakFloor(g_Console, randBreakFloor2, randBreakFloor);
-        //drawLaser3(g_Console, randstickman2);
-        //drawLaser3(g_Console, randstickman3);
-    }*/
 
+            if (g_sLaser2.counter == true)
+            {
+                randnum = rand() % 70 + 1;
+                randnum2 = rand() % 70 + 1;
+                randnum3 = rand() % 70 + 1;
+                randnum4 = rand() % 70 + 1;
+                g_sLaser2.counter = false;
+            }
+            drawLaser2(g_Console, randnum);
+            drawLaser2(g_Console, randnum2);
+            drawLaser2(g_Console, randnum3);
+            drawLaser2(g_Console, randnum4);
+        }
+        if (g_sLaser.fight == true)
+        {
+            if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+            {
+                g_sMovingBlock.fight = true;
+                g_sBreakFloor.fight = true;
+                int randPosX = rand() % (20 - 4 + 1) + 4;
+                int randPosY = rand() % (20 - 3 + 1) + 3;
+
+                g_sRaymond.m_cLocation.X = randPosX;
+                g_sRaymond.m_cLocation.Y = randPosY;
+
+                int randPosX2 = rand() % (70 - 57 + 1) + 57;
+                int randPosY2 = rand() % (20 - 3 + 1) + 3;
+
+                g_sBomb.m_cLocation.X = randPosX2;
+                g_sBomb.m_cLocation.Y = randPosY2;
+                c.X = 5;
+                c.Y = 26;
+                string ras = to_string(randPosX2);
+                g_Console.writeToBuffer(c, ras, 100);
+                // reset locations for bomb and raymond
+            }
+        }
+        
+    }
+    
+    if (g_sLaser3.fight == true)
+    {
+        fightCount3 = 1;
+        if (g_sLaser3.startTimer == true)
+        {
+            laserTime3 = 0.0;
+            g_sLaser3.resetTimer = true;
+        }
+        if (g_sLaser3.resetTimer == true)
+        {
+
+            if (g_sLaser3.counter == true)
+            {
+                randnum5 = rand() % 70 + 1;
+                randnum6 = rand() % 70 + 1;
+                randnum7 = rand() % 70 + 1;
+                randnum8 = rand() % 70 + 1;
+                g_sLaser3.counter = false;
+            }
+
+
+            drawLaser(g_Console, randnum5);
+            drawLaser(g_Console, randnum6);
+            drawLaser(g_Console, randnum7);
+            drawLaser(g_Console, randnum8);
+            //drawHoriLaser(g_Console, randnum3);
+
+
+            //drawVertLaser(g_Console, 0);
+
+            //g_sLaser.resetTimer = false;
+        }
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_sLaser.fight = true;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+            c.X = 5;
+            c.Y = 26;
+            string ras = to_string(randPosX2);
+            g_Console.writeToBuffer(c, ras, 100);
+            // reset locations for bomb and raymond
+        }
+        
+    }
+    
+    if (g_sMovingBlock.fight == true)
+    {
+        fightCount4 = 1;
+        if (g_sMovingBlock.startTimer == true) // stickman work
+        {
+            movingBlockTime = 0.0;
+            g_sMovingBlock.resetTimer = true;
+        }
+        if (g_sMovingBlock.resetTimer == true)
+        {
+            if (g_sMovingBlock.counter == true)
+            {
+                randBlock = rand() % 69 + 2;
+                randBlock2 = rand() % 69 + 2;
+                randBlock3 = rand() % 69 + 2;
+                g_sMovingBlock.counter = false;
+            }
+            drawMovingBlock(g_Console, randBlock);
+            drawMovingBlock(g_Console, randBlock2);
+            drawMovingBlock(g_Console, randBlock3);
+        }
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            //g_sLaser.fight = true;
+            g_sLaser2.fight = true;
+            g_sLaser3.fight = true;
+            g_sBreakFloor.collected = false;
+            g_sBreakFloor.fight = false;
+            g_sMovingBlock.fight = false;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+            c.X = 5;
+            c.Y = 26;
+            string ras = to_string(randPosX2);
+            g_Console.writeToBuffer(c, ras, 100);
+            // reset locations for bomb and raymond
+        }
+
+    }
+    if (g_sBreakFloor.fight == true)
+    {
+        g_sBreakFloor.collected = true;
+        if (g_sBreakFloor.startTimer == true) // stickman work
+        {
+            breakFloorTime = 0.0;
+            g_sBreakFloor.resetTimer = true;
+        }
+        if (g_sBreakFloor.resetTimer == true)
+        {
+            if (g_sBreakFloor.counter == true)
+            {
+                randBreakFloor = rand() % (22 - 2 + 1);
+                randBreakFloor2 = rand() % (19 - 2 + 1) + 2;
+                g_sBreakFloor.counter = false;
+            }
+            drawBreakFloor(g_Console, randBreakFloor, randBreakFloor2);
+            drawBreakFloor(g_Console, randBreakFloor2, randBreakFloor);
+            //drawLaser3(g_Console, randstickman2);
+            //drawLaser3(g_Console, randstickman3);
+        }
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_sMovingBlock.fight = true;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+
+            // reset locations for bomb and raymond
+        }
+    }
+    if (g_sBreakFloor.collected == true)
+    {
+        fightCount5 = 1;
+    }
+    else
+    {
+        fightCount5 = 0;
+    }
     renderCharacter();
     rMap.boss_room(g_Console);
 
     renderBomb();
     if ((g_sChar.m_cLocation.X == g_sBomb.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBomb.m_cLocation.Y)))
     {
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
+        {
+            if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 1] == ' ') // check if bomb == ' '
+                g_sBomb.m_cLocation.X++;
+        }
         if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 3)
         {
-            g_sBomb.m_cLocation.Y--;
-            if (g_sBomb.m_cLocation.X == 73 && g_sBomb.m_cLocation.Y == 18)
+            if (rMap.Grid[g_sBomb.m_cLocation.Y - 1][g_sBomb.m_cLocation.X] == ' ')
             {
-                g_sBomb.startTimer = true;
+                g_sBomb.m_cLocation.Y--;
             }
         }
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
         {
-            g_sBomb.m_cLocation.Y++;
-            if (g_sBomb.m_cLocation.X == 73 && g_sBomb.m_cLocation.Y == 18)
+            if (rMap.Grid[g_sBomb.m_cLocation.Y + 1][g_sBomb.m_cLocation.X] == ' ')
             {
-                g_sBomb.startTimer = true;
+                g_sBomb.m_cLocation.Y++;
             }
         }
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
-            g_sBomb.m_cLocation.X--;
-            if (g_sBomb.m_cLocation.X == 73 && g_sBomb.m_cLocation.Y == 18)
+            if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X - 1] == ' ')
             {
-                g_sBomb.startTimer = true;
-            }
-        }
-        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
-        {
-            g_sBomb.m_cLocation.X++;
-            if (g_sBomb.m_cLocation.X == 73 && g_sBomb.m_cLocation.Y == 18)
-            {
-                g_sBomb.startTimer = true;
+                g_sBomb.m_cLocation.X--;
+
             }
         }
     }
+
+  
+    renderRaymond();
+    if (g_sRaymond.startTimer == true)
+    {
+        raymondTime = 0.0;
+        g_sRaymond.resetTimer = true;
+    }
+    if (g_sRaymond.resetTimer == true)
+    {
+        if (g_sRaymond.counter == true)
+        {
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            c.X = 5;
+            c.Y = 27;
+            string ras = to_string(randPosX);
+            g_Console.writeToBuffer(c, ras, 100);
+
+            g_sRaymond.counter = false;
+        }
+    }
+}
+void updateBomb()
+{
+
+}
+
+void renderRaymond()
+{
+    g_Console.writeToBuffer(g_sRaymond.m_cLocation, 'R', 0x0C);
 }
 
 void renderBomb()
@@ -7008,6 +7217,7 @@ void updateGame()       // gameplay logic
     g_sGuard3.xDown = false;
     g_sGuard3.xUp = false;
 
+    
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                      // sound can be played here too.
@@ -7737,6 +7947,7 @@ void renderMap_NPC()
     g_Console.writeToBuffer(g_sNPC6.m_cLocation, (char)12, charColor);
     g_Console.writeToBuffer(g_sNPC7.m_cLocation, (char)12, charColor);
 }
+
 void renderMap_Townsquare()
 {
     while (townsquare_music == false)
@@ -7821,6 +8032,8 @@ void renderMap_Townsquare()
 void renderMap_Protest_Area()
 {
     COORD c;
+    srand((unsigned)time(0));
+    int Quantity = 0;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
@@ -7850,95 +8063,778 @@ void renderMap_Protest_Area()
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
-    if ((g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 3) || (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 5) || (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 6) || (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 5) || (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 9) || (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 8))
+    //if (stepped == false)
+    //{
+    if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 3)
     {
-        int BoxItemChance = 0;
-        if ((g_sChar.collected == false) && (g_sChar.startTimer == true))
+        showCollect = 0.0;
+        static int ItemChance = 0;
+        static bool temp = false;
+        if (temp == false)
         {
-            if (BoxItemChance == 1)
+            ItemChance = rand() % 6 + 1;
+            temp = true;
+        }
+        if (ItemChance == 1)
+        {
+
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item1 = false;
+            if (item1 == false)
             {
-                g_sChar.showItem = true;
-                if (g_sChar.showItem == true)
-                {
-                    c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
-                }
+                RawMeat.QuantityCheck("Raw Meat");
+                item1 = true;
             }
-            else if (BoxItemChance == 2)
+                
+
+
+        }
+        else if (ItemChance == 2)
+        {
+
+
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item2 = false;
+            if (item2 == false)
             {
-                g_sChar.showItem = true;
-                if (g_sChar.showItem == true)
-                {
-                    c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
-                }
+                Bread.QuantityCheck("Bread");
+                item2 = true;
             }
-            else if (BoxItemChance == 3)
+
+        }
+        else if (ItemChance == 3)
+        {
+
+
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item3 = false;
+            if (item3 == false)
             {
-                g_sChar.showItem = true;
-                if (g_sChar.showItem == true)
-                {
-                    c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
-                }
+                Burger.QuantityCheck("Burger");
+                item3 = true;
             }
-            else if (BoxItemChance == 4)
+
+
+        }
+        else if (ItemChance == 4)
+        {
+
+
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item4 = false;
+            if (item4 == false)
             {
-                g_sChar.showItem = true;
-                if (g_sChar.showItem == true)
-                {
-                    c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
-                }
+                Taco.QuantityCheck("Taco");
+                item4 = true;
             }
-            else if (BoxItemChance == 5)
+
+
+        }
+        else if (ItemChance == 5)
+        {
+
+
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item5 = false;
+            if (item5 == false)
             {
-                g_sChar.showItem = true;
-                if (g_sChar.showItem == true)
-                {
-                    c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
-                }
+                Cake.QuantityCheck("Cake");
+                item5 = true;
             }
-            else if (BoxItemChance == 6)
+
+
+        }
+        else if (ItemChance == 6)
+        {
+
+
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item6 = false;
+            if (item6 == false)
             {
-                g_sChar.showItem = true;
-                if (g_sChar.showItem == true)
-                {
-                    c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
-                }
+                Medicine.QuantityCheck("Medicine");
+                item6 = true;
             }
-            else
+
+
+        }
+
+    }
+    
+    if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 5)
+    {
+        static int ItemChance2 = 0;
+        static bool temp2 = false;
+        if (temp2 == false)
+        {
+            ItemChance2 = rand() % 6 + 1;
+            temp2 = true;
+        }
+        if (ItemChance2 == 1)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item1 = false;
+            if (item1 == false)
             {
-                g_sChar.showItem = true;
-                if (g_sChar.showItem == true)
-                {
-                    c.X = 5;
-                    c.Y = 26;
-                    g_Console.writeToBuffer(c, "You got stickbugged.", 0x0F, 100);
-                }
+                RawMeat.QuantityCheck("Raw Meat");
+                item1 = true;
             }
-            g_sChar.showItem = false;
-            g_sChar.startTimer = false;
-            g_sChar.resetTimer = true;
-            collectTime = 0.0;
-            g_sChar.collected = true;
+        }
+        else if (ItemChance2 == 2)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item2 = false;
+            if (item2 == false)
+            {
+                Bread.QuantityCheck("Bread");
+                item2 = true;
+            }
+        }
+        else if (ItemChance2 == 3)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item3 = false;
+            if (item3 == false)
+            {
+                Burger.QuantityCheck("Burger");
+                item3 = true;
+            }
+        }
+        else if (ItemChance2 == 4)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item4 = false;
+            if (item4 == false)
+            {
+                Taco.QuantityCheck("Taco");
+                item4 = true;
+            }
+        }
+        else if (ItemChance2 == 5)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item5 = false;
+            if (item5 == false)
+            {
+                Cake.QuantityCheck("Cake");
+                item5 = true;
+            }
+        }
+        else if (ItemChance2 == 6)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item6 = false;
+            if (item6 == false)
+            {
+                Medicine.QuantityCheck("Medicine");
+                item6 = true;
+            }
+
         }
     }
-    if ((collectTime > 3) && (g_sChar.collected == true))
+    if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 6)
     {
-        g_sChar.collected = false;
-        c.X = 5;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                          ", 0x0F, 100);
-        collectTime = 0.0;
+        static int ItemChance3 = 0;
+        static bool temp3 = false;
+        if (temp3 == false)
+        {
+            ItemChance3 = rand() % 6 + 1;
+            temp3 = true;
+        }
+        if (ItemChance3 == 1)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item1 = false;
+            if (item1 == false)
+            {
+                RawMeat.QuantityCheck("Raw Meat");
+                item1 = true;
+            }
+        }
+        else if (ItemChance3 == 2)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item2 = false;
+            if (item2 == false)
+            {
+                Bread.QuantityCheck("Bread");
+                item2 = true;
+            }
+        }
+        else if (ItemChance3 == 3)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item3 = false;
+            if (item3 == false)
+            {
+                Burger.QuantityCheck("Burger");
+                item3 = true;
+            }
+        }
+        else if (ItemChance3 == 4)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item4 = false;
+            if (item4 == false)
+            {
+                Taco.QuantityCheck("Taco");
+                item4 = true;
+            }
+        }
+        else if (ItemChance3 == 5)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item5 = false;
+            if (item5 == false)
+            {
+                Cake.QuantityCheck("Cake");
+                item5 = true;
+            }
+        }
+        else if (ItemChance3 == 6)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item6 = false;
+            if (item6 == false)
+            {
+                Medicine.QuantityCheck("Medicine");
+                item6 = true;
+            }
+        }
+    }
+    if (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 5)
+    {
+        static int ItemChance4 = 0;
+        static bool temp4 = false;
+        if (temp4 == false)
+        {
+            ItemChance4 = rand() % 6 + 1;
+            temp4 = true;
+        }
+        if (ItemChance4 == 1)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item1 = false;
+            if (item1 == false)
+            {
+                RawMeat.QuantityCheck("Raw Meat");
+                item1 = true;
+            }
+        }
+        else if (ItemChance4 == 2)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item2 = false;
+            if (item2 == false)
+            {
+                Bread.QuantityCheck("Bread");
+                item2 = true;
+            }
+        }
+        else if (ItemChance4 == 3)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item3 = false;
+            if (item3 == false)
+            {
+                Burger.QuantityCheck("Burger");
+                item3 = true;
+            }
+        }
+        else if (ItemChance4 == 4)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item4 = false;
+            if (item4 == false)
+            {
+                Taco.QuantityCheck("Taco");
+                item4 = true;
+            }
+        }
+        else if (ItemChance4 == 5)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item5 = false;
+            if (item5 == false)
+            {
+                Cake.QuantityCheck("Cake");
+                item5 = true;
+            }
+        }
+        else if (ItemChance4 == 6)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item6 = false;
+            if (item6 == false)
+            {
+                Medicine.QuantityCheck("Medicine");
+                item6 = true;
+            }
+        }
+    }
+    if (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 8)
+    {
+        static int ItemChance5 = 0;
+        static bool temp5 = false;
+        if (temp5 == false)
+        {
+            ItemChance5 = rand() % 6 + 1;
+            temp5 = true;
+        }
+        if (ItemChance5 == 1)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item1 = false;
+            if (item1 == false)
+            {
+                RawMeat.QuantityCheck("Raw Meat");
+                item1 = true;
+            }
+        }
+        else if (ItemChance5 == 2)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item2 = false;
+            if (item2 == false)
+            {
+                Bread.QuantityCheck("Bread");
+                item2 = true;
+            }
+        }
+        else if (ItemChance5 == 3)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item3 = false;
+            if (item3 == false)
+            {
+                Burger.QuantityCheck("Burger");
+                item3 = true;
+            }
+        }
+        else if (ItemChance5 == 4)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item4 = false;
+            if (item4 == false)
+            {
+                Taco.QuantityCheck("Taco");
+                item4 = true;
+            }
+        }
+        else if (ItemChance5 == 5)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item5 = false;
+            if (item5 == false)
+            {
+                Cake.QuantityCheck("Cake");
+                item5 = true;
+            }
+        }
+        else if (ItemChance5 == 6)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item6 = false;
+            if (item6 == false)
+            {
+                Medicine.QuantityCheck("Medicine");
+                item6 = true;
+            }
+        }
+    }
+
+    if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 9)
+    {
+        static int ItemChance6 = 0;
+        static bool temp6 = false;
+        if (temp6 == false)
+        {
+            ItemChance6 = rand() % 6 + 1;
+            temp6 = true;
+        }
+        if (ItemChance6 == 1)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item1 = false;
+            if (item1 == false)
+            {
+                RawMeat.QuantityCheck("Raw Meat");
+                item1 = true;
+            }
+        }
+        else if (ItemChance6 == 2)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item2 = false;
+            if (item2 == false)
+            {
+                Bread.QuantityCheck("Bread");
+                item2 = true;
+            }
+        }
+        else if (ItemChance6 == 3)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item3 = false;
+            if (item3 == false)
+            {
+                Burger.QuantityCheck("Burger");
+                item3 = true;
+            }
+        }
+        else if (ItemChance6 == 4)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item4 = false;
+            if (item4 == false)
+            {
+                Taco.QuantityCheck("Taco");
+                item4 = true;
+            }
+        }
+        else if (ItemChance6 == 5)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item5 = false;
+            if (item5 == false)
+            {
+                Cake.QuantityCheck("Cake");
+                item5 = true;
+            }
+        }
+        else if (ItemChance6 == 6)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item6 = false;
+            if (item6 == false)
+            {
+                Medicine.QuantityCheck("Medicine");
+                item6 = true;
+            }
+        }
+    }
+
+    if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 8)
+    {
+        static int ItemChance7 = 0;
+        static bool temp7 = false;
+        if (temp7 == false)
+        {
+            ItemChance7 = rand() % 6 + 1;
+            temp7 = true;
+        }
+        if (ItemChance7 == 1)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item1 = false;
+            if (item1 == false)
+            {
+                RawMeat.QuantityCheck("Raw Meat");
+                item1 = true;
+            }
+        }
+        else if (ItemChance7 == 2)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item2 = false;
+            if (item2 == false)
+            {
+                Bread.QuantityCheck("Bread");
+                item2 = true;
+            }
+        }
+        else if (ItemChance7 == 3)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item3 = false;
+            if (item3 == false)
+            {
+                Burger.QuantityCheck("Burger");
+                item3 = true;
+            }
+        }
+        else if (ItemChance7 == 4)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item4 = false;
+            if (item4 == false)
+            {
+                Taco.QuantityCheck("Taco");
+                item4 = true;
+            }
+        }
+        else if (ItemChance7 == 5)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item5 = false;
+            if (item5 == false)
+            {
+                Cake.QuantityCheck("Cake");
+                item5 = true;
+            }
+        }
+        else if (ItemChance7 == 6)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            c.X = 5;
+            c.Y = 27;
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+            static bool item6 = false;
+            if (item6 == false)
+            {
+                Medicine.QuantityCheck("Medicine");
+                item6 = true;
+            }
+        }
     }
 }
 
@@ -8311,6 +9207,7 @@ void renderBox()
 
 void renderMap_DS1()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth1(g_Console);
@@ -8684,6 +9581,511 @@ void renderMap_DS1()
         g_sChar.m_cLocation.Y = 21;
         g_sChar.m_cLocation.X = 62;
     }
+    if (g_sChar.m_cLocation.Y == 20 && g_sChar.m_cLocation.X == 8)
+    {
+        static int ItemChance = 0;
+        static bool temp = false;
+        if (temp == false)
+        {
+            ItemChance = rand() % 6 + 1;
+            temp = true;
+        }
+        if (ItemChance == 1)
+        {
+           
+            showCollect = 0.0;
+            static int ItemChance = 0;
+            static bool temp = false;
+            if (temp == false)
+            {
+                ItemChance = rand() % 6 + 1;
+                temp = true;
+            }
+            if (ItemChance == 1)
+            {
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(RawMeat.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item1 = false;
+                if (item1 == false)
+                {
+                    RawMeat.QuantityCheck("Raw Meat");
+                    item1 = true;
+                }
+
+
+
+            }
+            else if (ItemChance == 2)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Bread.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item2 = false;
+                if (item2 == false)
+                {
+                    Bread.QuantityCheck("Bread");
+                    item2 = true;
+                }
+
+            }
+            else if (ItemChance == 3)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Burger.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item3 = false;
+                if (item3 == false)
+                {
+                    Burger.QuantityCheck("Burger");
+                    item3 = true;
+                }
+
+
+            }
+            else if (ItemChance == 4)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Taco.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item4 = false;
+                if (item4 == false)
+                {
+                    Taco.QuantityCheck("Taco");
+                    item4 = true;
+                }
+
+
+            }
+            else if (ItemChance == 5)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Cake.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item5 = false;
+                if (item5 == false)
+                {
+                    Cake.QuantityCheck("Cake");
+                    item5 = true;
+                }
+
+
+            }
+            else if (ItemChance == 6)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Medicine.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item6 = false;
+                if (item6 == false)
+                {
+                    Medicine.QuantityCheck("Medicine");
+                    item6 = true;
+                }
+
+
+            }
+            
+        }
+        
+    }
+    if (g_sChar.m_cLocation.Y == 18 && g_sChar.m_cLocation.X == 23)
+    {
+        static int ItemChance2 = 0;
+        static bool temp2 = false;
+        if (temp2 == false)
+        {
+            ItemChance2 = rand() % 6 + 1;
+            temp2 = true;
+        }
+        if (ItemChance2 == 1)
+        {
+
+            showCollect = 0.0;
+            static int ItemChance2 = 0;
+            static bool temp2 = false;
+            if (temp2 == false)
+            {
+                ItemChance2 = rand() % 6 + 1;
+                temp2 = true;
+            }
+            if (ItemChance2 == 1)
+            {
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(RawMeat.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item1 = false;
+                if (item1 == false)
+                {
+                    RawMeat.QuantityCheck("Raw Meat");
+                    item1 = true;
+                }
+
+
+
+            }
+            else if (ItemChance2 == 2)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Bread.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item2 = false;
+                if (item2 == false)
+                {
+                    Bread.QuantityCheck("Bread");
+                    item2 = true;
+                }
+
+            }
+            else if (ItemChance2 == 3)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Burger.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item3 = false;
+                if (item3 == false)
+                {
+                    Burger.QuantityCheck("Burger");
+                    item3 = true;
+                }
+
+
+            }
+            else if (ItemChance2 == 4)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Taco.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item4 = false;
+                if (item4 == false)
+                {
+                    Taco.QuantityCheck("Taco");
+                    item4 = true;
+                }
+
+
+            }
+            else if (ItemChance2 == 5)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Cake.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item5 = false;
+                if (item5 == false)
+                {
+                    Cake.QuantityCheck("Cake");
+                    item5 = true;
+                }
+
+
+            }
+            else if (ItemChance2 == 6)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Medicine.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item6 = false;
+                if (item6 == false)
+                {
+                    Medicine.QuantityCheck("Medicine");
+                    item6 = true;
+                }
+
+
+            }
+
+        }
+
+
+    }
+    if (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 76)
+    {
+        static int ItemChance3 = 0;
+        static bool temp3 = false;
+        if (temp3 == false)
+        {
+            ItemChance3 = rand() % 6 + 1;
+            temp3 = true;
+        }
+        if (ItemChance3 == 1)
+        {
+
+            showCollect = 0.0;
+            static int ItemChance3 = 0;
+            static bool temp3 = false;
+            if (temp3 == false)
+            {
+                ItemChance3 = rand() % 6 + 1;
+                temp3 = true;
+            }
+            if (ItemChance3 == 1)
+            {
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(RawMeat.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item1 = false;
+                if (item1 == false)
+                {
+                    RawMeat.QuantityCheck("Raw Meat");
+                    item1 = true;
+                }
+
+
+
+            }
+            else if (ItemChance3 == 2)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Bread.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item2 = false;
+                if (item2 == false)
+                {
+                    Bread.QuantityCheck("Bread");
+                    item2 = true;
+                }
+
+            }
+            else if (ItemChance3 == 3)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Burger.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item3 = false;
+                if (item3 == false)
+                {
+                    Burger.QuantityCheck("Burger");
+                    item3 = true;
+                }
+
+
+            }
+            else if (ItemChance3 == 4)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Taco.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item4 = false;
+                if (item4 == false)
+                {
+                    Taco.QuantityCheck("Taco");
+                    item4 = true;
+                }
+
+
+            }
+            else if (ItemChance3 == 5)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Cake.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item5 = false;
+                if (item5 == false)
+                {
+                    Cake.QuantityCheck("Cake");
+                    item5 = true;
+                }
+
+
+            }
+            else if (ItemChance3 == 6)
+            {
+
+
+                c.X = 5;
+                c.Y = 26;
+                g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+                c.X = 5;
+                c.Y = 27;
+                string Quantity = to_string(Medicine.getQuantity());
+                g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
+                static bool item6 = false;
+                if (item6 == false)
+                {
+                    Medicine.QuantityCheck("Medicine");
+                    item6 = true;
+                }
+
+
+            }
+
+        }
+
+
+    }
+    if (g_sChar.m_cLocation.Y == 19 && g_sChar.m_cLocation.X == 8)
+    {
+        static int ItemChance4 = 0;
+        static bool temp4 = false;
+        if (temp4 == false)
+        {
+            ItemChance4 = rand() % 2 + 1;
+            temp4 = true;
+        }
+        if (ItemChance4 == 1)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            PlayerInv.QuantityCheck("Stinger");
+        }
+        else if (ItemChance4 == 2)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            PlayerInv.QuantityCheck("Guard Armor");
+        }
+        
+    }
+    if (g_sChar.m_cLocation.Y == 17 && g_sChar.m_cLocation.X == 41)
+    {
+        static int ItemChance5 = 0;
+        static bool temp5 = false;
+        if (temp5 == false)
+        {
+            ItemChance5 = rand() % 2 + 1;
+            temp5 = true;
+        }
+        if (ItemChance5 == 1)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            PlayerInv.QuantityCheck("Stinger");
+        }
+        else if (ItemChance5 == 2)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            PlayerInv.QuantityCheck("Guard Armor");
+        }
+        
+    }
+    if (g_sChar.m_cLocation.Y == 7 && g_sChar.m_cLocation.X == 50)
+    {
+        static int ItemChance6 = 0;
+        static bool temp6 = false;
+        if (temp6 == false)
+        {
+            ItemChance6 = rand() % 2 + 1;
+            temp6 = true;
+        }
+        if (ItemChance6 == 1)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Stinger", 0x0F, 100);
+            PlayerInv.QuantityCheck("Stinger");
+        }
+        else if (ItemChance6== 2)
+        {
+            c.X = 5;
+            c.Y = 26;
+            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            PlayerInv.QuantityCheck("Guard Armor");
+        }
+    }
 }
 
 void renderMap_GuardStealth()
@@ -8942,6 +10344,7 @@ void renderMap_Boss_Battle_Room()
 void RenderBattleScreen()
 {
     COORD c;
+    
     int UpdateDmg = 0;
     int UpdateHealth = 0;
     if (g_sTutEnemy.GetH() == 0 || g_sMutantWasp.GetH() == 0)
@@ -8958,9 +10361,7 @@ void RenderBattleScreen()
             c.Y = 26;
             g_Console.writeToBuffer(c, "Not enough space.", 100);
         }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Stinger"), 100);
+
     }
     else if (g_sPig.GetH() <= 0)
     {
@@ -8976,9 +10377,7 @@ void RenderBattleScreen()
             c.Y = 26;
             g_Console.writeToBuffer(c, "Not enough space.", 100);
         }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
+
     }
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -9599,195 +10998,79 @@ void RenderBattleScreen()
         rMap.Road(g_Console, 77, 25, 5);
         c.X = 13;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "o Raw Meat" + PlayerInv.checkInventory("Raw Meat"), 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Raw Meat" , 0x0F, 100);
         c.X = 13;
         c.Y = 28;
-        g_Console.writeToBuffer(c, "o Stinger" + PlayerInv.checkInventory("Stinger"), 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Stinger" , 0x0F, 100);
         c.X = 28;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "o Guard Armor" + PlayerInv.checkInventory("Guard Armor"), 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Guard Armor" , 0x0F, 100);
         c.X = 28;
         c.Y = 28;
-        g_Console.writeToBuffer(c, "o Bread" + PlayerInv.checkInventory("Bread"), 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Bread" , 0x0F, 100);
         c.X = 46;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "o Burger" + PlayerInv.checkInventory("Burger"), 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Burger" , 0x0F, 100);
         c.X = 46;
         c.Y = 28;
-        g_Console.writeToBuffer(c, "o Taco" + PlayerInv.checkInventory("Taco"), 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Taco" , 0x0F, 100);
         c.X = 61;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "o Cake" + PlayerInv.checkInventory("Cake"), 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Cake" , 0x0F, 100);
         c.X = 61;
         c.Y = 28;
-        g_Console.writeToBuffer(c, "o Medicine" + PlayerInv.checkInventory("Medicine"), 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Medicine" , 0x0F, 100);
     }
     //change g_eGameState to inventory
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 15) || (g_mouseEvent.mousePosition.X == 16) || (g_mouseEvent.mousePosition.X == 17) || (g_mouseEvent.mousePosition.X == 18) || (g_mouseEvent.mousePosition.X == 19) || (g_mouseEvent.mousePosition.X == 20) || (g_mouseEvent.mousePosition.X == 21) || (g_mouseEvent.mousePosition.X == 22) || (g_mouseEvent.mousePosition.X == 23) || (g_mouseEvent.mousePosition.X == 24) || (g_mouseEvent.mousePosition.X == 25))))
     {
         g_sChar.InvenActive = true;
         g_sChar.itemActive = true;
-
-        /*if (PlayerInv.Consumed(item1))
-        {
-            c.X = 8;
-            c.Y = 27;
-            g_Console.writeToBuffer(c, "item 1 was used.", 100);
-            UpdateDmg = g_sChar.GetD() + 5;
-            g_sChar.SetD(UpdateDmg);
-        }
-
-        else
-        {
-            c.X = 8;
-            c.Y = 27;
-            g_Console.writeToBuffer(c, "item 1 was not used.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Stinger"), 100);
-
-        if (PlayerInv.Consumed(item2))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item used.", 100);
-            UpdateHealth = g_sChar.GetH() + 5;
-            g_sChar.SetH(UpdateHealth);
-        }
-        else
-        {
-            g_Console.writeToBuffer(c, "Item was not used.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Raw Meat"), 100);
-
-        if (PlayerInv.Consumed(item3))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item used.", 100);
-            UpdateDmg = g_sChar.GetD() + 10;
-            g_sChar.SetD(UpdateDmg);
-        }
-        else
-        {
-            g_Console.writeToBuffer(c, "Item was not used.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
-
-        if (PlayerInv.Consumed(item4))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item used.", 100);
-            UpdateHealth = g_sChar.GetH() + 10;
-            g_sChar.SetD(UpdateHealth);
-        }
-        else
-        {
-            g_Console.writeToBuffer(c, "Item was not used.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Bread"), 100);
-
-        if (PlayerInv.Consumed(item5))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item used.", 100);
-            UpdateHealth = g_sChar.GetH() + 25;
-            g_sChar.SetD(UpdateHealth);
-        }
-        else
-        {
-            g_Console.writeToBuffer(c, "Item was not used.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Burger"), 100);
-
-        if (PlayerInv.Consumed(item6))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item used.", 100);
-            UpdateHealth = g_sChar.GetD() + 25;
-            g_sChar.SetD(UpdateHealth);
-        }
-        else
-        {
-            g_Console.writeToBuffer(c, "Item was not used.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Taco"), 100);
-
-        if (PlayerInv.Consumed(item7))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item used.", 100);
-            g_sChar.SetH(50);
-        }
-        else
-        {
-            g_Console.writeToBuffer(c, "Item was not used.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Cake"), 100);
-
-        if (PlayerInv.Consumed(item8))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Item used.", 100);
-            //Poison status
-        }
-        else
-        {
-            g_Console.writeToBuffer(c, "Item was not used.", 100);
-        }
-        c.X = 5;
-        c.Y = 27;
-        g_Console.writeToBuffer(c, PlayerInv.checkInventory("Medicine"), 100);
-
-        //g_eGameState = S_Townsquare;*/
+        g_sInven.startTimer = true;
     }
-
-    if (g_sInven.startTimer == true && g_sChar.InvenActive == true && g_sChar.itemActive == true)
+    
+    if ((g_sInven.startTimer == true) && (g_sChar.InvenActive == true) && (g_sChar.itemActive == true))
     {
-        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 13))))
+        if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 26) && (g_mouseEvent.mousePosition.X == 13)))
         {
-            if (g_sChar.GetH() < 50)
+            g_sRawMeat.showItemUsed = false;
+            g_sRawMeat.showItemNotUsed = false;
+            g_sRawMeat.showNoQuantity = false;
+            if (g_sChar.GetH() < 50 && RawMeat.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 5;
-                g_sInven.showItemUsed = true;
+                g_sRawMeat.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
+                RawMeat.setQuantity(RawMeat.getQuantity() - 1);
+                if (UpdateHealth > 50)
+                {
+                    g_sRawMeat.showItemUsed = false;
+                    g_sChar.SetH(50);
+                    g_sInven.showItemNotUsed = true;
+                }
             }
-            else if (g_sChar.GetH() == 50)
+            else if (g_sChar.GetH() == 50 && RawMeat.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
-            else if (UpdateHealth > 50)
+
+            else
             {
-                g_sChar.SetH(50);
-                g_sInven.showItemNotUsed = true;
+                g_sInven.showNoQuantity = true;
             }
-            g_sInven.startTimer = false;
-            g_sInven.resetTimer = true;
-            InvenTime = 0.0;
+
+            playerInvenTime = 0.0;
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
-            playerInvenTime = 0.0;
+            InvenTime = 0.0;
+            g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+            
         }
-        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 13))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 28) && (g_mouseEvent.mousePosition.X == 13)))
         {
+            g_sInven.showItemUsed = false;
+            g_sInven.showItemNotUsed = false;
             c.X = 5;
             c.Y = 25;
             g_Console.writeToBuffer(c, "Stinger was used.", 0x0F, 100);
@@ -9795,105 +11078,172 @@ void RenderBattleScreen()
             g_sChar.SetD(UpdateDmg);
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
+            InvenTime = 0.0;
+            g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+            playerInvenTime = 0.0;
         }
-        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 28))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 26) && (g_mouseEvent.mousePosition.X == 28)))
         {
+            g_sInven.showItemUsed = false;
+            g_sInven.showItemNotUsed = false;
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "Guard Armor was used.", 100);
+            g_Console.writeToBuffer(c, "Guard Armor was used.", 0x0F, 100);
             UpdateDmg = g_sChar.GetD() + 10;
             g_sChar.SetD(UpdateDmg);
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
+            InvenTime = 0.0;
+            g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+            playerInvenTime = 0.0;
+
         }
-        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 28))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 28) && (g_mouseEvent.mousePosition.X == 28)))
         {
-            g_sInven.startTimer = true;
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Bread was used.", 100);
-            UpdateHealth = g_sChar.GetH() + 10;
-            if (g_sChar.GetH() == 50)
+            g_sBread.showItemUsed = false;
+            g_sBread.showItemNotUsed = false;
+            g_sBread.showNoQuantity = false;
+            if (g_sChar.GetH() < 50 && Bread.getQuantity() > 0)
             {
-                g_Console.writeToBuffer(c, "Bread was not used.", 0x0F, 100);
+                UpdateHealth = g_sChar.GetH() + 10;
+                g_sBread.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                Bread.setQuantity(Bread.getQuantity() - 1);
+                if (UpdateHealth > 50)
+                {
+                    g_sBread.showItemUsed = false;
+                    g_sChar.SetH(50);
+                    g_sInven.showItemNotUsed = true;
+                }
             }
-            g_sChar.SetH(UpdateHealth);
-            if (UpdateHealth > 50)
+            else if (g_sChar.GetH() == 50 && Bread.getQuantity() > 0)
+            {
+                g_sInven.showItemNotUsed = true;
+            }
+            else
+            {
+                g_sInven.showNoQuantity = true;
+            }
+            playerInvenTime = 0.0;
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+            InvenTime = 0.0;
+            g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+           
+        }
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 26) && (g_mouseEvent.mousePosition.X == 46)))
+        {
+            g_sBurger.showItemUsed = false;
+            g_sBurger.showItemNotUsed = false;
+            g_sBurger.showNoQuantity = false;
+            if (g_sChar.GetH() < 50 && Burger.getQuantity() > 0)
+            {
+                UpdateHealth = g_sChar.GetH() + 25;
+                g_sInven.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                Burger.setQuantity(Burger.getQuantity() - 1);
+                if (UpdateHealth > 50)
+                {
+                    g_sBurger.showItemUsed = false;
+                    g_sChar.SetH(50);
+                    g_sInven.showItemNotUsed = true;
+                }
+            }
+            else if (g_sChar.GetH() == 50 && Burger.getQuantity() > 0)
+            {
+                g_sInven.showItemNotUsed = true;
+            }
+            else
+            {
+                
+                g_sInven.showNoQuantity = true;
+            }
+            playerInvenTime = 0.0;
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+            InvenTime = 0.0;
+            g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+            
+        }
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 28) && (g_mouseEvent.mousePosition.X == 46)))
+        {
+            g_sTaco.showItemUsed = false;
+            g_sTaco.showItemNotUsed = false;
+            g_sTaco.showNoQuantity = false;
+            if (g_sChar.GetH() < 50 && Taco.getQuantity() > 0)
+            {
+                UpdateHealth = g_sChar.GetH() + 25;
+                g_sTaco.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                Taco.setQuantity(Taco.getQuantity() - 1);
+                if (UpdateHealth > 50)
+                {
+                    g_sTaco.showItemUsed = false;
+                    g_sChar.SetH(50);
+                    g_sInven.showItemNotUsed = true;
+                }
+            }
+            else if (g_sChar.GetH() == 50 && Taco.getQuantity() > 0)
+            {
+                g_sInven.showItemNotUsed = true;
+            }
+            else
+            {
+                
+                g_sInven.showNoQuantity = true;
+            }
+            playerInvenTime = 0.0;
+            g_sChar.InvenActive = false;
+            g_sChar.itemActive = false;
+            InvenTime = 0.0;
+            g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+            
+        }
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 26) && (g_mouseEvent.mousePosition.X == 61)))
+        {
+            g_sCake.showItemUsed = false;
+            g_sCake.showItemNotUsed = false;
+            g_sCake.showNoQuantity = false;
+            if (g_sChar.GetH() < 50 && Cake.getQuantity() > 0)
             {
                 g_sChar.SetH(50);
-                g_Console.writeToBuffer(c, "Bread was not used.", 0x0F, 100);
+                g_sCake.showItemUsed = true;
+                Cake.setQuantity(Cake.getQuantity() - 1);
             }
+            else if (g_sChar.GetH() == 50 && Cake.getQuantity() > 0)
+            {
+                g_sInven.showItemNotUsed = true;
+            }
+            else
+            {
+                g_sInven.showNoQuantity = true;
+            }
+            playerInvenTime = 0.0;
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
+            InvenTime = 0.0;
+            g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
+            
         }
-        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 46))))
-        {
-            g_sInven.startTimer = true;
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Burger was used.", 100);
-            UpdateHealth = g_sChar.GetH() + 25;
-            if (g_sChar.GetH() == 50)
-            {
-                g_Console.writeToBuffer(c, "Burger was not used.", 0x0F, 100);
-            }
-            g_sChar.SetH(UpdateHealth);
-            if (UpdateHealth > 50)
-            {
-                g_sChar.SetH(50);
-                g_Console.writeToBuffer(c, "Burger was not used.", 0x0F, 100);
-            }
-            g_sChar.SetH(UpdateHealth);
-            g_sChar.InvenActive = false;
-            g_sChar.itemActive = false;
-        }
-        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 46))))
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Taco was used.", 100);
-            UpdateHealth = g_sChar.GetH() + 25;
-            g_sChar.SetH(UpdateHealth);
-            if (g_sChar.GetH() == 50)
-            {
-                g_Console.writeToBuffer(c, "Taco was not used.", 0x0F, 100);
-            }
-            g_sChar.SetH(UpdateHealth);
-            if (UpdateHealth > 50)
-            {
-                g_sChar.SetH(50);
-                g_Console.writeToBuffer(c, "Taco was not used.", 0x0F, 100);
-            }
-            g_sChar.InvenActive = false;
-            g_sChar.itemActive = false;
-        }
-        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 26)) && ((g_mouseEvent.mousePosition.X == 61))))
-        {
-            g_sInven.startTimer = true;
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "Cake was used.", 100);
-            g_sChar.SetH(50);
-            if (g_sChar.GetH() == 50)
-            {
-                g_Console.writeToBuffer(c, "Cake was not used.", 0x0F, 100);
-            }
-            g_sChar.InvenActive = false;
-            g_sChar.itemActive = false;
-        }
-        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 28)) && ((g_mouseEvent.mousePosition.X == 61))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 28) && (g_mouseEvent.mousePosition.X == 61)))
         {
             //Poison Status
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
-        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+        else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 19) && (g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64)))
         {
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
         }
     }
-
+    
     // if click on fight
     /*
     if (g_sChar.startTimer == true)
@@ -9910,7 +11260,6 @@ void RenderBattleScreen()
 
                 g_sChar.showEnemyDMG = true;
                 enemyDMGTime = 0.0;
-
             }
 
             int guardhealth = g_sGuard.GetH() - g_sChar.GetD(); // get enemy health
@@ -10018,6 +11367,110 @@ void RenderBattleScreen()
     if (g_sChar.entityDie == true)
     {
         killRobert();
+    }
+
+    if (g_sRawMeat.showItemUsed == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+       
+        string str_Healed = to_string(g_sChar.GetH());
+        string str_Quantity = to_string(RawMeat.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        
+        c.X = 5;
+        c.Y = 29;
+        string Raw = to_string(RawMeat.getQuantity());
+        g_Console.writeToBuffer(c, Raw, 100);
+    }
+
+    if (g_sBread.showItemUsed == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+
+        string str_Healed = to_string(g_sChar.GetH());
+        string str_Quantity = to_string(Bread.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+
+        c.X = 5;
+        c.Y = 29;
+        string Bred = to_string(Bread.getQuantity());
+        g_Console.writeToBuffer(c, Bred, 100);
+    }
+
+    if (g_sBurger.showItemUsed == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+
+        string str_Healed = to_string(g_sChar.GetH());
+        string str_Quantity = to_string(Burger.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+
+        c.X = 5;
+        c.Y = 29;
+        string Borger = to_string(Burger.getQuantity());
+        g_Console.writeToBuffer(c, Borger, 100);
+    }
+
+    if (g_sTaco.showItemUsed == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+
+        string str_Healed = to_string(g_sChar.GetH());
+        string str_Quantity = to_string(Taco.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+
+        c.X = 5;
+        c.Y = 29;
+        string Tacko = to_string(Taco.getQuantity());
+        g_Console.writeToBuffer(c, Tacko, 100);
+    }
+
+    if (g_sCake.showItemUsed == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+
+        string str_Healed = to_string(g_sChar.GetH());
+        string str_Quantity = to_string(Cake.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+
+        c.X = 5;
+        c.Y = 29;
+        string Kake = to_string(Cake.getQuantity());
+        g_Console.writeToBuffer(c, Kake, 100);
+    }
+
+    if (g_sMedicine.showItemUsed == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+
+        string str_Healed = to_string(g_sChar.GetH());
+        string str_Quantity = to_string(RawMeat.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+
+        c.X = 5;
+        c.Y = 29;
+        string Meds = to_string(Medicine.getQuantity());
+        g_Console.writeToBuffer(c, Meds, 100);
+    }
+
+    if (g_sInven.showItemNotUsed == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Item not used.", 0x0F, 100);
+    }
+
+    if (g_sInven.showNoQuantity == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Item ran out.", 0x0F, 100);
     }
 }
 
@@ -10510,6 +11963,7 @@ void renderBoxes()
 
 /*void UpdateBattleScreen()
 {
+    COORD c;
     processUserInput();
     if (g_sInven.resetTimer == true)
     {
@@ -10527,24 +11981,83 @@ void renderBoxes()
         }
     }
 
-    if ((playerInvenTime > 3) && (g_sInven.showItemUsed == true))
+    if ((playerInvenTime > 3) && (g_sRawMeat.showItemUsed == true))
     {
-        g_sInven.showItemUsed = false;
-        COORD c;
-        c.X = 5;
-        c.Y = 25;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        g_sRawMeat.showItemUsed = false;
         playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        
+    }
+
+    if ((playerInvenTime > 3) && (g_sBread.showItemUsed == true))
+    {
+        g_sBread.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sBurger.showItemUsed == true))
+    {
+        g_sBurger.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sTaco.showItemUsed == true))
+    {
+        g_sTaco.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sCake.showItemUsed == true))
+    {
+        g_sCake.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sMedicine.showItemUsed == true))
+    {
+        g_sMedicine.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
     }
 
     if ((playerInvenTime > 3) && (g_sInven.showItemNotUsed == true))
     {
         g_sInven.showItemNotUsed = false;
-        COORD c;
-        c.X = 5;
-        c.Y = 25;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
         playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        
+    }
+    if ((playerInvenTime > 3) && (g_sInven.showNoQuantity == true))
+    {
+        g_sInven.showNoQuantity = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
     }
     if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
     {
@@ -10589,7 +12102,6 @@ void renderBoxes()
         //g_eGameState = S_Townsquare;
         g_sChar.showPlayerDMG = false;
         playerDMGTime = 0.0;
-        COORD c;
         c.X = 3;
         c.Y = 25;
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
@@ -10599,7 +12111,6 @@ void renderBoxes()
     {
         g_sChar.showEnemyDMG = false;
         enemyDMGTime = 0.0;
-        COORD c;
         c.X = 3;
         c.Y = 26;
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);

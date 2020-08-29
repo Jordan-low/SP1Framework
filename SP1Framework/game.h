@@ -127,11 +127,11 @@ struct SGameChar : public Enemy
     bool itemActive;
     bool showItemUsed;
     bool showItemNotUsed;
-    bool showItem;
-    bool collected;
+    bool showNoQuantity;
     bool CP1;
     bool CP2;
     bool CP3;
+    bool collected;
     int nextDialogue;
     int laserCount;
     bool entityDied;
@@ -161,7 +161,6 @@ void renderGame();          // renders the game stuff
 //Render areas + Battle screens
 void renderBox();
 void renderBoxes();
-void renderBomb();
 void renderMap_Townsquare();
 void renderMap_Protest_Area();
 void renderMap_Path_Area();
@@ -256,7 +255,9 @@ void drawLaser(Console& g_Console, int j);
 void drawLaser2(Console& g_Console, int j);
 void drawLaser3(Console& g_Console, int j);
 void drawMovingBlock(Console& g_Console, int j);
-void drawBomb(Console& g_Console, int k, int j);
+void renderBomb();
+void updateBomb();
+void renderRaymond();
 
 //Raymond Battle Paths
 void Update_phase2Battle();

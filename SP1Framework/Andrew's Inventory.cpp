@@ -1,5 +1,5 @@
-#include "Inventory.h"
-#include "Item.h"
+#include "Andrew's Inventory.h"
+#include "Andrew's Item.h"
 
 Inventory::Inventory()
 {
@@ -53,22 +53,6 @@ bool Inventory::Consumed(Item* use)
 	}
 }
 
-void Inventory::setQuantity(int q)
-{
-	Quantity = q;
-}
-
-int Inventory::getQuantity()
-{
-	return Quantity;
-}
-
-void Inventory::QuantityCheck(std::string n)
-{
-	this->getItemName() = n;
-	Quantity++;
-}
-
 /*void Inventory::setInventory(std::string n, int q)
 {
 	
@@ -85,7 +69,7 @@ int Inventory::getQuantity()
 	return Quantity;
 }*/
 
-int Inventory::checkInventory(std::string n)
+/*int Inventory::checkInventory(std::string n)
 {
 	for (int i = 0; i < MAX; i++)
 	{
@@ -158,8 +142,8 @@ int Inventory::checkInventory(std::string n)
 		items[7] = "Medicine";
 		Quantity = 1;
 		getQuantity();
-	}*/
-}
+	}
+}*/
 
 /*void Inventory::updateInventory()
 {
@@ -233,7 +217,22 @@ int Inventory::checkInventory(std::string n)
 	}
 }*/
 
+void Inventory::QuantityCheck(string n)
+{
+	this->getItemName() = n;
+	
+	Quantity++;
+}
 
+void Inventory::setQuantity(int q)
+{
+	Quantity = q;
+}
+
+int Inventory::getQuantity()
+{
+	return Quantity;
+}
 
 Inventory::~Inventory()
 {

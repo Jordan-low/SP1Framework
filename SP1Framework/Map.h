@@ -16,13 +16,13 @@ public:
 	//Functions to make our lives easier
 	void orphanageDoor(Console& g_Console);
 	void drawChildren(Console& g_Console);
-	void House(Console& g_Console, int x, int y);
-	void House2(Console& g_Console, int x, int y);
-	void Road(Console& g_Console, int x, int y, int count);
-	void Road2(Console& g_Console, int x, int y, int count);
-	void Road3(Console& g_Console, int x, int y, int count);
-	void Road_I(Console& g_Console, int x, int y, int count);
-	void Road_Equals(Console& g_Console, int x, int y, int count);
+	void House(Console& g_Console, int x, int y); // drawHouse
+	void House2(Console& g_Console, int x, int y); // drawHouse2
+	void Road(Console& g_Console, int x, int y, int count); //draw floors (_)
+	void Road2(Console& g_Console, int x, int y, int count); //draw walls (|)
+	void Road3(Console& g_Console, int x, int y, int count); //draw doors (@)
+	void Road_I(Console& g_Console, int x, int y, int count); //draw roads (I)
+	void Road_Equals(Console& g_Console, int x, int y, int count); //draw (=)
 	void Animation(Console& g_Console, int x, int y, char ch);
 	void drawAnimation(Console& g_Console, int x, int y, char ch);
 

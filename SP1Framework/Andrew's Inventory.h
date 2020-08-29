@@ -1,5 +1,5 @@
 #pragma once
-#include "Item.h"
+#include "Andrew's Item.h"
 #include "string"
 
 class Inventory : public Item
@@ -15,11 +15,11 @@ public:
 	//std::string getNameID();
 	//int getQuantity();
 	//void updateInventory();
-	int checkInventory(std::string n);
+	//int checkInventory(std::string n);
 	~Inventory();
 	bool pickup(Item* add);
 	bool Consumed(Item* use);
+	void QuantityCheck(std::string n);
 	void setQuantity(int q);
 	int getQuantity();
-	void QuantityCheck(std::string n);
 };
