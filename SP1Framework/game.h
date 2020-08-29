@@ -121,8 +121,7 @@ struct SGameChar : public Enemy
     bool itemActive;
     bool showItemUsed;
     bool showItemNotUsed;
-    bool showItem;
-    bool collected;
+    bool showNoQuantity;
     bool CP1;
     bool CP2;
     bool CP3;

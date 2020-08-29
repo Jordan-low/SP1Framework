@@ -69,7 +69,7 @@ int Inventory::getQuantity()
 	return Quantity;
 }*/
 
-int Inventory::checkInventory(std::string n)
+/*int Inventory::checkInventory(std::string n)
 {
 	for (int i = 0; i < MAX; i++)
 	{
@@ -142,8 +142,8 @@ int Inventory::checkInventory(std::string n)
 		items[7] = "Medicine";
 		Quantity = 1;
 		getQuantity();
-	}*/
-}
+	}
+}*/
 
 /*void Inventory::updateInventory()
 {
@@ -216,6 +216,23 @@ int Inventory::checkInventory(std::string n)
 
 	}
 }*/
+
+void Inventory::QuantityCheck(string n)
+{
+	this->getItemName() = n;
+	
+	Quantity++;
+}
+
+void Inventory::setQuantity(int q)
+{
+	Quantity = q;
+}
+
+int Inventory::getQuantity()
+{
+	return Quantity;
+}
 
 Inventory::~Inventory()
 {
