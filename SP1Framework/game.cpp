@@ -365,7 +365,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Boss_Room_End_Animation;
+    g_eGameState = S_phase2Battle;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -7751,6 +7751,9 @@ void Update_phase2Battle()
 }
 void phase2Battle()
 {
+    COORD c;
+
+
     if ((fightCount == 1) && (fightCount2 == 1) && (fightCount3 == 1) && (fightCount4 == 1) && (fightCount5 == 1))
     {
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
@@ -7776,17 +7779,23 @@ void phase2Battle()
 
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
-    COORD c;
     c.X = 32;
     c.Y = 0;
     string charHealth = to_string(g_sChar.GetH());
     g_Console.writeToBuffer(c, "Your Health: " + charHealth, 0x0D, 100);
-
+    static bool showPhase1 = true;
+    if (showPhase1 == true)
+    {
+        c.X = 35;
+        c.Y = 24;
+        g_Console.writeToBuffer(c, "Phase 1", 0x0B, 100);
+    }
     //drawLaser(g_Console, 20, 0, 0);
     //drawLaser(g_Console, 40, 0);
 
     if (g_sLaser.fight == true)
     {
+
         fightCount = 1;
         if (g_sLaser.startTimer == true) // stickman work
         {
@@ -7808,7 +7817,7 @@ void phase2Battle()
             drawLaser3(g_Console, randstickman3);
         }
 
-    } 
+    }
 
     if (g_sLaser2.fight == true)
     {
@@ -7836,6 +7845,7 @@ void phase2Battle()
         }
         if (g_sLaser.fight == true)
         {
+
             if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
             {
                 g_sMovingBlock.fight = true;
@@ -7858,11 +7868,18 @@ void phase2Battle()
                 // reset locations for bomb and raymond
             }
         }
-        
+
     }
     
     if (g_sLaser3.fight == true)
     {
+        static bool showPhase = true;
+        if (showPhase == true)
+        {
+            c.X = 35;
+            c.Y = 24;
+            g_Console.writeToBuffer(c, "Phase 3", 0x0B, 100);
+        }
         fightCount3 = 1;
         if (g_sLaser3.startTimer == true)
         {
@@ -7913,11 +7930,12 @@ void phase2Battle()
             g_Console.writeToBuffer(c, ras, 100);
             // reset locations for bomb and raymond
         }
-        
+
     }
-    
+
     if (g_sMovingBlock.fight == true)
     {
+
         fightCount4 = 1;
         if (g_sMovingBlock.startTimer == true) // stickman work
         {
@@ -7999,6 +8017,7 @@ void phase2Battle()
             g_sBomb.m_cLocation.X = randPosX2;
             g_sBomb.m_cLocation.Y = randPosY2;
 
+
             // reset locations for bomb and raymond
         }
     }
@@ -8045,7 +8064,7 @@ void phase2Battle()
         }
     }
 
-  
+
     renderRaymond();
     if (g_sRaymond.startTimer == true)
     {
@@ -8070,6 +8089,48 @@ void phase2Battle()
             g_sRaymond.counter = false;
         }
     }
+    bool showObj = true;
+    if (showObj == true)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Avoid the incoming objects and", 0x0F, 100);
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "           Push the bomb ('B') to Raymond ('R') to move on to next phase", 0x0F, 100);
+
+    }
+    if ((g_sMovingBlock.fight == true) && (g_sBreakFloor.fight == true))
+    {
+        static bool showPhase = true;
+        if (showPhase == true)
+        {
+            c.X = 35;
+            c.Y = 24;
+            g_Console.writeToBuffer(c, "Phase 2", 0x0B, 100);
+        }
+    }
+    if ((g_sLaser.fight == true) && (g_sLaser2.fight == true) && (g_sLaser3.fight == true))
+    {
+        static bool showPhase = true;
+        if (showPhase == true)
+        {
+            c.X = 35;
+            c.Y = 24;
+            g_Console.writeToBuffer(c, "Phase 4", 0x0B, 100);
+        }
+    }
+    if ((g_sLaser.fight == true) && (g_sLaser2.fight == true) && (g_sLaser3.fight == true) && (g_sMovingBlock.fight == true) && (g_sBreakFloor.fight == true))
+    {
+        static bool showPhase = true;
+        if (showPhase == true)
+        {
+            c.X = 35;
+            c.Y = 24;
+            g_Console.writeToBuffer(c, "Final Phase", 0x0B, 100);
+        }
+    }
+    
+
 }
 void updateBomb()
 {
