@@ -31,6 +31,7 @@ double g_dMedicalTime;
 double g_dMedical2Time;
 double g_dDungeonStealth3Time;
 double g_dBossTime;
+double g_dBossMiddleTime;
 double g_dslashGuard;
 double g_dkillGuard;
 double g_dslashWasp;
@@ -341,8 +342,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Credits;
-    g_eGameState = S_IAF4;
+    g_eGameState = S_Boss_Room_Animation;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -624,6 +624,7 @@ void update(double dt)
     g_dMedical2Time += dt;
     g_dDungeonStealth3Time += dt;
     g_dBossTime += dt;
+    g_dBossMiddleTime += dt;
     g_dslashGuard += dt;
     g_dkillGuard += dt;
     GuardDetectTime += dt;
@@ -721,6 +722,8 @@ void update(double dt)
     case S_Dungeon_Stealth3_Animation: Update_Dungeon_Stealth3_Animation();
         break;
     case S_Boss_Room_Animation: Update_Boss_Room_Animation();
+        break;
+    case S_Boss_Room_Mid_Animation: Update_Boss_Room_Mid_Animation();
         break;
     case S_BattleScreen: UpdateBattleScreen();
         break;
@@ -2822,59 +2825,59 @@ void Protest_Area_Animation()
             Cutscene.drawgrid(g_Console, 62, 5, '\\');
             if (g_dProtestTime > 0.9)
             {
-                Cutscene.drawgrid(g_Console, 62, 4, (char)12);
+                Cutscene.drawgrid(g_Console, 62, 4,'R');
                 if (g_dProtestTime > 1.2)
                 {
                     Cutscene.cleargrid(g_Console, 62, 4);
-                    Cutscene.drawgrid(g_Console, 63, 4, (char)12);
+                    Cutscene.drawgrid(g_Console, 63, 4,'R');
                     if (g_dProtestTime > 1.5)
                     {
                         Cutscene.cleargrid(g_Console, 63, 4);
-                        Cutscene.drawgrid(g_Console, 63, 5, (char)12);
+                        Cutscene.drawgrid(g_Console, 63, 5,'R');
                         if (g_dProtestTime > 1.8)
                         {
                             Cutscene.cleargrid(g_Console, 63, 5);
-                            Cutscene.drawgrid(g_Console, 63, 6, (char)12);
+                            Cutscene.drawgrid(g_Console, 63, 6,'R');
                             if (g_dProtestTime > 2.1)
                             {
                                 Cutscene.cleargrid(g_Console, 63, 6);
-                                Cutscene.drawgrid(g_Console, 63, 7, (char)12);
+                                Cutscene.drawgrid(g_Console, 63, 7,'R');
                                 if (g_dProtestTime > 2.4)
                                 {
                                     Cutscene.cleargrid(g_Console, 63, 7);
-                                    Cutscene.drawgrid(g_Console, 62, 8, (char)12);
+                                    Cutscene.drawgrid(g_Console, 62, 8,'R');
                                     if (g_dProtestTime > 2.7)
                                     {
                                         Cutscene.cleargrid(g_Console, 62, 8);
-                                        Cutscene.drawgrid(g_Console, 60, 8, (char)12);
+                                        Cutscene.drawgrid(g_Console, 60, 8,'R');
                                         if (g_dProtestTime > 3.0)
                                         {
                                             Cutscene.cleargrid(g_Console, 60, 8);
-                                            Cutscene.drawgrid(g_Console, 57, 8, (char)12);
+                                            Cutscene.drawgrid(g_Console, 57, 8,'R');
                                             if (g_dProtestTime > 3.3)
                                             {
                                                 Cutscene.cleargrid(g_Console, 57, 8);
-                                                Cutscene.drawgrid(g_Console, 54, 8, (char)12);
+                                                Cutscene.drawgrid(g_Console, 54, 8,'R');
                                                 if (g_dProtestTime > 3.6)
                                                 {
                                                     Cutscene.cleargrid(g_Console, 54, 8);
-                                                    Cutscene.drawgrid(g_Console, 51, 8, (char)12);
+                                                    Cutscene.drawgrid(g_Console, 51, 8,'R');
                                                     if (g_dProtestTime > 3.9)
                                                     {
                                                         Cutscene.cleargrid(g_Console, 51, 8);
-                                                        Cutscene.drawgrid(g_Console, 48, 8, (char)12);
+                                                        Cutscene.drawgrid(g_Console, 48, 8,'R');
                                                         if (g_dProtestTime > 4.2)
                                                         {
                                                             Cutscene.cleargrid(g_Console, 48, 8);
-                                                            Cutscene.drawgrid(g_Console, 45, 8, (char)12);
+                                                            Cutscene.drawgrid(g_Console, 45, 8,'R');
                                                             if (g_dProtestTime > 4.5)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 45, 8);
-                                                                Cutscene.drawgrid(g_Console, 42, 8, (char)12);
+                                                                Cutscene.drawgrid(g_Console, 42, 8,'R');
                                                                 if (g_dProtestTime > 4.8)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 42, 8);
-                                                                    Cutscene.drawgrid(g_Console, 39, 8, (char)12);
+                                                                    Cutscene.drawgrid(g_Console, 39, 8,'R');
                                                                     if (g_dProtestTime > 5.1)
                                                                     {
                                                                         //g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
@@ -2936,59 +2939,59 @@ void Protest_Area_Animation()
                                                                                                                         }
                                                                                                                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                                                                                         Cutscene.drawgrid(g_Console, 39, 8, '_');
-                                                                                                                        Cutscene.drawgrid(g_Console, 42, 8, (char)12);
+                                                                                                                        Cutscene.drawgrid(g_Console, 42, 8,'R');
                                                                                                                         if (g_dProtestTime > 74.3)
                                                                                                                         {
                                                                                                                             Cutscene.cleargrid(g_Console, 42, 8);
-                                                                                                                            Cutscene.drawgrid(g_Console, 45, 8, (char)12);
+                                                                                                                            Cutscene.drawgrid(g_Console, 45, 8,'R');
                                                                                                                             if (g_dProtestTime > 74.6)
                                                                                                                             {
                                                                                                                                 Cutscene.cleargrid(g_Console, 45, 8);
-                                                                                                                                Cutscene.drawgrid(g_Console, 48, 8, (char)12);
+                                                                                                                                Cutscene.drawgrid(g_Console, 48, 8,'R');
                                                                                                                                 if (g_dProtestTime > 74.9)
                                                                                                                                 {
                                                                                                                                     Cutscene.cleargrid(g_Console, 48, 8);
-                                                                                                                                    Cutscene.drawgrid(g_Console, 51, 8, (char)12);
+                                                                                                                                    Cutscene.drawgrid(g_Console, 51, 8,'R');
                                                                                                                                     if (g_dProtestTime > 75.2)
                                                                                                                                     {
                                                                                                                                         Cutscene.cleargrid(g_Console, 51, 8);
-                                                                                                                                        Cutscene.drawgrid(g_Console, 54, 8, (char)12);
+                                                                                                                                        Cutscene.drawgrid(g_Console, 54, 8,'R');
                                                                                                                                         if (g_dProtestTime > 75.5)
                                                                                                                                         {
                                                                                                                                             Cutscene.cleargrid(g_Console, 54, 8);
-                                                                                                                                            Cutscene.drawgrid(g_Console, 57, 8, (char)12);
+                                                                                                                                            Cutscene.drawgrid(g_Console, 57, 8,'R');
                                                                                                                                             if (g_dProtestTime > 75.8)
                                                                                                                                             {
                                                                                                                                                 Cutscene.cleargrid(g_Console, 57, 8);
-                                                                                                                                                Cutscene.drawgrid(g_Console, 60, 8, (char)12);
+                                                                                                                                                Cutscene.drawgrid(g_Console, 60, 8,'R');
                                                                                                                                                 if (g_dProtestTime > 76.1)
                                                                                                                                                 {
                                                                                                                                                     Cutscene.cleargrid(g_Console, 60, 8);
-                                                                                                                                                    Cutscene.drawgrid(g_Console, 62, 8, (char)12);
+                                                                                                                                                    Cutscene.drawgrid(g_Console, 62, 8,'R');
                                                                                                                                                     if (g_dProtestTime > 76.4)
                                                                                                                                                     {
                                                                                                                                                         Cutscene.cleargrid(g_Console, 62, 8);
-                                                                                                                                                        Cutscene.drawgrid(g_Console, 63, 7, (char)12);
+                                                                                                                                                        Cutscene.drawgrid(g_Console, 63, 7,'R');
                                                                                                                                                         if (g_dProtestTime > 76.7)
                                                                                                                                                         {
                                                                                                                                                             Cutscene.cleargrid(g_Console, 63, 7);
-                                                                                                                                                            Cutscene.drawgrid(g_Console, 63, 6, (char)12);
+                                                                                                                                                            Cutscene.drawgrid(g_Console, 63, 6,'R');
                                                                                                                                                             if (g_dProtestTime > 77.0)
                                                                                                                                                             {
                                                                                                                                                                 Cutscene.cleargrid(g_Console, 63, 6);
-                                                                                                                                                                Cutscene.drawgrid(g_Console, 63, 5, (char)12);
+                                                                                                                                                                Cutscene.drawgrid(g_Console, 63, 5,'R');
                                                                                                                                                                 if (g_dProtestTime > 77.3)
                                                                                                                                                                 {
                                                                                                                                                                     Cutscene.cleargrid(g_Console, 63, 5);
-                                                                                                                                                                    Cutscene.drawgrid(g_Console, 63, 4, (char)12);
+                                                                                                                                                                    Cutscene.drawgrid(g_Console, 63, 4,'R');
                                                                                                                                                                     if (g_dProtestTime > 77.6)
                                                                                                                                                                     {
                                                                                                                                                                         Cutscene.cleargrid(g_Console, 63, 4);
-                                                                                                                                                                        Cutscene.drawgrid(g_Console, 62, 4, (char)12);
+                                                                                                                                                                        Cutscene.drawgrid(g_Console, 62, 4,'R');
                                                                                                                                                                         if (g_dProtestTime > 77.9)
                                                                                                                                                                         {
                                                                                                                                                                             Cutscene.cleargrid(g_Console, 63, 4);
-                                                                                                                                                                            Cutscene.drawgrid(g_Console, 62, 4, (char)12);
+                                                                                                                                                                            Cutscene.drawgrid(g_Console, 62, 4,'R');
                                                                                                                                                                             if (g_dProtestTime > 78.2)
                                                                                                                                                                             {
                                                                                                                                                                                 Cutscene.cleargrid(g_Console, 62, 4);
@@ -3182,7 +3185,7 @@ void Dungeon_Cell_Animation()
     d.X = 5;
     d.Y = 27;
     //drawing Robert
-    Cutscene.drawgrid(g_Console, 40, 13, (char)1);
+    Cutscene.drawgridW(g_Console, 40, 13, (char)1);
     if (g_dDungeonTime > 0.3)
     {
         //drawing Ell
@@ -3232,41 +3235,41 @@ void Dungeon_Cell_Animation()
                                                     Cutscene.cleargrid(g_Console, 15, 5);
                                                     Cutscene.cleargrid(g_Console, 40, 13);
                                                     Cutscene.drawgrid(g_Console, 18, 5, (char)12);
-                                                    Cutscene.drawgrid(g_Console, 38, 13, (char)12);
+                                                    Cutscene.drawgridW(g_Console, 38, 13, (char)1);
                                                     if (g_dDungeonTime > 10.4)
                                                     {
                                                         Cutscene.cleargrid(g_Console, 18, 5);
                                                         Cutscene.cleargrid(g_Console, 38, 13);
                                                         Cutscene.drawgrid(g_Console, 21, 5, (char)12);
-                                                        Cutscene.drawgrid(g_Console, 36, 13, (char)12);
+                                                        Cutscene.drawgridW(g_Console, 36, 13, (char)1);
                                                         if (g_dDungeonTime > 10.7)
                                                         {
                                                             Cutscene.cleargrid(g_Console, 21, 5);
                                                             Cutscene.cleargrid(g_Console, 36, 13);
                                                             Cutscene.drawgrid(g_Console, 24, 5, (char)12);
-                                                            Cutscene.drawgrid(g_Console, 34, 13, (char)12);
+                                                            Cutscene.drawgridW(g_Console, 34, 13, (char)1);
                                                             if (g_dDungeonTime > 11.0)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 24, 5);
                                                                 Cutscene.cleargrid(g_Console, 34, 13);
                                                                 Cutscene.drawgrid(g_Console, 27, 5, (char)12);
-                                                                Cutscene.drawgrid(g_Console, 32, 13, (char)12);
+                                                                Cutscene.drawgridW(g_Console, 32, 13, (char)1);
                                                                 if (g_dDungeonTime > 11.3)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 27, 5);
                                                                     Cutscene.cleargrid(g_Console, 32, 13);
                                                                     Cutscene.drawgrid(g_Console, 30, 5, (char)12);
-                                                                    Cutscene.drawgrid(g_Console, 30, 13, (char)12);
+                                                                    Cutscene.drawgridW(g_Console, 30, 13, (char)1);
                                                                     if (g_dDungeonTime > 11.6)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 30, 5);
                                                                         Cutscene.cleargrid(g_Console, 30, 13);
                                                                         Cutscene.drawgrid(g_Console, 30, 7, (char)12);
-                                                                        Cutscene.drawgrid(g_Console, 30, 11, (char)12);
+                                                                        Cutscene.drawgridW(g_Console, 30, 11, (char)1);
                                                                         if (g_dDungeonTime > 11.9)
                                                                         {
                                                                             Cutscene.cleargrid(g_Console, 30, 11);
-                                                                            Cutscene.drawgrid(g_Console, 30, 9, (char)12);
+                                                                            Cutscene.drawgridW(g_Console, 30, 9, (char)1);
                                                                             if (g_dDungeonTime > 12.2)
                                                                             {
                                                                                 g_Console.writeToBuffer(c, "Ell: You're finally awake!!", 0x0F, 100);
@@ -3289,7 +3292,7 @@ void Dungeon_Cell_Animation()
                                                                                             {
                                                                                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
                                                                                                 g_Console.writeToBuffer(d, "                                                                                                     ", 0x0A, 100);
-                                                                                                g_Console.writeToBuffer(c, "Ell: I'll meet you after you pass the maze.", 0x0F, 100);
+                                                                                                g_Console.writeToBuffer(c, "Ell: Be careful... I'll be waiting for you!", 0x0F, 100);
                                                                                                 if (g_dDungeonTime > 30.2)
                                                                                                 {
                                                                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -3494,7 +3497,7 @@ void IAF3_Animation()
     c.Y = 26;
     d.X = 5;
     d.Y = 27;
-    Cutscene.drawgrid(g_Console, 40, 6, 'E');
+    Cutscene.drawgrid(g_Console, 40, 6, (char)12);
     if (g_dIAF3Time > 0.3)
     {
         //g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
@@ -3581,7 +3584,7 @@ void Medical_Fight_Animation()
     renderCharacter();
     c.X = 5;
     c.Y = 26;
-    Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
+    Cutscene.drawgridW(g_Console, 34, 12, (char)1); //Robert (Hero)
     Cutscene.drawgrid(g_Console, 34, 13, (char)12); //Ell
 
     Cutscene.drawgrid(g_Console, 36, 12, (char)12); //Patient 1
@@ -3759,7 +3762,7 @@ void Medical_Facility_Animation()
     renderCharacter();
     c.X = 5;
     c.Y = 26;
-    Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
+    Cutscene.drawgridW(g_Console, 34, 12, (char)1); //Robert (Hero)
     Cutscene.drawgrid(g_Console, 34, 13, (char)12); //Ell
 
     //Breaking in
@@ -3919,7 +3922,7 @@ void Medical_Facility_Part2_Animation()
     renderCharacter();
     c.X = 5;
     c.Y = 26;
-    Cutscene.drawgrid(g_Console, 34, 12, 'H'); //Robert (Hero)
+    Cutscene.drawgridW(g_Console, 34, 12, (char)1); //Robert (Hero)
     Cutscene.drawgrid(g_Console, 34, 13, (char)12); //Ell
 
     Cutscene.drawgrid(g_Console, 32, 11, 'E');
@@ -3951,7 +3954,7 @@ void Medical_Facility_Part2_Animation()
                         if (g_dMedical2Time > 10.2)
                         {
                             Cutscene.cleargrid(g_Console, 34, 12);
-                            Cutscene.drawgrid(g_Console, 33, 12, 'H');
+                            Cutscene.drawgridW(g_Console, 33, 12, (char)1);
                             if (g_dMedical2Time > 10.5)
                             {
                                 //run patient run
@@ -4030,8 +4033,8 @@ void Dungeon_Stealth3_Animation()
     c.Y = 26;
     d.X = 5;
     d.Y = 27;
-    Cutscene.drawgrid(g_Console, 38, 12, (char)12); //Raymond
-    Cutscene.drawgrid(g_Console, 40, 12, (char)12); //Lacky
+    Cutscene.drawgrid(g_Console, 38, 12, 'R'); //Raymond
+    Cutscene.drawgrid(g_Console, 40, 12, 'L'); //Lacky
     if (g_dDungeonStealth3Time > 0.3)
     {
         g_Console.writeToBuffer(c, "Raymond: I want you to keep this secret between us,", 0x0F);
@@ -4089,64 +4092,64 @@ void Dungeon_Stealth3_Animation()
                                             g_Console.writeToBuffer(c, "Robot: Beep bop boop", 0x0F);
                                             Cutscene.cleargrid(g_Console, 38, 12);
                                             Cutscene.cleargrid(g_Console, 40, 12);
-                                            Cutscene.drawgrid(g_Console, 33, 11, (char)12);
-                                            Cutscene.drawgrid(g_Console, 43, 12, (char)12);
+                                            Cutscene.drawgrid(g_Console, 33, 11, 'R');
+                                            Cutscene.drawgrid(g_Console, 43, 12, 'L');
                                             if (g_dDungeonStealth3Time > 48.9)
                                             {
                                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                 Cutscene.cleargrid(g_Console, 33, 11);
                                                 Cutscene.cleargrid(g_Console, 43, 12);
-                                                Cutscene.drawgrid(g_Console, 29, 10, (char)12);
-                                                Cutscene.drawgrid(g_Console, 46, 12, (char)12);
+                                                Cutscene.drawgrid(g_Console, 29, 10, 'R');
+                                                Cutscene.drawgrid(g_Console, 46, 12, 'L');
                                                 if (g_dDungeonStealth3Time > 49.2)
                                                 {
                                                     Cutscene.cleargrid(g_Console, 29, 10);
                                                     Cutscene.cleargrid(g_Console, 46, 12);
-                                                    Cutscene.drawgrid(g_Console, 24, 9, (char)12);
-                                                    Cutscene.drawgrid(g_Console, 49, 12, (char)12);
+                                                    Cutscene.drawgrid(g_Console, 24, 9, 'R');
+                                                    Cutscene.drawgrid(g_Console, 49, 12, 'L');
                                                     if (g_dDungeonStealth3Time > 49.5)
                                                     {
                                                         Cutscene.cleargrid(g_Console, 24, 9);
                                                         Cutscene.cleargrid(g_Console, 49, 12);
-                                                        Cutscene.drawgrid(g_Console, 20, 8, (char)12);
-                                                        Cutscene.drawgrid(g_Console, 52, 12, (char)12);
+                                                        Cutscene.drawgrid(g_Console, 20, 8, 'R');
+                                                        Cutscene.drawgrid(g_Console, 52, 12, 'L');
                                                         if (g_dDungeonStealth3Time > 49.8)
                                                         {
                                                             Cutscene.cleargrid(g_Console, 20, 8);
                                                             Cutscene.cleargrid(g_Console, 52, 12);
-                                                            Cutscene.drawgrid(g_Console, 16, 7, (char)12);
-                                                            Cutscene.drawgrid(g_Console, 55, 12, (char)12);
+                                                            Cutscene.drawgrid(g_Console, 16, 7, 'R');
+                                                            Cutscene.drawgrid(g_Console, 55, 12, 'L');
                                                             if (g_dDungeonStealth3Time > 50.1)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 16, 7);
                                                                 Cutscene.cleargrid(g_Console, 55, 12);
-                                                                Cutscene.drawgrid(g_Console, 12, 6, (char)12);
-                                                                Cutscene.drawgrid(g_Console, 58, 12, (char)12);
+                                                                Cutscene.drawgrid(g_Console, 12, 6, 'R');
+                                                                Cutscene.drawgrid(g_Console, 58, 12, 'L');
                                                                 if (g_dDungeonStealth3Time > 50.4)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 12, 6);
                                                                     Cutscene.cleargrid(g_Console, 58, 12);
-                                                                    Cutscene.drawgrid(g_Console, 9, 5, (char)12);
-                                                                    Cutscene.drawgrid(g_Console, 61, 11, (char)12);
+                                                                    Cutscene.drawgrid(g_Console, 9, 5, 'R');
+                                                                    Cutscene.drawgrid(g_Console, 61, 11, 'L');
                                                                     if (g_dDungeonStealth3Time > 50.7)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 9, 5);
                                                                         Cutscene.cleargrid(g_Console, 61, 11);
-                                                                        Cutscene.drawgrid(g_Console, 5, 4, (char)12);
-                                                                        Cutscene.drawgrid(g_Console, 61, 9, (char)12);
+                                                                        Cutscene.drawgrid(g_Console, 5, 4, 'R');
+                                                                        Cutscene.drawgrid(g_Console, 61, 9, 'L');
                                                                         if (g_dDungeonStealth3Time > 50.7)
                                                                         {
                                                                             Cutscene.cleargrid(g_Console, 5, 4);
                                                                             Cutscene.cleargrid(g_Console, 61, 9);
-                                                                            Cutscene.drawgrid(g_Console, 61, 7, (char)12);
+                                                                            Cutscene.drawgrid(g_Console, 61, 7, 'L');
                                                                             if (g_dDungeonStealth3Time > 50.7)
                                                                             {
                                                                                 Cutscene.cleargrid(g_Console, 61, 7);
-                                                                                Cutscene.drawgrid(g_Console, 61, 5, (char)12);
+                                                                                Cutscene.drawgrid(g_Console, 61, 5, 'L');
                                                                                 if (g_dDungeonStealth3Time > 51.0)
                                                                                 {
                                                                                     Cutscene.cleargrid(g_Console, 61, 5);
-                                                                                    Cutscene.drawgrid(g_Console, 61, 3, (char)12);
+                                                                                    Cutscene.drawgrid(g_Console, 61, 3, 'L');
                                                                                     if (g_dDungeonStealth3Time > 51.3)
                                                                                     {
                                                                                         Cutscene.cleargrid(g_Console, 61, 3);
@@ -4212,7 +4215,7 @@ void Boss_Room_Animation()
     c.Y = 26;
     d.X = 5;
     d.Y = 27;
-    Cutscene.drawgrid(g_Console, 40, 21, 'H'); //Robert
+    Cutscene.drawgridW(g_Console, 40, 21, (char)1); //Robert
     Cutscene.drawgrid(g_Console, 40, 3, 'R'); //Raymond
     if (g_dBossTime > 1)
     {
@@ -4299,7 +4302,7 @@ void Boss_Room_Animation()
                                                                                 g_Console.writeToBuffer(c, "Raymond: Wouldn't that be wonderful?", 0x0F);
                                                                                 g_Console.writeToBuffer(d, "         It's a fantastic idea!!", 0x0F);
                                                                                 Cutscene.cleargrid(g_Console, 55, 21);
-                                                                                Cutscene.drawgrid(g_Console, 53, 21, 'R');//hi
+                                                                                Cutscene.drawgrid(g_Console, 53, 21, 'R');
                                                                                 if (g_dBossTime > 26.5)
                                                                                 {
                                                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -4341,7 +4344,7 @@ void Boss_Room_Animation()
                                                                                                             if (g_dBossTime > 40.0)
                                                                                                             {
                                                                                                                 Cutscene.cleargrid(g_Console, 40, 21);
-                                                                                                                Cutscene.drawgrid(g_Console, 39, 21, 'H');
+                                                                                                                Cutscene.drawgridW(g_Console, 39, 21, (char)1);
                                                                                                                 g_Console.writeToBuffer(c, "Robert: ...", 0x0F);
                                                                                                                 g_Console.writeToBuffer(d, "        Stay away from me. I'm not joining you.", 0x0F);
                                                                                                                 if (g_dBossTime > 44.0)
@@ -4372,6 +4375,88 @@ void Boss_Room_Animation()
                                                         }
                                                     }
                                                 }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Update_Boss_Room_Mid_Animation()
+{
+    if (g_dBossMiddleTime > 11.2)
+    {
+        g_eGameState = S_Boss_Battle_Room;
+    }
+    processUserInput();
+}
+void Boss_Room_Mid_Animation()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.boss_room(g_Console);
+    COORD c;
+    COORD d;
+    renderCharacter();
+    c.X = 5;
+    c.Y = 26;
+    d.X = 5;
+    d.Y = 27;
+    Cutscene.drawgridW(g_Console, 39, 21, (char)1); //Robert
+    Cutscene.drawgrid(g_Console, 41, 21, 'R'); //Raymond
+    if (g_dBossMiddleTime > 1)
+    {
+        Cutscene.cleargrid(g_Console, 41, 21);
+        Cutscene.drawgrid(g_Console, 42, 21, 'R');
+        g_Console.writeToBuffer(c, "Raymond: ...", 0x0F);
+        if (g_dBossMiddleTime > 3)
+        {
+            Cutscene.cleargrid(g_Console, 41, 21);
+            Cutscene.drawgrid(g_Console, 42, 21, 'R');
+            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+            g_Console.writeToBuffer(c, "Raymond: This is no fun at all for such an interesting opponent...", 0x0F);
+            if (g_dBossMiddleTime > 6)
+            {
+                Cutscene.cleargrid(g_Console, 42, 21);
+                Cutscene.drawgrid(g_Console, 43, 21, 'R');
+                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                if (g_dBossMiddleTime > 6.3)
+                {
+                    Cutscene.cleargrid(g_Console, 43, 21);
+                    Cutscene.drawgrid(g_Console, 45, 21, 'R');
+                    if (g_dBossMiddleTime > 6.6)
+                    {
+                        Cutscene.cleargrid(g_Console, 45, 21);
+                        Cutscene.drawgrid(g_Console, 48, 21, 'R');
+                        if (g_dBossMiddleTime > 6.9)
+                        {
+                            Cutscene.cleargrid(g_Console, 48, 21);
+                            Cutscene.drawgrid(g_Console, 52, 21, 'R');
+                            if (g_dBossMiddleTime > 7.2)
+                            {
+                                Cutscene.cleargrid(g_Console, 52, 21);
+                                Cutscene.drawgrid(g_Console, 56, 21, 'R');
+                                if (g_dBossMiddleTime > 7.5)
+                                {
+                                    Cutscene.cleargrid(g_Console, 56, 21);
+                                    Cutscene.drawgrid(g_Console, 60, 21, 'R');
+                                    if (g_dBossMiddleTime > 7.8)
+                                    {
+                                        Cutscene.cleargrid(g_Console, 60, 21);
+                                        Cutscene.drawgrid(g_Console, 64, 21, 'R');
+                                        if (g_dBossMiddleTime > 8.1)
+                                        {
+                                            g_Console.writeToBuffer(c, "Raymond: Come Robert! Let us have this dance of a duel!!", 0x0F);
+                                            if (g_dBossMiddleTime > 11.1)
+                                            {
+                                                Cutscene.cleargrid(g_Console, 64, 21);
+                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                             }
                                         }
                                     }
@@ -8336,6 +8421,8 @@ void render()
     case S_Dungeon_Stealth3_Animation: Dungeon_Stealth3_Animation();
         break;
     case S_Boss_Room_Animation: Boss_Room_Animation();
+        break;
+    case S_Boss_Room_Mid_Animation: Boss_Room_Mid_Animation();
         break;
     case S_BattleScreen: RenderBattleScreen();
         break;

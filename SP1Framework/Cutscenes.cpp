@@ -34,6 +34,14 @@ void Cutscenes::drawgridY(Console& g_Console, int x, int y, char chara)
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = chara, 0x0E);
 }
 
+void Cutscenes::drawgridW(Console& g_Console, int x, int y, char chara)
+{
+	COORD c;
+	c.X = x;
+	c.Y = y;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = chara, 0x0F);
+}
+
 void Cutscenes::drawgridLaserRight(Console& g_Console, int x, int y)
 {
 	COORD c;

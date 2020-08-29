@@ -58,6 +58,7 @@ enum EGAMESTATES
     S_Dungeon_Stealth_2,
     S_Dungeon_Stealth_3,
     S_Boss_Battle_Room,
+    S_wireGame,
     //Animations
     S_Start_Animation,
     S_Orphanage_Animation,
@@ -71,8 +72,8 @@ enum EGAMESTATES
     S_Medical_Facility_Part2_Animation,
     S_Dungeon_Stealth3_Animation,
     S_Boss_Room_Animation,
+    S_Boss_Room_Mid_Animation,
     S_BattleScreen,
-    S_wireGame,
     S_Credits,
     //Battle animations
     S_SlashGuard,
@@ -219,6 +220,8 @@ void Update_Dungeon_Stealth3_Animation();
 void Dungeon_Stealth3_Animation();
 void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
+void Update_Boss_Room_Mid_Animation();
+void Boss_Room_Mid_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
 void Update_Credits();
