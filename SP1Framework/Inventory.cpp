@@ -232,10 +232,8 @@ int Inventory::checkInventory(std::string n)
 
 	}
 }*/
-
-
-
 Inventory::~Inventory()
 {
 
 }
+

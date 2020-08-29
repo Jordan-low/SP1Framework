@@ -22,4 +22,5 @@ public:
 	void setQuantity(int q);
 	int getQuantity();
 	void QuantityCheck(std::string n);
+
 };
