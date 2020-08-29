@@ -57,6 +57,7 @@ double laserTime2;
 double laserTime3;
 double movingBlockTime;
 double breakFloorTime;
+double bombTime;
 int randnum;
 int randnum2;
 int randnum3;
@@ -71,6 +72,10 @@ int randstickman3;
 int randBlock;
 int randBlock2;
 int randBlock3;
+int randBreakFloor;
+int randBreakFloor2;
+int randBomb;
+int randBomb2;
 int randCount;
 
 bool music;
@@ -110,11 +115,12 @@ SGameChar   g_sBox3;
 SGameChar   g_sBox4;
 SGameChar   g_sBox5;
 SGameChar   g_sBox6;
-SGameChar   g_sLaser;//jordan forced me to do this
-SGameChar   g_sLaser2;//jordan forced me to do this
-SGameChar   g_sLaser3;//jordan forced me to do this
-SGameChar   g_sMovingBlock;//jordan forced me to do this
-SGameChar   g_sBreakFloor;//jordan forced me to do this
+SGameChar   g_sLaser;
+SGameChar   g_sLaser2;
+SGameChar   g_sLaser3;
+SGameChar   g_sMovingBlock;
+SGameChar   g_sBreakFloor;
+SGameChar   g_sBomb;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -281,12 +287,16 @@ void init(void)
     g_sLaser3.startTimer = false;
     g_sMovingBlock.startTimer = false;
     g_sBreakFloor.startTimer = false;
+    g_sBomb.startTimer = false;
 
+    //bomb things
+    g_sBomb.m_cLocation.X = 40;
+    g_sBomb.m_cLocation.Y = 19;
 
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_wireGame;
+    g_eGameState = S_phase2Battle;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -589,6 +599,7 @@ void update(double dt)
     laserTime3 += dt;
     movingBlockTime += dt;
     breakFloorTime += dt;
+    bombTime += dt;
 
     switch (g_eGameState)
     {
@@ -6337,7 +6348,7 @@ void Update_phase2Battle()
         g_sMovingBlock.startTimer = true;
         g_sMovingBlock.counter = true;
     }
-    if (breakFloorTime > 5) // stickman
+    if (breakFloorTime > 5) //break floor
     {
         g_sBreakFloor.startTimer = true;
         g_sBreakFloor.counter = true;
@@ -6346,13 +6357,7 @@ void Update_phase2Battle()
 void phase2Battle()
 {
     srand((unsigned)time(0));
-    /*
-    while (music == false)
-    {
-        PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
-        music = true;
-    }
-    */
+
     /*while (music == false)
     {
         PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
@@ -6366,10 +6371,11 @@ void phase2Battle()
     c.Y = 0;
     string charHealth = to_string(g_sChar.GetH());
     g_Console.writeToBuffer(c, "Your Health: " + charHealth, 0x0D, 100);
+
     //drawLaser(g_Console, 20, 0, 0);
     //drawLaser(g_Console, 40, 0);
-    /*
-    if (g_sLaser.startTimer == true) // stickman work
+
+    /*if (g_sLaser.startTimer == true) // stickman work
     {
         g_dphase2Time = 0.0;
         g_sLaser.resetTimer = true;
@@ -6387,15 +6393,6 @@ void phase2Battle()
         drawLaser3(g_Console, randstickman);
         drawLaser3(g_Console, randstickman2);
         drawLaser3(g_Console, randstickman3);
-
-
-        //drawHoriLaser(g_Console, randnum3);
-
-        //drawVertLaser(g_Console, 0);
-
-        //drawLaser(g_Console, 5);
-        //drawLaser2(g_Console, 2);
-        //g_sLaser.resetTimer = false;
     }
 
     if (g_sLaser2.startTimer == true) // stickman work
@@ -6418,16 +6415,8 @@ void phase2Battle()
         drawLaser2(g_Console, randnum2);
         drawLaser2(g_Console, randnum3);
         drawLaser2(g_Console, randnum4);
-
-        //drawHoriLaser(g_Console, randnum3);
-
-        //drawVertLaser(g_Console, 0);
-
-        //drawLaser(g_Console, 5);
-        //drawLaser2(g_Console, 2);
-        //g_sLaser.resetTimer = false;
     }
-    
+
     if (g_sLaser3.startTimer == true)
     {
         laserTime3 = 0.0;
@@ -6457,7 +6446,7 @@ void phase2Battle()
 
         //g_sLaser.resetTimer = false;
     }
-    */
+
     if (g_sMovingBlock.startTimer == true) // stickman work
     {
         movingBlockTime = 0.0;
@@ -6486,19 +6475,60 @@ void phase2Battle()
     {
         if (g_sBreakFloor.counter == true)
         {
-            randstickman = rand() % 22 + 2;
-            randstickman2 = rand() % 19 + 2;
-            //randstickman3 = rand() % 22 + 2;
-
+            randBreakFloor = rand() % 22 + 2;
+            randBreakFloor2 = rand() % 19 + 2;
             g_sBreakFloor.counter = false;
         }
-        drawBreakFloor(g_Console, randstickman, randstickman2);
+        drawBreakFloor(g_Console, randBreakFloor, randBreakFloor2);
+        drawBreakFloor(g_Console, randBreakFloor2, randBreakFloor);
         //drawLaser3(g_Console, randstickman2);
         //drawLaser3(g_Console, randstickman3);
-    }
+    }*/
 
     renderCharacter();
     rMap.boss_room(g_Console);
+
+    renderBomb();
+    if ((g_sChar.m_cLocation.X == g_sBomb.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBomb.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 3)
+        {
+            g_sBomb.m_cLocation.Y--;
+            if (g_sBomb.m_cLocation.X == 73 && g_sBomb.m_cLocation.Y == 18)
+            {
+                g_sBomb.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
+        {
+            g_sBomb.m_cLocation.Y++;
+            if (g_sBomb.m_cLocation.X == 73 && g_sBomb.m_cLocation.Y == 18)
+            {
+                g_sBomb.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            g_sBomb.m_cLocation.X--;
+            if (g_sBomb.m_cLocation.X == 73 && g_sBomb.m_cLocation.Y == 18)
+            {
+                g_sBomb.startTimer = true;
+            }
+        }
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
+        {
+            g_sBomb.m_cLocation.X++;
+            if (g_sBomb.m_cLocation.X == 73 && g_sBomb.m_cLocation.Y == 18)
+            {
+                g_sBomb.startTimer = true;
+            }
+        }
+    }
+}
+
+void renderBomb()
+{
+    g_Console.writeToBuffer(g_sBomb.m_cLocation, 'B', 0x0B);
 }
 
 
@@ -6872,7 +6902,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
-                    g_sGuard.xRight = true;
+                    g_sGuard.xLeft = true; 
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
@@ -6894,7 +6924,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
-                    g_sGuard2.xRight = true;
+                    g_sGuard2.xLeft = true; 
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
@@ -8098,8 +8128,6 @@ void renderMap_DS1()
                 }
             }
         }
-
-
     }
     if (g_sGuard3.xRight == true)
     {
@@ -8124,7 +8152,6 @@ void renderMap_DS1()
                 }
             }
         }
-
     }
     if (g_sGuard3.xUp == true)
     {
