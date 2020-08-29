@@ -13,7 +13,6 @@
 #include "Dialogue.h"
 #include "drawSprites.h"
 #include "Minigame.h"
-#include "Sound.h"
 
 using namespace std;
 
@@ -58,6 +57,7 @@ double laserTime3;
 double movingBlockTime;
 double breakFloorTime;
 double g_dCreditsTime;
+double bombTime;
 int randnum;
 int randnum2;
 int randnum3;
@@ -78,9 +78,9 @@ int randBomb;
 int randBomb2;
 int randCount;
 
+bool townsquare_music;
 bool phase2_music;
 bool credits_music;
-Sound s;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -297,7 +297,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_phase2Battle;
+    g_eGameState = S_Credits;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -1400,7 +1400,7 @@ void Update_Credits()
 {
     if (g_dCreditsTime > 36)
     {
-        g_eGameState = S_GAME;
+        g_bQuitGame = true;
     }
     processUserInput();
 }
@@ -1422,253 +1422,273 @@ void Credits()
         g_Console.writeToBuffer(c, "the President and sought to restore the");
         c.Y = 14;
         g_Console.writeToBuffer(c, "world back to its original state.");
-        if (g_dCreditsTime > 5.5)
+        if (g_dCreditsTime > 5.0)
         {
             Cutscene.clearScreen(g_Console);
-            c.X = 32;
-            c.Y = 17;
-            g_Console.writeToBuffer(c, "Development Team");
-            if (g_dCreditsTime > 6.5)
+            if (g_dCreditsTime > 5.5)
             {
-                Cutscene.clearScreen(g_Console);
-                c.Y = 16;
+                c.X = 32;
+                c.Y = 17;
                 g_Console.writeToBuffer(c, "Development Team");
-                if (g_dCreditsTime > 7.5)
+                if (g_dCreditsTime > 6.5)
                 {
                     Cutscene.clearScreen(g_Console);
-                    c.Y = 15;
+                    c.Y = 16;
                     g_Console.writeToBuffer(c, "Development Team");
-                    c.Y = 17;
-                    g_Console.writeToBuffer(c, "     Andrew");
-                    if (g_dCreditsTime > 8.5)
+                    if (g_dCreditsTime > 7.5)
                     {
                         Cutscene.clearScreen(g_Console);
-                        c.Y = 14;
+                        c.Y = 15;
                         g_Console.writeToBuffer(c, "Development Team");
-                        c.Y = 16;
-                        g_Console.writeToBuffer(c, "     Andrew");
                         c.Y = 17;
-                        g_Console.writeToBuffer(c, "     Artus");
-                        if (g_dCreditsTime > 9.5)
+                        g_Console.writeToBuffer(c, "     Andrew");
+                        if (g_dCreditsTime > 8.5)
                         {
                             Cutscene.clearScreen(g_Console);
-                            c.Y = 13;
+                            c.Y = 14;
                             g_Console.writeToBuffer(c, "Development Team");
-                            c.Y = 15;
-                            g_Console.writeToBuffer(c, "     Andrew");
                             c.Y = 16;
-                            g_Console.writeToBuffer(c, "     Artus");
+                            g_Console.writeToBuffer(c, "     Andrew");
                             c.Y = 17;
-                            g_Console.writeToBuffer(c, "     Jordan");
-                            if (g_dCreditsTime > 10.5)
+                            g_Console.writeToBuffer(c, "     Artus");
+                            if (g_dCreditsTime > 9.5)
                             {
                                 Cutscene.clearScreen(g_Console);
-                                c.Y = 12;
+                                c.Y = 13;
                                 g_Console.writeToBuffer(c, "Development Team");
-                                c.Y = 14;
-                                g_Console.writeToBuffer(c, "     Andrew");
                                 c.Y = 15;
-                                g_Console.writeToBuffer(c, "     Artus");
+                                g_Console.writeToBuffer(c, "     Andrew");
                                 c.Y = 16;
-                                g_Console.writeToBuffer(c, "     Jordan");
+                                g_Console.writeToBuffer(c, "     Artus");
                                 c.Y = 17;
-                                g_Console.writeToBuffer(c, "     Nicole");
-                                if (g_dCreditsTime > 11.5)
+                                g_Console.writeToBuffer(c, "     Jordan");
+                                if (g_dCreditsTime > 10.5)
                                 {
                                     Cutscene.clearScreen(g_Console);
-                                    c.Y = 11;
+                                    c.Y = 12;
                                     g_Console.writeToBuffer(c, "Development Team");
-                                    c.Y = 13;
-                                    g_Console.writeToBuffer(c, "     Andrew");
                                     c.Y = 14;
-                                    g_Console.writeToBuffer(c, "     Artus");
+                                    g_Console.writeToBuffer(c, "     Andrew");
                                     c.Y = 15;
-                                    g_Console.writeToBuffer(c, "     Jordan");
+                                    g_Console.writeToBuffer(c, "     Artus");
                                     c.Y = 16;
-                                    g_Console.writeToBuffer(c, "     Nicole");
+                                    g_Console.writeToBuffer(c, "     Jordan");
                                     c.Y = 17;
-                                    g_Console.writeToBuffer(c, "     Renee");
-                                    if (g_dCreditsTime > 12.5)
+                                    g_Console.writeToBuffer(c, "     Nicole");
+                                    if (g_dCreditsTime > 11.5)
                                     {
                                         Cutscene.clearScreen(g_Console);
-                                        c.Y = 10;
+                                        c.Y = 11;
                                         g_Console.writeToBuffer(c, "Development Team");
-                                        c.Y = 12;
-                                        g_Console.writeToBuffer(c, "     Andrew");
                                         c.Y = 13;
-                                        g_Console.writeToBuffer(c, "     Artus");
+                                        g_Console.writeToBuffer(c, "     Andrew");
                                         c.Y = 14;
-                                        g_Console.writeToBuffer(c, "     Jordan");
+                                        g_Console.writeToBuffer(c, "     Artus");
                                         c.Y = 15;
-                                        g_Console.writeToBuffer(c, "     Nicole");
+                                        g_Console.writeToBuffer(c, "     Jordan");
                                         c.Y = 16;
+                                        g_Console.writeToBuffer(c, "     Nicole");
+                                        c.Y = 17;
                                         g_Console.writeToBuffer(c, "     Renee");
-                                        if (g_dCreditsTime > 13.5)
+                                        if (g_dCreditsTime > 12.5)
                                         {
                                             Cutscene.clearScreen(g_Console);
-                                            c.Y = 9;
+                                            c.Y = 10;
                                             g_Console.writeToBuffer(c, "Development Team");
-                                            c.Y = 11;
-                                            g_Console.writeToBuffer(c, "     Andrew");
                                             c.Y = 12;
-                                            g_Console.writeToBuffer(c, "     Artus");
+                                            g_Console.writeToBuffer(c, "     Andrew");
                                             c.Y = 13;
-                                            g_Console.writeToBuffer(c, "     Jordan");
+                                            g_Console.writeToBuffer(c, "     Artus");
                                             c.Y = 14;
-                                            g_Console.writeToBuffer(c, "     Nicole");
+                                            g_Console.writeToBuffer(c, "     Jordan");
                                             c.Y = 15;
+                                            g_Console.writeToBuffer(c, "     Nicole");
+                                            c.Y = 16;
                                             g_Console.writeToBuffer(c, "     Renee");
-                                            if (g_dCreditsTime > 14.5)
+                                            if (g_dCreditsTime > 13.5)
                                             {
                                                 Cutscene.clearScreen(g_Console);
-                                                c.Y = 8;
+                                                c.Y = 9;
                                                 g_Console.writeToBuffer(c, "Development Team");
-                                                c.Y = 10;
-                                                g_Console.writeToBuffer(c, "     Andrew");
                                                 c.Y = 11;
-                                                g_Console.writeToBuffer(c, "     Artus");
+                                                g_Console.writeToBuffer(c, "     Andrew");
                                                 c.Y = 12;
-                                                g_Console.writeToBuffer(c, "     Jordan");
+                                                g_Console.writeToBuffer(c, "     Artus");
                                                 c.Y = 13;
-                                                g_Console.writeToBuffer(c, "     Nicole");
+                                                g_Console.writeToBuffer(c, "     Jordan");
                                                 c.Y = 14;
+                                                g_Console.writeToBuffer(c, "     Nicole");
+                                                c.Y = 15;
                                                 g_Console.writeToBuffer(c, "     Renee");
-                                                c.Y = 17;
-                                                g_Console.writeToBuffer(c, "      Music");
-                                                if (g_dCreditsTime > 15.5)
+                                                if (g_dCreditsTime > 14.5)
                                                 {
                                                     Cutscene.clearScreen(g_Console);
-                                                    c.Y = 7;
+                                                    c.Y = 8;
                                                     g_Console.writeToBuffer(c, "Development Team");
-                                                    c.Y = 9;
-                                                    g_Console.writeToBuffer(c, "     Andrew");
                                                     c.Y = 10;
-                                                    g_Console.writeToBuffer(c, "     Artus");
+                                                    g_Console.writeToBuffer(c, "     Andrew");
                                                     c.Y = 11;
-                                                    g_Console.writeToBuffer(c, "     Jordan");
+                                                    g_Console.writeToBuffer(c, "     Artus");
                                                     c.Y = 12;
-                                                    g_Console.writeToBuffer(c, "     Nicole");
+                                                    g_Console.writeToBuffer(c, "     Jordan");
                                                     c.Y = 13;
+                                                    g_Console.writeToBuffer(c, "     Nicole");
+                                                    c.Y = 14;
                                                     g_Console.writeToBuffer(c, "     Renee");
-                                                    c.Y = 16;
-                                                    g_Console.writeToBuffer(c, "      Music");
-                                                    if (g_dCreditsTime > 16.5)
+                                                    c.Y = 17;
+                                                    g_Console.writeToBuffer(c, "     Music");
+                                                    if (g_dCreditsTime > 15.5)
                                                     {
                                                         Cutscene.clearScreen(g_Console);
-                                                        c.Y = 8;
-                                                        g_Console.writeToBuffer(c, "     Andrew");
+                                                        c.Y = 7;
+                                                        g_Console.writeToBuffer(c, "Development Team");
                                                         c.Y = 9;
-                                                        g_Console.writeToBuffer(c, "     Artus");
+                                                        g_Console.writeToBuffer(c, "     Andrew");
                                                         c.Y = 10;
-                                                        g_Console.writeToBuffer(c, "     Jordan");
+                                                        g_Console.writeToBuffer(c, "     Artus");
                                                         c.Y = 11;
-                                                        g_Console.writeToBuffer(c, "     Nicole");
+                                                        g_Console.writeToBuffer(c, "     Jordan");
                                                         c.Y = 12;
+                                                        g_Console.writeToBuffer(c, "     Nicole");
+                                                        c.Y = 13;
                                                         g_Console.writeToBuffer(c, "     Renee");
-                                                        c.Y = 15;
-                                                        g_Console.writeToBuffer(c, "      Music");
-                                                        c.Y = 17;
-                                                        g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                        if (g_dCreditsTime > 17.5)
+                                                        c.Y = 16;
+                                                        g_Console.writeToBuffer(c, "     Music");
+                                                        if (g_dCreditsTime > 16.5)
                                                         {
                                                             Cutscene.clearScreen(g_Console);
-                                                            c.Y = 7;
-                                                            g_Console.writeToBuffer(c, "     Andrew");
                                                             c.Y = 8;
-                                                            g_Console.writeToBuffer(c, "     Artus");
+                                                            g_Console.writeToBuffer(c, "     Andrew");
                                                             c.Y = 9;
-                                                            g_Console.writeToBuffer(c, "     Jordan");
+                                                            g_Console.writeToBuffer(c, "     Artus");
                                                             c.Y = 10;
-                                                            g_Console.writeToBuffer(c, "     Nicole");
+                                                            g_Console.writeToBuffer(c, "     Jordan");
                                                             c.Y = 11;
+                                                            g_Console.writeToBuffer(c, "     Nicole");
+                                                            c.Y = 12;
                                                             g_Console.writeToBuffer(c, "     Renee");
-                                                            c.Y = 14;
-                                                            g_Console.writeToBuffer(c, "      Music");
-                                                            c.Y = 16;
-                                                            g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                            c.Y = 15;
+                                                            g_Console.writeToBuffer(c, "     Music");
                                                             c.Y = 17;
-                                                            g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                            if (g_dCreditsTime > 18.5)
+                                                            g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                            if (g_dCreditsTime > 17.5)
                                                             {
                                                                 Cutscene.clearScreen(g_Console);
                                                                 c.Y = 7;
-                                                                g_Console.writeToBuffer(c, "     Artus");
+                                                                g_Console.writeToBuffer(c, "     Andrew");
                                                                 c.Y = 8;
-                                                                g_Console.writeToBuffer(c, "     Jordan");
+                                                                g_Console.writeToBuffer(c, "     Artus");
                                                                 c.Y = 9;
-                                                                g_Console.writeToBuffer(c, "     Nicole");
+                                                                g_Console.writeToBuffer(c, "     Jordan");
                                                                 c.Y = 10;
+                                                                g_Console.writeToBuffer(c, "     Nicole");
+                                                                c.Y = 11;
                                                                 g_Console.writeToBuffer(c, "     Renee");
-                                                                c.Y = 13;
-                                                                g_Console.writeToBuffer(c, "      Music");
-                                                                c.Y = 15;
-                                                                g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                c.Y = 14;
+                                                                g_Console.writeToBuffer(c, "     Music");
                                                                 c.Y = 16;
+                                                                g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                c.Y = 17;
                                                                 g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                if (g_dCreditsTime > 19.5)
+                                                                if (g_dCreditsTime > 18.5)
                                                                 {
                                                                     Cutscene.clearScreen(g_Console);
                                                                     c.Y = 7;
-                                                                    g_Console.writeToBuffer(c, "     Jordan");
+                                                                    g_Console.writeToBuffer(c, "     Artus");
                                                                     c.Y = 8;
-                                                                    g_Console.writeToBuffer(c, "     Nicole");
+                                                                    g_Console.writeToBuffer(c, "     Jordan");
                                                                     c.Y = 9;
+                                                                    g_Console.writeToBuffer(c, "     Nicole");
+                                                                    c.Y = 10;
                                                                     g_Console.writeToBuffer(c, "     Renee");
-                                                                    c.Y = 12;
-                                                                    g_Console.writeToBuffer(c, "      Music");
-                                                                    c.Y = 14;
-                                                                    g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                    c.Y = 13;
+                                                                    g_Console.writeToBuffer(c, "     Music");
                                                                     c.Y = 15;
+                                                                    g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                    c.Y = 16;
                                                                     g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                    c.Y = 17;
-                                                                    g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                    if (g_dCreditsTime > 20.5)
+                                                                    if (g_dCreditsTime > 19.5)
                                                                     {
                                                                         Cutscene.clearScreen(g_Console);
                                                                         c.Y = 7;
-                                                                        g_Console.writeToBuffer(c, "     Nicole");
+                                                                        g_Console.writeToBuffer(c, "     Jordan");
                                                                         c.Y = 8;
+                                                                        g_Console.writeToBuffer(c, "     Nicole");
+                                                                        c.Y = 9;
                                                                         g_Console.writeToBuffer(c, "     Renee");
-                                                                        c.Y = 11;
-                                                                        g_Console.writeToBuffer(c, "      Music");
-                                                                        c.Y = 13;
-                                                                        g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                        c.Y = 12;
+                                                                        g_Console.writeToBuffer(c, "     Music");
                                                                         c.Y = 14;
+                                                                        g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                        c.Y = 15;
                                                                         g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                        c.Y = 16;
-                                                                        g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
                                                                         c.Y = 17;
-                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                        if (g_dCreditsTime > 21.5)
+                                                                        g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                        if (g_dCreditsTime > 20.5)
                                                                         {
                                                                             Cutscene.clearScreen(g_Console);
                                                                             c.Y = 7;
+                                                                            g_Console.writeToBuffer(c, "     Nicole");
+                                                                            c.Y = 8;
                                                                             g_Console.writeToBuffer(c, "     Renee");
-                                                                            c.Y = 10;
-                                                                            g_Console.writeToBuffer(c, "      Music");
-                                                                            c.Y = 12;
-                                                                            g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                            c.Y = 11;
+                                                                            g_Console.writeToBuffer(c, "     Music");
                                                                             c.Y = 13;
+                                                                            g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                            c.Y = 14;
                                                                             g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                            c.Y = 15;
-                                                                            g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
                                                                             c.Y = 16;
+                                                                            g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                            c.Y = 17;
                                                                             g_Console.writeToBuffer(c, "Written By: Ngiam");
                                                                             if (g_dCreditsTime > 21.5)
                                                                             {
                                                                                 Cutscene.clearScreen(g_Console);
-                                                                                c.Y = 9;
-                                                                                g_Console.writeToBuffer(c, "      Music");
-                                                                                c.Y = 11;
-                                                                                g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                                c.Y = 7;
+                                                                                g_Console.writeToBuffer(c, "     Renee");
+                                                                                c.Y = 10;
+                                                                                g_Console.writeToBuffer(c, "     Music");
                                                                                 c.Y = 12;
+                                                                                g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                                c.Y = 13;
                                                                                 g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                                c.Y = 14;
-                                                                                g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
                                                                                 c.Y = 15;
+                                                                                g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                                c.Y = 16;
                                                                                 g_Console.writeToBuffer(c, "Written By: Ngiam");
-                                                                                c.Y = 17;
-                                                                                g_Console.writeToBuffer(c, "\"\"");
+                                                                                if (g_dCreditsTime > 21.5)
+                                                                                {
+                                                                                    Cutscene.clearScreen(g_Console);
+                                                                                    c.Y = 9;
+                                                                                    g_Console.writeToBuffer(c, "     Music");
+                                                                                    c.Y = 11;
+                                                                                    g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                                    c.Y = 12;
+                                                                                    g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                                    c.Y = 14;
+                                                                                    g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                                    c.Y = 15;
+                                                                                    g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                                    c.Y = 17;
+                                                                                    g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                    if (g_dCreditsTime > 22.5)
+                                                                                    {
+                                                                                        Cutscene.clearScreen(g_Console);
+                                                                                        c.Y = 10;
+                                                                                        g_Console.writeToBuffer(c, "  \"For Peace\"");
+                                                                                        c.Y = 11;
+                                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                                        c.Y = 13;
+                                                                                        g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                                        c.Y = 14;
+                                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                                        c.Y = 16;
+                                                                                        g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                        c.X = 27;
+                                                                                        c.Y = 17;
+                                                                                        g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
+                                                                                    }
+                                                                                }
                                                                             }
                                                                         }
                                                                     }
@@ -1677,18 +1697,16 @@ void Credits()
                                                         }
                                                     }
                                                 }
-                                            }
+                                            }                                        
                                         }
-                                        
                                     }
                                 }
                             }
-                        }
+                        }          
                     }
-            
                 }
             }
-        }
+        }       
     }
 }
 
@@ -7586,6 +7604,11 @@ void renderMap_NPC()
 }
 void renderMap_Townsquare()
 {
+    while (townsquare_music == false)
+    {
+        PlaySound(TEXT("Land of 8 Bits.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        townsquare_music = true;
+    }
     g_sChar.takenBackpack = false;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
