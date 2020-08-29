@@ -279,7 +279,6 @@ void init(void)
     g_sLaser3.startTimer = false;
     g_sMovingBlock.startTimer = false;
 
-
     // Set precision for floating point output
 
     // sets the initial state for the game
@@ -5886,7 +5885,7 @@ void drawLaser3(Console& g_Console, int j)
 void drawMovingBlock(Console& g_Console, int j)
 {
     if (movingBlockTime > 1)
-    {
+    {                                                                                      
         Cutscene.movingBlock(g_Console, 2 + j, 28);
         if (movingBlockTime > 1.1)
         {
@@ -6481,27 +6480,46 @@ void phase2Battle()
             randBlock = rand() % 69 + 2;
             randBlock2 = rand() % 69 + 2;
             randBlock3 = rand() % 69 + 2;
-            g_sMovingBlock.counter = false;
             /*
+            for (int i = randBlock; i < randBlock + 9; i++)
+            {
+                if ((i != randBlock2) && (i != randBlock3))
+                {
+                    for (int j = randBlock2; i < randBlock2 + 9; j++)
+                    {
+                        if ((j != randBlock) && (j != randBlock3))
+                        {
+                            for (int k = randBlock3; k < randBlock3; k++)
+                            {
+                                if ((k != randBlock) && (k != randBlock2))
+                                {
+                                    g_sMovingBlock.counter = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            */
             if (randCount != 3)
             {
                 for (int i = randBlock; i < randBlock + 9; i++)
                 {
-                    if ((i % randBlock2 != 0) && (i % randBlock3 != 0))
+                    if ((i != randBlock2) && (i != randBlock3))
                     {
                         randCount++;
                     }
                 }
                 for (int i = randBlock2; i < randBlock2 + 9; i++)
                 {
-                    if ((i % randBlock != 0) && (i % randBlock3 != 0))
+                    if ((i != randBlock) && (i != randBlock3))
                     {
                         randCount++;
                     }
                 }
                 for (int i = randBlock3; i < randBlock3 + 9; i++)
                 {
-                    if ((i % randBlock2 != 0) && (i % randBlock != 0))
+                    if ((i != randBlock) && (i != randBlock2))
                     {
                         randCount++;
                     }
@@ -6512,9 +6530,6 @@ void phase2Battle()
                 g_eGameState = S_Path_Area;
                 g_sMovingBlock.counter = false;
             }
-            */
-
-
         }
         drawMovingBlock(g_Console, randBlock);
         drawMovingBlock(g_Console, randBlock2);
