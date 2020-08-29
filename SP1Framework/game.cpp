@@ -6705,7 +6705,7 @@ void phase2Battle()
     {
         PlaySound(TEXT("For Peace.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         phase2_music = true;
-    }
+    }*/
 
 
     rMap.initialise(g_Console);
@@ -6768,26 +6768,31 @@ void phase2Battle()
             drawLaser2(g_Console, randnum3);
             drawLaser2(g_Console, randnum4);
         }
-        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        if (g_sLaser.fight == true)
         {
-            g_sLaser.fight = true;
-            int randPosX = rand() % (20 - 4 + 1) + 4;
-            int randPosY = rand() % (20 - 3 + 1) + 3;
+            if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+            {
+                g_sMovingBlock.fight = true;
+                g_sBreakFloor.fight = true;
+                int randPosX = rand() % (20 - 4 + 1) + 4;
+                int randPosY = rand() % (20 - 3 + 1) + 3;
 
-            g_sRaymond.m_cLocation.X = randPosX;
-            g_sRaymond.m_cLocation.Y = randPosY;
+                g_sRaymond.m_cLocation.X = randPosX;
+                g_sRaymond.m_cLocation.Y = randPosY;
 
-            int randPosX2 = rand() % (70 - 57 + 1) + 57;
-            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+                int randPosX2 = rand() % (70 - 57 + 1) + 57;
+                int randPosY2 = rand() % (20 - 3 + 1) + 3;
 
-            g_sBomb.m_cLocation.X = randPosX2;
-            g_sBomb.m_cLocation.Y = randPosY2;
-            c.X = 5;
-            c.Y = 26;
-            string ras = to_string(randPosX2);
-            g_Console.writeToBuffer(c, ras, 100);
-            // reset locations for bomb and raymond
+                g_sBomb.m_cLocation.X = randPosX2;
+                g_sBomb.m_cLocation.Y = randPosY2;
+                c.X = 5;
+                c.Y = 26;
+                string ras = to_string(randPosX2);
+                g_Console.writeToBuffer(c, ras, 100);
+                // reset locations for bomb and raymond
+            }
         }
+        
     }
     
     if (g_sLaser3.fight == true)
@@ -6824,8 +6829,7 @@ void phase2Battle()
         }
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
-            g_sMovingBlock.fight = true;
-            g_sBreakFloor.fight = true;
+            g_sLaser.fight = true;
             int randPosX = rand() % (20 - 4 + 1) + 4;
             int randPosY = rand() % (20 - 3 + 1) + 3;
 
