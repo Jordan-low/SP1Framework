@@ -119,6 +119,7 @@ SGameChar   g_sGuard7;
 SGameChar   g_sMutantWasp;
 SGameChar   g_sMutantWasp2;
 SGameChar   g_sRaymond;
+SGameChar   g_sRaymondBoss;
 SGameChar   g_sNPC1;
 SGameChar   g_sNPC2;
 SGameChar   g_sNPC3;
@@ -170,6 +171,7 @@ Inventory Cake;
 Inventory Medicine;
 Inventory Stinger;
 Inventory GuardArmor;
+
 Item* item1 = new Item;
 Item* item2 = new Item;
 Item* item3 = new Item;
@@ -212,6 +214,8 @@ void init(void)
     g_sBreakFloor.fight = true;
     g_sBomb.fight = false;
     g_sRaymond.fight = false;
+    g_sRaymondBoss.fight = false;
+
 
     g_sChar.count = 0;
     g_sChar.unlockDoorDS1 = false;
@@ -222,6 +226,18 @@ void init(void)
     g_sGuard.startTimer = false;
     g_sMutantWasp.startTimer = false;
     g_sMutantWasp.entityDie = false;
+    g_sRaymondBoss.startTimer = false;
+    g_sRaymondBoss.resetTimer = false;
+    g_sPig.startTimer = false;
+    g_sPig.resetTimer = false;
+    g_sPig2.startTimer = false;
+    g_sPig2.resetTimer = false;
+    g_sPig3.startTimer = false;
+    g_sPig3.resetTimer = false;
+    g_sPig.entityDie = false;
+    g_sPig2.entityDie = false;
+    g_sPig3.entityDie = false;
+
 
     /*
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
@@ -230,8 +246,8 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-    g_sChar.SetH(50); // set to 1k when enter room
-    g_sChar.SetD(5);
+    g_sChar.SetH(10000); // set to 1k when enter room
+    g_sChar.SetD(50);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -240,6 +256,10 @@ void init(void)
     g_sGuard3.SetH(40);
     g_sPig.SetH(15);
     g_sPig.SetD(3);
+    g_sPig2.SetH(15);
+    g_sPig2.SetD(3);
+    g_sPig3.SetH(15);
+    g_sPig3.SetD(3);
     g_sTutEnemy.SetH(10);
     g_sTutEnemy.SetD(2);
     g_sMutantWasp.SetH(25);
@@ -248,8 +268,8 @@ void init(void)
     g_sMutantWasp2.SetD(100);
 
     g_sChar.Poison = false;
-    g_sRaymond.SetH(120);
-    g_sRaymond.SetD(25);
+    g_sRaymondBoss.SetH(120);
+    g_sRaymondBoss.SetD(25);
     g_sChar.InvenActive = false;
     g_sChar.itemActive = false;
     g_sInven.startTimer = false;
@@ -4213,7 +4233,8 @@ void Update_Boss_Room_Animation()
 
     if (g_dBossTime > 48.9)
     {
-        g_eGameState = S_Boss_Battle_Room;
+        g_sRaymondBoss.fight = true;
+        g_eGameState = S_BattleScreen;
     }
     processUserInput();
 }
@@ -4406,7 +4427,7 @@ void Update_Boss_Room_Mid_Animation()
 {
     if (g_dBossMiddleTime > 11.2)
     {
-        g_eGameState = S_Boss_Battle_Room;
+        g_eGameState = S_phase2Battle;
     }
     processUserInput();
 }
@@ -7077,126 +7098,126 @@ void drawLaser3(Console& g_Console, int j)
                                                                                                                                                                                                                             Cutscene.stickmanLeft(g_Console, 55, j);
                                                                                                                                                                                                                             if (g_sChar.m_cLocation.X == 55 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                             }
                                                                                                                                                                                                                             if (g_dphase2Time > 3.70)
                                                                                                                                                                                                                             {
                                                                                                                                                                                                                                 Cutscene.stickmanLeft(g_Console, 56, j);
                                                                                                                                                                                                                                 if (g_sChar.m_cLocation.X == 56 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                 if (g_dphase2Time > 3.75)
                                                                                                                                                                                                                                 {
                                                                                                                                                                                                                                     Cutscene.stickmanLeft(g_Console, 57, j);
                                                                                                                                                                                                                                     if (g_sChar.m_cLocation.X == 57 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                     if (g_dphase2Time > 3.80)
                                                                                                                                                                                                                                     {
                                                                                                                                                                                                                                         Cutscene.stickmanLeft(g_Console, 58, j);
                                                                                                                                                                                                                                         if (g_sChar.m_cLocation.X == 58 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                         if (g_dphase2Time > 3.85)
                                                                                                                                                                                                                                         {
                                                                                                                                                                                                                                             Cutscene.stickmanLeft(g_Console, 59, j);
                                                                                                                                                                                                                                             if (g_sChar.m_cLocation.X == 59 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                             if (g_dphase2Time > 3.90)
                                                                                                                                                                                                                                             {
                                                                                                                                                                                                                                                 Cutscene.stickmanLeft(g_Console, 60, j);
                                                                                                                                                                                                                                                 if (g_sChar.m_cLocation.X == 60 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                 if (g_dphase2Time > 3.95)
                                                                                                                                                                                                                                                 {
                                                                                                                                                                                                                                                     Cutscene.stickmanLeft(g_Console, 61, j);
                                                                                                                                                                                                                                                     if (g_sChar.m_cLocation.X == 61 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                     if (g_dphase2Time > 4.00)
                                                                                                                                                                                                                                                     {
                                                                                                                                                                                                                                                         Cutscene.stickmanLeft(g_Console, 62, j);
                                                                                                                                                                                                                                                         if (g_sChar.m_cLocation.X == 62 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                         if (g_dphase2Time > 4.05)
                                                                                                                                                                                                                                                         {
                                                                                                                                                                                                                                                             Cutscene.stickmanLeft(g_Console, 63, j);
                                                                                                                                                                                                                                                             if (g_sChar.m_cLocation.X == 63 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                             if (g_dphase2Time > 4.10)
                                                                                                                                                                                                                                                             {
                                                                                                                                                                                                                                                                 Cutscene.stickmanLeft(g_Console, 64, j);
                                                                                                                                                                                                                                                                 if (g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                 if (g_dphase2Time > 4.15)
                                                                                                                                                                                                                                                                 {
                                                                                                                                                                                                                                                                     Cutscene.stickmanLeft(g_Console, 65, j);
                                                                                                                                                                                                                                                                     if (g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                     if (g_dphase2Time > 4.20)
                                                                                                                                                                                                                                                                     {
                                                                                                                                                                                                                                                                         Cutscene.stickmanLeft(g_Console, 66, j);
                                                                                                                                                                                                                                                                         if (g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                         if (g_dphase2Time > 4.25)
                                                                                                                                                                                                                                                                         {
                                                                                                                                                                                                                                                                             Cutscene.stickmanLeft(g_Console, 67, j);
                                                                                                                                                                                                                                                                             if (g_sChar.m_cLocation.X == 67 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                             if (g_dphase2Time > 4.30)
                                                                                                                                                                                                                                                                             {
                                                                                                                                                                                                                                                                                 Cutscene.stickmanLeft(g_Console, 68, j);
                                                                                                                                                                                                                                                                                 if (g_sChar.m_cLocation.X == 68 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                 if (g_dphase2Time > 4.35)
                                                                                                                                                                                                                                                                                 {
                                                                                                                                                                                                                                                                                     Cutscene.stickmanLeft(g_Console, 69, j);
                                                                                                                                                                                                                                                                                     if (g_sChar.m_cLocation.X == 69 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                     if (g_dphase2Time > 4.40)
                                                                                                                                                                                                                                                                                     {
                                                                                                                                                                                                                                                                                         Cutscene.stickmanLeft(g_Console, 70, j);
                                                                                                                                                                                                                                                                                         if (g_sChar.m_cLocation.X == 70 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                                                         }
                                                                                                                                                                                                                                                                                         if (g_dphase2Time > 4.45)
                                                                                                                                                                                                                                                                                         {
                                                                                                                                                                                                                                                                                             Cutscene.stickmanLeft(g_Console, 71, j);
                                                                                                                                                                                                                                                                                             if (g_sChar.m_cLocation.X == 71 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                             if (g_dphase2Time > 4.50)
                                                                                                                                                                                                                                                                                             {
                                                                                                                                                                                                                                                                                                 Cutscene.stickmanLeft(g_Console, 72, j);
                                                                                                                                                                                                                                                                                                 if (g_sChar.m_cLocation.X == 72 && g_sChar.m_cLocation.Y == j)
                                                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
                                                                                                                                                                                                                                                                                                 }
                                                                                                                                                                                                                                                                                             }
                                                                                                                                                                                                                                                                                         }
@@ -7741,7 +7762,11 @@ void phase2Battle()
     {
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
-            g_eGameState = S_Game_Over;
+            g_sRaymondBoss.SetH(1);
+            g_sChar.showPlayerDMG = false;
+            g_sChar.showEnemyDMG = false;
+            g_sRaymondBoss.counter = true;
+            g_eGameState = S_BattleScreen;
         }
 
     }
@@ -8092,7 +8117,6 @@ void updateGame()       // gameplay logic
     g_sGuard3.xDown = false;
     g_sGuard3.xUp = false;
 
-    
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                      // sound can be played here too.
@@ -8913,7 +8937,7 @@ void renderMap_Townsquare()
 void renderMap_Protest_Area()
 {
     COORD c;
-    srand((unsigned)time(0));
+    //srand((unsigned)time(0));
     int Quantity = 0;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -8944,141 +8968,7 @@ void renderMap_Protest_Area()
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
-    //if (stepped == false)
-    //{
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 3)
-    {
-        showCollect = 0.0;
-        static int ItemChance = 0;
-        static bool temp = false;
-        if (temp == false)
-        {
-            ItemChance = rand() % 6 + 1;
-            temp = true;
-        }
-        if (ItemChance == 1)
-        {
-
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
-            c.X = 5;
-            c.Y = 27;
-            string Quantity = to_string(RawMeat.getQuantity());
-            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
-            static bool item1 = false;
-            if (item1 == false)
-            {
-                RawMeat.QuantityCheck("Raw Meat");
-                item1 = true;
-            }
-                
-
-
-        }
-        else if (ItemChance == 2)
-        {
-
-
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
-            c.X = 5;
-            c.Y = 27;
-            string Quantity = to_string(Bread.getQuantity());
-            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
-            static bool item2 = false;
-            if (item2 == false)
-            {
-                Bread.QuantityCheck("Bread");
-                item2 = true;
-            }
-
-        }
-        else if (ItemChance == 3)
-        {
-
-
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
-            c.X = 5;
-            c.Y = 27;
-            string Quantity = to_string(Burger.getQuantity());
-            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
-            static bool item3 = false;
-            if (item3 == false)
-            {
-                Burger.QuantityCheck("Burger");
-                item3 = true;
-            }
-
-
-        }
-        else if (ItemChance == 4)
-        {
-
-
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
-            c.X = 5;
-            c.Y = 27;
-            string Quantity = to_string(Taco.getQuantity());
-            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
-            static bool item4 = false;
-            if (item4 == false)
-            {
-                Taco.QuantityCheck("Taco");
-                item4 = true;
-            }
-
-
-        }
-        else if (ItemChance == 5)
-        {
-
-
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
-            c.X = 5;
-            c.Y = 27;
-            string Quantity = to_string(Cake.getQuantity());
-            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
-            static bool item5 = false;
-            if (item5 == false)
-            {
-                Cake.QuantityCheck("Cake");
-                item5 = true;
-            }
-
-
-        }
-        else if (ItemChance == 6)
-        {
-
-
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
-            c.X = 5;
-            c.Y = 27;
-            string Quantity = to_string(Medicine.getQuantity());
-            g_Console.writeToBuffer(c, Quantity, 0x0F, 100);
-            static bool item6 = false;
-            if (item6 == false)
-            {
-                Medicine.QuantityCheck("Medicine");
-                item6 = true;
-            }
-
-
-        }
-
-    }
-    
-    if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 5)
     {
         static int ItemChance2 = 0;
         static bool temp2 = false;
@@ -9776,6 +9666,8 @@ void renderMap_OAF()
     rMap.Border(g_Console);
     rMap.outside_abandoned_facility(g_Console);
     renderCharacter();  // renders the character into the buffer
+    renderPig();
+
     //back to path area
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8 || g_sChar.m_cLocation.X == 9 || g_sChar.m_cLocation.X == 10 || g_sChar.m_cLocation.X == 11))
     {
@@ -9792,8 +9684,68 @@ void renderMap_OAF()
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
-}
+    if ((g_sChar.m_cLocation.Y + 1 == g_sPig.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sPig.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sPig.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sPig.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sPig.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sPig.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sPig.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sPig.m_cLocation.X))
+    {
+        g_sPig.fight = true;
+        g_eGameState = S_BattleScreen;
+        g_sChar.m_cLocation.X = 5;
+        g_sChar.m_cLocation.Y = 12;
 
+    }
+    if ((g_sChar.m_cLocation.Y + 1 == g_sPig2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sPig2.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sPig2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sPig2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sPig2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sPig2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sPig2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sPig2.m_cLocation.X))
+    {
+        g_sPig2.fight = true;
+        g_eGameState = S_BattleScreen;
+        g_sChar.m_cLocation.X = 10;
+        g_sChar.m_cLocation.Y = 12;
+
+    }
+    if ((g_sChar.m_cLocation.Y + 1 == g_sPig3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sPig3.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sPig3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sPig3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sPig3.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sPig3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sPig3.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sPig3.m_cLocation.X))
+    {
+        g_sPig3.fight = true;
+        g_eGameState = S_BattleScreen;
+        g_sChar.m_cLocation.X = 15;
+        g_sChar.m_cLocation.Y = 12;
+
+    }
+}
+void renderPig()
+{
+    g_sPig.m_cLocation.X = 15;
+    g_sPig.m_cLocation.Y = 10;
+
+    g_sPig2.m_cLocation.X = 18;
+    g_sPig2.m_cLocation.Y = 7;
+
+    g_sPig3.m_cLocation.X = 25;
+    g_sPig3.m_cLocation.Y = 8;
+
+    if (g_sPig.entityDie == true)
+    {
+        g_sPig.m_cLocation.X = -1;
+        g_sPig.m_cLocation.Y = -1;
+        g_sPig.startTimer = false;
+    }
+    if (g_sPig2.entityDie == true)
+    {
+        g_sPig2.m_cLocation.X = -1;
+        g_sPig2.m_cLocation.Y = -1;
+        g_sPig2.startTimer = false;
+
+    }
+    if (g_sPig3.entityDie == true)
+    {
+        g_sPig3.m_cLocation.X = -1;
+        g_sPig3.m_cLocation.Y = -1;
+        g_sPig3.startTimer = false;
+
+    }
+
+    g_Console.writeToBuffer(g_sPig.m_cLocation, 'P' , 0x0D);
+    g_Console.writeToBuffer(g_sPig2.m_cLocation, 'P', 0x0D);
+    g_Console.writeToBuffer(g_sPig3.m_cLocation, 'P', 0x0D);
+
+}
 void renderMap_IAF1()
 {
     COORD c;
@@ -9915,8 +9867,8 @@ void renderMap_IAF4()
             g_Console.writeToBuffer(c, "                 never seen anyone as tyrannical as him.", 0x0F, 100);
             c.Y = 28;
             g_Console.writeToBuffer(c, "                 Here, lemme boost you to aid you on your journey.", 0x0F, 100);
-            g_sChar.SetH(100);
-            g_sChar.SetD(20);
+            g_sChar.SetH(1000);
+            g_sChar.SetD(g_sChar.GetD() + 10);
         }
 
         else if (g_sChar.talkedOldMan == true)
@@ -10053,8 +10005,6 @@ void renderMap_Dungeon_Cell()
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'L', 0x0D);
 
     renderBox();
-
-
 
     if ((g_sChar.m_cLocation.X == g_sBox.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox.m_cLocation.Y)))
     {
@@ -11329,6 +11279,366 @@ void RenderBattleScreen()
     string str_charhealth = to_string(g_sChar.GetH());
     g_Console.writeToBuffer(c, "Your Health: " + str_charhealth, 0x0A, 100);
 
+    if (g_sRaymondBoss.counter == true)
+    {
+        Sprites.Battle_Raymond(g_Console, 0);
+        Sprites.drawRobert(g_Console, 0);
+        c.X = 53;
+        c.Y = 0;
+        string str_raymondhealth = to_string(g_sRaymondBoss.GetH());
+        g_Console.writeToBuffer(c, "Boss Health: " + str_raymondhealth, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sRaymondBoss.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
+                }
+                if (randHit > 1) // guard gets hit
+                {
+                    int raymondhealth = g_sRaymondBoss.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sRaymondBoss.SetH(raymondhealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashRaymond = 0.0;
+                }
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                if (g_sRaymondBoss.GetH() <= 0)
+                {
+                    g_dkillRaymond = 0.0;
+                    g_sRaymondBoss.startTimer = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
+            }
+        }
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+            slashRaymond();
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_waspDMG = to_string(g_sRaymondBoss.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
+            slashRobert();
+        }
+    }
+
+    if (g_sPig.fight == true)
+    {
+        Sprites.pig(g_Console, 0);
+        Sprites.drawRobert(g_Console, 0);
+        c.X = 53;
+        c.Y = 0;
+        string str_pighealth = to_string(g_sPig.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_pighealth, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sPig.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
+                }
+                if (randHit > 1) // guard gets hit
+                {
+                    int pighealth = g_sPig.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sPig.SetH(pighealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashPig = 0.0;
+                }
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                if (g_sPig.GetH() <= 0)
+                {
+                    g_dkillPig = 0.0;
+                    g_sPig.startTimer = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
+            }
+        }
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+            slashPig();
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_waspDMG = to_string(g_sPig.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
+            slashRobert();
+        }
+    }
+    if (g_sPig2.fight == true)
+    {
+        Sprites.pig(g_Console, 0);
+        Sprites.drawRobert(g_Console, 0);
+        c.X = 53;
+        c.Y = 0;
+        string str_pig2health = to_string(g_sPig2.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_pig2health, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sPig2.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
+                }
+                if (randHit > 1) // guard gets hit
+                {
+                    int pighealth = g_sPig2.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sPig2.SetH(pighealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashPig = 0.0;
+                }
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                if (g_sPig2.GetH() <= 0)
+                {
+                    g_dkillPig = 0.0;
+                    g_sPig2.startTimer = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
+            }
+        }
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+            slashPig();
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_waspDMG = to_string(g_sPig2.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
+            slashRobert();
+        }
+    }
+    if (g_sPig3.fight == true)
+    {
+        Sprites.pig(g_Console, 0);
+        Sprites.drawRobert(g_Console, 0);
+        c.X = 53;
+        c.Y = 0;
+        string str_pig3health = to_string(g_sPig3.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_pig3health, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sPig3.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
+                }
+                if (randHit > 1) // guard gets hit
+                {
+                    int pighealth = g_sPig3.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sPig3.SetH(pighealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashPig = 0.0;
+                }
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                if (g_sPig3.GetH() <= 0)
+                {
+                    g_dkillPig = 0.0;
+                    g_sPig3.startTimer = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
+            }
+        }
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+            slashPig();
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_waspDMG = to_string(g_sPig3.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
+            slashRobert();
+        }
+    }
+    if (g_sRaymondBoss.fight == true)
+    {
+        Sprites.Battle_Raymond(g_Console, 0);
+        Sprites.drawRobert(g_Console, 0);
+        c.X = 53;
+        c.Y = 0;
+        string str_raymondhealth = to_string(g_sRaymondBoss.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_raymondhealth, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sRaymondBoss.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
+                }
+                if (randHit > 1) // guard gets hit
+                {
+                    int raymondhealth = g_sRaymondBoss.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sRaymondBoss.SetH(raymondhealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashRaymond = 0.0;
+                }
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                if (g_sRaymondBoss.GetH() <= 0)
+                {
+                    g_dkillRaymond = 0.0;
+                    g_sRaymondBoss.startTimer = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
+            }
+            
+            if (g_sRaymondBoss.GetH() < 61)
+            {
+                g_sRaymondBoss.fight = false;
+                g_sRaymondBoss.startTimer = false;
+                g_dBossMiddleTime = 0.0; // set boss animation time to 0
+                g_eGameState = S_Boss_Room_Mid_Animation; //link to boss animation before phase 2
+            }
+        }
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+            slashRaymond();
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_waspDMG = to_string(g_sRaymondBoss.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
+            slashRobert();
+        }
+        
+    }
     if (g_sTutEnemy.fight == true)
     {
         Sprites.Tutorial_Wasp(g_Console, 0);
@@ -12101,7 +12411,6 @@ void RenderBattleScreen()
             }
             else
             {
-                
                 g_sInven.showNoQuantity = true;
             }
             playerInvenTime = 0.0;
@@ -12136,7 +12445,6 @@ void RenderBattleScreen()
             }
             else
             {
-                
                 g_sInven.showNoQuantity = true;
             }
             playerInvenTime = 0.0;
@@ -12307,6 +12615,22 @@ void RenderBattleScreen()
     {
         killTutWasp();
     }
+    if (g_sRaymondBoss.startTimer == true)
+    {
+        killRaymond();
+    }
+    if (g_sPig.startTimer == true)
+    {
+        killPig();
+    }
+    if (g_sPig2.startTimer == true)
+    {
+        killPig();
+    }
+    if (g_sPig3.startTimer == true)
+    {
+        killPig();
+    }
     if (g_sChar.entityDie == true)
     {
         killRobert();
@@ -12416,14 +12740,16 @@ void RenderBattleScreen()
         g_Console.writeToBuffer(c, "Item ran out.", 0x0F, 100);
     }
 }
-
 void UpdateBattleScreen()
 {
+    COORD c;
     processUserInput();
-    if ((InvenTime > 2) && (g_sChar.itemActive == true))
+    if (g_sInven.resetTimer == true)
     {
-        g_sInven.startTimer = false;
-        InvenTime = 0;
+        if (InvenTime > 2)
+        {
+            g_sInven.startTimer = true;
+        }
     }
 
     if (g_sChar.resetTimer == true)
@@ -12432,6 +12758,85 @@ void UpdateBattleScreen()
         {
             g_sChar.startTimer = true;
         }
+    }
+
+    if ((playerInvenTime > 3) && (g_sRawMeat.showItemUsed == true))
+    {
+        g_sRawMeat.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sBread.showItemUsed == true))
+    {
+        g_sBread.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sBurger.showItemUsed == true))
+    {
+        g_sBurger.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sTaco.showItemUsed == true))
+    {
+        g_sTaco.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sCake.showItemUsed == true))
+    {
+        g_sCake.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sMedicine.showItemUsed == true))
+    {
+        g_sMedicine.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+
+    if ((playerInvenTime > 3) && (g_sInven.showItemNotUsed == true))
+    {
+        g_sInven.showItemNotUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+    if ((playerInvenTime > 3) && (g_sInven.showNoQuantity == true))
+    {
+        g_sInven.showNoQuantity = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
     }
     if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
     {
@@ -12458,6 +12863,7 @@ void UpdateBattleScreen()
         g_sMutantWasp.startTimer = false;
         g_sMutantWasp2.fight = true;
         g_eGameState = S_BattleScreen;
+        Sprites.Battle_Wasp(g_Console, 0);
     }
     if ((g_dkillWasp > 6) && (g_sMutantWasp2.startTimer == true))
     {
@@ -12465,36 +12871,39 @@ void UpdateBattleScreen()
         g_dMedical2Time = 0.0;
         g_eGameState = S_Medical_Facility_Part2_Animation;
     }
-    if ((g_dkillTutWasp > 3) && (g_sTutEnemy.startTimer == true))
+    if ((g_dkillRaymond > 6) && (g_sRaymondBoss.startTimer == true))  // raymond die
     {
-        g_sTutEnemy.startTimer = false;
-        g_sTutEnemy.fight = false;
-        g_eGameState = S_Path_Area;
+        g_sRaymond.fight = false;
+        g_eGameState = S_Game_Over;
     }
-
-    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true) && (g_sChar.entityDied == false))
+    if ((g_dkillPig > 6) && (g_sPig.startTimer == true))
     {
-        g_sGuard.fight = false;
-        g_sGuard2.fight = false;
-        g_sGuard3.fight = false;
-        g_sMutantWasp.fight = false;
-        g_sMutantWasp2.fight = false;
-        g_sTutEnemy.fight = false;
-
+        g_sPig.fight = false;
+        g_sPig.entityDie = true;
+        g_eGameState = S_OAF;
+    }
+    if ((g_dkillPig > 6) && (g_sPig2.startTimer == true))
+    {
+        g_sPig2.fight = false;
+        g_sPig2.entityDie = true;
+        g_eGameState = S_OAF;
+    }
+    if ((g_dkillPig > 6) && (g_sPig3.startTimer == true))
+    {
+        g_sPig3.fight = false;
+        g_sPig3.entityDie = true;
+        g_eGameState = S_OAF;
+    }
+    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
+    {
         g_eGameState = S_Game_Over; // show game over screen after player die animation
     }
-    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true) && (g_sChar.entityDied == true))
-    {
-        g_dDungeonTime = 0.0;
-        g_eGameState = S_Dungeon_Cell_Animation;
-        g_sMutantWasp2.fight = false;
-    }
+
     if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
     {
         //g_eGameState = S_Townsquare;
         g_sChar.showPlayerDMG = false;
         playerDMGTime = 0.0;
-        COORD c;
         c.X = 3;
         c.Y = 25;
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
@@ -12504,7 +12913,6 @@ void UpdateBattleScreen()
     {
         g_sChar.showEnemyDMG = false;
         enemyDMGTime = 0.0;
-        COORD c;
         c.X = 3;
         c.Y = 26;
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
@@ -12904,162 +13312,7 @@ void renderBoxes()
     g_Console.writeToBuffer(g_sBox6.m_cLocation, '[', 0x0A);
 }
 
-/*void UpdateBattleScreen()
-{
-    COORD c;
-    processUserInput();
-    if (g_sInven.resetTimer == true)
-    {
-        if (InvenTime > 2)
-        {
-            g_sInven.startTimer = true;
-        }
-    }
 
-    if (g_sChar.resetTimer == true)
-    {
-        if (startTime > 5)
-        {
-            g_sChar.startTimer = true;
-        }
-    }
-
-    if ((playerInvenTime > 3) && (g_sRawMeat.showItemUsed == true))
-    {
-        g_sRawMeat.showItemUsed = false;
-        playerInvenTime = 0.0;
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-        
-    }
-
-    if ((playerInvenTime > 3) && (g_sBread.showItemUsed == true))
-    {
-        g_sBread.showItemUsed = false;
-        playerInvenTime = 0.0;
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
-    }
-
-    if ((playerInvenTime > 3) && (g_sBurger.showItemUsed == true))
-    {
-        g_sBurger.showItemUsed = false;
-        playerInvenTime = 0.0;
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
-    }
-
-    if ((playerInvenTime > 3) && (g_sTaco.showItemUsed == true))
-    {
-        g_sTaco.showItemUsed = false;
-        playerInvenTime = 0.0;
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
-    }
-
-    if ((playerInvenTime > 3) && (g_sCake.showItemUsed == true))
-    {
-        g_sCake.showItemUsed = false;
-        playerInvenTime = 0.0;
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
-    }
-
-    if ((playerInvenTime > 3) && (g_sMedicine.showItemUsed == true))
-    {
-        g_sMedicine.showItemUsed = false;
-        playerInvenTime = 0.0;
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
-    }
-
-    if ((playerInvenTime > 3) && (g_sInven.showItemNotUsed == true))
-    {
-        g_sInven.showItemNotUsed = false;
-        playerInvenTime = 0.0;
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-        
-    }
-    if ((playerInvenTime > 3) && (g_sInven.showNoQuantity == true))
-    {
-        g_sInven.showNoQuantity = false;
-        playerInvenTime = 0.0;
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
-    }
-    if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
-    {
-        g_sGuard.fight = false; // to stop the fighting after enemy die
-        g_sGuard.entityDie = true; // make this bool true so that the character will move to (-1,-1)
-        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-        g_sChar.unlockDoorDS1 = true;
-    }
-    if ((g_dkillGuard > 6) && (g_sGuard2.startTimer == true))
-    {
-        g_sGuard2.fight = false; // to stop the fighting after enemy die
-        g_sGuard2.entityDie = true; // make this bool true so that the character will move to (-1,-1)
-        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-    }
-    if ((g_dkillGuard > 6) && (g_sGuard3.startTimer == true))
-    {
-        g_sGuard3.fight = false; // to stop the fighting after enemy die
-        g_sGuard3.entityDie = true; // make this bool true so that the character will move to (-1,-1)
-        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
-    }
-    if ((g_dkillWasp > 6) && (g_sMutantWasp.startTimer == true))
-    {
-        g_sMutantWasp.fight = false;
-        g_sMutantWasp.startTimer = false;
-        g_sMutantWasp2.fight = true;
-        g_eGameState = S_BattleScreen;
-        Sprites.Battle_Wasp(g_Console, 0);
-    }
-    if ((g_dkillWasp > 6) && (g_sMutantWasp2.startTimer == true))
-    {
-        g_sMutantWasp2.fight = false;
-        g_dMedical2Time = 0.0;
-        g_eGameState = S_Medical_Facility_Part2_Animation;
-    }
-    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
-    {
-        g_eGameState = S_Game_Over; // show game over screen after player die animation
-    }
-
-    if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
-    {
-        //g_eGameState = S_Townsquare;
-        g_sChar.showPlayerDMG = false;
-        playerDMGTime = 0.0;
-        c.X = 3;
-        c.Y = 25;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
-    }
-    if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
-    {
-        g_sChar.showEnemyDMG = false;
-        enemyDMGTime = 0.0;
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
-    }
-}*/
 void renderCharacter()
 {
     // Draw the location of the character

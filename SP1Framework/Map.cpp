@@ -818,6 +818,8 @@ void Map::outside_abandoned_facility(Console& g_Console)
 		c.Y = 4;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '_', 0x0A);
 	}
+
+
 }
 void Map::insideAbandonedFacility1(Console& g_Console)
 {
