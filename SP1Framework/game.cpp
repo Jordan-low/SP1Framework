@@ -32,6 +32,7 @@ double g_dMedical2Time;
 double g_dDungeonStealth3Time;
 double g_dBossTime;
 double g_dBossMiddleTime;
+double g_dPresentationTime;
 double g_dslashGuard;
 double g_dkillGuard;
 double g_dslashWasp;
@@ -343,7 +344,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Boss_Room_Animation;
+    g_eGameState = S_Presentation_Animation;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -626,6 +627,7 @@ void update(double dt)
     g_dDungeonStealth3Time += dt;
     g_dBossTime += dt;
     g_dBossMiddleTime += dt;
+    g_dPresentationTime += dt;
     g_dslashGuard += dt;
     g_dkillGuard += dt;
     GuardDetectTime += dt;
@@ -725,6 +727,8 @@ void update(double dt)
     case S_Boss_Room_Animation: Update_Boss_Room_Animation();
         break;
     case S_Boss_Room_Mid_Animation: Update_Boss_Room_Mid_Animation();
+        break;
+    case S_Presentation_Animation: Update_Presentation_Animation();
         break;
     case S_BattleScreen: UpdateBattleScreen();
         break;
@@ -4459,6 +4463,88 @@ void Boss_Room_Mid_Animation()
                                         if (g_dBossMiddleTime > 8.1)
                                         {
                                             g_Console.writeToBuffer(c, "Raymond: Come Robert! Let us have this dance of a duel!!", 0x0F);
+                                            if (g_dBossMiddleTime > 11.1)
+                                            {
+                                                Cutscene.cleargrid(g_Console, 64, 21);
+                                                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Update_Presentation_Animation()
+{
+    if (g_dBossMiddleTime > 11.2)
+    {
+        g_eGameState = S_Boss_Battle_Room;
+    }
+    processUserInput();
+}
+void Presentation_Animation()
+{
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    rMap.boss_room(g_Console);
+    COORD c;
+    COORD d;
+    renderCharacter();
+    c.X = 5;
+    c.Y = 26;
+    d.X = 5;
+    d.Y = 27;
+    Cutscene.drawgridW(g_Console, 39, 21, (char)1); //Robert
+    Cutscene.drawgrid(g_Console, 41, 21, 'R'); //Raymond
+    if (g_dBossMiddleTime > 1)
+    {
+        Cutscene.cleargrid(g_Console, 41, 21);
+        Cutscene.drawgrid(g_Console, 42, 21, 'R');
+        g_Console.writeToBuffer(c, "Raymond: ...", 0x0F);
+        if (g_dBossMiddleTime > 3)
+        {
+            Cutscene.cleargrid(g_Console, 41, 21);
+            Cutscene.drawgrid(g_Console, 42, 21, 'R');
+            g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+            g_Console.writeToBuffer(c, "Raymond: You're finally awake Robert! Oh how I've been waiting!!", 0x0F);
+            if (g_dBossMiddleTime > 6)
+            {
+                Cutscene.cleargrid(g_Console, 42, 21);
+                Cutscene.drawgrid(g_Console, 43, 21, 'R');
+                g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
+                if (g_dBossMiddleTime > 6.3)
+                {
+                    Cutscene.cleargrid(g_Console, 43, 21);
+                    Cutscene.drawgrid(g_Console, 45, 21, 'R');
+                    if (g_dBossMiddleTime > 6.6)
+                    {
+                        Cutscene.cleargrid(g_Console, 45, 21);
+                        Cutscene.drawgrid(g_Console, 48, 21, 'R');
+                        if (g_dBossMiddleTime > 6.9)
+                        {
+                            Cutscene.cleargrid(g_Console, 48, 21);
+                            Cutscene.drawgrid(g_Console, 52, 21, 'R');
+                            if (g_dBossMiddleTime > 7.2)
+                            {
+                                Cutscene.cleargrid(g_Console, 52, 21);
+                                Cutscene.drawgrid(g_Console, 56, 21, 'R');
+                                if (g_dBossMiddleTime > 7.5)
+                                {
+                                    Cutscene.cleargrid(g_Console, 56, 21);
+                                    Cutscene.drawgrid(g_Console, 60, 21, 'R');
+                                    if (g_dBossMiddleTime > 7.8)
+                                    {
+                                        Cutscene.cleargrid(g_Console, 60, 21);
+                                        Cutscene.drawgrid(g_Console, 64, 21, 'R');
+                                        if (g_dBossMiddleTime > 8.1)
+                                        {
+                                            g_Console.writeToBuffer(c, "Raymond: Come Robert! Let us have this unforgettable dance of a duel!!", 0x0F);
                                             if (g_dBossMiddleTime > 11.1)
                                             {
                                                 Cutscene.cleargrid(g_Console, 64, 21);
@@ -8429,6 +8515,8 @@ void render()
     case S_Boss_Room_Animation: Boss_Room_Animation();
         break;
     case S_Boss_Room_Mid_Animation: Boss_Room_Mid_Animation();
+        break;
+    case S_Presentation_Animation: Presentation_Animation();
         break;
     case S_BattleScreen: RenderBattleScreen();
         break;

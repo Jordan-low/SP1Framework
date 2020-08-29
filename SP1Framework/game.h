@@ -73,6 +73,7 @@ enum EGAMESTATES
     S_Dungeon_Stealth3_Animation,
     S_Boss_Room_Animation,
     S_Boss_Room_Mid_Animation,
+    S_Presentation_Animation,
     S_BattleScreen,
     S_Credits,
     //Battle animations
@@ -222,6 +223,8 @@ void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
 void Update_Boss_Room_Mid_Animation();
 void Boss_Room_Mid_Animation();
+void Update_Presentation_Animation();
+void Presentation_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
 void Update_Credits();
