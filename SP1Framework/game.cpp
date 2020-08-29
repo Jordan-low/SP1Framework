@@ -95,6 +95,7 @@ bool game_music; // same music for path area, oaf, iaf123
 bool stealth_music;
 bool phase2_music;
 bool credits_music;
+bool null_music;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -341,8 +342,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Credits;
-    g_eGameState = S_IAF4;
+    g_eGameState = S_MENU_UI;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -774,6 +774,7 @@ void Update_starting_cutscene()
     if (g_dStartScene > 36)
     {
         g_eGameState = S_Orphanage_Animation;
+        g_dElapsedTime = 0.00;
     }
     processUserInput();
 }
@@ -1012,7 +1013,7 @@ void starting_cutscene()
                                                             c.Y = 12;
                                                             g_Console.writeToBuffer(c, "about their own personal gain and");
                                                             c.Y = 13;
-                                                            g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                            g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                             if (g_dStartScene > 14.5)
                                                             {
                                                                 Cutscene.clearScreen(g_Console);;
@@ -2378,7 +2379,7 @@ void Credits()
                                                                                                                                                                                                 g_Console.writeToBuffer(c, " Written By: Ngiam");
                                                                                                                                                                                                 c.Y = 9;
                                                                                                                                                                                                 g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                                                c.Y = 11;
+                                                                                                                                                                                                c.Y = 10;
                                                                                                                                                                                                 g_Console.writeToBuffer(c, " Written By: Ngiam");
                                                                                                                                                                                                 c.X = 25;
                                                                                                                                                                                                 c.Y = 17;
@@ -2799,7 +2800,6 @@ void Update_Protest_Area()
 }
 void Protest_Area_Animation()
 {
-    PlaySound(NULL, NULL, NULL);
     game_music = false;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -2815,6 +2815,11 @@ void Protest_Area_Animation()
     Cutscene.drawgrid(g_Console, 62, 4, '/');
     if (g_dProtestTime > 0.3)
     {
+        while (null_music == false)
+        {
+            PlaySound(NULL, NULL, SND_ASYNC);
+            null_music = true;
+        }
         Cutscene.drawgrid(g_Console, 62, 4, '-');
         if (g_dProtestTime > 0.6)
         {
@@ -2929,11 +2934,6 @@ void Protest_Area_Animation()
                                                                                                                     g_Console.writeToBuffer(c, "Raymond: Truly wonderful I know I know, so long citizens of Harmonis.", 0x0F, 100);
                                                                                                                     if (g_dProtestTime > 74.0)
                                                                                                                     {
-                                                                                                                        while (speech_se == false)
-                                                                                                                        {
-                                                                                                                            PlaySound(TEXT("Crowd Chattering.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
-                                                                                                                            speech_se = true;
-                                                                                                                        }
                                                                                                                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                                                                                                         Cutscene.drawgrid(g_Console, 39, 8, '_');
                                                                                                                         Cutscene.drawgrid(g_Console, 42, 8, (char)12);
@@ -3007,6 +3007,11 @@ void Protest_Area_Animation()
                                                                                                                                                                                                 Cutscene.cleargrid(g_Console, 62, 4);
                                                                                                                                                                                                 if (g_dProtestTime > 79.7)
                                                                                                                                                                                                 {
+                                                                                                                                                                                                    while (speech_se == false)
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                        PlaySound(TEXT("Crowd Chattering.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+                                                                                                                                                                                                        speech_se = true;
+                                                                                                                                                                                                    }
                                                                                                                                                                                                     Cutscene.CrowdStandstillclear(g_Console);
                                                                                                                                                                                                     Cutscene.CrowdMoveLeft(g_Console);
                                                                                                                                                                                                     if (g_dProtestTime > 80.0)
@@ -9446,6 +9451,11 @@ void renderMap_Protest_Area()
 
 void renderMap_Path_Area()
 {
+    while (game_music == false)
+    {
+        PlaySound(TEXT("8 Bit Surf.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        game_music = true;
+    }
     COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -9664,6 +9674,8 @@ void renderMap_IAF4()
 }
 void renderMap_Inside_Medical_Facility()
 {
+    PlaySound(NULL, NULL, NULL);
+    game_music = false;
     COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -12890,7 +12902,7 @@ void renderInputEvents()
 
     // mouse events    
     ss.str("");
-    ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
+    /*ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";*/
     g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
     switch (g_mouseEvent.eventFlags)
@@ -12932,7 +12944,7 @@ void render_Main_Menu()
 {
     while (mainMenu_music == false)
     {
-        PlaySound(TEXT("Retro Platforming VERY SLOW.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        PlaySound(TEXT("8 Bit Retro Funk.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         mainMenu_music = true;
     }
     COORD c; COORD d;
@@ -14228,7 +14240,7 @@ void render_Main_Menu()
 
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
     {
-        g_dElapsedTime = 0.0;
+        g_dStartScene = 0.0;
         g_eGameState = S_Start_Animation;
     }
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 21)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
