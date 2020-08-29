@@ -93,8 +93,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Minigame.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Ally.cpp" />
     <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>

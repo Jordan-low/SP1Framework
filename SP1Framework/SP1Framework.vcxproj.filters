@@ -39,9 +39,6 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Damage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,9 +46,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cutscenes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Ally.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Dialogue.cpp">
