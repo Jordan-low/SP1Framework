@@ -16,7 +16,7 @@ public:
     void drawgrid(Console& g_Console, int x, int y, char chara); //draws in red
     void drawgridG(Console& g_Console, int x, int y, char chara); //draws in green
     void drawgridY(Console& g_Console, int x, int y, char chara); //draws in green
-
+    void drawgridW(Console& g_Console, int x, int y, char chara);
     void cleargrid(Console& g_Console, int x, int y);
     void clearSprite(Console& g_Console);
     void clearRobertSprite(Console& g_Console);
