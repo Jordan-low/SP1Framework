@@ -1,7 +1,12 @@
 #include "Sound.h"
 #include <windows.h>
+#include <iostream>
 
-void Sound::sound()
+using namespace std;
+
+void Sound::bossPhase2()
 {
-	bool music = PlaySound(L"../SP1Framework/sound.wav", NULL, SND_FILENAME | SND_ASYNC);
+
+	PlaySound(TEXT("boss phase2.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	
 }

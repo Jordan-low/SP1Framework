@@ -23,5 +23,5 @@ public:
 	void SetH(int health);
 	//void SetX(int x_coord);
 	//void SetY(int y_coord);
-
+	int randNum();
 };

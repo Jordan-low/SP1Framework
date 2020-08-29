@@ -9,16 +9,18 @@
 #include <cstdlib>
 #include <ctime>
 #include "Map.h"
-#include "Andrew's Item.h"
-#include "Andrew's Inventory.h"
+#include "Item.h"
+#include "Inventory.h"
 #include "Cutscenes.h"
 #include "Dialogue.h"
 #include "drawSprites.h"
 #include "Minigame.h"
+#include "Sound.h"
 
 using namespace std;
 
 double g_dElapsedTime;
+double g_dStartScene;
 double g_dChildrenTime;
 double g_dProtestTime;
 double g_dDungeonTime;
@@ -43,6 +45,7 @@ double g_dkillRobert;
 double g_dslashTutWasp;
 double g_dkillTutWasp;
 double GuardDetectTime;
+double g_dphase2Time;
 double startTime;
 double resetTime;
 double playerDMGTime;
@@ -50,11 +53,44 @@ double enemyDMGTime;
 double InvenTime;
 double playerInvenTime;
 double deathAnimation;
-static bool stepped;
-int itemQuantity;
+double laserTime;
+double laserTime2;
+double laserTime3;
+double movingBlockTime;
+double breakFloorTime;
+double g_dCreditsTime;
+double bombTime;
+double raymondTime;
 double showCollect;
+int randnum;
+int randnum2;
+int randnum3;
+int randnum4;
+int randnum5;
+int randnum6;
+int randnum7;
+int randnum8;
+int randstickman;
+int randstickman2;
+int randstickman3;
+int randBlock;
+int randBlock2;
+int randBlock3;
+int randBreakFloor;
+int randBreakFloor2;
+int randBomb;
+int randBomb2;
+int randCount;
+int fightCount;
+int fightCount2;
+int fightCount3;
+int fightCount4;
+int fightCount5;
+int fightCount6;
 
-
+bool phase2_music;
+bool credits_music;
+Sound s;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -68,13 +104,12 @@ SGameChar   g_sPig3;
 SGameChar   g_sGuard;
 SGameChar   g_sGuard2;
 SGameChar   g_sGuard3;
-SGameChar   g_sGuard4; 
+SGameChar   g_sGuard4;
 SGameChar   g_sGuard5;
 SGameChar   g_sGuard6;
 SGameChar   g_sGuard7;
 SGameChar   g_sMutantWasp;
 SGameChar   g_sMutantWasp2;
-SGameChar   g_sMutantWasp3;
 SGameChar   g_sRaymond;
 SGameChar   g_sNPC1;
 SGameChar   g_sNPC2;
@@ -84,6 +119,14 @@ SGameChar   g_sNPC5;
 SGameChar   g_sNPC6;
 SGameChar   g_sNPC7;
 SGameChar   g_sInven;
+SGameChar   g_sRawMeat;
+SGameChar   g_sBread;
+SGameChar   g_sBurger;
+SGameChar   g_sTaco;
+SGameChar   g_sCake;
+SGameChar   g_sMedicine;
+SGameChar   g_sStinger;
+SGameChar   g_sGuardArmor;
 SGameChar   g_sBox;
 SGameChar   g_sBox1;
 SGameChar   g_sBox2;
@@ -91,14 +134,12 @@ SGameChar   g_sBox3;
 SGameChar   g_sBox4;
 SGameChar   g_sBox5;
 SGameChar   g_sBox6;
-SGameChar   g_sRawMeat;
-SGameChar   g_sBread;
-SGameChar   g_sBurger;
-SGameChar   g_sTaco;
-SGameChar   g_sMedicine;
-SGameChar   g_sCake;
-SGameChar   g_sStinger;
-SGameChar   g_sGuardArmor;
+SGameChar   g_sLaser;
+SGameChar   g_sLaser2;
+SGameChar   g_sLaser3;
+SGameChar   g_sMovingBlock;
+SGameChar   g_sBreakFloor;
+SGameChar   g_sBomb;
 EGAMESTATES g_eGameState; // game states
 
 // Console object
@@ -109,7 +150,7 @@ Map eMap;
 drawSprites Sprites;
 Cutscenes Cutscene;
 Dialogue Dialogues;
-Enemy Guardz;
+Entity Ent;
 Minigame mini;
 //Inventory Stuff
 Inventory PlayerInv;
@@ -139,6 +180,11 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    randCount = 0;
+    g_sChar.entityDied = false;
+    g_sLaser.m_cLocation.X = 3;
+    g_sLaser.m_cLocation.Y = 2;
+
     g_sChar.nextDialogue = 0;
     g_sGuard4.startTimer = true;
     g_sChar.faceLeft = true;
@@ -151,6 +197,13 @@ void init(void)
     g_sGuard.fight = false;
     g_sGuard2.fight = false;
     g_sGuard3.fight = false;
+    g_sLaser.fight = false;
+    g_sLaser2.fight = false;
+    g_sLaser3.fight = false;
+    g_sMovingBlock.fight = false;
+    g_sBreakFloor.fight = true;
+    g_sBomb.fight = false;
+    g_sRaymond.fight = false;
 
     g_sChar.count = 0;
     g_sChar.unlockDoorDS1 = false;
@@ -169,8 +222,8 @@ void init(void)
     Guard.setEnemy(1, 1, 40, 15, 'E');
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
-    g_sChar.SetH(40);
-    g_sChar.SetD(10);
+    g_sChar.SetH(50); // set to 1k when enter room
+    g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -184,7 +237,7 @@ void init(void)
     g_sMutantWasp.SetH(25);
     g_sMutantWasp.SetD(5);
     g_sMutantWasp2.SetH(25);
-    g_sMutantWasp2.SetD(5);
+    g_sMutantWasp2.SetD(100);
 
     g_sChar.Poison = false;
     g_sRaymond.SetH(120);
@@ -195,8 +248,6 @@ void init(void)
     g_sInven.resetTimer = false;
     g_sInven.showItemUsed = false;
     g_sInven.showItemNotUsed = false;
-    stepped = false;
-    itemQuantity = 0;
     g_sChar.CP1 = false;
     g_sChar.CP2 = false;
     g_sChar.CP3 = false;
@@ -237,6 +288,8 @@ void init(void)
     g_sChar.takenBackpack = false;
     g_sChar.takenExtinguisher = false;
     g_sChar.Orp_Dialogue = false;
+    g_sChar.animationPlayed = false;
+    g_sChar.enterArea = false;
 
     //Wire minigame
     g_sBox1.m_cLocation.X = 52;
@@ -263,13 +316,27 @@ void init(void)
     g_sBox.m_cLocation.Y = 12;
     g_sBox.startTimer = false;
 
-
+    g_sLaser.startTimer = false;
+    g_sLaser2.startTimer = false;
+    g_sLaser3.startTimer = false;
+    g_sMovingBlock.startTimer = false;
+    g_sBreakFloor.startTimer = false;
+    g_sBomb.startTimer = false;
+    g_sRaymond.startTimer = false;
+    fightCount = 0;
+    fightCount2 = 0;
+    fightCount3 = 0;
+    fightCount4 = 0;
+    fightCount5 = 0;
+    fightCount6 = 0;
+    //bomb things
+    g_sBomb.m_cLocation.X = 58;
+    g_sBomb.m_cLocation.Y = 19;
 
     // Set precision for floating point output
-    g_dProtestTime = 0.0;
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_1;
+    g_eGameState = S_Protest_Area;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -284,12 +351,17 @@ void init(void)
     g_sGuard.m_cLocation.X = 44;
     g_sGuard.m_cLocation.Y = 10;
 
+    g_sRaymond.m_cLocation.X = 20;
+    g_sRaymond.m_cLocation.Y = 10;
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
     // remember to set your keyboard handler, so that your functions can be notified of input events
     g_Console.setKeyboardHandler(keyboardHandler);
     g_Console.setMouseHandler(mouseHandler);
+    srand((unsigned)time(0));
+
 }
 
 //--------------------------------------------------------------
@@ -385,12 +457,13 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_BattleScreen: gameplayKBHandler(keyboardEvent);
         break;
-    
-    //minigame
+    case S_phase2Battle: gameplayKBHandler(keyboardEvent);
+        break;
+        //minigame
     case S_wireGame: gameplayKBHandler(keyboardEvent);
         break;
 
-    //Death
+        //Death
     case S_Boss_Room_Animation: gameplayKBHandler(keyboardEvent);
         break;
     }
@@ -458,6 +531,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
         break;
     case S_wireGame: gameplayMouseHandler(mouseEvent);
         break;
+    case S_phase2Battle: gameplayMouseHandler(mouseEvent);
     }
 }
 
@@ -533,6 +607,7 @@ void update(double dt)
     // get the delta time
     g_dElapsedTime += dt;
     g_dDeltaTime = dt;
+    g_dStartScene += dt;
     g_dChildrenTime += dt;
     g_dProtestTime += dt;
     g_dDungeonTime += dt;
@@ -560,8 +635,18 @@ void update(double dt)
     g_dkillRaymond += dt;
     g_dslashRobert += dt;
     g_dkillRobert += dt;
+    g_dslashTutWasp += dt;
+    g_dkillTutWasp += dt;
+    g_dphase2Time += dt;
+    laserTime += dt;
+    laserTime2 += dt;
+    laserTime3 += dt;
+    movingBlockTime += dt;
+    breakFloorTime += dt;
+    g_dCreditsTime += dt;
+    bombTime += dt;
+    raymondTime += dt;
     showCollect += dt;
-
 
     switch (g_eGameState)
     {
@@ -577,7 +662,7 @@ void update(double dt)
         break;
     case S_GAME: updateGame();
         break;
-    //Areas of the game
+        //Areas of the game
     case S_Townsquare: updateGame();
         break;
     case S_Protest_Area: Update_Protest_Area();
@@ -610,7 +695,11 @@ void update(double dt)
     case S_wireGame: updateGame();
         break;
 
-    //Animations
+        //Animations
+    case S_Start_Animation: Update_starting_cutscene();
+        break;
+    case S_Protest_Area_Animation: Update_Protest_Area();
+        break;
     case S_Path_Area_Animation: Update_Path_Area();
         break;
     case S_Dungeon_Cell_Animation: Update_Dungeon_Cell();
@@ -629,10 +718,12 @@ void update(double dt)
         break;
     case S_BattleScreen: UpdateBattleScreen();
         break;
+    case S_Credits: Update_Credits();
+        break;
 
-    //Battle Animations
-    //case S_SlashGuard: Update_slashGuard();
-        //break;
+        //Battle Animations
+        //case S_SlashGuard: Update_slashGuard();
+            //break;
     case S_KillGuard: Update_killGuard();
         break;
     case S_slashWasp: Update_slashWasp();
@@ -653,7 +744,11 @@ void update(double dt)
         break;
     case S_slashTutWasp: Update_slashTutWasp();
         break;
-    case S_killTutWasp: killTutWasp();
+    case S_killTutWasp: Update_killTutWasp();
+        break;
+
+        //Battle Phase 2 Raymond
+    case S_phase2Battle: Update_phase2Battle();
         break;
     }
 }
@@ -667,6 +762,981 @@ void UpdateGameOver()
 }
 
 //Animated Cutscenes here
+
+void Update_starting_cutscene()
+{
+    if (g_dStartScene > 36)
+    {
+        g_eGameState = S_Orphanage_Animation;
+    }
+    processUserInput();
+}
+void starting_cutscene()
+{
+    Cutscene.clearScreen(g_Console);;
+    COORD c;
+    if (g_dStartScene > 0.5)
+    {
+        c.X = 20;
+        c.Y = 13;
+        g_Console.writeToBuffer(c, "The world went through an economic");
+        if (g_dStartScene > 1.5)
+        {
+            Cutscene.clearScreen(g_Console);;
+            c.Y = 12;
+            g_Console.writeToBuffer(c, "The world went through an economic");
+            c.Y = 13;
+            g_Console.writeToBuffer(c, "crisis due to all the things");
+
+            if (g_dStartScene > 2.5)
+            {
+                Cutscene.clearScreen(g_Console);;
+                c.Y = 11;
+                g_Console.writeToBuffer(c, "The world went through an economic");
+                c.Y = 12;
+                g_Console.writeToBuffer(c, "crisis due to all the things that");
+                c.Y = 13;
+                g_Console.writeToBuffer(c, "are happening around the globe.");
+                if (g_dStartScene > 3.5)
+                {
+                    Cutscene.clearScreen(g_Console);;
+                    c.Y = 10;
+                    g_Console.writeToBuffer(c, "The world went through an economic");
+                    c.Y = 11;
+                    g_Console.writeToBuffer(c, "crisis due to all the things that");
+                    c.Y = 12;
+                    g_Console.writeToBuffer(c, "are happening around the globe.");
+                    c.Y = 13;
+                    g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                    if (g_dStartScene > 4.5)
+                    {
+                        Cutscene.clearScreen(g_Console);;
+                        c.Y = 9;
+                        g_Console.writeToBuffer(c, "The world went through an economic");
+                        c.Y = 10;
+                        g_Console.writeToBuffer(c, "crisis due to all the things that");
+                        c.Y = 11;
+                        g_Console.writeToBuffer(c, "are happening around the globe.");
+                        c.Y = 12;
+                        g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                        c.Y = 13;
+                        g_Console.writeToBuffer(c, "factors such as climate changes ");
+                        if (g_dStartScene > 5.5)
+                        {
+                            Cutscene.clearScreen(g_Console);;
+                            c.Y = 8;
+                            g_Console.writeToBuffer(c, "The world went through an economic");
+                            c.Y = 9;
+                            g_Console.writeToBuffer(c, "crisis due to all the things that");
+                            c.Y = 10;
+                            g_Console.writeToBuffer(c, "are happening around the globe.");
+                            c.Y = 11;
+                            g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                            c.Y = 12;
+                            g_Console.writeToBuffer(c, "factors such as climate changes and");
+                            c.Y = 13;
+                            g_Console.writeToBuffer(c, "population distribution which");
+                            if (g_dStartScene > 6.5)
+                            {
+                                Cutscene.clearScreen(g_Console);;
+                                c.Y = 7;
+                                g_Console.writeToBuffer(c, "The world went through an economic");
+                                c.Y = 8;
+                                g_Console.writeToBuffer(c, "crisis due to all the things that");
+                                c.Y = 9;
+                                g_Console.writeToBuffer(c, "are happening around the globe.");
+                                c.Y = 10;
+                                g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                                c.Y = 11;
+                                g_Console.writeToBuffer(c, "factors such as climate changes and");
+                                c.Y = 12;
+                                g_Console.writeToBuffer(c, "population distribution which");
+                                c.Y = 13;
+                                g_Console.writeToBuffer(c, "greatly affected the country have");
+                                if (g_dStartScene > 7.5)
+                                {
+                                    Cutscene.clearScreen(g_Console);;
+                                    c.Y = 6;
+                                    g_Console.writeToBuffer(c, "The world went through an economic");
+                                    c.Y = 7;
+                                    g_Console.writeToBuffer(c, "crisis due to all the things that");
+                                    c.Y = 8;
+                                    g_Console.writeToBuffer(c, "are happening around the globe.");
+                                    c.Y = 9;
+                                    g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                                    c.Y = 10;
+                                    g_Console.writeToBuffer(c, "factors such as climate changes and");
+                                    c.Y = 11;
+                                    g_Console.writeToBuffer(c, "population distribution which");
+                                    c.Y = 12;
+                                    g_Console.writeToBuffer(c, "greatly affected the country have");
+                                    c.Y = 13;
+                                    g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                    if (g_dStartScene > 8.5)
+                                    {
+                                        Cutscene.clearScreen(g_Console);;
+                                        c.Y = 5;
+                                        g_Console.writeToBuffer(c, "The world went through an economic");
+                                        c.Y = 6;
+                                        g_Console.writeToBuffer(c, "crisis due to all the things that");
+                                        c.Y = 7;
+                                        g_Console.writeToBuffer(c, "are happening around the globe.");
+                                        c.Y = 8;
+                                        g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                                        c.Y = 9;
+                                        g_Console.writeToBuffer(c, "factors such as climate changes");
+                                        c.Y = 10;
+                                        g_Console.writeToBuffer(c, "and population distribution which");
+                                        c.Y = 11;
+                                        g_Console.writeToBuffer(c, "greatly affected the country have");
+                                        c.Y = 12;
+                                        g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                        c.Y = 13;
+                                        g_Console.writeToBuffer(c, "to suffer huge losses.");
+                                        if (g_dStartScene > 9.5)
+                                        {
+                                            Cutscene.clearScreen(g_Console);;
+                                            c.Y = 4;
+                                            g_Console.writeToBuffer(c, "The world went through an economic");
+                                            c.Y = 5;
+                                            g_Console.writeToBuffer(c, "crisis due to all the things that");
+                                            c.Y = 6;
+                                            g_Console.writeToBuffer(c, "are happening around the globe.");
+                                            c.Y = 7;
+                                            g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                                            c.Y = 8;
+                                            g_Console.writeToBuffer(c, "factors such as climate changes");
+                                            c.Y = 9;
+                                            g_Console.writeToBuffer(c, "and population distribution which");
+                                            c.Y = 10;
+                                            g_Console.writeToBuffer(c, "greatly affected the country have");
+                                            c.Y = 11;
+                                            g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                            c.Y = 12;
+                                            g_Console.writeToBuffer(c, "to suffer huge losses. The");
+                                            c.Y = 13;
+                                            g_Console.writeToBuffer(c, "government then turned corrupt");
+                                            if (g_dStartScene > 10.5)
+                                            {
+                                                Cutscene.clearScreen(g_Console);;
+                                                c.Y = 4;
+                                                g_Console.writeToBuffer(c, "crisis due to all the things that");
+                                                c.Y = 5;
+                                                g_Console.writeToBuffer(c, "are happening around the globe.");
+                                                c.Y = 6;
+                                                g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                                                c.Y = 7;
+                                                g_Console.writeToBuffer(c, "factors such as climate changes");
+                                                c.Y = 8;
+                                                g_Console.writeToBuffer(c, "and population distribution which");
+                                                c.Y = 9;
+                                                g_Console.writeToBuffer(c, "greatly affected the country have");
+                                                c.Y = 10;
+                                                g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                                c.Y = 11;
+                                                g_Console.writeToBuffer(c, "to suffer huge losses. The ");
+                                                c.Y = 12;
+                                                g_Console.writeToBuffer(c, "government then turned corrupt and ");
+                                                c.Y = 13;
+                                                g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                if (g_dStartScene > 11.5)
+                                                {
+                                                    Cutscene.clearScreen(g_Console);;
+                                                    c.Y = 4;
+                                                    g_Console.writeToBuffer(c, "are happening around the globe.");
+                                                    c.Y = 5;
+                                                    g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                                                    c.Y = 6;
+                                                    g_Console.writeToBuffer(c, "factors such as climate changes");
+                                                    c.Y = 7;
+                                                    g_Console.writeToBuffer(c, "and population distribution which");
+                                                    c.Y = 8;
+                                                    g_Console.writeToBuffer(c, "greatly affected the country have");
+                                                    c.Y = 9;
+                                                    g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                                    c.Y = 10;
+                                                    g_Console.writeToBuffer(c, "to suffer huge losses. The ");
+                                                    c.Y = 11;
+                                                    g_Console.writeToBuffer(c, "government then turned corrupt and");
+                                                    c.Y = 12;
+                                                    g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                    c.Y = 13;
+                                                    g_Console.writeToBuffer(c, "Government officials only worried");
+                                                    if (g_dStartScene > 12.5)
+                                                    {
+                                                        c.Y = 4;
+                                                        g_Console.writeToBuffer(c, "Natural disasters due to multiple");
+                                                        c.Y = 5;
+                                                        g_Console.writeToBuffer(c, "factors such as climate changes");
+                                                        c.Y = 6;
+                                                        g_Console.writeToBuffer(c, "and population distribution which");
+                                                        c.Y = 7;
+                                                        g_Console.writeToBuffer(c, "greatly affected the country have");
+                                                        c.Y = 8;
+                                                        g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                                        c.Y = 9;
+                                                        g_Console.writeToBuffer(c, "to suffer huge losses. The government");
+                                                        c.Y = 10;
+                                                        g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                        c.Y = 11;
+                                                        g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                        c.Y = 12;
+                                                        g_Console.writeToBuffer(c, "Government officials only worried");
+                                                        c.Y = 13;
+                                                        g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                        if (g_dStartScene > 13.5)
+                                                        {
+                                                            Cutscene.clearScreen(g_Console);;
+                                                            c.Y = 4;
+                                                            g_Console.writeToBuffer(c, "factors such as climate changes");
+                                                            c.Y = 5;
+                                                            g_Console.writeToBuffer(c, "and population distribution which");
+                                                            c.Y = 6;
+                                                            g_Console.writeToBuffer(c, "greatly affected the country have");
+                                                            c.Y = 7;
+                                                            g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                                            c.Y = 8;
+                                                            g_Console.writeToBuffer(c, "to suffer huge losses. The government");
+                                                            c.Y = 9;
+                                                            g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                            c.Y = 10;
+                                                            g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                            c.Y = 11;
+                                                            g_Console.writeToBuffer(c, "Government officials only worried");
+                                                            c.Y = 12;
+                                                            g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                            c.Y = 13;
+                                                            g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                            if (g_dStartScene > 14.5)
+                                                            {
+                                                                Cutscene.clearScreen(g_Console);;
+                                                                c.Y = 4;
+                                                                g_Console.writeToBuffer(c, "and population distribution which");
+                                                                c.Y = 5;
+                                                                g_Console.writeToBuffer(c, "greatly affected the country have");
+                                                                c.Y = 6;
+                                                                g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                                                c.Y = 7;
+                                                                g_Console.writeToBuffer(c, "to suffer huge losses. The government");
+                                                                c.Y = 8;
+                                                                g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                c.Y = 9;
+                                                                g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                                c.Y = 10;
+                                                                g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                c.Y = 11;
+                                                                g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                                c.Y = 12;
+                                                                g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                c.Y = 13;
+                                                                g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                if (g_dStartScene > 15.5)
+                                                                {
+                                                                    Cutscene.clearScreen(g_Console);;
+                                                                    c.Y = 4;
+                                                                    g_Console.writeToBuffer(c, "greatly affected the country have");
+                                                                    c.Y = 5;
+                                                                    g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                                                    c.Y = 6;
+                                                                    g_Console.writeToBuffer(c, "to suffer huge losses. The government");
+                                                                    c.Y = 7;
+                                                                    g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                    c.Y = 8;
+                                                                    g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                                    c.Y = 9;
+                                                                    g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                    c.Y = 10;
+                                                                    g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                                    c.Y = 11;
+                                                                    g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                    c.Y = 12;
+                                                                    g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                    c.Y = 13;
+                                                                    g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                    if (g_dStartScene > 16.5)
+                                                                    {
+                                                                        Cutscene.clearScreen(g_Console);;
+                                                                        c.Y = 4;
+                                                                        g_Console.writeToBuffer(c, "caused mass panic and the country");
+                                                                        c.Y = 5;
+                                                                        g_Console.writeToBuffer(c, "to suffer huge losses. The government");
+                                                                        c.Y = 6;
+                                                                        g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                        c.Y = 7;
+                                                                        g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                                        c.Y = 8;
+                                                                        g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                        c.Y = 9;
+                                                                        g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                                        c.Y = 10;
+                                                                        g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                        c.Y = 11;
+                                                                        g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                        c.Y = 12;
+                                                                        g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                        c.Y = 13;
+                                                                        g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                        if (g_dStartScene > 17.5)
+                                                                        {
+                                                                            Cutscene.clearScreen(g_Console);;
+                                                                            c.Y = 4;
+                                                                            g_Console.writeToBuffer(c, "to suffer huge losses. The government");
+                                                                            c.Y = 5;
+                                                                            g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                            c.Y = 6;
+                                                                            g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                                            c.Y = 7;
+                                                                            g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                            c.Y = 8;
+                                                                            g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                                            c.Y = 9;
+                                                                            g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                            c.Y = 10;
+                                                                            g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                            c.Y = 11;
+                                                                            g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                            c.Y = 12;
+                                                                            g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                            c.Y = 13;
+                                                                            g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                            if (g_dStartScene > 18.5)
+                                                                            {
+                                                                                Cutscene.clearScreen(g_Console);;
+                                                                                c.Y = 4;
+                                                                                g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                                c.Y = 5;
+                                                                                g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                                                c.Y = 6;
+                                                                                g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                                c.Y = 7;
+                                                                                g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                                                c.Y = 8;
+                                                                                g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                c.Y = 9;
+                                                                                g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                                c.Y = 10;
+                                                                                g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                                c.Y = 11;
+                                                                                g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                                c.Y = 12;
+                                                                                g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                                c.Y = 13;
+                                                                                g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                if (g_dStartScene > 19.5)
+                                                                                {
+                                                                                    Cutscene.clearScreen(g_Console);;
+                                                                                    c.Y = 4;
+                                                                                    g_Console.writeToBuffer(c, "blamed each other for their losses.");
+                                                                                    c.Y = 5;
+                                                                                    g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                                    c.Y = 6;
+                                                                                    g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                                                    c.Y = 7;
+                                                                                    g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                    c.Y = 8;
+                                                                                    g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                                    c.Y = 9;
+                                                                                    g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                                    c.Y = 10;
+                                                                                    g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                                    c.Y = 11;
+                                                                                    g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                                    c.Y = 12;
+                                                                                    g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                    c.Y = 13;
+                                                                                    g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                    if (g_dStartScene > 20.5)
+                                                                                    {
+                                                                                        Cutscene.clearScreen(g_Console);;
+                                                                                        c.Y = 4;
+                                                                                        g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                                        c.Y = 5;
+                                                                                        g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                                                        c.Y = 6;
+                                                                                        g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                        c.Y = 7;
+                                                                                        g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                                        c.Y = 8;
+                                                                                        g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                                        c.Y = 9;
+                                                                                        g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                                        c.Y = 10;
+                                                                                        g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                                        c.Y = 11;
+                                                                                        g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                        c.Y = 12;
+                                                                                        g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                        c.Y = 13;
+                                                                                        g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                        if (g_dStartScene > 21.5)
+                                                                                        {
+                                                                                            Cutscene.clearScreen(g_Console);;
+                                                                                            c.Y = 4;
+                                                                                            g_Console.writeToBuffer(c, "about their own personal gain and");
+                                                                                            c.Y = 5;
+                                                                                            g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                            c.Y = 6;
+                                                                                            g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                                            c.Y = 7;
+                                                                                            g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                                            c.Y = 8;
+                                                                                            g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                                            c.Y = 9;
+                                                                                            g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                                            c.Y = 10;
+                                                                                            g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                            c.Y = 11;
+                                                                                            g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                            c.Y = 12;
+                                                                                            g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                            c.Y = 13;
+                                                                                            g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                            if (g_dStartScene > 22.5)
+                                                                                            {
+                                                                                                Cutscene.clearScreen(g_Console);;
+                                                                                                c.Y = 4;
+                                                                                                g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                                c.Y = 5;
+                                                                                                g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                                                c.Y = 6;
+                                                                                                g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                                                c.Y = 7;
+                                                                                                g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                                                c.Y = 8;
+                                                                                                g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                                                c.Y = 9;
+                                                                                                g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                                c.Y = 10;
+                                                                                                g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                                c.Y = 11;
+                                                                                                g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                                c.Y = 12;
+                                                                                                g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                                c.Y = 13;
+                                                                                                g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                if (g_dStartScene > 23.5)
+                                                                                                {
+                                                                                                    Cutscene.clearScreen(g_Console);;
+                                                                                                    c.Y = 4;
+                                                                                                    g_Console.writeToBuffer(c, "struggles. And so many other countries");
+                                                                                                    c.Y = 5;
+                                                                                                    g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                                                    c.Y = 6;
+                                                                                                    g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                                                    c.Y = 7;
+                                                                                                    g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                                                    c.Y = 8;
+                                                                                                    g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                                    c.Y = 9;
+                                                                                                    g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                                    c.Y = 10;
+                                                                                                    g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                                    c.Y = 11;
+                                                                                                    g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                                    c.Y = 12;
+                                                                                                    g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                    c.Y = 13;
+                                                                                                    g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                    if (g_dStartScene > 24.5)
+                                                                                                    {
+                                                                                                        Cutscene.clearScreen(g_Console);;
+                                                                                                        c.Y = 4;
+                                                                                                        g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
+                                                                                                        c.Y = 5;
+                                                                                                        g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                                                        c.Y = 6;
+                                                                                                        g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                                                        c.Y = 7;
+                                                                                                        g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                                        c.Y = 8;
+                                                                                                        g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                                        c.Y = 9;
+                                                                                                        g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                                        c.Y = 10;
+                                                                                                        g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                                        c.Y = 11;
+                                                                                                        g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                        c.Y = 12;
+                                                                                                        g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                        c.Y = 13;
+                                                                                                        g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                        if (g_dStartScene > 25.5)
+                                                                                                        {
+                                                                                                            Cutscene.clearScreen(g_Console);;
+                                                                                                            c.Y = 4;
+                                                                                                            g_Console.writeToBuffer(c, "country while it was in chaos. This has");
+                                                                                                            c.Y = 5;
+                                                                                                            g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                                                            c.Y = 6;
+                                                                                                            g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                                            c.Y = 7;
+                                                                                                            g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                                            c.Y = 8;
+                                                                                                            g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                                            c.Y = 9;
+                                                                                                            g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                                            c.Y = 10;
+                                                                                                            g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                            c.Y = 11;
+                                                                                                            g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                            c.Y = 12;
+                                                                                                            g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                            c.Y = 13;
+                                                                                                            g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                            if (g_dStartScene > 26.5)
+                                                                                                            {
+                                                                                                                Cutscene.clearScreen(g_Console);;
+                                                                                                                c.Y = 4;
+                                                                                                                g_Console.writeToBuffer(c, "greatly increased the tension between");
+                                                                                                                c.Y = 5;
+                                                                                                                g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                                                c.Y = 6;
+                                                                                                                g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                                                c.Y = 7;
+                                                                                                                g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                                                c.Y = 8;
+                                                                                                                g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                                                c.Y = 9;
+                                                                                                                g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                                c.Y = 10;
+                                                                                                                g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                                c.Y = 11;
+                                                                                                                g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                c.Y = 12;
+                                                                                                                g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                if (g_dStartScene > 27.5)
+                                                                                                                {
+                                                                                                                    Cutscene.clearScreen(g_Console);;
+                                                                                                                    c.Y = 4;
+                                                                                                                    g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
+                                                                                                                    c.Y = 5;
+                                                                                                                    g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                                                    c.Y = 6;
+                                                                                                                    g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                                                    c.Y = 7;
+                                                                                                                    g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                                                    c.Y = 8;
+                                                                                                                    g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                                    c.Y = 9;
+                                                                                                                    g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                                    c.Y = 10;
+                                                                                                                    g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                    c.Y = 11;
+                                                                                                                    g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                    if (g_dStartScene > 28.5)
+                                                                                                                    {
+                                                                                                                        Cutscene.clearScreen(g_Console);;
+                                                                                                                        c.Y = 4;
+                                                                                                                        g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
+                                                                                                                        c.Y = 5;
+                                                                                                                        g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                                                        c.Y = 6;
+                                                                                                                        g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                                                        c.Y = 7;
+                                                                                                                        g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                                        c.Y = 8;
+                                                                                                                        g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                                        c.Y = 9;
+                                                                                                                        g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                        c.Y = 10;
+                                                                                                                        g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                        if (g_dStartScene > 29.5)
+                                                                                                                        {
+                                                                                                                            Cutscene.clearScreen(g_Console);;
+                                                                                                                            c.Y = 4;
+                                                                                                                            g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
+                                                                                                                            c.Y = 5;
+                                                                                                                            g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                                                            c.Y = 6;
+                                                                                                                            g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                                            c.Y = 7;
+                                                                                                                            g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                                            c.Y = 8;
+                                                                                                                            g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                            c.Y = 9;
+                                                                                                                            g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                            if (g_dStartScene > 30.5)
+                                                                                                                            {
+                                                                                                                                Cutscene.clearScreen(g_Console);;
+                                                                                                                                c.Y = 4;
+                                                                                                                                g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
+                                                                                                                                c.Y = 5;
+                                                                                                                                g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                                                c.Y = 6;
+                                                                                                                                g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                                                c.Y = 7;
+                                                                                                                                g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                                c.Y = 8;
+                                                                                                                                g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                                if (g_dStartScene > 31.5)
+                                                                                                                                {
+                                                                                                                                    Cutscene.clearScreen(g_Console);;
+                                                                                                                                    c.Y = 4;
+                                                                                                                                    g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
+                                                                                                                                    c.Y = 5;
+                                                                                                                                    g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                                                    c.Y = 6;
+                                                                                                                                    g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                                    c.Y = 7;
+                                                                                                                                    g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                                    if (g_dStartScene > 32.5)
+                                                                                                                                    {
+                                                                                                                                        Cutscene.clearScreen(g_Console);;
+                                                                                                                                        c.Y = 4;
+                                                                                                                                        g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
+                                                                                                                                        c.Y = 5;
+                                                                                                                                        g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                                        c.Y = 6;
+                                                                                                                                        g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                                        if (g_dStartScene > 33.5)
+                                                                                                                                        {
+                                                                                                                                            Cutscene.clearScreen(g_Console);;
+                                                                                                                                            c.Y = 4;
+                                                                                                                                            g_Console.writeToBuffer(c, "he has to help restore the world back to its");
+                                                                                                                                            c.Y = 5;
+                                                                                                                                            g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                                            if (g_dStartScene > 34.5)
+                                                                                                                                            {
+                                                                                                                                                Cutscene.clearScreen(g_Console);;
+                                                                                                                                                c.Y = 4;
+                                                                                                                                                g_Console.writeToBuffer(c, "peaceful state.");
+                                                                                                                                                if (g_dStartScene > 35.5)
+                                                                                                                                                {
+                                                                                                                                                    Cutscene.clearScreen(g_Console);;
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Update_Credits()
+{
+    if (g_dCreditsTime > 36)
+    {
+        g_eGameState = S_GAME;
+    }
+    processUserInput();
+}
+void Credits()
+{
+    while (credits_music == false)
+    {
+        PlaySound(TEXT("Ancient Lullaby.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        credits_music = true;
+    }
+    Cutscene.clearScreen(g_Console);
+    COORD c;
+    if (g_dCreditsTime > 0.5)
+    {
+        c.X = 20;
+        c.Y = 12;
+        g_Console.writeToBuffer(c, "After defeating Raymond, Robert became");
+        c.Y = 13;
+        g_Console.writeToBuffer(c, "the President and sought to restore the");
+        c.Y = 14;
+        g_Console.writeToBuffer(c, "world back to its original state.");
+        if (g_dCreditsTime > 5.5)
+        {
+            Cutscene.clearScreen(g_Console);
+            c.X = 32;
+            c.Y = 17;
+            g_Console.writeToBuffer(c, "Development Team");
+            if (g_dCreditsTime > 6.5)
+            {
+                Cutscene.clearScreen(g_Console);
+                c.Y = 16;
+                g_Console.writeToBuffer(c, "Development Team");
+                if (g_dCreditsTime > 7.5)
+                {
+                    Cutscene.clearScreen(g_Console);
+                    c.Y = 15;
+                    g_Console.writeToBuffer(c, "Development Team");
+                    c.Y = 17;
+                    g_Console.writeToBuffer(c, "     Andrew");
+                    if (g_dCreditsTime > 8.5)
+                    {
+                        Cutscene.clearScreen(g_Console);
+                        c.Y = 14;
+                        g_Console.writeToBuffer(c, "Development Team");
+                        c.Y = 16;
+                        g_Console.writeToBuffer(c, "     Andrew");
+                        c.Y = 17;
+                        g_Console.writeToBuffer(c, "     Artus");
+                        if (g_dCreditsTime > 9.5)
+                        {
+                            Cutscene.clearScreen(g_Console);
+                            c.Y = 13;
+                            g_Console.writeToBuffer(c, "Development Team");
+                            c.Y = 15;
+                            g_Console.writeToBuffer(c, "     Andrew");
+                            c.Y = 16;
+                            g_Console.writeToBuffer(c, "     Artus");
+                            c.Y = 17;
+                            g_Console.writeToBuffer(c, "     Jordan");
+                            if (g_dCreditsTime > 10.5)
+                            {
+                                Cutscene.clearScreen(g_Console);
+                                c.Y = 12;
+                                g_Console.writeToBuffer(c, "Development Team");
+                                c.Y = 14;
+                                g_Console.writeToBuffer(c, "     Andrew");
+                                c.Y = 15;
+                                g_Console.writeToBuffer(c, "     Artus");
+                                c.Y = 16;
+                                g_Console.writeToBuffer(c, "     Jordan");
+                                c.Y = 17;
+                                g_Console.writeToBuffer(c, "     Nicole");
+                                if (g_dCreditsTime > 11.5)
+                                {
+                                    Cutscene.clearScreen(g_Console);
+                                    c.Y = 11;
+                                    g_Console.writeToBuffer(c, "Development Team");
+                                    c.Y = 13;
+                                    g_Console.writeToBuffer(c, "     Andrew");
+                                    c.Y = 14;
+                                    g_Console.writeToBuffer(c, "     Artus");
+                                    c.Y = 15;
+                                    g_Console.writeToBuffer(c, "     Jordan");
+                                    c.Y = 16;
+                                    g_Console.writeToBuffer(c, "     Nicole");
+                                    c.Y = 17;
+                                    g_Console.writeToBuffer(c, "     Renee");
+                                    if (g_dCreditsTime > 12.5)
+                                    {
+                                        Cutscene.clearScreen(g_Console);
+                                        c.Y = 10;
+                                        g_Console.writeToBuffer(c, "Development Team");
+                                        c.Y = 12;
+                                        g_Console.writeToBuffer(c, "     Andrew");
+                                        c.Y = 13;
+                                        g_Console.writeToBuffer(c, "     Artus");
+                                        c.Y = 14;
+                                        g_Console.writeToBuffer(c, "     Jordan");
+                                        c.Y = 15;
+                                        g_Console.writeToBuffer(c, "     Nicole");
+                                        c.Y = 16;
+                                        g_Console.writeToBuffer(c, "     Renee");
+                                        if (g_dCreditsTime > 13.5)
+                                        {
+                                            Cutscene.clearScreen(g_Console);
+                                            c.Y = 9;
+                                            g_Console.writeToBuffer(c, "Development Team");
+                                            c.Y = 11;
+                                            g_Console.writeToBuffer(c, "     Andrew");
+                                            c.Y = 12;
+                                            g_Console.writeToBuffer(c, "     Artus");
+                                            c.Y = 13;
+                                            g_Console.writeToBuffer(c, "     Jordan");
+                                            c.Y = 14;
+                                            g_Console.writeToBuffer(c, "     Nicole");
+                                            c.Y = 15;
+                                            g_Console.writeToBuffer(c, "     Renee");
+                                            if (g_dCreditsTime > 14.5)
+                                            {
+                                                Cutscene.clearScreen(g_Console);
+                                                c.Y = 8;
+                                                g_Console.writeToBuffer(c, "Development Team");
+                                                c.Y = 10;
+                                                g_Console.writeToBuffer(c, "     Andrew");
+                                                c.Y = 11;
+                                                g_Console.writeToBuffer(c, "     Artus");
+                                                c.Y = 12;
+                                                g_Console.writeToBuffer(c, "     Jordan");
+                                                c.Y = 13;
+                                                g_Console.writeToBuffer(c, "     Nicole");
+                                                c.Y = 14;
+                                                g_Console.writeToBuffer(c, "     Renee");
+                                                c.Y = 17;
+                                                g_Console.writeToBuffer(c, "      Music");
+                                                if (g_dCreditsTime > 15.5)
+                                                {
+                                                    Cutscene.clearScreen(g_Console);
+                                                    c.Y = 7;
+                                                    g_Console.writeToBuffer(c, "Development Team");
+                                                    c.Y = 9;
+                                                    g_Console.writeToBuffer(c, "     Andrew");
+                                                    c.Y = 10;
+                                                    g_Console.writeToBuffer(c, "     Artus");
+                                                    c.Y = 11;
+                                                    g_Console.writeToBuffer(c, "     Jordan");
+                                                    c.Y = 12;
+                                                    g_Console.writeToBuffer(c, "     Nicole");
+                                                    c.Y = 13;
+                                                    g_Console.writeToBuffer(c, "     Renee");
+                                                    c.Y = 16;
+                                                    g_Console.writeToBuffer(c, "      Music");
+                                                    if (g_dCreditsTime > 16.5)
+                                                    {
+                                                        Cutscene.clearScreen(g_Console);
+                                                        c.Y = 8;
+                                                        g_Console.writeToBuffer(c, "     Andrew");
+                                                        c.Y = 9;
+                                                        g_Console.writeToBuffer(c, "     Artus");
+                                                        c.Y = 10;
+                                                        g_Console.writeToBuffer(c, "     Jordan");
+                                                        c.Y = 11;
+                                                        g_Console.writeToBuffer(c, "     Nicole");
+                                                        c.Y = 12;
+                                                        g_Console.writeToBuffer(c, "     Renee");
+                                                        c.Y = 15;
+                                                        g_Console.writeToBuffer(c, "      Music");
+                                                        c.Y = 17;
+                                                        g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                        if (g_dCreditsTime > 17.5)
+                                                        {
+                                                            Cutscene.clearScreen(g_Console);
+                                                            c.Y = 7;
+                                                            g_Console.writeToBuffer(c, "     Andrew");
+                                                            c.Y = 8;
+                                                            g_Console.writeToBuffer(c, "     Artus");
+                                                            c.Y = 9;
+                                                            g_Console.writeToBuffer(c, "     Jordan");
+                                                            c.Y = 10;
+                                                            g_Console.writeToBuffer(c, "     Nicole");
+                                                            c.Y = 11;
+                                                            g_Console.writeToBuffer(c, "     Renee");
+                                                            c.Y = 14;
+                                                            g_Console.writeToBuffer(c, "      Music");
+                                                            c.Y = 16;
+                                                            g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                            c.Y = 17;
+                                                            g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                            if (g_dCreditsTime > 18.5)
+                                                            {
+                                                                Cutscene.clearScreen(g_Console);
+                                                                c.Y = 7;
+                                                                g_Console.writeToBuffer(c, "     Artus");
+                                                                c.Y = 8;
+                                                                g_Console.writeToBuffer(c, "     Jordan");
+                                                                c.Y = 9;
+                                                                g_Console.writeToBuffer(c, "     Nicole");
+                                                                c.Y = 10;
+                                                                g_Console.writeToBuffer(c, "     Renee");
+                                                                c.Y = 13;
+                                                                g_Console.writeToBuffer(c, "      Music");
+                                                                c.Y = 15;
+                                                                g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                c.Y = 16;
+                                                                g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                if (g_dCreditsTime > 19.5)
+                                                                {
+                                                                    Cutscene.clearScreen(g_Console);
+                                                                    c.Y = 7;
+                                                                    g_Console.writeToBuffer(c, "     Jordan");
+                                                                    c.Y = 8;
+                                                                    g_Console.writeToBuffer(c, "     Nicole");
+                                                                    c.Y = 9;
+                                                                    g_Console.writeToBuffer(c, "     Renee");
+                                                                    c.Y = 12;
+                                                                    g_Console.writeToBuffer(c, "      Music");
+                                                                    c.Y = 14;
+                                                                    g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                    c.Y = 15;
+                                                                    g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                    c.Y = 17;
+                                                                    g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                    if (g_dCreditsTime > 20.5)
+                                                                    {
+                                                                        Cutscene.clearScreen(g_Console);
+                                                                        c.Y = 7;
+                                                                        g_Console.writeToBuffer(c, "     Nicole");
+                                                                        c.Y = 8;
+                                                                        g_Console.writeToBuffer(c, "     Renee");
+                                                                        c.Y = 11;
+                                                                        g_Console.writeToBuffer(c, "      Music");
+                                                                        c.Y = 13;
+                                                                        g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                        c.Y = 14;
+                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                        c.Y = 16;
+                                                                        g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                        c.Y = 17;
+                                                                        g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                        if (g_dCreditsTime > 21.5)
+                                                                        {
+                                                                            Cutscene.clearScreen(g_Console);
+                                                                            c.Y = 7;
+                                                                            g_Console.writeToBuffer(c, "     Renee");
+                                                                            c.Y = 10;
+                                                                            g_Console.writeToBuffer(c, "      Music");
+                                                                            c.Y = 12;
+                                                                            g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                            c.Y = 13;
+                                                                            g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                            c.Y = 15;
+                                                                            g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                            c.Y = 16;
+                                                                            g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                            if (g_dCreditsTime > 21.5)
+                                                                            {
+                                                                                Cutscene.clearScreen(g_Console);
+                                                                                c.Y = 9;
+                                                                                g_Console.writeToBuffer(c, "      Music");
+                                                                                c.Y = 11;
+                                                                                g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                                c.Y = 12;
+                                                                                g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                                c.Y = 14;
+                                                                                g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                                c.Y = 15;
+                                                                                g_Console.writeToBuffer(c, "Written By: Ngiam");
+                                                                                c.Y = 17;
+                                                                                g_Console.writeToBuffer(c, "\"\"");
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+            
+                }
+            }
+        }
+    }
+}
+
 void Update_Orphanage_Animation()
 {
     if (g_dElapsedTime > 22)
@@ -734,6 +1804,7 @@ void Orphanage_Animation()
                                             if (g_dElapsedTime > 4.2)
                                             {
                                                 g_Console.writeToBuffer(c, "Caretaker: Argh!!!", 0x0F, 100);
+
                                                 if (g_dElapsedTime > 10)
                                                 {
                                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -981,10 +2052,6 @@ void Update_Protest_Area()
     if (g_dProtestTime > 83.6)
     {
         g_eGameState = S_Protest_Area;
-    }
-    if ((showCollect > 3) && (stepped == false))
-    {
-        stepped = true;
     }
     processUserInput();
     moveCharacter();
@@ -1306,6 +2373,8 @@ void Update_Dungeon_Cell()
     if (g_dDungeonTime > 38.7)
     {
         g_eGameState = S_Dungeon_Cell;
+        g_sChar.m_cLocation.X = 30;
+        g_sChar.m_cLocation.Y = 9;
     }
     processUserInput();
 }
@@ -1314,15 +2383,57 @@ void Dungeon_Cell_Animation()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_cell(g_Console);
-    COORD c;
-    COORD d;
-    renderCharacter();
+    COORD c; COORD d;
+    c.X = 13;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 4;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 6;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 13;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+
+    c.X = 66;
+    c.Y = 10;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 73;
+    c.Y = 12;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 75;
+    c.Y = 15;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    //skull correct
+    c.X = 73;
+    c.Y = 18;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 66;
+    c.Y = 20;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
+    c.X = 23;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 56;
+    c.Y = 21;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+    c.X = 39;
+    c.Y = 22;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
+
     c.X = 5;
     c.Y = 26;
     d.X = 5;
     d.Y = 27;
     //drawing Robert
-    Cutscene.drawgrid(g_Console, 40, 13, (char)12);
+    Cutscene.drawgrid(g_Console, 40, 13, (char)1);
     if (g_dDungeonTime > 0.3)
     {
         //drawing Ell
@@ -1527,7 +2638,8 @@ void Update_Path_Area()
     COORD c;
     if (g_dPathTime > 4.5)
     {
-        g_eGameState = S_Dungeon_Stealth_1;
+        g_sTutEnemy.fight = true;
+        g_eGameState = S_BattleScreen;
     }
     processUserInput();
 }
@@ -1611,7 +2723,8 @@ void Update_IAF3()
 {
     if (g_dIAF3Time > 47)
     {
-        g_eGameState = S_GAME;
+        g_sChar.animationPlayed = true;
+        g_eGameState = S_IAF3;
     }
     processUserInput();
 }
@@ -1875,7 +2988,7 @@ void Update_Medical_Facility_Animation()
 {
     if (g_dMedicalTime > 11.5)
     {
-        g_dMedical2Time = 0.0;
+        g_dMedicalTime = 0.0;
         g_sMutantWasp.fight = true;
         g_eGameState = S_BattleScreen;
     }
@@ -2036,6 +3149,7 @@ void Update_Medical_Facility_Part2_Animation()
 {
     if (g_dMedical2Time > 15.9)
     {
+        g_dDungeonTime = 0.0;
         g_eGameState = S_Dungeon_Cell_Animation;
     }
     processUserInput();
@@ -2322,7 +3436,7 @@ void Dungeon_Stealth3_Animation()
 void Update_Boss_Room_Animation()
 {
 
-    if (g_sChar.nextDialogue == 999)
+    if (g_dBossTime > 48.9)
     {
         g_eGameState = S_Boss_Battle_Room;
     }
@@ -2330,8 +3444,6 @@ void Update_Boss_Room_Animation()
 }
 void Boss_Room_Animation()
 {
-   
-    
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.boss_room(g_Console);
@@ -2344,13 +3456,13 @@ void Boss_Room_Animation()
     d.Y = 27;
     Cutscene.drawgrid(g_Console, 40, 21, 'H'); //Robert
     Cutscene.drawgrid(g_Console, 40, 3, 'R'); //Raymond
-    if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 0)
+    if (g_dBossTime > 1)
     {
         g_Console.writeToBuffer(c, "Raymond: It seems that the person I have been searching for", 0x0F);
-        g_Console.writeToBuffer(d, "         came to me instead.", 0x0F); 
+        g_Console.writeToBuffer(d, "         came to me instead.", 0x0F);
         g_sChar.nextDialogue++;
-        
-        if (g_skKeyEvent[K_SPACE].keyDown && g_sChar.nextDialogue == 1)
+
+        if (g_dBossTime > 5)
         {
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
@@ -2716,13 +3828,12 @@ void slashGuard()
 }
 void Update_killGuard()
 {
-   // if (g_dkillGuard > 3)
-   // {
-       // g_eGameState = S_GAME;
-  //  }
+    // if (g_dkillGuard > 3)
+    // {
+        // g_eGameState = S_GAME;
+   //  }
     processUserInput();
 }
-
 void killGuard()
 {
     //rMap.initialise(g_Console);
@@ -3359,11 +4470,11 @@ void slashRaymond()
     //rMap.initialise(g_Console);
    // rMap.Border(g_Console);
     COORD c;
-   //renderCharacter();
+    //renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
-  //  Sprites.Battle_Raymond(g_Console, 0);
+    //  Sprites.Battle_Raymond(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
     if (g_dslashRaymond > 0.05)
@@ -3561,7 +4672,7 @@ void killRaymond()
     //rMap.initialise(g_Console);
     //rMap.Border(g_Console);
     COORD c;
-   // renderCharacter();
+    // renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
@@ -3901,11 +5012,11 @@ void Update_slashTutWasp()
 }
 void slashTutWasp()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
-    Sprites.Tutorial_Wasp(g_Console, 0);
+    //renderCharacter();
+    //Sprites.Tutorial_Wasp(g_Console, 0);
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Tutorial Wasp=", 0x0A);
@@ -4092,24 +5203,24 @@ void slashTutWasp()
         }
     }
 }
-void Update_killTuTWasp()
+void Update_killTutWasp()
 {
     if (g_dkillTutWasp > 3)
     {
-        g_eGameState = S_GAME;
+        //g_eGameState = S_GAME;
     }
     processUserInput();
 }
 void killTutWasp()
 {
-    rMap.initialise(g_Console);
-    rMap.Border(g_Console);
+    //rMap.initialise(g_Console);
+    //rMap.Border(g_Console);
     COORD c;
-    renderCharacter();
+    //renderCharacter();
     c.X = 3;
     c.Y = 2;
     g_Console.writeToBuffer(c, "=Tutorial Wasp=", 0x0A);
-    Sprites.Tutorial_Wasp(g_Console, 0);
+    //Sprites.Tutorial_Wasp(g_Console, 0);
     if (g_dkillTutWasp > 1.95)
     {
         Cutscene.clearSpriteLine(g_Console, 2);
@@ -4166,6 +5277,1768 @@ void killTutWasp()
             }
         }
     }
+}
+void drawLaser(Console& g_Console, int j)
+{
+    if (laserTime3 > 1.00)
+    {
+        Cutscene.drawgrid(g_Console, 2 + j, 2, '\\');
+        if (g_sChar.m_cLocation.X == (2 + j) && g_sChar.m_cLocation.Y == 2)
+        {
+            g_sChar.SetH(g_sChar.GetH() - 1);
+        }
+        if (laserTime3 > 1.05)
+        {
+            Cutscene.drawgrid(g_Console, 3 + j, 3, '\\');
+            if (g_sChar.m_cLocation.X == (3 + j) && g_sChar.m_cLocation.Y == 3)
+            {
+                g_sChar.SetH(g_sChar.GetH() - 1);
+
+            }
+            if (laserTime3 > 1.1)
+            {
+                Cutscene.drawgrid(g_Console, 4 + j, 4, '\\');
+                if (g_sChar.m_cLocation.X == (4 + j) && g_sChar.m_cLocation.Y == 4)
+                {
+                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                }
+                if (laserTime3 > 1.15)
+                {
+                    Cutscene.drawgridLaserRight(g_Console, 5 + j, 5);
+                    if (g_sChar.m_cLocation.X == (5 + j) && g_sChar.m_cLocation.Y == 5)
+                    {
+                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                    }
+                    if (laserTime3 > 1.20)
+                    {
+                        Cutscene.drawgridLaserRight(g_Console, 6 + j, 6);
+                        if (g_sChar.m_cLocation.X == (6 + j) && g_sChar.m_cLocation.Y == 6)
+                        {
+                            g_sChar.SetH(g_sChar.GetH() - 1);
+
+                        }
+                        if (laserTime3 > 1.25)
+                        {
+                            Cutscene.drawgridLaserRight(g_Console, 7 + j, 7);
+                            if (g_sChar.m_cLocation.X == (7 + j) && g_sChar.m_cLocation.Y == 7)
+                            {
+                                g_sChar.SetH(g_sChar.GetH() - 1);
+
+                            }
+                            if (laserTime3 > 1.30)
+                            {
+                                Cutscene.drawgridLaserRight(g_Console, 8 + j, 8);
+                                if (g_sChar.m_cLocation.X == (8 + j) && g_sChar.m_cLocation.Y == 8)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                }
+                                if (laserTime3 > 1.35)
+                                {
+                                    Cutscene.drawgridLaserRight(g_Console, 9 + j, 9);
+                                    if (g_sChar.m_cLocation.X == (9 + j) && g_sChar.m_cLocation.Y == 9)
+                                    {
+                                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                    }
+                                    if (laserTime3 > 1.40)
+                                    {
+                                        Cutscene.drawgridLaserRight(g_Console, 10 + j, 10);
+                                        if (g_sChar.m_cLocation.X == (10 + j) && g_sChar.m_cLocation.Y == 10)
+                                        {
+                                            g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                        }
+                                        if (laserTime3 > 1.45)
+                                        {
+                                            Cutscene.drawgridLaserRight(g_Console, 11 + j, 11);
+                                            if (g_sChar.m_cLocation.X == (11 + j) && g_sChar.m_cLocation.Y == 11)
+                                            {
+                                                g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                            }
+                                            if (laserTime3 > 1.50)
+                                            {
+                                                Cutscene.drawgridLaserRight(g_Console, 12 + j, 12);
+                                                if (g_sChar.m_cLocation.X == (12 + j) && g_sChar.m_cLocation.Y == 12)
+                                                {
+                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                }
+                                                if (laserTime3 > 1.55)
+                                                {
+                                                    Cutscene.drawgridLaserRight(g_Console, 13 + j, 13);
+                                                    if (g_sChar.m_cLocation.X == (13 + j) && g_sChar.m_cLocation.Y == 13)
+                                                    {
+
+                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                    }
+                                                    if (laserTime3 > 1.60)
+                                                    {
+                                                        Cutscene.drawgridLaserRight(g_Console, 14 + j, 14);
+                                                        if (g_sChar.m_cLocation.X == (14 + j) && g_sChar.m_cLocation.Y == 14)
+                                                        {
+                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                        }
+                                                        if (laserTime3 > 1.65)
+                                                        {
+                                                            Cutscene.drawgridLaserRight(g_Console, 15 + j, 15);
+                                                            if (g_sChar.m_cLocation.X == (15 + j) && g_sChar.m_cLocation.Y == 15)
+                                                            {
+                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                            }
+                                                            if (laserTime3 > 1.70)
+                                                            {
+                                                                Cutscene.drawgridLaserRight(g_Console, 16 + j, 16);
+                                                                if (g_sChar.m_cLocation.X == (16 + j) && g_sChar.m_cLocation.Y == 16)
+                                                                {
+                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                }
+                                                                if (laserTime3 > 1.75)
+                                                                {
+                                                                    Cutscene.drawgridLaserRight(g_Console, 17 + j, 17);
+                                                                    if (g_sChar.m_cLocation.X == (17 + j) && g_sChar.m_cLocation.Y == 17)
+                                                                    {
+                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                    }
+                                                                    if (laserTime3 > 1.80)
+                                                                    {
+                                                                        Cutscene.drawgridLaserRight(g_Console, 18 + j, 18);
+                                                                        if (g_sChar.m_cLocation.X == (18 + j) && g_sChar.m_cLocation.Y == 18)
+                                                                        {
+                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                        }
+                                                                        if (laserTime3 > 1.85)
+                                                                        {
+                                                                            Cutscene.drawgridLaserRight(g_Console, 19 + j, 19);
+                                                                            if (g_sChar.m_cLocation.X == (19 + j) && g_sChar.m_cLocation.Y == 19)
+                                                                            {
+                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                            }
+                                                                            if (laserTime3 > 1.90)
+                                                                            {
+                                                                                Cutscene.drawgridLaserRight(g_Console, 20 + j, 20);
+                                                                                if (g_sChar.m_cLocation.X == (20 + j) && g_sChar.m_cLocation.Y == 20)
+                                                                                {
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                                }
+                                                                                if (laserTime3 > 1.95)
+                                                                                {
+                                                                                    Cutscene.drawgridLaserRight(g_Console, 21 + j, 21);
+                                                                                    if (g_sChar.m_cLocation.X == (21 + j) && g_sChar.m_cLocation.Y == 21)
+                                                                                    {
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                                    }
+                                                                                    if (laserTime3 > 2.00)
+                                                                                    {
+                                                                                        Cutscene.drawgridLaserRight(g_Console, 22 + j, 22);
+                                                                                        if (g_sChar.m_cLocation.X == (22 + j) && g_sChar.m_cLocation.Y == 22)
+                                                                                        {
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                        }
+                                                                                        if (laserTime3 > 2.05)
+                                                                                        {
+                                                                                            Cutscene.drawgridLaserRight(g_Console, 23 + j, 23);
+                                                                                            if (g_sChar.m_cLocation.X == (23 + j) && g_sChar.m_cLocation.Y == 23)
+                                                                                            {
+                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                            }
+
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void drawLaser2(Console& g_Console, int j)
+{
+    if (laserTime2 > 0)
+    {
+        Cutscene.drawgrid(g_Console, 77 - j, 2, '/');
+        if (g_sChar.m_cLocation.X == (77 - j) && g_sChar.m_cLocation.Y == 2)
+        {
+            g_sChar.SetH(g_sChar.GetH() - 1);
+        }
+        if (laserTime2 > 0.05)
+        {
+            Cutscene.drawgrid(g_Console, 76 - j, 3, '/');
+            if (g_sChar.m_cLocation.X == (76 - j) && g_sChar.m_cLocation.Y == 3)
+            {
+                g_sChar.SetH(g_sChar.GetH() - 1);
+
+            }
+            if (laserTime2 > 0.1)
+            {
+                Cutscene.drawgrid(g_Console, 75 - j, 4, '/');
+                if (g_sChar.m_cLocation.X == (75 - j) && g_sChar.m_cLocation.Y == 4)
+                {
+                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                }
+                if (laserTime2 > 0.15)
+                {
+                    Cutscene.drawgridLaserLeft(g_Console, 74 - j, 5);
+                    if (g_sChar.m_cLocation.X == (74 - j) && g_sChar.m_cLocation.Y == 5)
+                    {
+                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                    }
+                    if (laserTime2 > 0.20)
+                    {
+                        Cutscene.drawgridLaserLeft(g_Console, 73 - j, 6);
+                        if (g_sChar.m_cLocation.X == (73 - j) && g_sChar.m_cLocation.Y == 6)
+                        {
+                            g_sChar.SetH(g_sChar.GetH() - 1);
+
+                        }
+                        if (laserTime2 > 0.25)
+                        {
+                            Cutscene.drawgridLaserLeft(g_Console, 72 - j, 7);
+                            if (g_sChar.m_cLocation.X == (72 - j) && g_sChar.m_cLocation.Y == 7)
+                            {
+                                g_sChar.SetH(g_sChar.GetH() - 1);
+
+                            }
+                            if (laserTime2 > 0.30)
+                            {
+                                Cutscene.drawgridLaserLeft(g_Console, 71 - j, 8);
+                                if (g_sChar.m_cLocation.X == (71 - j) && g_sChar.m_cLocation.Y == 8)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                }
+                                if (laserTime2 > 0.35)
+                                {
+                                    Cutscene.drawgridLaserLeft(g_Console, 70 - j, 9);
+                                    if (g_sChar.m_cLocation.X == (70 - j) && g_sChar.m_cLocation.Y == 9)
+                                    {
+                                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                    }
+                                    if (laserTime2 > 0.40)
+                                    {
+                                        Cutscene.drawgridLaserLeft(g_Console, (69 - j), 10);
+                                        if (g_sChar.m_cLocation.X == (69 - j) && g_sChar.m_cLocation.Y == 10)
+                                        {
+                                            g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                        }
+                                        if (laserTime2 > 0.45)
+                                        {
+                                            Cutscene.drawgridLaserLeft(g_Console, (68 - j), 11);
+                                            if (g_sChar.m_cLocation.X == (68 - j) && g_sChar.m_cLocation.Y == 11)
+                                            {
+                                                g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                            }
+                                            if (laserTime2 > 0.50)
+                                            {
+                                                Cutscene.drawgridLaserLeft(g_Console, (67 - j), 12);
+                                                if (g_sChar.m_cLocation.X == (67 - j) && g_sChar.m_cLocation.Y == 12)
+                                                {
+                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                }
+                                                if (laserTime2 > 0.55)
+                                                {
+                                                    Cutscene.drawgridLaserLeft(g_Console, (66 - j), 13);
+                                                    if (g_sChar.m_cLocation.X == (66 - j) && g_sChar.m_cLocation.Y == 13)
+                                                    {
+                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                    }
+                                                    if (laserTime2 > 0.60)
+                                                    {
+                                                        Cutscene.drawgridLaserLeft(g_Console, (65 - j), 14);
+                                                        if (g_sChar.m_cLocation.X == (65 - j) && g_sChar.m_cLocation.Y == 14)
+                                                        {
+                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                        }
+                                                        if (laserTime2 > 0.65)
+                                                        {
+                                                            Cutscene.drawgridLaserLeft(g_Console, (64 - j), 15);
+                                                            if (g_sChar.m_cLocation.X == (64 - j) && g_sChar.m_cLocation.Y == 15)
+                                                            {
+                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                            }
+                                                            if (laserTime2 > 0.70)
+                                                            {
+                                                                Cutscene.drawgridLaserLeft(g_Console, (63 - j), 16);
+                                                                if (g_sChar.m_cLocation.X == (63 - j) && g_sChar.m_cLocation.Y == 16)
+                                                                {
+                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                }
+                                                                if (laserTime2 > 0.75)
+                                                                {
+                                                                    Cutscene.drawgridLaserLeft(g_Console, (62 - j), 17);
+                                                                    if (g_sChar.m_cLocation.X == (62 - j) && g_sChar.m_cLocation.Y == 17)
+                                                                    {
+                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                    }
+                                                                    if (laserTime2 > 0.80)
+                                                                    {
+                                                                        Cutscene.drawgridLaserLeft(g_Console, (61 - j), 18);
+                                                                        if (g_sChar.m_cLocation.X == (61 - j) && g_sChar.m_cLocation.Y == 18)
+                                                                        {
+                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                        }
+                                                                        if (laserTime2 > 0.85)
+                                                                        {
+                                                                            Cutscene.drawgridLaserLeft(g_Console, (60 - j), 19);
+                                                                            if (g_sChar.m_cLocation.X == (60 - j) && g_sChar.m_cLocation.Y == 19)
+                                                                            {
+                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                            }
+                                                                            if (laserTime2 > 0.90)
+                                                                            {
+                                                                                Cutscene.drawgridLaserLeft(g_Console, (59 - j), 20);
+                                                                                if (g_sChar.m_cLocation.X == (59 - j) && g_sChar.m_cLocation.Y == 20)
+                                                                                {
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                                }
+                                                                                if (laserTime2 > 0.95)
+                                                                                {
+                                                                                    Cutscene.drawgridLaserLeft(g_Console, (58 - j), 21);
+                                                                                    if (g_sChar.m_cLocation.X == (58 - j) && g_sChar.m_cLocation.Y == 21)
+                                                                                    {
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                                    }
+                                                                                    if (laserTime2 > 1.00)
+                                                                                    {
+                                                                                        Cutscene.drawgridLaserLeft(g_Console, (57 - j), 22);
+                                                                                        if (g_sChar.m_cLocation.X == (57 - j) && g_sChar.m_cLocation.Y == 22)
+                                                                                        {
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+void drawLaser3(Console& g_Console, int j)
+{
+    if (g_dphase2Time > 1.00)
+    {
+        Cutscene.stickmanLeft(g_Console, 2, j);
+        if (g_sChar.m_cLocation.X == 2 && g_sChar.m_cLocation.Y == j)
+        {
+            g_sChar.SetH(g_sChar.GetH() - 1);
+        }
+        if (g_dphase2Time > 1.05)
+        {
+            Cutscene.stickmanLeft(g_Console, 3, j);
+            if (g_sChar.m_cLocation.X == 3 && g_sChar.m_cLocation.Y == j)
+            {
+                g_sChar.SetH(g_sChar.GetH() - 1);
+            }
+            if (g_dphase2Time > 1.10)
+            {
+                Cutscene.stickmanLeft(g_Console, 4, j);
+                if (g_sChar.m_cLocation.X == 4 && g_sChar.m_cLocation.Y == j)
+                {
+                    g_sChar.SetH(g_sChar.GetH() - 1);
+                }
+                if (g_dphase2Time > 1.15)
+                {
+                    Cutscene.stickmanLeft(g_Console, 5, j);
+                    if (g_sChar.m_cLocation.X == 5 && g_sChar.m_cLocation.Y == j)
+                    {
+                        g_sChar.SetH(g_sChar.GetH() - 1);
+                    }
+                    if (g_dphase2Time > 1.20)
+                    {
+                        Cutscene.stickmanLeft(g_Console, 6, j);
+                        if (g_sChar.m_cLocation.X == 6 && g_sChar.m_cLocation.Y == j)
+                        {
+                            g_sChar.SetH(g_sChar.GetH() - 1);
+                        }
+                        if (g_dphase2Time > 1.25)
+                        {
+                            Cutscene.stickmanLeft(g_Console, 7, j);
+                            if (g_sChar.m_cLocation.X == 7 && g_sChar.m_cLocation.Y == j)
+                            {
+                                g_sChar.SetH(g_sChar.GetH() - 1);
+                            }
+                            if (g_dphase2Time > 1.30)
+                            {
+                                Cutscene.stickmanLeft(g_Console, 8, j);
+                                if (g_sChar.m_cLocation.X == 8 && g_sChar.m_cLocation.Y == j)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                                if (g_dphase2Time > 1.35)
+                                {
+                                    Cutscene.stickmanLeft(g_Console, 9, j);
+                                    if (g_sChar.m_cLocation.X == 9 && g_sChar.m_cLocation.Y == j)
+                                    {
+                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                    }
+                                    if (g_dphase2Time > 1.40)
+                                    {
+                                        Cutscene.stickmanLeft(g_Console, 10, j);
+                                        if (g_sChar.m_cLocation.X == 10 && g_sChar.m_cLocation.Y == j)
+                                        {
+                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                        }
+                                        if (g_dphase2Time > 1.45)
+                                        {
+                                            Cutscene.stickmanLeft(g_Console, 11, j);
+                                            if (g_sChar.m_cLocation.X == 11 && g_sChar.m_cLocation.Y == j)
+                                            {
+                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                            }
+                                            if (g_dphase2Time > 1.50)
+                                            {
+                                                Cutscene.stickmanLeft(g_Console, 12, j);
+                                                if (g_sChar.m_cLocation.X == 12 && g_sChar.m_cLocation.Y == j)
+                                                {
+                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                }
+                                                if (g_dphase2Time > 1.55)
+                                                {
+                                                    Cutscene.stickmanLeft(g_Console, 13, j);
+                                                    if (g_sChar.m_cLocation.X == 13 && g_sChar.m_cLocation.Y == j)
+                                                    {
+                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                    }
+                                                    if (g_dphase2Time > 1.60)
+                                                    {
+                                                        Cutscene.stickmanLeft(g_Console, 14, j);
+                                                        if (g_sChar.m_cLocation.X == 14 && g_sChar.m_cLocation.Y == j)
+                                                        {
+                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                        }
+                                                        if (g_dphase2Time > 1.65)
+                                                        {
+                                                            Cutscene.stickmanLeft(g_Console, 15, j);
+                                                            if (g_sChar.m_cLocation.X == 15 && g_sChar.m_cLocation.Y == j)
+                                                            {
+                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                            }
+                                                            if (g_dphase2Time > 1.70)
+                                                            {
+                                                                Cutscene.stickmanLeft(g_Console, 16, j);
+                                                                if (g_sChar.m_cLocation.X == 16 && g_sChar.m_cLocation.Y == j)
+                                                                {
+                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                }
+                                                                if (g_dphase2Time > 1.75)
+                                                                {
+                                                                    Cutscene.stickmanLeft(g_Console, 17, j);
+                                                                    if (g_sChar.m_cLocation.X == 17 && g_sChar.m_cLocation.Y == j)
+                                                                    {
+                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                    }
+                                                                    if (g_dphase2Time > 1.80)
+                                                                    {
+                                                                        Cutscene.stickmanLeft(g_Console, 18, j);
+                                                                        if (g_sChar.m_cLocation.X == 18 && g_sChar.m_cLocation.Y == j)
+                                                                        {
+                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                        }
+                                                                        if (g_dphase2Time > 1.85)
+                                                                        {
+                                                                            Cutscene.stickmanLeft(g_Console, 19, j);
+                                                                            if (g_sChar.m_cLocation.X == 19 && g_sChar.m_cLocation.Y == j)
+                                                                            {
+                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                            }
+                                                                            if (g_dphase2Time > 1.90)
+                                                                            {
+                                                                                Cutscene.stickmanLeft(g_Console, 20, j);
+                                                                                if (g_sChar.m_cLocation.X == 20 && g_sChar.m_cLocation.Y == j)
+                                                                                {
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                }
+                                                                                if (g_dphase2Time > 1.95)
+                                                                                {
+                                                                                    Cutscene.stickmanLeft(g_Console, 21, j);
+                                                                                    if (g_sChar.m_cLocation.X == 21 && g_sChar.m_cLocation.Y == j)
+                                                                                    {
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                    }
+                                                                                    if (g_dphase2Time > 2.00)
+                                                                                    {
+                                                                                        Cutscene.stickmanLeft(g_Console, 22, j);
+                                                                                        if (g_sChar.m_cLocation.X == 22 && g_sChar.m_cLocation.Y == j)
+                                                                                        {
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                        }
+                                                                                        if (g_dphase2Time > 2.05)
+                                                                                        {
+                                                                                            Cutscene.stickmanLeft(g_Console, 23, j);
+                                                                                            if (g_sChar.m_cLocation.X == 23 && g_sChar.m_cLocation.Y == j)
+                                                                                            {
+                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                            }
+                                                                                            if (g_dphase2Time > 2.10)
+                                                                                            {
+                                                                                                Cutscene.stickmanLeft(g_Console, 24, j);
+                                                                                                if (g_sChar.m_cLocation.X == 24 && g_sChar.m_cLocation.Y == j)
+                                                                                                {
+                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                }
+                                                                                                if (g_dphase2Time > 2.15)
+                                                                                                {
+                                                                                                    Cutscene.stickmanLeft(g_Console, 25, j);
+                                                                                                    if (g_sChar.m_cLocation.X == 25 && g_sChar.m_cLocation.Y == j)
+                                                                                                    {
+                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                    }
+                                                                                                    if (g_dphase2Time > 2.20)
+                                                                                                    {
+                                                                                                        Cutscene.stickmanLeft(g_Console, 26, j);
+                                                                                                        if (g_sChar.m_cLocation.X == 26 && g_sChar.m_cLocation.Y == j)
+                                                                                                        {
+                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                        }
+                                                                                                        if (g_dphase2Time > 2.25)
+                                                                                                        {
+                                                                                                            Cutscene.stickmanLeft(g_Console, 27, j);
+                                                                                                            if (g_sChar.m_cLocation.X == 27 && g_sChar.m_cLocation.Y == j)
+                                                                                                            {
+                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                            }
+                                                                                                            if (g_dphase2Time > 2.30)
+                                                                                                            {
+                                                                                                                Cutscene.stickmanLeft(g_Console, 28, j);
+                                                                                                                if (g_sChar.m_cLocation.X == 28 && g_sChar.m_cLocation.Y == j)
+                                                                                                                {
+                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                }
+                                                                                                                if (g_dphase2Time > 2.35)
+                                                                                                                {
+                                                                                                                    Cutscene.stickmanLeft(g_Console, 29, j);
+                                                                                                                    if (g_sChar.m_cLocation.X == 29 && g_sChar.m_cLocation.Y == j)
+                                                                                                                    {
+                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                    }
+                                                                                                                    if (g_dphase2Time > 2.40)
+                                                                                                                    {
+                                                                                                                        Cutscene.stickmanLeft(g_Console, 30, j);
+                                                                                                                        if (g_sChar.m_cLocation.X == 30 && g_sChar.m_cLocation.Y == j)
+                                                                                                                        {
+                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                        }
+                                                                                                                        if (g_dphase2Time > 2.45)
+                                                                                                                        {
+                                                                                                                            Cutscene.stickmanLeft(g_Console, 31, j);
+                                                                                                                            if (g_sChar.m_cLocation.X == 31 && g_sChar.m_cLocation.Y == j)
+                                                                                                                            {
+                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                            }
+                                                                                                                            if (g_dphase2Time > 2.50)
+                                                                                                                            {
+                                                                                                                                Cutscene.stickmanLeft(g_Console, 32, j);
+                                                                                                                                if (g_sChar.m_cLocation.X == 32 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                {
+                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                }
+                                                                                                                                if (g_dphase2Time > 2.55)
+                                                                                                                                {
+                                                                                                                                    Cutscene.stickmanLeft(g_Console, 33, j);
+                                                                                                                                    if (g_sChar.m_cLocation.X == 33 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                    {
+                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                    }
+                                                                                                                                    if (g_dphase2Time > 2.60)
+                                                                                                                                    {
+                                                                                                                                        Cutscene.stickmanLeft(g_Console, 34, j);
+                                                                                                                                        if (g_sChar.m_cLocation.X == 34 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                        {
+                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                        }
+                                                                                                                                        if (g_dphase2Time > 2.65)
+                                                                                                                                        {
+                                                                                                                                            Cutscene.stickmanLeft(g_Console, 35, j);
+                                                                                                                                            if (g_sChar.m_cLocation.X == 35 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                            {
+                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                            }
+                                                                                                                                            if (g_dphase2Time > 2.70)
+                                                                                                                                            {
+                                                                                                                                                Cutscene.stickmanLeft(g_Console, 36, j);
+                                                                                                                                                if (g_sChar.m_cLocation.X == 36 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                {
+                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                }
+                                                                                                                                                if (g_dphase2Time > 2.75)
+                                                                                                                                                {
+                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 37, j);
+                                                                                                                                                    if (g_sChar.m_cLocation.X == 37 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                    {
+                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                    }
+                                                                                                                                                    if (g_dphase2Time > 2.80)
+                                                                                                                                                    {
+                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 38, j);
+                                                                                                                                                        if (g_sChar.m_cLocation.X == 38 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                        {
+                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                        }
+                                                                                                                                                        if (g_dphase2Time > 2.85)
+                                                                                                                                                        {
+                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 39, j);
+                                                                                                                                                            if (g_sChar.m_cLocation.X == 39 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                            {
+                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                            }
+                                                                                                                                                            if (g_dphase2Time > 2.90)
+                                                                                                                                                            {
+                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 40, j);
+                                                                                                                                                                if (g_sChar.m_cLocation.X == 40 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                {
+                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                }
+                                                                                                                                                                if (g_dphase2Time > 2.95)
+                                                                                                                                                                {
+                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 41, j);
+                                                                                                                                                                    if (g_sChar.m_cLocation.X == 41 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                    {
+                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                    }
+                                                                                                                                                                    if (g_dphase2Time > 3.00)
+                                                                                                                                                                    {
+                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 42, j);
+                                                                                                                                                                        if (g_sChar.m_cLocation.X == 42 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                        {
+                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                        }
+                                                                                                                                                                        if (g_dphase2Time > 3.05)
+                                                                                                                                                                        {
+                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 43, j);
+                                                                                                                                                                            if (g_sChar.m_cLocation.X == 43 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                            {
+                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                            }
+                                                                                                                                                                            if (g_dphase2Time > 3.10)
+                                                                                                                                                                            {
+                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 44, j);
+                                                                                                                                                                                if (g_sChar.m_cLocation.X == 44 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                {
+                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                }
+                                                                                                                                                                                if (g_dphase2Time > 3.15)
+                                                                                                                                                                                {
+                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 45, j);
+                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 45 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                    {
+                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                    }
+                                                                                                                                                                                    if (g_dphase2Time > 3.20)
+                                                                                                                                                                                    {
+                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 46, j);
+                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 46 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                        {
+                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                        }
+                                                                                                                                                                                        if (g_dphase2Time > 3.25)
+                                                                                                                                                                                        {
+                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 47, j);
+                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 47 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                            {
+                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                            }
+                                                                                                                                                                                            if (g_dphase2Time > 3.30)
+                                                                                                                                                                                            {
+                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 48, j);
+                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 48 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                {
+                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                                }
+                                                                                                                                                                                                if (g_dphase2Time > 3.35)
+                                                                                                                                                                                                {
+                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 49, j);
+                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 49 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                    if (g_dphase2Time > 3.40)
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 50, j);
+                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 50 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                        if (g_dphase2Time > 3.45)
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 51, j);
+                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 51 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                            if (g_dphase2Time > 3.50)
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 52, j);
+                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 52 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                                if (g_dphase2Time > 3.55)
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 53, j);
+                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 53 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                    if (g_dphase2Time > 3.60)
+                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 54, j);
+                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 54 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                        if (g_dphase2Time > 3.65)
+                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 55, j);
+                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 55 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                            if (g_dphase2Time > 3.70)
+                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 56, j);
+                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 56 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                if (g_dphase2Time > 3.75)
+                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 57, j);
+                                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 57 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                    if (g_dphase2Time > 3.80)
+                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 58, j);
+                                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 58 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                        if (g_dphase2Time > 3.85)
+                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 59, j);
+                                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 59 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                            if (g_dphase2Time > 3.90)
+                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 60, j);
+                                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 60 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                if (g_dphase2Time > 3.95)
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 61, j);
+                                                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 61 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                    if (g_dphase2Time > 4.00)
+                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 62, j);
+                                                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 62 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                        if (g_dphase2Time > 4.05)
+                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 63, j);
+                                                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 63 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                            if (g_dphase2Time > 4.10)
+                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 64, j);
+                                                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                if (g_dphase2Time > 4.15)
+                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 65, j);
+                                                                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                    if (g_dphase2Time > 4.20)
+                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 66, j);
+                                                                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                        if (g_dphase2Time > 4.25)
+                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 67, j);
+                                                                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 67 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                            if (g_dphase2Time > 4.30)
+                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 68, j);
+                                                                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 68 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                if (g_dphase2Time > 4.35)
+                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                    Cutscene.stickmanLeft(g_Console, 69, j);
+                                                                                                                                                                                                                                                                                    if (g_sChar.m_cLocation.X == 69 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                    if (g_dphase2Time > 4.40)
+                                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                                        Cutscene.stickmanLeft(g_Console, 70, j);
+                                                                                                                                                                                                                                                                                        if (g_sChar.m_cLocation.X == 70 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                        if (g_dphase2Time > 4.45)
+                                                                                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                                                                                            Cutscene.stickmanLeft(g_Console, 71, j);
+                                                                                                                                                                                                                                                                                            if (g_sChar.m_cLocation.X == 71 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                            if (g_dphase2Time > 4.50)
+                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                Cutscene.stickmanLeft(g_Console, 72, j);
+                                                                                                                                                                                                                                                                                                if (g_sChar.m_cLocation.X == 72 && g_sChar.m_cLocation.Y == j)
+                                                                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 0.001);
+                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                }
+                                                                                                                                                                                            }
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        }
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+void drawMovingBlock(Console& g_Console, int j)
+{
+    if (movingBlockTime > 1)
+    {                                                                                      
+        Cutscene.movingBlock(g_Console, 2 + j, 28);
+        if (movingBlockTime > 1.1)
+        {
+            Cutscene.movingBlock(g_Console, 2 + j, 27);
+            if (movingBlockTime > 1.2)
+            {
+                Cutscene.movingBlock(g_Console, 2 + j, 26);
+                if (movingBlockTime > 1.3)
+                {
+                    Cutscene.movingBlock(g_Console, 2 + j, 25);
+                    if (movingBlockTime > 1.4)
+                    {
+                        Cutscene.movingBlock(g_Console, 2 + j, 24);
+                        if (movingBlockTime > 1.5)
+                        {
+                            Cutscene.movingBlock(g_Console, 2 + j, 25);
+                            if (movingBlockTime > 1.6)
+                            {
+                                Cutscene.movingBlock(g_Console, 2 + j, 26);
+                                if (movingBlockTime > 1.7)
+                                {
+                                    Cutscene.movingBlock(g_Console, 2 + j, 25);
+                                    if (movingBlockTime > 1.8)
+                                    {
+                                        Cutscene.movingBlock(g_Console, 2 + j, 24);
+                                        if (movingBlockTime > 1.9)
+                                        {
+                                            Cutscene.movingBlock(g_Console, 2 + j, 25);
+                                            if (movingBlockTime > 2.0)
+                                            {
+                                                Cutscene.movingBlock(g_Console, 2 + j, 26);
+                                                if (movingBlockTime > 2.1)
+                                                {
+                                                    Cutscene.movingBlock(g_Console, 2 + j, 25);
+                                                    if (movingBlockTime > 2.2)
+                                                    {
+                                                        Cutscene.movingBlock(g_Console, 2 + j, 24);
+                                                        if (movingBlockTime > 2.3)
+                                                        {
+                                                            Cutscene.movingBlock(g_Console, 2 + j, 23);
+                                                            if (movingBlockTime > 2.35)
+                                                            {
+                                                                Cutscene.movingBlock(g_Console, 2 + j, 22);
+                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                {
+                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == 22)
+                                                                    {
+                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                    }
+                                                                }
+                                                                if (movingBlockTime > 2.40)
+                                                                {
+                                                                    Cutscene.movingBlock(g_Console, 2 + j, 21);
+                                                                    for (int n = 21; n < 23; n++)
+                                                                    {
+                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                        {
+                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                            {
+                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    if (movingBlockTime > 2.45)
+                                                                    {
+                                                                        Cutscene.movingBlock(g_Console, 2 + j, 20);
+                                                                        for (int n = 20; n < 23; n++)
+                                                                        {
+                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                            {
+                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                {
+                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        if (movingBlockTime > 2.5)
+                                                                        {
+                                                                            Cutscene.movingBlock(g_Console, 2 + j, 19);
+                                                                            for (int n = 19; n < 23; n++)
+                                                                            {
+                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                {
+                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                    {
+                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            if (movingBlockTime > 2.55)
+                                                                            {
+                                                                                Cutscene.movingBlock(g_Console, 2 + j, 18);
+                                                                                for (int n = 18; n < 23; n++)
+                                                                                {
+                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                    {
+                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                        {
+                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                if (movingBlockTime > 2.6)
+                                                                                {
+                                                                                    Cutscene.movingBlock(g_Console, 2 + j, 17);
+                                                                                    for (int n = 17; n < 23; n++)
+                                                                                    {
+                                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                                        {
+                                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                            {
+                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                    if (movingBlockTime > 2.65)
+                                                                                    {
+                                                                                        Cutscene.movingBlock(g_Console, 2 + j, 16);
+                                                                                        for (int n = 16; n < 23; n++)
+                                                                                        {
+                                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                                            {
+                                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                {
+                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                        if (movingBlockTime > 2.7)
+                                                                                        {
+                                                                                            Cutscene.movingBlock(g_Console, 2 + j, 15);
+                                                                                            for (int n = 15; n < 23; n++)
+                                                                                            {
+                                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                {
+                                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                    {
+                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                            if (movingBlockTime > 2.75)
+                                                                                            {
+                                                                                                Cutscene.movingBlock(g_Console, 2 + j, 14);
+                                                                                                for (int n = 14; n < 23; n++)
+                                                                                                {
+                                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                    {
+                                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                        {
+                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                                if (movingBlockTime > 2.8)
+                                                                                                {
+                                                                                                    Cutscene.movingBlock(g_Console, 2 + j, 13);
+                                                                                                    for (int n = 13; n < 23; n++)
+                                                                                                    {
+                                                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                        {
+                                                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                            {
+                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                    if (movingBlockTime > 2.85)
+                                                                                                    {
+                                                                                                        Cutscene.movingBlock(g_Console, 2 + j, 12);
+                                                                                                        for (int n = 12; n < 23; n++)
+                                                                                                        {
+                                                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                            {
+                                                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                {
+                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                        if (movingBlockTime > 2.9)
+                                                                                                        {
+                                                                                                            Cutscene.movingBlock(g_Console, 2 + j, 11);
+                                                                                                            for (int n = 11; n < 23; n++)
+                                                                                                            {
+                                                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                {
+                                                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                    {
+                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                            if (movingBlockTime > 2.95)
+                                                                                                            {
+                                                                                                                Cutscene.movingBlock(g_Console, 2 + j, 10);
+                                                                                                                for (int n = 10; n < 23; n++)
+                                                                                                                {
+                                                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                    {
+                                                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                        {
+                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                if (movingBlockTime > 3.00)
+                                                                                                                {
+                                                                                                                    Cutscene.movingBlock(g_Console, 2 + j, 9);
+                                                                                                                    for (int n = 9; n < 23; n++)
+                                                                                                                    {
+                                                                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                        {
+                                                                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                            {
+                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                    if (movingBlockTime > 3.05)
+                                                                                                                    {
+                                                                                                                        Cutscene.movingBlock(g_Console, 2 + j, 8);
+                                                                                                                        for (int n = 8; n < 23; n++)
+                                                                                                                        {
+                                                                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                            {
+                                                                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                {
+                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                        if (movingBlockTime > 3.1)
+                                                                                                                        {
+                                                                                                                            Cutscene.movingBlock(g_Console, 2 + j, 7);
+                                                                                                                            for (int n = 7; n < 23; n++)
+                                                                                                                            {
+                                                                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                {
+                                                                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                    {
+                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                            if (movingBlockTime > 3.15)
+                                                                                                                            {
+                                                                                                                                Cutscene.movingBlock(g_Console, 2 + j, 6);
+                                                                                                                                for (int n = 6; n < 23; n++)
+                                                                                                                                {
+                                                                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                    {
+                                                                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                        {
+                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                                if (movingBlockTime > 3.20)
+                                                                                                                                {
+                                                                                                                                    Cutscene.movingBlock(g_Console, 2 + j, 5);
+                                                                                                                                    for (int n = 5; n < 23; n++)
+                                                                                                                                    {
+                                                                                                                                        for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                        {
+                                                                                                                                            if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                            {
+                                                                                                                                                g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                    if (movingBlockTime > 3.25)
+                                                                                                                                    {
+                                                                                                                                        Cutscene.movingBlock(g_Console, 2 + j, 4);
+                                                                                                                                        for (int n = 4; n < 23; n++)
+                                                                                                                                        {
+                                                                                                                                            for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                            {
+                                                                                                                                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                                {
+                                                                                                                                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                        if (movingBlockTime > 3.30)
+                                                                                                                                        {
+                                                                                                                                            Cutscene.movingBlock(g_Console, 2 + j, 3);
+                                                                                                                                            for (int n = 3; n < 23; n++)
+                                                                                                                                            {
+                                                                                                                                                for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                                {
+                                                                                                                                                    if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                                    {
+                                                                                                                                                        g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                            if (movingBlockTime > 3.35)
+                                                                                                                                            {
+                                                                                                                                                Cutscene.movingBlock(g_Console, 2 + j, 2);
+                                                                                                                                                for (int n = 2; n < 23; n++)
+                                                                                                                                                {
+                                                                                                                                                    for (int m = (2 + j); m < (11 + j); m++)
+                                                                                                                                                    {
+                                                                                                                                                        if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                                                                                                                                        {
+                                                                                                                                                            g_sChar.SetH(g_sChar.GetH() - 1);
+                                                                                                                                                        }
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void drawBreakFloor(Console& g_Console, int k, int j)
+{
+    if (breakFloorTime > 1)
+    {
+        Cutscene.drawgridY(g_Console, k, j, '-');
+        if (breakFloorTime > 1.3)
+        {
+            Cutscene.drawgridY(g_Console, k + 1, j, '-');
+            Cutscene.drawgridY(g_Console, k, j + 1, '|');
+            if (breakFloorTime > 1.5)
+            {
+                Cutscene.drawgridY(g_Console, k + 2, j, '-');
+                Cutscene.drawgridY(g_Console, k - 1, j + 1, '_');
+                if (breakFloorTime > 2.0)
+                {
+                    Cutscene.drawgridY(g_Console, k + 3, j, '-');
+                    Cutscene.drawgridY(g_Console, k - 2, j + 2, '|');
+                    if (breakFloorTime > 2.3)
+                    {
+                        Cutscene.breakFloor(g_Console, k, j);
+                        for (int n = j; n < (j + 1); n++)
+                        {
+                            for (int m = k; m < (k + 11); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                        for (int n = (j + 1); n < (j + 4); n++)
+                        {
+                            for (int m = (k - 2); m < (k + 13); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                        for (int n = (j + 4); n < (j + 5); n++)
+                        {
+                            for (int m = (k - 1); m < (k + 12); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                        for (int n = (j + 5); n < (j + 6); n++)
+                        {
+                            for (int m = k; m < (k + 11); m++)
+                            {
+                                if (g_sChar.m_cLocation.X == m && g_sChar.m_cLocation.Y == n)
+                                {
+                                    g_sChar.SetH(g_sChar.GetH() - 1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Update_phase2Battle()
+{
+    processUserInput();
+    moveCharacter();
+    if (laserTime > 1) // start time
+    {
+        g_sLaser.startTimer = false;
+        g_sLaser2.startTimer = false;
+        g_sLaser3.startTimer = false;
+        g_sMovingBlock.startTimer = false;
+        g_sBreakFloor.startTimer = false;
+        g_sRaymond.startTimer = false;
+
+    }
+    if (g_dphase2Time > 5) // stickman
+    {
+        g_sLaser.startTimer = true;
+        g_sLaser.counter = true;
+    }
+    if (laserTime2 > 1.1) // forward slash
+    {
+        g_sLaser2.startTimer = true;
+        g_sLaser2.counter = true;
+    }
+    if (laserTime3 > 2.1) // back slash
+    {
+        g_sLaser3.startTimer = true;
+        g_sLaser3.counter = true;
+    }
+    if (movingBlockTime > 4) //block thing
+    {
+        g_sMovingBlock.startTimer = true;
+        g_sMovingBlock.counter = true;
+    }
+    if (breakFloorTime > 5) //break floor
+    {
+        g_sBreakFloor.startTimer = true;
+        g_sBreakFloor.counter = true;
+    }
+    if (raymondTime > 10)
+    {
+        g_sRaymond.startTimer = true;
+        g_sRaymond.counter = true;
+    }
+}
+void phase2Battle()
+{
+    if ((fightCount == 1) && (fightCount2 == 1) && (fightCount3 == 1) && (fightCount4 == 1) && (fightCount5 == 1))
+    {
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_eGameState = S_Game_Over;
+        }
+
+    }
+    if ((g_sChar.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sChar.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for Raymond and Robert
+    {
+        g_sChar.SetH(g_sChar.GetH() - 1); // minus dmg if robert touch raymond
+    }
+    /*while (music == false)
+    {
+        PlaySound(TEXT("For Peace.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        phase2_music = true;
+    }*/
+
+
+    rMap.initialise(g_Console);
+    rMap.Border(g_Console);
+    COORD c;
+    c.X = 32;
+    c.Y = 0;
+    string charHealth = to_string(g_sChar.GetH());
+    g_Console.writeToBuffer(c, "Your Health: " + charHealth, 0x0D, 100);
+
+    //drawLaser(g_Console, 20, 0, 0);
+    //drawLaser(g_Console, 40, 0);
+
+    if (g_sLaser.fight == true)
+    {
+        fightCount = 1;
+        if (g_sLaser.startTimer == true) // stickman work
+        {
+            g_dphase2Time = 0.0;
+            g_sLaser.resetTimer = true;
+        }
+        if (g_sLaser.resetTimer == true)
+        {
+            if (g_sLaser.counter == true)
+            {
+                randstickman = rand() % 22 + 2;
+                randstickman2 = rand() % 22 + 2;
+                randstickman3 = rand() % 22 + 2;
+
+                g_sLaser.counter = false;
+            }
+            drawLaser3(g_Console, randstickman);
+            drawLaser3(g_Console, randstickman2);
+            drawLaser3(g_Console, randstickman3);
+        }
+
+    } 
+
+    if (g_sLaser2.fight == true)
+    {
+        fightCount2 = 1;
+        if (g_sLaser2.startTimer == true) // stickman work
+        {
+            laserTime2 = 0.0;
+            g_sLaser2.resetTimer = true;
+        }
+        if (g_sLaser2.resetTimer == true)
+        {
+
+            if (g_sLaser2.counter == true)
+            {
+                randnum = rand() % 70 + 1;
+                randnum2 = rand() % 70 + 1;
+                randnum3 = rand() % 70 + 1;
+                randnum4 = rand() % 70 + 1;
+                g_sLaser2.counter = false;
+            }
+            drawLaser2(g_Console, randnum);
+            drawLaser2(g_Console, randnum2);
+            drawLaser2(g_Console, randnum3);
+            drawLaser2(g_Console, randnum4);
+        }
+        if (g_sLaser.fight == true)
+        {
+            if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+            {
+                g_sMovingBlock.fight = true;
+                g_sBreakFloor.fight = true;
+                int randPosX = rand() % (20 - 4 + 1) + 4;
+                int randPosY = rand() % (20 - 3 + 1) + 3;
+
+                g_sRaymond.m_cLocation.X = randPosX;
+                g_sRaymond.m_cLocation.Y = randPosY;
+
+                int randPosX2 = rand() % (70 - 57 + 1) + 57;
+                int randPosY2 = rand() % (20 - 3 + 1) + 3;
+
+                g_sBomb.m_cLocation.X = randPosX2;
+                g_sBomb.m_cLocation.Y = randPosY2;
+                c.X = 5;
+                c.Y = 26;
+                string ras = to_string(randPosX2);
+                g_Console.writeToBuffer(c, ras, 100);
+                // reset locations for bomb and raymond
+            }
+        }
+        
+    }
+    
+    if (g_sLaser3.fight == true)
+    {
+        fightCount3 = 1;
+        if (g_sLaser3.startTimer == true)
+        {
+            laserTime3 = 0.0;
+            g_sLaser3.resetTimer = true;
+        }
+        if (g_sLaser3.resetTimer == true)
+        {
+
+            if (g_sLaser3.counter == true)
+            {
+                randnum5 = rand() % 70 + 1;
+                randnum6 = rand() % 70 + 1;
+                randnum7 = rand() % 70 + 1;
+                randnum8 = rand() % 70 + 1;
+                g_sLaser3.counter = false;
+            }
+
+
+            drawLaser(g_Console, randnum5);
+            drawLaser(g_Console, randnum6);
+            drawLaser(g_Console, randnum7);
+            drawLaser(g_Console, randnum8);
+            //drawHoriLaser(g_Console, randnum3);
+
+
+            //drawVertLaser(g_Console, 0);
+
+            //g_sLaser.resetTimer = false;
+        }
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_sLaser.fight = true;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+            c.X = 5;
+            c.Y = 26;
+            string ras = to_string(randPosX2);
+            g_Console.writeToBuffer(c, ras, 100);
+            // reset locations for bomb and raymond
+        }
+        
+    }
+    
+    if (g_sMovingBlock.fight == true)
+    {
+        fightCount4 = 1;
+        if (g_sMovingBlock.startTimer == true) // stickman work
+        {
+            movingBlockTime = 0.0;
+            g_sMovingBlock.resetTimer = true;
+        }
+        if (g_sMovingBlock.resetTimer == true)
+        {
+            if (g_sMovingBlock.counter == true)
+            {
+                randBlock = rand() % 69 + 2;
+                randBlock2 = rand() % 69 + 2;
+                randBlock3 = rand() % 69 + 2;
+                g_sMovingBlock.counter = false;
+            }
+            drawMovingBlock(g_Console, randBlock);
+            drawMovingBlock(g_Console, randBlock2);
+            drawMovingBlock(g_Console, randBlock3);
+        }
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            //g_sLaser.fight = true;
+            g_sLaser2.fight = true;
+            g_sLaser3.fight = true;
+            g_sBreakFloor.collected = false;
+            g_sBreakFloor.fight = false;
+            g_sMovingBlock.fight = false;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+            c.X = 5;
+            c.Y = 26;
+            string ras = to_string(randPosX2);
+            g_Console.writeToBuffer(c, ras, 100);
+            // reset locations for bomb and raymond
+        }
+
+    }
+    if (g_sBreakFloor.fight == true)
+    {
+        g_sBreakFloor.collected = true;
+        if (g_sBreakFloor.startTimer == true) // stickman work
+        {
+            breakFloorTime = 0.0;
+            g_sBreakFloor.resetTimer = true;
+        }
+        if (g_sBreakFloor.resetTimer == true)
+        {
+            if (g_sBreakFloor.counter == true)
+            {
+                randBreakFloor = rand() % (22 - 2 + 1);
+                randBreakFloor2 = rand() % (19 - 2 + 1) + 2;
+                g_sBreakFloor.counter = false;
+            }
+            drawBreakFloor(g_Console, randBreakFloor, randBreakFloor2);
+            drawBreakFloor(g_Console, randBreakFloor2, randBreakFloor);
+            //drawLaser3(g_Console, randstickman2);
+            //drawLaser3(g_Console, randstickman3);
+        }
+        if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
+        {
+            g_sMovingBlock.fight = true;
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            int randPosX2 = rand() % (70 - 57 + 1) + 57;
+            int randPosY2 = rand() % (20 - 3 + 1) + 3;
+            g_sBomb.m_cLocation.X = randPosX2;
+            g_sBomb.m_cLocation.Y = randPosY2;
+
+            // reset locations for bomb and raymond
+        }
+    }
+    if (g_sBreakFloor.collected == true)
+    {
+        fightCount5 = 1;
+    }
+    else
+    {
+        fightCount5 = 0;
+    }
+    renderCharacter();
+    rMap.boss_room(g_Console);
+
+    renderBomb();
+    if ((g_sChar.m_cLocation.X == g_sBomb.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBomb.m_cLocation.Y)))
+    {
+        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
+        {
+            if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 1] == ' ') // check if bomb == ' '
+                g_sBomb.m_cLocation.X++;
+        }
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 3)
+        {
+            if (rMap.Grid[g_sBomb.m_cLocation.Y - 1][g_sBomb.m_cLocation.X] == ' ')
+            {
+                g_sBomb.m_cLocation.Y--;
+            }
+        }
+        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
+        {
+            if (rMap.Grid[g_sBomb.m_cLocation.Y + 1][g_sBomb.m_cLocation.X] == ' ')
+            {
+                g_sBomb.m_cLocation.Y++;
+            }
+        }
+        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
+        {
+            if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X - 1] == ' ')
+            {
+                g_sBomb.m_cLocation.X--;
+
+            }
+        }
+    }
+
+  
+    renderRaymond();
+    if (g_sRaymond.startTimer == true)
+    {
+        raymondTime = 0.0;
+        g_sRaymond.resetTimer = true;
+    }
+    if (g_sRaymond.resetTimer == true)
+    {
+        if (g_sRaymond.counter == true)
+        {
+            int randPosX = rand() % (20 - 4 + 1) + 4;
+            int randPosY = rand() % (20 - 3 + 1) + 3;
+
+            g_sRaymond.m_cLocation.X = randPosX;
+            g_sRaymond.m_cLocation.Y = randPosY;
+
+            c.X = 5;
+            c.Y = 27;
+            string ras = to_string(randPosX);
+            g_Console.writeToBuffer(c, ras, 100);
+
+            g_sRaymond.counter = false;
+        }
+    }
+}
+void updateBomb()
+{
+
+}
+
+void renderRaymond()
+{
+    g_Console.writeToBuffer(g_sRaymond.m_cLocation, 'R', 0x0C);
+}
+
+void renderBomb()
+{
+    g_Console.writeToBuffer(g_sBomb.m_cLocation, 'B', 0x0B);
 }
 
 
@@ -4540,7 +7413,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
-                    g_sGuard.xRight = true;
+                    g_sGuard.xLeft = true; 
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
@@ -4562,7 +7435,7 @@ void moveCharacter()
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
-                    g_sGuard2.xRight = true;
+                    g_sGuard2.xLeft = true; 
                 }
                 if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
@@ -4685,7 +7558,9 @@ void render()
     case S_wireGame: renderMap_wireGame();
         break;
 
-    //Animations
+        //Animations
+    case S_Start_Animation: starting_cutscene();
+        break;
     case S_Protest_Area_Animation: Protest_Area_Animation();
         break;
     case S_Dungeon_Cell_Animation: Dungeon_Cell_Animation();
@@ -4705,6 +7580,8 @@ void render()
     case S_Boss_Room_Animation: Boss_Room_Animation();
         break;
     case S_BattleScreen: RenderBattleScreen();
+        break;
+    case S_Credits: Credits();
         break;
 
         //render battle animations
@@ -4732,6 +7609,10 @@ void render()
         break;
     case S_killTutWasp: killTutWasp();
         break;
+
+        //Raymond phase 2 battle
+    case S_phase2Battle: phase2Battle();
+        break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderInputEvents();    // renders status of input events
@@ -4742,7 +7623,7 @@ void render()
 void clearScreen()
 {
     // Clears the buffer with this colour attribute
-    g_Console.clearBuffer(0x1F);
+    g_Console.clearBuffer(0x00);
 }
 
 void clearMenu()
@@ -4765,7 +7646,7 @@ void renderSplashScreen()  // renders the splash screen
     if (g_dElapsedTime > 3.0)
     {
         c.Y += 1;
-        c.X = g_Console.getConsoleSize().X / 2 - 20;
+        c.X = g_Console.getConsoleSize().X / 2 - 10;
         g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
         c.Y += 1;
         c.X = g_Console.getConsoleSize().X / 2 - 9;
@@ -5000,17 +7881,28 @@ void renderMap_Protest_Area()
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    c.X = 62;
+    c.Y = 4;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&');
+
+    if (g_sChar.enterArea == true)
+    {
+        c.X = 62;
+        c.Y = 4;
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'D');
+    }
+    if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 62)
+    {
+        g_dPathTime = 0.0;
+        g_eGameState = S_Dungeon_Stealth_3;
+        g_sChar.m_cLocation.X = 69;
+        g_sChar.m_cLocation.Y = 3;
+    }
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
         g_dPathTime = 0.0;
         g_eGameState = S_Path_Area_Animation;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 21;
-    }
-    if (g_sChar.m_cLocation.Y == 62 && g_sChar.m_cLocation.X == 4)
-    {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 41;
         g_sChar.m_cLocation.Y = 21;
     }
@@ -5791,11 +8683,22 @@ void renderMap_Protest_Area()
 
 void renderMap_Path_Area()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
 
+    if (g_sChar.animationPlayed == true)
+    {
+        int i = 77;
+        for (int j = 11; j < 15; j++)
+        {
+            c.X = i;
+            c.Y = j;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0A);
+        }
+    }
     //to OAF area
     if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 37 || g_sChar.m_cLocation.X == 38 || g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41 || g_sChar.m_cLocation.X == 42 || g_sChar.m_cLocation.X == 43 || g_sChar.m_cLocation.X == 44 || g_sChar.m_cLocation.X == 45))
     {
@@ -5944,7 +8847,7 @@ void renderMap_IAF4()
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility4(g_Console);
     renderCharacter();  // renders the character into the buffer
-    
+
     if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {
         g_dPathTime = 0.0;
@@ -5955,10 +8858,13 @@ void renderMap_IAF4()
 }
 void renderMap_Inside_Medical_Facility()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.insideMedicalFacility(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+
     if ((g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {
         g_dPathTime = 0.0;
@@ -5966,16 +8872,36 @@ void renderMap_Inside_Medical_Facility()
         g_sChar.m_cLocation.X = 76;
         g_sChar.m_cLocation.Y = 12;
     }
-    if (g_sChar.m_cLocation.X == 10 && g_sChar.m_cLocation.Y == 11)
+    if ((g_sChar.m_cLocation.X == 33 && (g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 19)) || ((g_sChar.m_cLocation.X == 32 || g_sChar.m_cLocation.X == 34) && g_sChar.m_cLocation.Y == 20))
     {
+        g_dMedicalFightTime = 0.0;
         g_eGameState = S_Medical_Fight_Animation;
+        g_sChar.m_cLocation.X = 34;
+        g_sChar.m_cLocation.Y = 12;
     }
+    if (g_sChar.m_cLocation.X == 19 && g_sChar.m_cLocation.Y == 12)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Nurse: Sorry, we're busy dealing with the patients at the moment.", 0x0F, 100);
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "       Please leave.", 0x0F, 100);
+    }
+    if ((g_sChar.m_cLocation.X == 22 && (g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13)) || ((g_sChar.m_cLocation.X == 21 || g_sChar.m_cLocation.X == 23) && g_sChar.m_cLocation.Y == 12))
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Nurse: What are you doing behind the counter? This is for", 0x0F, 100);
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "       staff only!!", 0x0F, 100);
+    }
+
 }
 //change this gamestate
 void renderMap_Dungeon_Cell()
 {
     COORD c;
-    
+
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_cell(g_Console);
@@ -5989,6 +8915,7 @@ void renderMap_Dungeon_Cell()
         }
     }
     renderCharacter();  // renders the character into the buffer
+
     c.X = 13;
     c.Y = 10;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
@@ -6033,9 +8960,13 @@ void renderMap_Dungeon_Cell()
     c.Y = 22;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12, 0x0F);
 
+    c.X = 26;
+    c.Y = 9;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'L', 0x0D);
+
     renderBox();
 
-    
+
 
     if ((g_sChar.m_cLocation.X == g_sBox.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox.m_cLocation.Y)))
     {
@@ -6043,10 +8974,10 @@ void renderMap_Dungeon_Cell()
         {
             g_sBox.m_cLocation.Y--;
             if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
-            {   
+            {
                 g_sBox.startTimer = true;
-                
-            }   
+
+            }
         }
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
         {
@@ -6054,7 +8985,7 @@ void renderMap_Dungeon_Cell()
             if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
             {
                 g_sBox.startTimer = true;
-                
+
             }
         }
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
@@ -6063,7 +8994,7 @@ void renderMap_Dungeon_Cell()
             if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
             {
                 g_sBox.startTimer = true;
-                
+
             }
         }
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
@@ -6072,7 +9003,7 @@ void renderMap_Dungeon_Cell()
             if (g_sBox.m_cLocation.X == 73 && g_sBox.m_cLocation.Y == 18)
             {
                 g_sBox.startTimer = true;
-                
+
             }
         }
     }
@@ -6101,6 +9032,13 @@ void renderMap_Dungeon_Cell()
         rMap.initialise(g_Console);
         rMap.Border(g_Console);
         mini.trueSkull(g_Console);
+    }
+
+    if (g_sChar.m_cLocation.X == 26 && g_sChar.m_cLocation.Y == 9)
+    {
+        rMap.initialise(g_Console);
+        rMap.Border(g_Console);
+        mini.letter(g_Console);
     }
 }
 void renderBox()
@@ -6390,8 +9328,6 @@ void renderMap_DS1()
                 }
             }
         }
-
-
     }
     if (g_sGuard3.xRight == true)
     {
@@ -6416,7 +9352,6 @@ void renderMap_DS1()
                 }
             }
         }
-
     }
     if (g_sGuard3.xUp == true)
     {
@@ -6466,7 +9401,7 @@ void renderMap_DS1()
                 }
             }
         }
-    } 
+    }
     //fight guard
     if ((g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard.m_cLocation.X))
     {
@@ -7018,13 +9953,14 @@ void renderMap_GuardStealth()
 
 void update_GuardDirection()
 {
-    processUserInput(); 
+    processUserInput();
     moveCharacter();
     if (GuardDetectTime >= 4 && GuardDetectTime < 8)
     {
         g_sChar.faceLeft = false;
         g_sChar.faceRight = true;
     }
+
     if (GuardDetectTime > 8)
     {
         g_sGuard4.startTimer = true;
@@ -7043,7 +9979,7 @@ void renderMap_GuardDirection()
         g_sGuard4.startTimer = false;
     }
     if (g_sChar.faceLeft == true)
-    { 
+    {
         Cutscene.drawgrid(g_Console, 21, 3, '>');
         Cutscene.drawgrid(g_Console, 60, 3, '<');
         Cutscene.drawgrid(g_Console, 74, 11, 'V');
@@ -7102,14 +10038,14 @@ void renderMap_GuardDirection()
             }
         }
     }
-    
+
     if (g_sChar.faceRight == true)
     {
         Cutscene.drawgrid(g_Console, 23, 3, '<');
         Cutscene.drawgrid(g_Console, 58, 3, '>');
         Cutscene.drawgrid(g_Console, 74, 13, '^');
         Cutscene.drawgrid(g_Console, 60, 20, '<');
-        
+
         Cutscene.cleargrid(g_Console, 21, 3);
         Cutscene.cleargrid(g_Console, 60, 3);
         Cutscene.cleargrid(g_Console, 74, 11);
@@ -7156,13 +10092,29 @@ void renderMap_GuardDirection()
 
 void renderMap_DS2()
 {
-
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth2(g_Console);
     renderCharacter();  // renders the character into the buffer
-    renderMap_GuardStealth();
+    c.X = 8;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O');
 
+    c.X = 8;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, (char)12, 0x0F);
+
+    if ((g_sChar.m_cLocation.Y == 13) && (g_sChar.m_cLocation.X == 7) || (g_sChar.m_cLocation.Y == 12) && (g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 14) && (g_sChar.m_cLocation.X == 8))
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Ell: Avoid the guards and hide in the walls.");
+        c.X = 5;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "     I'll get you out if you're in trouble, but don't count on me.");
+    }
+    renderMap_GuardStealth();
     renderMap_GuardDirection();
     //back to DS1
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8))
@@ -7177,7 +10129,6 @@ void renderMap_DS2()
     {
         g_sChar.CP2 = false;
         g_sChar.CP3 = true;
-        g_dDungeonStealth3Time = 0.0;
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
@@ -7191,6 +10142,7 @@ void renderMap_DS3()
     rMap.dungeon_stealth3(g_Console);
     renderCharacter();  // renders the character into the buffer
     //back to DS2
+    g_sChar.enterArea = true;
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7))
     {
         g_dPathTime = 0.0;
@@ -7201,7 +10153,7 @@ void renderMap_DS3()
     //trigger animation
     if ((g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 57)
     {
-        g_dDungeonTime = 0.0;
+        g_dDungeonStealth3Time = 0.0;
         //must do count here, must get character to move after animation
         g_eGameState = S_Dungeon_Stealth3_Animation;
         g_sChar.m_cLocation.X = 60;
@@ -7210,6 +10162,7 @@ void renderMap_DS3()
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 5)
     {
         //ask if user wants to enter battle area
+        g_dBossTime = 0.0;
         g_eGameState = S_Boss_Room_Animation;
         g_sChar.m_cLocation.X = 40;
         g_sChar.m_cLocation.Y = 21;
@@ -7239,7 +10192,6 @@ void RenderBattleScreen()
     int UpdateHealth = 0;
     if (g_sTutEnemy.GetH() == 0 || g_sMutantWasp.GetH() == 0)
     {
-
         if (PlayerInv.pickup(item1))
         {
             c.X = 5;
@@ -7270,13 +10222,108 @@ void RenderBattleScreen()
         }
 
     }
-
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     c.X = 11;
     c.Y = 0;
     string str_charhealth = to_string(g_sChar.GetH());
     g_Console.writeToBuffer(c, "Your Health: " + str_charhealth, 0x0A, 100);
+
+    if (g_sTutEnemy.fight == true)
+    {
+        Sprites.Tutorial_Wasp(g_Console, 0);
+        c.X = 53;
+        c.Y = 0;
+        string str_wasphealth = to_string(g_sTutEnemy.GetH());
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_wasphealth, 0x0A, 100);
+        if (g_sChar.startTimer == true)
+        {
+            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
+            {
+                int randHit = rand() % 4 + 1;
+                if (randHit == 1 || randHit == 2) // player gets hit
+                {
+                    int charhealth = g_sChar.GetH() - g_sTutEnemy.GetD(); // get player health
+                    string str_charhealth = to_string(charhealth);
+
+                    g_sChar.SetH(charhealth); // set player health to new health
+
+                    g_sChar.showEnemyDMG = true;
+                    enemyDMGTime = 0.0;
+                    g_dslashRobert = 0.0;
+                }
+                if (randHit > 1) // guard gets hit
+                {
+                    int tutWasphealth = g_sTutEnemy.GetH() - g_sChar.GetD(); // get enemy health
+                    //string str_guardhealth = to_string(guardhealth);
+
+                    g_sTutEnemy.SetH(tutWasphealth); // set enemy health to new health
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashTutWasp = 0.0;
+                }
+
+                /*
+                if (g_sGuard.GetH() <= 0)
+                {
+                    Item GuardArmor;
+
+                    GuardArmor.setItemName("Guard Armor");
+
+                    Item* item3 = new Item;
+                    if (PlayerInv.pickup(item3))
+                    {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Item Added", 100);
+                    }
+                    else {
+                        c.X = 5;
+                        c.Y = 26;
+                        g_Console.writeToBuffer(c, "Not enough space.", 100);
+                    }
+
+                    c.X = 5;
+                    c.Y = 27;
+                    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
+                }
+                */
+                startTime = 0.0;
+                g_sChar.resetTimer = true;
+                g_sChar.startTimer = false;
+                if (g_sTutEnemy.GetH() <= 0)
+                {
+                    g_dkillTutWasp = 0.0;
+                    g_sTutEnemy.startTimer = true;
+                }
+                if (g_sChar.GetH() <= 0)
+                {
+                    g_dkillRobert = 0.0;
+                    g_sChar.entityDie = true;
+                }
+            }
+        }
+        if (g_sChar.showPlayerDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 25;
+            string str_charDMG = to_string(g_sChar.GetD());
+
+            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
+            slashTutWasp();
+        }
+        if (g_sChar.showEnemyDMG == true)
+        {
+            COORD c;
+            c.X = 3;
+            c.Y = 26;
+            string str_waspDMG = to_string(g_sTutEnemy.GetD());
+
+            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
+            slashRobert();
+        }
+    }
 
     if (g_sMutantWasp.fight == true)
     {
@@ -7338,6 +10385,7 @@ void RenderBattleScreen()
                     g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
                 }
                 */
+
                 startTime = 0.0;
                 g_sChar.resetTimer = true;
                 g_sChar.startTimer = false;
@@ -7390,10 +10438,7 @@ void RenderBattleScreen()
                 int randHit = rand() % 4 + 1;
                 if (randHit == 1 || randHit == 2) // player gets hit
                 {
-                    int charhealth = g_sChar.GetH() - g_sMutantWasp.GetD(); // get player health
-                    string str_charhealth = to_string(charhealth);
-
-                    g_sChar.SetH(charhealth); // set player health to new health
+                    g_sChar.SetH(0); // set player health to new health
 
                     g_sChar.showEnemyDMG = true;
                     enemyDMGTime = 0.0;
@@ -7448,6 +10493,7 @@ void RenderBattleScreen()
                 {
                     g_dkillRobert = 0.0;
                     g_sChar.entityDie = true;
+                    g_sChar.entityDied = true;
                 }
 
             }
@@ -7786,7 +10832,7 @@ void RenderBattleScreen()
 
     }
 
-    
+
     if (g_sChar.InvenActive == true)
     {
         rMap.Road2(g_Console, 3, 24, 74);
@@ -8157,6 +11203,10 @@ void RenderBattleScreen()
     {
         killWasp();
     }
+    if (g_sTutEnemy.startTimer == true)
+    {
+        killTutWasp();
+    }
     if (g_sChar.entityDie == true)
     {
         killRobert();
@@ -8267,6 +11317,102 @@ void RenderBattleScreen()
     }
 }
 
+void UpdateBattleScreen()
+{
+    processUserInput();
+    if ((InvenTime > 2) && (g_sChar.itemActive == true))
+    {
+        g_sInven.startTimer = false;
+        InvenTime = 0;
+    }
+
+    if (g_sChar.resetTimer == true)
+    {
+        if (startTime > 5)
+        {
+            g_sChar.startTimer = true;
+        }
+    }
+    if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
+    {
+        g_sGuard.fight = false; // to stop the fighting after enemy die
+        g_sGuard.entityDie = true; // make this bool true so that the character will move to (-1,-1)
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+        g_sChar.unlockDoorDS1 = true;
+    }
+    if ((g_dkillGuard > 6) && (g_sGuard2.startTimer == true))
+    {
+        g_sGuard2.fight = false; // to stop the fighting after enemy die
+        g_sGuard2.entityDie = true; // make this bool true so that the character will move to (-1,-1)
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+    }
+    if ((g_dkillGuard > 6) && (g_sGuard3.startTimer == true))
+    {
+        g_sGuard3.fight = false; // to stop the fighting after enemy die
+        g_sGuard3.entityDie = true; // make this bool true so that the character will move to (-1,-1)
+        g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
+    }
+    if ((g_dkillWasp > 6) && (g_sMutantWasp.startTimer == true))
+    {
+        g_sMutantWasp.fight = false;
+        g_sMutantWasp.startTimer = false;
+        g_sMutantWasp2.fight = true;
+        g_eGameState = S_BattleScreen;
+    }
+    if ((g_dkillWasp > 6) && (g_sMutantWasp2.startTimer == true))
+    {
+        g_sMutantWasp2.fight = false;
+        g_dMedical2Time = 0.0;
+        g_eGameState = S_Medical_Facility_Part2_Animation;
+    }
+    if ((g_dkillTutWasp > 3) && (g_sTutEnemy.startTimer == true))
+    {
+        g_sTutEnemy.startTimer = false;
+        g_sTutEnemy.fight = false;
+        g_eGameState = S_Path_Area;
+    }
+
+    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true) && (g_sChar.entityDied == false))
+    {
+        g_sGuard.fight = false;
+        g_sGuard2.fight = false;
+        g_sGuard3.fight = false;
+        g_sMutantWasp.fight = false;
+        g_sMutantWasp2.fight = false;
+        g_sTutEnemy.fight = false;
+
+        g_eGameState = S_Game_Over; // show game over screen after player die animation
+    }
+    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true) && (g_sChar.entityDied == true))
+    {
+        g_dDungeonTime = 0.0;
+        g_eGameState = S_Dungeon_Cell_Animation;
+        g_sMutantWasp2.fight = false;
+    }
+    if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
+    {
+        //g_eGameState = S_Townsquare;
+        g_sChar.showPlayerDMG = false;
+        playerDMGTime = 0.0;
+        COORD c;
+        c.X = 3;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+    if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
+    {
+        g_sChar.showEnemyDMG = false;
+        enemyDMGTime = 0.0;
+        COORD c;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+}
+
+
 void renderMap_wireGame()
 {
     COORD c;
@@ -8274,7 +11420,7 @@ void renderMap_wireGame()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     mini.wire_game(g_Console);
-    
+
     //Border
     for (int i = 51; i < 78; i++)
     {
@@ -8329,7 +11475,7 @@ void renderMap_wireGame()
         c.X = 70;
         g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '|', 0x0B);
     }
-    
+
     //Gate 6
     for (int j = 8; j < 17; j++)
     {
@@ -8421,10 +11567,10 @@ void renderMap_wireGame()
     //box 1
     if ((g_sChar.m_cLocation.X == g_sBox1.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox1.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox1.m_cLocation.Y--;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18)) 
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -8432,7 +11578,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
         {
             g_sBox1.m_cLocation.Y++;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -8440,7 +11586,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             g_sBox1.m_cLocation.X--;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -8448,7 +11594,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
         {
             g_sBox1.m_cLocation.X++;
-            if (g_sBox1.m_cLocation.Y == 9 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
+            if (g_sBox1.m_cLocation.Y == 10 && (g_sBox1.m_cLocation.X == 16 || g_sBox1.m_cLocation.X == 17 || g_sBox1.m_cLocation.X == 18))
             {
                 g_sBox1.startTimer = true;
             }
@@ -8458,7 +11604,7 @@ void renderMap_wireGame()
     //box 4
     if ((g_sChar.m_cLocation.X == g_sBox4.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox4.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox4.m_cLocation.Y--;
             if (g_sBox4.m_cLocation.Y == 15 && (g_sBox4.m_cLocation.X == 31 || g_sBox4.m_cLocation.X == 32 || g_sBox4.m_cLocation.X == 33))
@@ -8494,10 +11640,10 @@ void renderMap_wireGame()
     //box 2
     if ((g_sChar.m_cLocation.X == g_sBox2.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox2.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox2.m_cLocation.Y--;
-            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48)) 
+            if (g_sBox2.m_cLocation.Y == 15 && (g_sBox2.m_cLocation.X == 47 || g_sBox2.m_cLocation.X == 48))
             {
                 g_sBox2.startTimer = true;
             }
@@ -8531,10 +11677,10 @@ void renderMap_wireGame()
     //box 5
     if ((g_sChar.m_cLocation.X == g_sBox5.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox5.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox5.m_cLocation.Y--;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -8542,7 +11688,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
         {
             g_sBox5.m_cLocation.Y++;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -8550,7 +11696,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             g_sBox5.m_cLocation.X--;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -8558,7 +11704,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
         {
             g_sBox5.m_cLocation.X++;
-            if (g_sBox5.m_cLocation.Y == 9 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
+            if (g_sBox5.m_cLocation.Y == 10 && (g_sBox5.m_cLocation.X == 47 || g_sBox5.m_cLocation.X == 48))
             {
                 g_sBox5.startTimer = true;
             }
@@ -8568,10 +11714,10 @@ void renderMap_wireGame()
     //box 3
     if ((g_sChar.m_cLocation.X == g_sBox3.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox3.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox3.m_cLocation.Y--;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -8579,7 +11725,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 15)
         {
             g_sBox3.m_cLocation.Y++;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -8587,7 +11733,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             g_sBox3.m_cLocation.X--;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -8595,7 +11741,7 @@ void renderMap_wireGame()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 50)
         {
             g_sBox3.m_cLocation.X++;
-            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 9)
+            if (g_sBox3.m_cLocation.X == 32 && g_sBox3.m_cLocation.Y == 10)
             {
                 g_sBox3.startTimer = true;
             }
@@ -8605,7 +11751,7 @@ void renderMap_wireGame()
     //box 6
     if ((g_sChar.m_cLocation.X == g_sBox6.m_cLocation.X) && (g_sChar.m_cLocation.Y == (g_sBox6.m_cLocation.Y)))
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 9)
+        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 10)
         {
             g_sBox6.m_cLocation.Y--;
             if (g_sBox6.m_cLocation.X == 17 && g_sBox6.m_cLocation.Y == 15)
@@ -8658,7 +11804,7 @@ void renderBoxes()
     g_Console.writeToBuffer(g_sBox6.m_cLocation, '[', 0x0A);
 }
 
-void UpdateBattleScreen()
+/*void UpdateBattleScreen()
 {
     COORD c;
     processUserInput();
@@ -8813,8 +11959,7 @@ void UpdateBattleScreen()
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
 
     }
-}
-
+}*/
 void renderCharacter()
 {
     // Draw the location of the character
@@ -8968,7 +12113,6 @@ void renderInputEvents()
 void render_Main_Menu()
 {
     COORD c; COORD d;
-
     //Print R (ROBERT)
     int i;
     int j;
@@ -10262,7 +13406,7 @@ void render_Main_Menu()
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
     {
         g_dElapsedTime = 0.0;
-        g_eGameState = S_Orphanage_Animation;
+        g_eGameState = S_Start_Animation;
     }
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 21)) && ((g_mouseEvent.mousePosition.X == 34) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42))))
     {
@@ -11062,7 +14206,9 @@ void RenderGameOver()
         //For Quit
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 22)) && ((g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40))))
         {
-            exit(0);
+            g_bQuitGame = true;
+            g_sChar.m_cLocation.X = 4;
+            g_sChar.m_cLocation.Y = 18;
         }
 
     }

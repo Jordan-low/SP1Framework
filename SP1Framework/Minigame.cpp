@@ -14,60 +14,60 @@ void Minigame::wire_game(Console& g_Console)
 	//A
 	c.X = 17;
 	c.Y = 2;
-	g_Console.writeToBuffer(c, '_', 0x1A);  //   _
+	g_Console.writeToBuffer(c, '_');        //   _
 	c.X = 16;								//	|_|
 	c.Y = 3;								//  | |
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 17;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_');
 	c.X = 18;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.Y = 4;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 16;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 
 	//B
 	c.X = 32;
 	c.Y = 2;
-	g_Console.writeToBuffer(c, '_', 0x1A);	//    _
+	g_Console.writeToBuffer(c, '_');	    //    _
 	c.X = 31;								//   |_|
 	c.Y = 3;								//   |_|
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 32;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_');
 	c.X = 33;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.Y = 4;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 32;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_');
 	c.X = 33;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 31;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 
 	//C
 	c.X = 48;
 	c.Y = 2;
-	g_Console.writeToBuffer(c, '_', 0x1A); //    _
+	g_Console.writeToBuffer(c, '_');       //    _
 	c.X = 47;							   //   |
 	c.Y = 3;							   //   |_
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.Y = 4;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 48;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_');
 
 	for (i = 2; i <= 76; i++)
 	{
 		c.X = i;
 		c.Y = 5;
-		g_Console.writeToBuffer(c, '_', 0x1A);
+		g_Console.writeToBuffer(c, '_');
 	}
 
 	//Wire A
-	for (j = 5; j <= 8; j++)
+	for (j = 6; j <= 9; j++)
 	{
 		for (i = 16; i <= 18; i++)
 		{
@@ -78,7 +78,7 @@ void Minigame::wire_game(Console& g_Console)
 	}
 
 	//Wire B
-	for (j = 5; j <= 8; j++)
+	for (j = 6; j <= 9; j++)
 	{
 		c.X = 32;
 		c.Y = j;
@@ -86,7 +86,7 @@ void Minigame::wire_game(Console& g_Console)
 	}
 
 	//Wire C
-	for (j = 5; j <= 8; j++)
+	for (j = 6; j <= 9; j++)
 	{
 		for (i = 47; i <= 48; i++)
 		{
@@ -99,45 +99,45 @@ void Minigame::wire_game(Console& g_Console)
 	//1
 	c.X = 17;
 	c.Y = 21;
-	g_Console.writeToBuffer(c, '|', 0x1A); //   |
+	g_Console.writeToBuffer(c, '|');       //   |
 	c.Y = 22;							   //   |
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 
 	//2
 	c.X = 32;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, '_', 0x1A); //    _
+	g_Console.writeToBuffer(c, '_');       //    _
 	c.X = 33;							   //    _|
 	c.Y = 21;							   //   |_
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 32;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_');
 	c.X = 31;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 32;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_');
 
 	//3
 	c.X = 47;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, '_', 0x1A); //    _
+	g_Console.writeToBuffer(c, '_');       //    _
 	c.X = 48;							   //    _|
 	c.Y = 21;							   //    _|
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 47;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_');
 	c.X = 48;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, '|', 0x1A);
+	g_Console.writeToBuffer(c, '|');
 	c.X = 47;
-	g_Console.writeToBuffer(c, '_', 0x1A);
+	g_Console.writeToBuffer(c, '_');
 
 	for (i = 2; i <= 76; i++)
 	{
 		c.X = i;
 		c.Y = 19;
-		g_Console.writeToBuffer(c, '_', 0x1A);
+		g_Console.writeToBuffer(c, '_');
 	}
 
 	//Wire 1 (B)
@@ -362,4 +362,26 @@ void Minigame::trueSkull(Console& g_Console)
 		c.Y = 17;
 		g_Console.writeToBuffer(c, '_', 0x1A);
 	}
+}
+
+void Minigame::letter(Console& g_Console)
+{
+	COORD c;
+	c.X = 12;
+	c.Y = 6;
+	g_Console.writeToBuffer(c,"Spot the difference in all the skulls you see", 0x0F, 100);
+	c.Y = 7;
+	g_Console.writeToBuffer(c, "From there, push the pink coloured box '['", 0x0F, 100);
+	c.Y = 8;
+	g_Console.writeToBuffer(c, "onto the different skull.", 0x0F, 100);
+	c.Y = 9;
+	g_Console.writeToBuffer(c, "This way, you'll be able to exit the cell.", 0x0F, 100);
+	c.Y = 10;
+	g_Console.writeToBuffer(c, "Once again, best of luck Robert,", 0x0F, 100);
+	c.Y = 11;
+	g_Console.writeToBuffer(c, "I'll see you in the second dungeon room.", 0x0F, 100);
+	c.X = 48;
+	c.Y = 14;
+	g_Console.writeToBuffer(c, "-Ell", 0x0F, 100);
+
 }

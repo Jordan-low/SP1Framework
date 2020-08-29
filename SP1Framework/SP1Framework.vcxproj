@@ -57,6 +57,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>-lwinmm %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,9 +79,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Andrew%27s Inventory.cpp" />
-    <ClCompile Include="Andrew%27s Item.cpp" />
-    <ClCompile Include="Consumable.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Cutscenes.cpp" />
     <ClCompile Include="Damage.cpp" />
     <ClCompile Include="Dialogue.cpp" />
@@ -90,25 +90,14 @@
     <ClCompile Include="Framework\console.cpp" />
     <ClCompile Include="Framework\timer.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="Guard.cpp" />
-    <ClCompile Include="Inventory.cpp" />
-    <ClCompile Include="Items.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Minigame.cpp" />
-    <ClCompile Include="MutantWasp.cpp" />
-    <ClCompile Include="Pig.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Poison.cpp" />
-    <ClCompile Include="Raymond.cpp" />
-    <ClCompile Include="Ally.cpp" />
     <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="TutEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Andrew%27s Inventory.h" />
-    <ClInclude Include="Andrew%27s Item.h" />
-    <ClInclude Include="Consumable.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Cutscenes.h" />
     <ClInclude Include="Damage.h" />
     <ClInclude Include="Dialogue.h" />
@@ -118,19 +107,10 @@
     <ClInclude Include="Framework\console.h" />
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="Guard.h" />
-    <ClInclude Include="Ally.h" />
-    <ClInclude Include="Inventory.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Minigame.h" />
-    <ClInclude Include="MutantWasp.h" />
-    <ClInclude Include="Pig.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Poison.h" />
-    <ClInclude Include="Raymond.h" />
     <ClInclude Include="Sound.h" />
-    <ClInclude Include="TutEnemy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

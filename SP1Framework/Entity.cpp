@@ -48,6 +48,12 @@ void Entity::SetH(int health)
 	h = health;
 }
 
+int Entity::randNum()
+{
+	static int r = rand() % 70 + 1;
+	return r;
+}
+
 /*void Entity::SetX(int x_coord)
 {
 	x = x_coord;

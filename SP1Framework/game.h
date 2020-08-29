@@ -59,6 +59,7 @@ enum EGAMESTATES
     S_Dungeon_Stealth_3,
     S_Boss_Battle_Room,
     //Animations
+    S_Start_Animation,
     S_Orphanage_Animation,
     S_Orphanage_Children_Animation,
     S_Protest_Area_Animation,
@@ -72,6 +73,7 @@ enum EGAMESTATES
     S_Boss_Room_Animation,
     S_BattleScreen,
     S_wireGame,
+    S_Credits,
     //Battle animations
     S_SlashGuard,
     S_KillGuard,
@@ -85,7 +87,11 @@ enum EGAMESTATES
     S_killRobert,
     S_slashTutWasp,
     S_killTutWasp,
+    //Boss Fight
+    S_phase2Battle,
     S_COUNT
+
+    
 };
 
 // struct for the game character
@@ -125,7 +131,13 @@ struct SGameChar : public Enemy
     bool CP1;
     bool CP2;
     bool CP3;
+    bool collected;
     int nextDialogue;
+    int laserCount;
+    bool entityDied;
+    bool animationPlayed;
+    bool enterArea;
+    int randNum;
 };
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
@@ -181,6 +193,8 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyb
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
 
 //Animations + Menu AI
+void Update_starting_cutscene();
+void starting_cutscene();
 void RenderGameOver();
 void Update_Orphanage_Animation();
 void Orphanage_Animation();
@@ -206,6 +220,8 @@ void Update_Boss_Room_Animation();
 void Boss_Room_Animation();
 void render_Main_Menu();
 void UpdateBattleScreen();
+void Update_Credits();
+void Credits();
 
 
 //Animate Battle
@@ -231,8 +247,21 @@ void Update_killRobert();
 void killRobert();
 void Update_slashTutWasp();
 void slashTutWasp();
-void Update_killTuTWasp();
+void Update_killTutWasp();
 void killTutWasp();
+void drawLaser(Console &g_Console, int j);
+void drawBreakFloor(Console& g_Console, int k, int j);
+void drawLaser(Console& g_Console, int j);
+void drawLaser2(Console& g_Console, int j);
+void drawLaser3(Console& g_Console, int j);
+void drawMovingBlock(Console& g_Console, int j);
+void renderBomb();
+void updateBomb();
+void renderRaymond();
+
+//Raymond Battle Paths
+void Update_phase2Battle();
+void phase2Battle();
 
 //Others
 void renderMap_GuardStealth();

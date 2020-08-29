@@ -439,18 +439,18 @@ void Map::orphanage(Console& g_Console)
 	//children
 	c.X = 56;
 	c.Y = 22;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 64;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 62;
 	c.Y = 17;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 54;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 	c.X = 50;
 	c.Y = 20;
-	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x00);
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = (char)12, 0x0A);
 }
 void Map::townsquare(Console& g_Console)
 {
@@ -751,7 +751,7 @@ void Map::patharea(Console& g_Console)
 	{
 		c.X = i;
 		c.Y = j;
-		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '@', 0x0A);
+		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x0A);
 	}
 }
 
@@ -1244,6 +1244,31 @@ void Map::insideMedicalFacility(Console& g_Console)
 		c.Y = j;
 		g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '-', 0x0A);
 	}
+
+	//Medical People
+	c.X = 33;
+	c.Y = 20;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 37;
+	c.Y = 7;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 55;
+	c.Y = 18;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 55;
+	c.Y = 3;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 66;
+	c.Y = 6;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+	c.X = 74;
+	c.Y = 18;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+
+	//Nurse
+	c.X = 22;
+	c.Y = 12;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
 }
 void Map::dungeon_cell(Console& g_Console)
 {
