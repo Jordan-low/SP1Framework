@@ -57,6 +57,7 @@ double laserTime2;
 double laserTime3;
 double movingBlockTime;
 double breakFloorTime;
+double g_dCreditsTime;
 int randnum;
 int randnum2;
 int randnum3;
@@ -589,6 +590,7 @@ void update(double dt)
     laserTime3 += dt;
     movingBlockTime += dt;
     breakFloorTime += dt;
+    g_dCreditsTime += dt;
 
     switch (g_eGameState)
     {
@@ -660,6 +662,8 @@ void update(double dt)
         break;
     case S_BattleScreen: UpdateBattleScreen();
         break;
+    case S_Credits: Update_Credits();
+        break;
 
         //Battle Animations
         //case S_SlashGuard: Update_slashGuard();
@@ -711,7 +715,6 @@ void Update_starting_cutscene()
     }
     processUserInput();
 }
-
 void starting_cutscene()
 {
     clearScreen();
@@ -7040,6 +7043,8 @@ void render()
         break;
     case S_BattleScreen: RenderBattleScreen();
         break;
+    case S_Credits: Credits();
+        break;
 
         //render battle animations
     //case S_SlashGuard: slashGuard();
@@ -9627,6 +9632,13 @@ void UpdateBattleScreen()
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
 
     }
+}
+
+void Update_Credits()
+{
+}
+void Credits()
+{
 }
 
 void renderMap_wireGame()
