@@ -53,6 +53,22 @@ bool Inventory::Consumed(Item* use)
 	}
 }
 
+void Inventory::setQuantity(int q)
+{
+	Quantity = q;
+}
+
+int Inventory::getQuantity()
+{
+	return Quantity;
+}
+
+void Inventory::QuantityCheck(std::string n)
+{
+	this->getItemName() = n;
+	Quantity++;
+}
+
 /*void Inventory::setInventory(std::string n, int q)
 {
 	
@@ -216,6 +232,8 @@ int Inventory::checkInventory(std::string n)
 
 	}
 }*/
+
+
 
 Inventory::~Inventory()
 {

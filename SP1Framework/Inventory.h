@@ -19,4 +19,7 @@ public:
 	~Inventory();
 	bool pickup(Item* add);
 	bool Consumed(Item* use);
+	void setQuantity(int q);
+	int getQuantity();
+	void QuantityCheck(std::string n);
 };
