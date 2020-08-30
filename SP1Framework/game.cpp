@@ -255,8 +255,8 @@ void init(void)
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
 
-    g_sChar.SetH(1000); // set to 1k when enter room
-    g_sChar.SetD(5);
+    g_sChar.SetH(5000); // set to 1k when enter room
+    g_sChar.SetD(100);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -277,7 +277,7 @@ void init(void)
     g_sMutantWasp2.SetD(100);
 
     g_sChar.Poison = false;
-    g_sRaymondBoss.SetH(120);
+    g_sRaymondBoss.SetH(5200);
     g_sRaymondBoss.SetD(25);
     g_sChar.InvenActive = false;
     g_sChar.itemActive = false;
@@ -374,7 +374,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_BattleScreen;
+    g_eGameState = S_MENU_UI;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -4437,6 +4437,8 @@ void Update_Boss_Room_Mid_Animation()
 {
     if (g_dBossMiddleTime > 11.2)
     {
+        g_sChar.CP2 = false;
+        g_sChar.CP3 = true;
         g_eGameState = S_phase2Battle;
     }
     processUserInput();
@@ -4518,7 +4520,7 @@ void Update_Boss_End_Animation()
 {
     if (g_dBossEndTime > 33)
     {
-        g_dCreditsTime = 5.2;
+        g_dCreditsTime = 0.0;
         g_eGameState = S_Credits;
     }
     processUserInput();
@@ -4541,48 +4543,49 @@ void Boss_End_Animation()
     e.Y = 12;
     f.X = 32;
     f.Y = 14;
+
     
-    if (g_dBossMiddleTime > 1)
+    if (g_dBossEndTime > 1)
     {
         g_Console.writeToBuffer(c, "And so... Raymond was defeated.", 0x0F);
-        if (g_dBossMiddleTime > 4)
+        if (g_dBossEndTime > 4)
         {
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             g_Console.writeToBuffer(c, "The people of the state cheered in unison.", 0x0F);
-            if (g_dBossMiddleTime > 8)
+            if (g_dBossEndTime > 8)
             {
                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                 g_Console.writeToBuffer(c, "Robert was elected to become the next President, ", 0x0F);
                 g_Console.writeToBuffer(d, "where he would solve the people's issues with ease and passion.", 0x0F);
-                if (g_dBossMiddleTime > 12)
+                if (g_dBossEndTime > 12)
                 {
                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                     g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
                     g_Console.writeToBuffer(c, "Though there was still a small resistance amongst the people, ", 0x0F);
                     g_Console.writeToBuffer(d, "life had majorly improved for everyone. ", 0x0F);
-                    if (g_dBossMiddleTime > 16)
+                    if (g_dBossEndTime > 16)
                     {
                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                         g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
                         g_Console.writeToBuffer(c, "Now with Robert controlling the people's hearts and minds alike,", 0x0F);
                         g_Console.writeToBuffer(d, "he was sure to achieve his goal...", 0x0F);
-                        if (g_dBossMiddleTime > 20)
+                        if (g_dBossEndTime > 20)
                         {
                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                             g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
                             g_Console.writeToBuffer(c, "At least that was what he thought...", 0x0F);
                             g_Console.writeToBuffer(d, "His heart had been lured too deep with greed...", 0x0F);
-                            if (g_dBossMiddleTime > 23)
+                            if (g_dBossEndTime > 23)
                             {
                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                 g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
                                 g_Console.writeToBuffer(c, "And so comes to the end of Robert's Rescue...", 0x0F);
-                                if (g_dBossMiddleTime > 27)
+                                if (g_dBossEndTime > 27)
                                 {
                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                     rMap.initialise(g_Console);
                                     g_Console.writeToBuffer(e, "R o b e r t 's   R e s c u e   2", 0x0F);
-                                    if (g_dBossMiddleTime > 30)
+                                    if (g_dBossEndTime > 30)
                                     {
                                         g_Console.writeToBuffer(f, "=Coming Soon?=", 0x0F);
                                     }
@@ -6638,7 +6641,7 @@ void drawLaser2(Console& g_Console, int j)
                                 if (g_sChar.m_cLocation.X == (71 - j) && g_sChar.m_cLocation.Y == 8)
                                 {
                                     g_sChar.SetH(g_sChar.GetH() - 1);
-
+                                    
                                 }
                                 if (laserTime2 > 0.35)
                                 {
@@ -7814,6 +7817,10 @@ void Update_phase2Battle()
 }
 void phase2Battle()
 {
+    if (g_sChar.GetH() < 0)
+    {
+        g_eGameState = S_Game_Over;
+    }
     COORD c;
 
 
@@ -7821,7 +7828,6 @@ void phase2Battle()
     {
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
-            g_sRaymondBoss.SetH(1);
             g_sChar.showPlayerDMG = false;
             g_sChar.showEnemyDMG = false;
             g_sRaymondBoss.counter = true;
@@ -7912,6 +7918,8 @@ void phase2Battle()
 
             if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
             {
+                g_sRaymondBoss.SetH(g_sRaymondBoss.GetH() - 1000);
+
                 g_sMovingBlock.fight = true;
                 g_sBreakFloor.fight = true;
                 int randPosX = rand() % (20 - 4 + 1) + 4;
@@ -7976,6 +7984,7 @@ void phase2Battle()
         }
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
+            g_sRaymondBoss.SetH(g_sRaymondBoss.GetH() - 1000);
             g_sLaser.fight = true;
             int randPosX = rand() % (20 - 4 + 1) + 4;
             int randPosY = rand() % (20 - 3 + 1) + 3;
@@ -8021,6 +8030,8 @@ void phase2Battle()
         }
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
+            g_sRaymondBoss.SetH(g_sRaymondBoss.GetH() - 1000);
+
             //g_sLaser.fight = true;
             g_sLaser2.fight = true;
             g_sLaser3.fight = true;
@@ -8071,6 +8082,8 @@ void phase2Battle()
         }
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
+            g_sRaymondBoss.SetH(g_sRaymondBoss.GetH() - 1000);
+
             g_sMovingBlock.fight = true;
             int randPosX = rand() % (20 - 4 + 1) + 4;
             int randPosY = rand() % (20 - 3 + 1) + 3;
@@ -8210,7 +8223,14 @@ void phase2Battle()
             g_Console.writeToBuffer(c, "Final Phase", 0x0B, 100);
         }
     }
-    
+    static bool showRayHealth = false;
+    if (showRayHealth == false)
+    {
+        c.X = 31;
+        c.Y = 6;
+        string str_rayhealth = to_string(g_sRaymondBoss.GetH());
+        g_Console.writeToBuffer(c, "Raymond Health: " + str_rayhealth, 0x04, 100);
+    }
 
 }
 void updateBomb()
@@ -8293,9 +8313,9 @@ void moveCharacter()
             }
         }
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
@@ -8315,9 +8335,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
@@ -8337,9 +8357,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
@@ -8390,9 +8410,9 @@ void moveCharacter()
             }
         }
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
 
                 // enemy on left side
@@ -8412,11 +8432,15 @@ void moveCharacter()
                 {
                     g_sGuard.xLeft = true;
                 }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
+                {
+                    g_sGuard.xRight = true;
+                }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
 
                 // enemy on left side
@@ -8436,11 +8460,15 @@ void moveCharacter()
                 {
                     g_sGuard2.xLeft = true;
                 }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
+                {
+                    g_sGuard2.xRight = true;
+                }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
 
                 // enemy on left side
@@ -8459,6 +8487,10 @@ void moveCharacter()
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
                     g_sGuard3.xLeft = true;
+                }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
+                {
+                    g_sGuard3.xRight = true;
                 }
             }
         }
@@ -8492,9 +8524,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
@@ -8514,9 +8546,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
@@ -8536,9 +8568,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
@@ -8589,9 +8621,9 @@ void moveCharacter()
             }
         }
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
@@ -8609,11 +8641,15 @@ void moveCharacter()
                 {
                     g_sGuard.xUp = true;
                 }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + i] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
+                {
+                    g_sGuard.xLeft = true;
+                }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
@@ -8631,11 +8667,15 @@ void moveCharacter()
                 {
                     g_sGuard.xUp = true;
                 }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + i] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
+                {
+                    g_sGuard2.xLeft = true;
+                }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
@@ -8652,6 +8692,10 @@ void moveCharacter()
                 if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X]) // works
                 {
                     g_sGuard.xUp = true;
+                }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + i] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
+                {
+                    g_sGuard3.xLeft = true;
                 }
             }
         }
@@ -10969,8 +11013,6 @@ void renderBox()
 void renderMap_DS1()
 {
     COORD c;
-    
-    
     while (stealth_music == false)
     {
         PlaySound(TEXT("8 Bit Menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -10987,6 +11029,9 @@ void renderMap_DS1()
         c.X = 5;
         c.Y = 25;
         g_Console.writeToBuffer(c, "Objective: Find Ell in the next room! ", 0x0B, 100);
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "           Fight the guards to advance to the next room! ", 0x0B, 100);
     }
 
     if (g_sGuard.entityDie == true)
@@ -11338,21 +11383,21 @@ void renderMap_DS1()
         }
     }
     //fight guard
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard.m_cLocation.X))
+    if ((g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) ||(g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard.m_cLocation.X))
     {
         g_sGuard.fight = true;
         g_eGameState = S_BattleScreen;
         g_sChar.m_cLocation.Y = 5;
         g_sChar.m_cLocation.X = 37;
     }
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.m_cLocation.X))
+    if ((g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y + 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.m_cLocation.X))
     {
         g_sGuard2.fight = true;
         g_eGameState = S_BattleScreen;
         g_sChar.m_cLocation.Y = 16;
         g_sChar.m_cLocation.X = 28;
     }
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.m_cLocation.X))
+    if ((g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y + 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.m_cLocation.X))
     {
         g_sGuard3.fight = true;
         g_eGameState = S_BattleScreen;
@@ -11906,7 +11951,7 @@ void renderMap_DS2()
 
     c.X = 8;
     c.Y = 13;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12);
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O');
 
     c.X = 8;
     c.Y = 13;
@@ -11934,8 +11979,6 @@ void renderMap_DS2()
     //To DS3
     if (g_sChar.m_cLocation.Y == 18 && (g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18 || g_sChar.m_cLocation.X == 19 || g_sChar.m_cLocation.X == 20 || g_sChar.m_cLocation.X == 21 || g_sChar.m_cLocation.X == 22 || g_sChar.m_cLocation.X == 23 || g_sChar.m_cLocation.X == 24 || g_sChar.m_cLocation.X == 25 || g_sChar.m_cLocation.X == 26))
     {
-        g_sChar.CP2 = false;
-        g_sChar.CP3 = true;
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
@@ -11964,7 +12007,7 @@ void renderMap_DS3()
     {
         c.X = 5;
         c.Y = 25;
-        g_Console.writeToBuffer(c, "Objective: Go to the abandoned facility room 4.", 0x0B, 100);
+        g_Console.writeToBuffer(c, "Objective: Go to the Abandoned Facility room 4 via Path Area.", 0x0B, 100);
     }
     //back to DS2
     g_sChar.enterArea = true;
@@ -12297,15 +12340,14 @@ void RenderBattleScreen()
                     g_dkillRobert = 0.0;
                     g_sChar.entityDie = true;
                 }
-            }
-            
-            if (g_sRaymondBoss.GetH() < 61)
-            {
-                g_sRaymondBoss.fight = false;
-                g_sRaymondBoss.startTimer = false;
-                g_dBossMiddleTime = 0.0; // set boss animation time to 0
-                g_eGameState = S_Boss_Room_Mid_Animation; //link to boss animation before phase 2
-            }
+                if (g_sRaymondBoss.GetH() < 5001)
+                {
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashRaymond = 0.0;
+                    g_sRaymondBoss.enterArea = true;
+                }
+            }          
         }
         if (g_sChar.showPlayerDMG == true)
         {
@@ -13285,6 +13327,7 @@ void RenderBattleScreen()
     {
         killRobert();
     }
+   
     if (g_sRawMeat.showItemUsed == true)
     {
         c.X = 3;
@@ -13385,12 +13428,23 @@ void UpdateBattleScreen()
     }
     if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
     {
-        c.X = 3;
-        c.Y = 25;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-        g_sChar.showPlayerDMG = false;
+        if (g_sRaymondBoss.enterArea == true)
+        {
+            g_sRaymondBoss.fight = false;
+            g_sRaymondBoss.startTimer = false;
+            g_dBossMiddleTime = 0.0; // set boss animation time to 0
+            g_eGameState = S_Boss_Room_Mid_Animation; //link to boss animation before phase 2
 
+        }
+        else
+        {
+            c.X = 3;
+            c.Y = 25;
+            g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+            g_sChar.showPlayerDMG = false;
+        }
     }
+    
     if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
     {
         c.X = 3;
@@ -13552,16 +13606,17 @@ void UpdateBattleScreen()
         g_sPig3.entityDie = true;
         g_eGameState = S_OAF;
     }
-    if ((g_dkillRobert > 4) && (g_sChar.entityDie == true))
-    {
-        g_eGameState = S_Game_Over; // show game over screen after player die animation
-    }
     if ((g_dkillTutWasp > 4) && (g_sTutEnemy.startTimer == true))
     {
         g_sTutEnemy.fight = false;
         g_sTutEnemy.startTimer = false;
         g_eGameState = S_Path_Area; // show game over screen after player die animation
     }
+    if ((g_dkillRobert > 4) && (g_sChar.entityDie == true))
+    {
+        g_eGameState = S_Game_Over; // show game over screen after player die animation
+    }
+
 
     if (g_sStinger.showItemDropped == true)
     {
@@ -16204,25 +16259,45 @@ void RenderGameOver()
         //For Checkpoint
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || ((g_mouseEvent.mousePosition.X == 33) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42) || (g_mouseEvent.mousePosition.X == 43) || (g_mouseEvent.mousePosition.X == 44)))))
         {
+            g_sPig.fight = false;
+            g_sPig2.fight = false;
+            g_sPig3.fight = false;
+            g_sRaymondBoss.fight = false;
+            g_sMutantWasp.fight = false;
+            g_sMutantWasp2.fight = false;
+            g_sGuard.fight = false;
+            g_sGuard2.fight = false;
+            g_sGuard3.fight = false;
+            g_sTutEnemy.fight = false;
+            g_sChar.entityDie = false;
             g_dElapsedTime = 0.0;
             if (g_sChar.CP1 == true)
             {
                 g_eGameState = S_OAF;
+                g_sChar.SetH(50);
                 g_sChar.m_cLocation.X = 7;
                 g_sChar.m_cLocation.Y = 21;
             }
             if (g_sChar.CP2 == true)
             {
                 g_eGameState = S_Dungeon_Stealth_1;
+                g_sChar.SetH(50);
                 g_sChar.m_cLocation.X = 5;
                 g_sChar.m_cLocation.Y = 21;
             }
             if (g_sChar.CP3 == true)
             {
-                g_eGameState = S_Dungeon_Stealth_3;
+                g_sLaser.fight = false;
+                g_sLaser2.fight = false;
+                g_sLaser3.fight = false; 
+                g_sMovingBlock.fight = false; 
+                g_sBreakFloor.fight = true;
+                g_eGameState = S_phase2Battle;
+                
+                g_sChar.SetH(500);
                 g_sChar.m_cLocation.X = 41;
                 g_sChar.m_cLocation.Y = 21;
-            };
+            }
         }
         //For Quit
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 22)) && ((g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40))))
