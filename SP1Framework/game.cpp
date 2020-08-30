@@ -370,7 +370,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Protest_Area;
+    g_eGameState = S_Dungeon_Stealth_3;
 
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
@@ -9072,7 +9072,7 @@ void renderMap_Protest_Area()
 
     c.X = 62;
     c.Y = 4;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&');
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&', 0x0D);
     static bool showObj = false;
     if (showObj == false)
     {
@@ -9084,7 +9084,7 @@ void renderMap_Protest_Area()
     {
         c.X = 62;
         c.Y = 4;
-        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'D');
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'D', 0x0D);
     }
     if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 62)
     {
@@ -9696,11 +9696,22 @@ void renderMap_Path_Area()
         PlaySound(TEXT("8 Bit Surf.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         game_music = true;
     }
-    COORD c;
+    COORD c, d;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Go up to the abandoned facility, go right ", 0x0B, 100);
+        d.X = 5;
+        d.Y = 27;
+        g_Console.writeToBuffer(d, "           to medical facility, go down to enter protest area.", 0x0B, 100);
+    }
 
     if (g_sChar.animationPlayed == true)
     {
@@ -9742,11 +9753,23 @@ void renderMap_Path_Area()
 //change this gamestate
 void renderMap_OAF()
 {
+    COORD c, d;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.outside_abandoned_facility(g_Console);
     renderCharacter();  // renders the character into the buffer
     renderPig();
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Go right to enter the abandoned facility, go down ", 0x0B, 100);
+        d.X = 5;
+        d.Y = 27;
+        g_Console.writeToBuffer(d, "           to go back to path area. You can fight pigs for resources.", 0x0B, 100);
+    }
 
     //back to path area
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8 || g_sChar.m_cLocation.X == 9 || g_sChar.m_cLocation.X == 10 || g_sChar.m_cLocation.X == 11))
@@ -9828,12 +9851,24 @@ void renderPig()
 }
 void renderMap_IAF1()
 {
-    COORD c;
+    COORD c, d;
     srand((unsigned)time(0));
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility1(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Fix the wires by stepping on |!|. ", 0x0B, 100);
+        d.X = 5;
+        d.Y = 27;
+        g_Console.writeToBuffer(d, "           Go right to room 2, go left to room 4, go down to the outside.", 0x0B, 100);
+    }
+
     //IAF2
     if (g_sBox1.startTimer == true && g_sBox2.startTimer == true && g_sBox3.startTimer == true && g_sBox4.startTimer == true && g_sBox5.startTimer == true && g_sBox6.startTimer == true)
     {
@@ -10294,6 +10329,14 @@ void renderMap_IAF4()
     rMap.insideAbandonedFacility4(g_Console);
     renderCharacter();  // renders the character into the buffer
 
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 24;
+        g_Console.writeToBuffer(c, "Objective: Talk to the wise old man for his advice! ", 0x0B, 100);
+    }
+
     if (((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13) && g_sChar.m_cLocation.X == 40) || ((g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 41) && g_sChar.m_cLocation.Y == 12))
     {
         if (g_sChar.talkedOldMan == false)
@@ -10623,6 +10666,15 @@ void renderMap_IAF2()
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility2(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Go right back to room 1, go up to room 3.", 0x0B, 100);
+    }
+
     //IAF1
     if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.Y == 15) && g_sChar.m_cLocation.X == 76)
     {
@@ -10637,7 +10689,7 @@ void renderMap_IAF2()
         g_dIAF3Time = 0.0;
         g_eGameState = S_IAF3_Animation;
         g_sChar.m_cLocation.X = 40;
-        g_sChar.m_cLocation.Y = 21;
+        g_sChar.m_cLocation.Y = 7;
     }
 
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 4)
@@ -10889,6 +10941,13 @@ void renderMap_Inside_Medical_Facility()
     rMap.insideMedicalFacility(g_Console);
     renderCharacter();  // renders the character into the buffer
 
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Talk to the patient nearest to the counter.", 0x0B, 100);
+    }
 
     if ((g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {
@@ -10930,6 +10989,15 @@ void renderMap_Dungeon_Cell()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_cell(g_Console);
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Place the box '[' onto the correct skull!", 0x0B, 100);
+    }
+
     if (g_sBox.startTimer == true)
     {
         for (int i = 32; i < 46; i++)
@@ -11073,12 +11141,20 @@ void renderBox()
 
 void renderMap_DS1()
 {
+    COORD c;
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Find Ell in the next room! ", 0x0B, 100);
+    }
+    
     while (stealth_music == false)
     {
         PlaySound(TEXT("8 Bit Menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         stealth_music = true;
     }
-    COORD c;
     srand((unsigned)time(0));
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -11974,14 +12050,26 @@ void renderMap_DS2()
         PlaySound(TEXT("8 Bit Menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         stealth_music = true;
     }
-    COORD c;
+    COORD c, d;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth2(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 24;
+        g_Console.writeToBuffer(c, "Objective: Sneak past the guards! ", 0x0B, 100);
+        d.X = 5;
+        d.Y = 25;
+        g_Console.writeToBuffer(d, "Directions: Right: '<', Left: '<', Up: 'V', Down: '^'. ", 0x0B, 100);
+    }
+
     c.X = 8;
     c.Y = 13;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O');
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12);
 
     c.X = 8;
     c.Y = 13;
@@ -12019,12 +12107,21 @@ void renderMap_DS2()
 
 void renderMap_DS3()
 {
+    COORD c, d;
     PlaySound(NULL, NULL, NULL);
     stealth_music = false;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth3(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Go to the abandoned facility room 4.", 0x0B, 100);
+    }
     //back to DS2
     g_sChar.enterArea = true;
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7))
