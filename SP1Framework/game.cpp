@@ -10432,7 +10432,7 @@ void renderMap_IAF4()
             g_Console.writeToBuffer(c, "                 never seen anyone as tyrannical as him.", 0x0F, 100);
             c.Y = 28;
             g_Console.writeToBuffer(c, "                 Here, lemme boost you to aid you on your journey.", 0x0F, 100);
-            g_sChar.SetH(1000);
+            g_sChar.SetH(500);
             g_sChar.SetD(g_sChar.GetD() + 10);
         }
     }
