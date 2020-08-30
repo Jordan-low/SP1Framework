@@ -1358,6 +1358,11 @@ void Map::dungeon_stealth2(Console& g_Console)
 {
 	Border(g_Console);
 	COORD c;
+
+	c.X = 8;
+	c.Y = 13;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0D);
+
 	//doors
 	for (i = 2; i <= 8; i++)
 	{

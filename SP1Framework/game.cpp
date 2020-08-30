@@ -374,7 +374,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_BattleScreen;
+    g_eGameState = S_Dungeon_Stealth_2;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -7834,11 +7834,11 @@ void phase2Battle()
     {
         g_sChar.SetH(g_sChar.GetH() - 1); // minus dmg if robert touch raymond
     }
-    /*while (music == false)
+    while (phase2_music == false)
     {
         PlaySound(TEXT("For Peace.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         phase2_music = true;
-    }*/
+    }
 
 
     rMap.initialise(g_Console);
@@ -11903,10 +11903,6 @@ void renderMap_DS2()
         d.Y = 25;
         g_Console.writeToBuffer(d, "Directions: Right: '<', Left: '<', Up: 'V', Down: '^'. ", 0x0B, 100);
     }
-
-    c.X = 8;
-    c.Y = 13;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12);
 
     c.X = 8;
     c.Y = 13;
