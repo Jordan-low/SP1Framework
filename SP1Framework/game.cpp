@@ -245,7 +245,7 @@ void init(void)
     g_sPig.entityDie = false;
     g_sPig2.entityDie = false;
     g_sPig3.entityDie = false;
-
+    g_sMutantWasp.fight = true;
 
     /*
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
@@ -255,8 +255,8 @@ void init(void)
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
 
-    g_sChar.SetH(10000); // set to 1k when enter room
-    g_sChar.SetD(50);
+    g_sChar.SetH(1000); // set to 1k when enter room
+    g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -374,7 +374,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Boss_Room_Animation;
+    g_eGameState = S_BattleScreen;
 
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
@@ -3617,20 +3617,20 @@ void Medical_Fight_Animation()
     rMap.Border(g_Console);
     rMap.insideMedicalFacility(g_Console);
     COORD c;
-    renderCharacter();
+    renderCharacter(); 
     c.X = 5;
     c.Y = 26;
     Cutscene.drawgridW(g_Console, 34, 12, (char)1); //Robert (Hero)
     Cutscene.drawgrid(g_Console, 34, 13, (char)12); //Ell
 
-    Cutscene.drawgrid(g_Console, 36, 12, (char)12); //Patient 1
-    Cutscene.drawgrid(g_Console, 36, 9, (char)12); //Patient 2
-    Cutscene.drawgrid(g_Console, 36, 15, (char)12); //Patient 3
-    Cutscene.drawgrid(g_Console, 46, 15, (char)12); //Patient 4
-    Cutscene.drawgrid(g_Console, 46, 9, (char)12); //Patient 5
-    Cutscene.drawgrid(g_Console, 56, 15, (char)12); //Patient 6
-    Cutscene.drawgrid(g_Console, 56, 9, (char)12); //Patient 7
-    Cutscene.drawgrid(g_Console, 23, 13, (char)12); //nurse
+    Cutscene.drawPatients(g_Console, 36, 12, (char)12); //Patient 1
+    Cutscene.drawPatients(g_Console, 36, 9, (char)12); //Patient 2
+    Cutscene.drawPatients(g_Console, 36, 15, (char)12); //Patient 3
+    Cutscene.drawPatients(g_Console, 46, 15, (char)12); //Patient 4
+    Cutscene.drawPatients(g_Console, 46, 9, (char)12); //Patient 5
+    Cutscene.drawPatients(g_Console, 56, 15, (char)12); //Patient 6
+    Cutscene.drawPatients(g_Console, 56, 9, (char)12); //Patient 7
+    Cutscene.drawPatients(g_Console, 23, 13, (char)12); //nurse
 
     if (g_dMedicalFightTime > 0.6)
     {
@@ -3640,11 +3640,11 @@ void Medical_Fight_Animation()
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             //patient 2 walks to hero
             Cutscene.cleargrid(g_Console, 36, 9);
-            Cutscene.drawgrid(g_Console, 36, 10, (char)12); //Patient 2
+            Cutscene.drawPatients(g_Console, 36, 10, (char)12); //Patient 2
             if (g_dMedicalFightTime > 3.9)
             {
                 Cutscene.cleargrid(g_Console, 36, 10);
-                Cutscene.drawgrid(g_Console, 35, 11, (char)12);
+                Cutscene.drawPatients(g_Console, 35, 11, (char)12);
                 if (g_dMedicalFightTime > 4.2)
                 {
                     g_Console.writeToBuffer(c, "Patient 2: You have so much medicine and you kept it from us?", 0x0F, 100);
@@ -3657,7 +3657,7 @@ void Medical_Fight_Animation()
                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                         //patient 3 walks to hero ( ally side )
                         Cutscene.cleargrid(g_Console, 36, 15);
-                        Cutscene.drawgrid(g_Console, 35, 14, (char)12);
+                        Cutscene.drawPatients(g_Console, 35, 14, (char)12);
                         if (g_dMedicalFightTime > 7.5)
                         {
                             g_Console.writeToBuffer(c, "Patient 3: Give it to me! Can't you see that you're healthier than me?", 0x0F, 100);
@@ -3670,11 +3670,11 @@ void Medical_Fight_Animation()
                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                 //patient 4 walks (in front of ally)
                                 Cutscene.cleargrid(g_Console, 46, 15);
-                                Cutscene.drawgrid(g_Console, 41, 14, (char)12);
+                                Cutscene.drawPatients(g_Console, 41, 14, (char)12);
                                 if (g_dMedicalFightTime > 10.8)
                                 {
                                     Cutscene.cleargrid(g_Console, 41, 14);
-                                    Cutscene.drawgrid(g_Console, 36, 13, (char)12);
+                                    Cutscene.drawPatients(g_Console, 36, 13, (char)12);
                                     if (g_dMedicalFightTime > 11.1)
                                     {
                                         g_Console.writeToBuffer(c, "Patient 4: Please! I beg you, please give my daughter", 0x0F, 100);
@@ -3687,11 +3687,11 @@ void Medical_Fight_Animation()
                                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                             // Patient 5 walks to Patient 1
                                             Cutscene.cleargrid(g_Console, 46, 9);
-                                            Cutscene.drawgrid(g_Console, 41, 10, (char)12);
+                                            Cutscene.drawPatients(g_Console, 41, 10, (char)12);
                                             if (g_dMedicalFightTime > 14.4)
                                             {
                                                 Cutscene.cleargrid(g_Console, 41, 10);
-                                                Cutscene.drawgrid(g_Console, 37, 11, (char)12);
+                                                Cutscene.drawPatients(g_Console, 37, 11, (char)12);
                                                 if (g_dMedicalFightTime > 14.7)
                                                 {
                                                     g_Console.writeToBuffer(c, "Patient 5: Give that to me! I deserve that more than you!", 0x0F, 100);
@@ -3705,29 +3705,29 @@ void Medical_Fight_Animation()
                                                             //patient 6 & 7 walking 
                                                             Cutscene.cleargrid(g_Console, 56, 15);
                                                             Cutscene.cleargrid(g_Console, 56, 9);
-                                                            Cutscene.drawgrid(g_Console, 51, 14, (char)12);
-                                                            Cutscene.drawgrid(g_Console, 51, 10, (char)12);
+                                                            Cutscene.drawPatients(g_Console, 51, 14, (char)12);
+                                                            Cutscene.drawPatients(g_Console, 51, 10, (char)12);
                                                             if (g_dMedicalFightTime > 21.0)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 51, 14);
                                                                 Cutscene.cleargrid(g_Console, 51, 10);
-                                                                Cutscene.drawgrid(g_Console, 46, 14, (char)12);
-                                                                Cutscene.drawgrid(g_Console, 46, 11, (char)12);
+                                                                Cutscene.drawPatients(g_Console, 46, 14, (char)12);
+                                                                Cutscene.drawPatients(g_Console, 46, 11, (char)12);
                                                                 if (g_dMedicalFightTime > 21.3)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 46, 14);
                                                                     Cutscene.cleargrid(g_Console, 46, 11);
-                                                                    Cutscene.drawgrid(g_Console, 41, 14, (char)12);
-                                                                    Cutscene.drawgrid(g_Console, 41, 12, (char)12);
+                                                                    Cutscene.drawPatients(g_Console, 41, 14, (char)12);
+                                                                    Cutscene.drawPatients(g_Console, 41, 12, (char)12);
                                                                     if (g_dMedicalFightTime > 21.6)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 41, 14);
                                                                         Cutscene.cleargrid(g_Console, 41, 12);
-                                                                        Cutscene.drawgrid(g_Console, 37, 14, (char)12);
-                                                                        Cutscene.drawgrid(g_Console, 38, 12, (char)12);
+                                                                        Cutscene.drawPatients(g_Console, 37, 14, (char)12);
+                                                                        Cutscene.drawPatients(g_Console, 38, 12, (char)12);
                                                                         if (g_dMedicalFightTime > 21.9)
                                                                         {
-                                                                            g_Console.writeToBuffer(c, "Patient 6: Why do you have som much medicine?", 0x0F, 100);
+                                                                            g_Console.writeToBuffer(c, "Patient 6: Why do you have so much medicine?", 0x0F, 100);
                                                                             c.Y = 27;
                                                                             g_Console.writeToBuffer(c, "           You must have stolen it from us!", 0x0F, 100);
                                                                             if (g_dMedicalFightTime > 24.9)
@@ -3740,15 +3740,15 @@ void Medical_Fight_Animation()
                                                                                 {
                                                                                     //nurse walks
                                                                                     Cutscene.cleargrid(g_Console, 23, 13);
-                                                                                    Cutscene.drawgrid(g_Console, 27, 14, (char)12);
+                                                                                    Cutscene.drawPatients(g_Console, 27, 14, (char)12);
                                                                                     if (g_dMedicalFightTime > 28.2)
                                                                                     {
                                                                                         Cutscene.cleargrid(g_Console, 27, 14);
-                                                                                        Cutscene.drawgrid(g_Console, 30, 15, (char)12);
+                                                                                        Cutscene.drawPatients(g_Console, 30, 15, (char)12);
                                                                                         if (g_dMedicalFightTime > 28.5)
                                                                                         {
                                                                                             Cutscene.cleargrid(g_Console, 30, 15);
-                                                                                            Cutscene.drawgrid(g_Console, 33, 15, (char)12);
+                                                                                            Cutscene.drawPatients(g_Console, 33, 15, (char)12);
                                                                                             if (g_dMedicalFightTime > 28.8)
                                                                                             {
                                                                                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -8841,6 +8841,8 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
+    COORD c;  COORD d;
+
     if (g_sChar.Orp_Obj2 == false)
     {
         rMap.initialise(g_Console);
@@ -8893,7 +8895,6 @@ void renderGame()
         rMap.orphanageDoor(g_Console);
         if (g_sChar.Orp_Dialogue == true)
         {
-            COORD c;  COORD d;
             c.X = 5;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x0B, 100);
@@ -8948,6 +8949,13 @@ void renderGame()
         g_sChar.m_cLocation.X = 20;
         g_sChar.m_cLocation.Y = 17;
     }*/
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 33;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Orphanage", 0x0F);
+    }
 }
 void renderMap_NPC()
 {
@@ -9066,6 +9074,13 @@ void renderMap_Townsquare()
         g_sChar.m_cLocation.X = 40;
         g_sChar.m_cLocation.Y = 15;
         //showObj = true;
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 33;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Townsquare", 0x0F);
     }
 }
 
@@ -9708,6 +9723,13 @@ void renderMap_Protest_Area()
             }
         }
     }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 33;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Protest Area", 0x0F);
+    }
 }
 
 void renderMap_Path_Area()
@@ -9768,6 +9790,13 @@ void renderMap_Path_Area()
         g_eGameState = S_Protest_Area;
         g_sChar.m_cLocation.X = 72;
         g_sChar.m_cLocation.Y = 3;
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 37;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Path Area", 0x0F);
     }
 }
 
@@ -9831,6 +9860,13 @@ void renderMap_OAF()
         g_sChar.m_cLocation.X = 15;
         g_sChar.m_cLocation.Y = 12;
 
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 25;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Outside Abandoned Facility", 0x0F);
     }
 }
 void renderPig()
@@ -10340,7 +10376,13 @@ void renderMap_IAF1()
             }
         }
     }
-
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 26;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Abandoned Facility 1", 0x0F);
+    }
 }
 void renderMap_IAF4()
 {
@@ -10395,6 +10437,13 @@ void renderMap_IAF4()
             g_Console.writeToBuffer(c, "                 Go and fulfill your destiny!", 0x0F, 100);
         }
         
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 26;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Abandoned Facility 4", 0x0F);
     }
 }
 
@@ -10653,10 +10702,18 @@ void renderMap_IAF2()
             }
         }
     }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 26;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Abandoned Facility 2", 0x0F);
+    }
 }
 
 void renderMap_IAF3()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility3(g_Console);
@@ -10668,6 +10725,13 @@ void renderMap_IAF3()
         g_eGameState = S_IAF2;
         g_sChar.m_cLocation.X = 38;
         g_sChar.m_cLocation.Y = 3;
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 26;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Abandoned Facility 3", 0x0F);
     }
 }
 
@@ -10718,6 +10782,13 @@ void renderMap_Inside_Medical_Facility()
         g_Console.writeToBuffer(c, "Nurse: What are you doing behind the counter? This is for", 0x0F, 100);
         c.Y = 27;
         g_Console.writeToBuffer(c, "       staff only!!", 0x0F, 100);
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 25;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Medical Facility", 0x0F);
     }
 
 }
@@ -10870,6 +10941,13 @@ void renderMap_Dungeon_Cell()
         rMap.initialise(g_Console);
         rMap.Border(g_Console);
         mini.letter(g_Console);
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 33;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Dungeon Cell", 0x0F);
     }
 }
 void renderBox()
@@ -11622,6 +11700,13 @@ void renderMap_DS1()
             }
         }
     }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 30;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Dungeon Stealth 1", 0x0F);
+    }
 }
 
 void renderMap_GuardStealth()
@@ -11843,6 +11928,13 @@ void renderMap_DS2()
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
     }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 30;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Dungeon Stealth 2", 0x0F);
+    }
 }
 
 void renderMap_DS3()
@@ -11898,6 +11990,13 @@ void renderMap_DS3()
         g_eGameState = S_Protest_Area;
         g_sChar.m_cLocation.X = 63;
         g_sChar.m_cLocation.Y = 4;
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 30;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Dungeon Stealth 3", 0x0F);
     }
 }
 
