@@ -280,7 +280,6 @@ void init(void)
     g_sMutantWasp2.SetH(25);
     g_sMutantWasp2.SetD(5);
 
-    g_sChar.Poison = false;
     g_sRaymondBoss.SetH(5200);
     g_sRaymondBoss.SetD(25);
     g_sChar.InvenActive = false;
@@ -13551,14 +13550,14 @@ void RenderBattleScreen()
                 g_sChar.SetH(UpdateHealth);
                 Medicine.setQuantity(Medicine.getQuantity() - 1);
             }
-            else if (g_sChar.GetH() < 1000 && Medicine.getQuantity() > 0)
+            else if (g_sChar.GetH() < 500 && Medicine.getQuantity() > 0)
             {
-                UpdateHealth = 1000;
+                UpdateHealth = 500;
                 g_sMedicine.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Medicine.setQuantity(Medicine.getQuantity() - 1);
             }
-            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Medicine.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 500) && Medicine.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
