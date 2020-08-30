@@ -104,6 +104,8 @@ bool credits_music;
 bool null_music;
 bool enterPathArea;
 bool enterOldman;
+bool enterMedArea;
+bool enterDS3;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -195,6 +197,8 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    enterDS3 = false;
+    enterMedArea = false;
     enterPathArea = true;
     randCount = 0;
     g_sChar.entityDied = false;
@@ -255,8 +259,8 @@ void init(void)
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
 
-    g_sChar.SetH(1000); // set to 1k when enter room
-    g_sChar.SetD(5);
+    g_sChar.SetH(50); // set to 1k when enter room
+    g_sChar.SetD(500);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -274,10 +278,10 @@ void init(void)
     g_sMutantWasp.SetH(25);
     g_sMutantWasp.SetD(5);
     g_sMutantWasp2.SetH(25);
-    g_sMutantWasp2.SetD(100);
+    g_sMutantWasp2.SetD(5);
 
     g_sChar.Poison = false;
-    g_sRaymondBoss.SetH(120);
+    g_sRaymondBoss.SetH(5200);
     g_sRaymondBoss.SetD(25);
     g_sChar.InvenActive = false;
     g_sChar.itemActive = false;
@@ -375,7 +379,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_1;
+    g_eGameState = S_Boss_Room_Animation;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -823,146 +827,201 @@ void Update_starting_cutscene()
 }
 void starting_cutscene()
 {
-    Cutscene.clearScreen(g_Console);;
+    Cutscene.clearScreen(g_Console);
     COORD c;
     if (g_dStartScene > 0.5)
     {
         c.X = 20;
         c.Y = 13;
+        g_Console.writeToBuffer(c, "                                                 ");
         g_Console.writeToBuffer(c, "The world went through an economic");
         if (g_dStartScene > 1.5)
         {
-            Cutscene.clearScreen(g_Console);;
+            Cutscene.clearScreen(g_Console);
             c.Y = 12;
+            g_Console.writeToBuffer(c, "                                                 ");
             g_Console.writeToBuffer(c, "The world went through an economic");
             c.Y = 13;
+            g_Console.writeToBuffer(c, "                                                 ");
             g_Console.writeToBuffer(c, "crisis due to all the things that");
 
             if (g_dStartScene > 2.5)
             {
-                Cutscene.clearScreen(g_Console);;
+                Cutscene.clearScreen(g_Console);
                 c.Y = 11;
+                g_Console.writeToBuffer(c, "                                                 ");
                 g_Console.writeToBuffer(c, "The world went through an economic");
                 c.Y = 12;
+                g_Console.writeToBuffer(c, "                                                 ");
                 g_Console.writeToBuffer(c, "crisis due to all the things that");
                 c.Y = 13;
+                g_Console.writeToBuffer(c, "                                                 ");
                 g_Console.writeToBuffer(c, "are happening around the globe.");
                 if (g_dStartScene > 3.5)
                 {
-                    Cutscene.clearScreen(g_Console);;
+                    Cutscene.clearScreen(g_Console);
                     c.Y = 10;
+                    g_Console.writeToBuffer(c, "                                                 ");
                     g_Console.writeToBuffer(c, "The world went through an economic");
                     c.Y = 11;
+                    g_Console.writeToBuffer(c, "                                                 ");
                     g_Console.writeToBuffer(c, "crisis due to all the things that");
                     c.Y = 12;
+                    g_Console.writeToBuffer(c, "                                                 ");
                     g_Console.writeToBuffer(c, "are happening around the globe.");
                     c.Y = 13;
+                    g_Console.writeToBuffer(c, "                                                 ");
                     g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                     if (g_dStartScene > 4.5)
                     {
                         Cutscene.clearScreen(g_Console);;
                         c.Y = 9;
+                        g_Console.writeToBuffer(c, "                                                 ");
                         g_Console.writeToBuffer(c, "The world went through an economic");
                         c.Y = 10;
+                        g_Console.writeToBuffer(c, "                                                 ");
                         g_Console.writeToBuffer(c, "crisis due to all the things that");
                         c.Y = 11;
+                        g_Console.writeToBuffer(c, "                                                 ");
                         g_Console.writeToBuffer(c, "are happening around the globe.");
                         c.Y = 12;
+                        g_Console.writeToBuffer(c, "                                                 ");
                         g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                         c.Y = 13;
+                        g_Console.writeToBuffer(c, "                                                 ");
                         g_Console.writeToBuffer(c, "factors such as climate changes and");
                         if (g_dStartScene > 5.5)
                         {
                             Cutscene.clearScreen(g_Console);;
                             c.Y = 8;
+                            g_Console.writeToBuffer(c, "                                                 ");
                             g_Console.writeToBuffer(c, "The world went through an economic");
                             c.Y = 9;
+                            g_Console.writeToBuffer(c, "                                                 ");
                             g_Console.writeToBuffer(c, "crisis due to all the things that");
                             c.Y = 10;
+                            g_Console.writeToBuffer(c, "                                                 ");
                             g_Console.writeToBuffer(c, "are happening around the globe.");
                             c.Y = 11;
+                            g_Console.writeToBuffer(c, "                                                 ");
                             g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                             c.Y = 12;
+                            g_Console.writeToBuffer(c, "                                                 ");
                             g_Console.writeToBuffer(c, "factors such as climate changes and");
                             c.Y = 13;
+                            g_Console.writeToBuffer(c, "                                                 ");
                             g_Console.writeToBuffer(c, "population distribution which");
                             if (g_dStartScene > 6.5)
                             {
                                 Cutscene.clearScreen(g_Console);;
                                 c.Y = 7;
+                                g_Console.writeToBuffer(c, "                                                 ");
                                 g_Console.writeToBuffer(c, "The world went through an economic");
                                 c.Y = 8;
+                                g_Console.writeToBuffer(c, "                                                 ");
                                 g_Console.writeToBuffer(c, "crisis due to all the things that");
                                 c.Y = 9;
+                                g_Console.writeToBuffer(c, "                                                 ");
                                 g_Console.writeToBuffer(c, "are happening around the globe.");
                                 c.Y = 10;
+                                g_Console.writeToBuffer(c, "                                                 ");
                                 g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                                 c.Y = 11;
+                                g_Console.writeToBuffer(c, "                                                 ");
                                 g_Console.writeToBuffer(c, "factors such as climate changes and");
                                 c.Y = 12;
+                                g_Console.writeToBuffer(c, "                                                 ");
                                 g_Console.writeToBuffer(c, "population distribution which");
                                 c.Y = 13;
+                                g_Console.writeToBuffer(c, "                                                 ");
                                 g_Console.writeToBuffer(c, "greatly affected the country have");
                                 if (g_dStartScene > 7.5)
                                 {
                                     Cutscene.clearScreen(g_Console);;
                                     c.Y = 6;
+                                    g_Console.writeToBuffer(c, "                                                 ");
                                     g_Console.writeToBuffer(c, "The world went through an economic");
                                     c.Y = 7;
+                                    g_Console.writeToBuffer(c, "                                                 ");
                                     g_Console.writeToBuffer(c, "crisis due to all the things that");
                                     c.Y = 8;
+                                    g_Console.writeToBuffer(c, "                                                 ");
                                     g_Console.writeToBuffer(c, "are happening around the globe.");
                                     c.Y = 9;
+                                    g_Console.writeToBuffer(c, "                                                 ");
                                     g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                                     c.Y = 10;
+                                    g_Console.writeToBuffer(c, "                                                 ");
                                     g_Console.writeToBuffer(c, "factors such as climate changes and");
                                     c.Y = 11;
+                                    g_Console.writeToBuffer(c, "                                                 ");
                                     g_Console.writeToBuffer(c, "population distribution which");
                                     c.Y = 12;
+                                    g_Console.writeToBuffer(c, "                                                 ");
                                     g_Console.writeToBuffer(c, "greatly affected the country have");
                                     c.Y = 13;
+                                    g_Console.writeToBuffer(c, "                                                 ");
                                     g_Console.writeToBuffer(c, "caused mass panic and the country");
                                     if (g_dStartScene > 8.5)
+
                                     {
                                         Cutscene.clearScreen(g_Console);;
                                         c.Y = 5;
+                                        g_Console.writeToBuffer(c, "                                                 ");
                                         g_Console.writeToBuffer(c, "The world went through an economic");
                                         c.Y = 6;
+                                        g_Console.writeToBuffer(c, "                                                 ");
                                         g_Console.writeToBuffer(c, "crisis due to all the things that");
                                         c.Y = 7;
+                                        g_Console.writeToBuffer(c, "                                                 ");
                                         g_Console.writeToBuffer(c, "are happening around the globe.");
                                         c.Y = 8;
+                                        g_Console.writeToBuffer(c, "                                                 ");
                                         g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                                         c.Y = 9;
+                                        g_Console.writeToBuffer(c, "                                                 ");
                                         g_Console.writeToBuffer(c, "factors such as climate changes");
                                         c.Y = 10;
+                                        g_Console.writeToBuffer(c, "                                                 ");
                                         g_Console.writeToBuffer(c, "and population distribution which");
                                         c.Y = 11;
+                                        g_Console.writeToBuffer(c, "                                                 ");
                                         g_Console.writeToBuffer(c, "greatly affected the country have");
                                         c.Y = 12;
+                                        g_Console.writeToBuffer(c, "                                                 ");
                                         g_Console.writeToBuffer(c, "caused mass panic and the country");
                                         c.Y = 13;
+                                        g_Console.writeToBuffer(c, "                                                 ");
                                         g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                         if (g_dStartScene > 9.5)
                                         {
                                             Cutscene.clearScreen(g_Console);;
                                             c.Y = 4;
+                                            g_Console.writeToBuffer(c, "                                                 ");
                                             g_Console.writeToBuffer(c, "The world went through an economic");
                                             c.Y = 5;
+                                            g_Console.writeToBuffer(c, "                                                 ");
                                             g_Console.writeToBuffer(c, "crisis due to all the things that");
                                             c.Y = 6;
+                                            g_Console.writeToBuffer(c, "                                                 ");
                                             g_Console.writeToBuffer(c, "are happening around the globe.");
                                             c.Y = 7;
+                                            g_Console.writeToBuffer(c, "                                                 ");
                                             g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                                             c.Y = 8;
+                                            g_Console.writeToBuffer(c, "                                                 ");
                                             g_Console.writeToBuffer(c, "factors such as climate changes");
                                             c.Y = 9;
+                                            g_Console.writeToBuffer(c, "                                                 ");
                                             g_Console.writeToBuffer(c, "and population distribution which");
                                             c.Y = 10;
+                                            g_Console.writeToBuffer(c, "                                                 ");
                                             g_Console.writeToBuffer(c, "greatly affected the country have");
                                             c.Y = 11;
+                                            g_Console.writeToBuffer(c, "                                                 ");
                                             g_Console.writeToBuffer(c, "caused mass panic and the country");
                                             c.Y = 12;
+                                            g_Console.writeToBuffer(c, "                                                 ");
                                             g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                             c.Y = 13;
                                             g_Console.writeToBuffer(c, "                                                 ");
@@ -971,192 +1030,265 @@ void starting_cutscene()
                                             {
                                                 Cutscene.clearScreen(g_Console);;
                                                 c.Y = 4;
+                                                g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "crisis due to all the things that");
                                                 c.Y = 5;
+                                                g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "are happening around the globe.");
                                                 c.Y = 6;
+                                                g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                                                 c.Y = 7;
+                                                g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "factors such as climate changes");
                                                 c.Y = 8;
+                                                g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "and population distribution which");
                                                 c.Y = 9;
+                                                g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "greatly affected the country have");
                                                 c.Y = 10;
+                                                g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                 c.Y = 11;
+                                                g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "to suffer huge losses. The government ");
                                                 c.Y = 12;
                                                 g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "then turned corrupt and");
                                                 c.Y = 13;
+                                                g_Console.writeToBuffer(c, "                                                 ");
                                                 g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                 if (g_dStartScene > 11.5)
+
                                                 {
                                                     Cutscene.clearScreen(g_Console);;
                                                     c.Y = 4;
+                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "are happening around the globe.");
                                                     c.Y = 5;
+                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                                                     c.Y = 6;
+                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "factors such as climate changes");
                                                     c.Y = 7;
+                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "and population distribution which");
                                                     c.Y = 8;
+                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "greatly affected the country have");
                                                     c.Y = 9;
+                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                     c.Y = 10;
+                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                     c.Y = 11;
                                                     g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "then turned corrupt and");
                                                     c.Y = 12;
+                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                     c.Y = 13;
+                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                     g_Console.writeToBuffer(c, "Government officials are only worried");
                                                     if (g_dStartScene > 12.5)
                                                     {
                                                         c.Y = 4;
+                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                                                         c.Y = 5;
+                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "factors such as climate changes");
                                                         c.Y = 6;
+                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "and population distribution which");
                                                         c.Y = 7;
+                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "greatly affected the country have");
                                                         c.Y = 8;
+                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                         c.Y = 9;
+                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                         c.Y = 10;
                                                         g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "then turned corrupt and");
                                                         c.Y = 11;
+                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                         c.Y = 12;
+                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "Government officials are only worried");
                                                         c.Y = 13;
+                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                         g_Console.writeToBuffer(c, "about their own personal gain and");
                                                         if (g_dStartScene > 13.5)
                                                         {
                                                             Cutscene.clearScreen(g_Console);;
                                                             c.Y = 4;
+                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "factors such as climate changes");
                                                             c.Y = 5;
+                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "and population distribution which");
                                                             c.Y = 6;
+                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "greatly affected the country have");
                                                             c.Y = 7;
+                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                             c.Y = 8;
+                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                             c.Y = 9;
                                                             g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "then turned corrupt and");
                                                             c.Y = 10;
+                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                             c.Y = 11;
+                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "Government officials are only worried");
                                                             c.Y = 12;
+                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "about their own personal gain and");
                                                             c.Y = 13;
+                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                             g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                             if (g_dStartScene > 14.5)
                                                             {
                                                                 Cutscene.clearScreen(g_Console);;
                                                                 c.Y = 4;
+                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "and population distribution which");
                                                                 c.Y = 5;
+                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "greatly affected the country have");
                                                                 c.Y = 6;
+                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                                 c.Y = 7;
+                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                                 c.Y = 8; 
                                                                 g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                 c.Y = 9;
+                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                 c.Y = 10;
+                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                 c.Y = 11;
+                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                 c.Y = 12;
+                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                 c.Y = 13;
+                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                 g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                 if (g_dStartScene > 15.5)
                                                                 {
                                                                     Cutscene.clearScreen(g_Console);;
                                                                     c.Y = 4;
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "greatly affected the country have");
                                                                     c.Y = 5;
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                                     c.Y = 6;
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                                     c.Y = 7;
                                                                     g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                     c.Y = 8;
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                     c.Y = 9;
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                     c.Y = 10;
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                     c.Y = 11;
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                     c.Y = 12;
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                     c.Y = 13;
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                     g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                     if (g_dStartScene > 16.5)
                                                                     {
                                                                         Cutscene.clearScreen(g_Console);;
                                                                         c.Y = 4;
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                                         c.Y = 5;
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                                         c.Y = 6;
                                                                         g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                         c.Y = 7;
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                         c.Y = 8;
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                         c.Y = 9;
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                         c.Y = 10;
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                         c.Y = 11;
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                         c.Y = 12;
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                         c.Y = 13;
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                         g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                         if (g_dStartScene > 17.5)
                                                                         {
                                                                             Cutscene.clearScreen(g_Console);;
                                                                             c.Y = 4;
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                                             c.Y = 5;
                                                                             g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                             c.Y = 6;
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                             c.Y = 7;
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                             c.Y = 8;
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                             c.Y = 9;
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                             c.Y = 10;
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                             c.Y = 11;
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                             c.Y = 12;
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                             c.Y = 13;
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                             g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                             if (g_dStartScene > 18.5)
                                                                             {
@@ -1165,300 +1297,424 @@ void starting_cutscene()
                                                                                 g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                                 c.Y = 5;
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                                 c.Y = 6;
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                                 c.Y = 7;
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                                 c.Y = 8;
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                 c.Y = 9;
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                 c.Y = 10;
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                                 c.Y = 11;
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                                 c.Y = 12;
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                 c.Y = 13;
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                 g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                 if (g_dStartScene > 19.5)
                                                                                 {
                                                                                     Cutscene.clearScreen(g_Console);;
                                                                                     c.Y = 4;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                                     c.Y = 5;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                                     c.Y = 6;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                                     c.Y = 7;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                     c.Y = 8;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                     c.Y = 9;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                                     c.Y = 10;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                                     c.Y = 11;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                     c.Y = 12;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                     c.Y = 13;
+                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                     g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                     if (g_dStartScene > 20.5)
                                                                                     {
                                                                                         Cutscene.clearScreen(g_Console);;
                                                                                         c.Y = 4;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                                         c.Y = 5;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                                         c.Y = 6;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                         c.Y = 7;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                         c.Y = 8;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                                         c.Y = 9;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                                         c.Y = 10;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                         c.Y = 11;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                         c.Y = 12;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                         c.Y = 13;
+                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                         g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                         if (g_dStartScene > 21.5)
                                                                                         {
                                                                                             Cutscene.clearScreen(g_Console);;
                                                                                             c.Y = 4;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                                             c.Y = 5;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                             c.Y = 6;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                             c.Y = 7;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                                             c.Y = 8;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                                             c.Y = 9;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                             c.Y = 10;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                             c.Y = 11;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                             c.Y = 12;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                             c.Y = 13;
+                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                             g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                             if (g_dStartScene > 22.5)
                                                                                             {
                                                                                                 Cutscene.clearScreen(g_Console);;
                                                                                                 c.Y = 4;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                                 c.Y = 5;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                                 c.Y = 6;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                                                 c.Y = 7;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                                                 c.Y = 8;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                                 c.Y = 9;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                                 c.Y = 10;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                                 c.Y = 11;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                                 c.Y = 12;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                 c.Y = 13;
+                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                 g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                 if (g_dStartScene > 23.5)
                                                                                                 {
                                                                                                     Cutscene.clearScreen(g_Console);;
                                                                                                     c.Y = 4;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                                     c.Y = 5;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                                                     c.Y = 6;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                                                     c.Y = 7;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                                     c.Y = 8;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                                     c.Y = 9;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                                     c.Y = 10;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                                     c.Y = 11;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                     c.Y = 12;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                     c.Y = 13;
+                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                     g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                     if (g_dStartScene > 24.5)
                                                                                                     {
                                                                                                         Cutscene.clearScreen(g_Console);;
                                                                                                         c.Y = 4;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "were hoping to invade and conquer the");
                                                                                                         c.Y = 5;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                                                         c.Y = 6;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                                         c.Y = 7;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                                         c.Y = 8;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                                         c.Y = 9;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                                         c.Y = 10;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                         c.Y = 11;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                         c.Y = 12;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                         c.Y = 13;
+                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                         g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                         if (g_dStartScene > 25.5)
                                                                                                         {
                                                                                                             Cutscene.clearScreen(g_Console);;
                                                                                                             c.Y = 4;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "country while it was in chaos. This has");
                                                                                                             c.Y = 5;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                                             c.Y = 6;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                                             c.Y = 7;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                                             c.Y = 8;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                                             c.Y = 9;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                             c.Y = 10;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                             c.Y = 11;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                             c.Y = 12;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                             c.Y = 13;
+                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                             g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                             if (g_dStartScene > 26.5)
                                                                                                             {
                                                                                                                 Cutscene.clearScreen(g_Console);;
                                                                                                                 c.Y = 4;
+                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                 g_Console.writeToBuffer(c, "greatly increased the tension between");
                                                                                                                 c.Y = 5;
+                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                 g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                                                 c.Y = 6;
+                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                 g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                                                 c.Y = 7;
+                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                 g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                                                 c.Y = 8;
+                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                 g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                                 c.Y = 9;
+                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                 g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                                 c.Y = 10;
+                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                 g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                                 c.Y = 11;
+                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                 g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                 c.Y = 12;
+                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                 g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                 if (g_dStartScene > 27.5)
                                                                                                                 {
                                                                                                                     Cutscene.clearScreen(g_Console);;
                                                                                                                     c.Y = 4;
+                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                     g_Console.writeToBuffer(c, "countries, eventually leading to a world war.");
                                                                                                                     c.Y = 5;
+                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                     g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                                                     c.Y = 6;
+                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                     g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                                                     c.Y = 7;
+                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                     g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                                     c.Y = 8;
+                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                     g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                                     c.Y = 9;
+                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                     g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                                     c.Y = 10;
+                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                     g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                     c.Y = 11;
+                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                     g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                     if (g_dStartScene > 28.5)
                                                                                                                     {
                                                                                                                         Cutscene.clearScreen(g_Console);;
                                                                                                                         c.Y = 4;
+                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                         g_Console.writeToBuffer(c, "And as if god was mocking humans, hornets");
                                                                                                                         c.Y = 5;
+                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                         g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                                                         c.Y = 6;
+                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                         g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                                         c.Y = 7;
+                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                         g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                                         c.Y = 8;
+                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                         g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                                         c.Y = 9;
+                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                         g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                         c.Y = 10;
+                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                         g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                         if (g_dStartScene > 29.5)
                                                                                                                         {
                                                                                                                             Cutscene.clearScreen(g_Console);;
                                                                                                                             c.Y = 4;
+                                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                             g_Console.writeToBuffer(c, "evolved and turned into man eating monsters.");
                                                                                                                             c.Y = 5;
+                                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                             g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                                             c.Y = 6;
+                                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                             g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                                             c.Y = 7;
+                                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                             g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                                             c.Y = 8;
+                                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                             g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                             c.Y = 9;
+                                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                             g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                             if (g_dStartScene > 30.5)
                                                                                                                             {
                                                                                                                                 Cutscene.clearScreen(g_Console);;
                                                                                                                                 c.Y = 4;
+                                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                 g_Console.writeToBuffer(c, "And now, it is up to Robert to fight against");
                                                                                                                                 c.Y = 5;
+                                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                 g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                                                 c.Y = 6;
+                                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                 g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                                                 c.Y = 7;
+                                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                 g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                                 c.Y = 8;
+                                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                 g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                 if (g_dStartScene > 31.5)
                                                                                                                                 {
                                                                                                                                     Cutscene.clearScreen(g_Console);;
                                                                                                                                     c.Y = 4;
+                                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                     g_Console.writeToBuffer(c, "all odds to try and salvage what is left of");
                                                                                                                                     c.Y = 5;
+                                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                     g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                                                     c.Y = 6;
+                                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                     g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                                     c.Y = 7;
+                                                                                                                                    g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                     g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                     if (g_dStartScene > 32.5)
                                                                                                                                     {
                                                                                                                                         Cutscene.clearScreen(g_Console);;
                                                                                                                                         c.Y = 4;
+                                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                         g_Console.writeToBuffer(c, "this world. To use whatever limited resources");
                                                                                                                                         c.Y = 5;
+                                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                         g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                                         c.Y = 6;
+                                                                                                                                        g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                         g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                         if (g_dStartScene > 33.5)
                                                                                                                                         {
                                                                                                                                             Cutscene.clearScreen(g_Console);;
                                                                                                                                             c.Y = 4;
+                                                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                             g_Console.writeToBuffer(c, "he has to help restore the world back to its");
                                                                                                                                             c.Y = 5;
+                                                                                                                                            g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                             g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                             if (g_dStartScene > 34.5)
                                                                                                                                             {
                                                                                                                                                 Cutscene.clearScreen(g_Console);;
                                                                                                                                                 c.Y = 4;
+                                                                                                                                                g_Console.writeToBuffer(c, "                                                 ");
                                                                                                                                                 g_Console.writeToBuffer(c, "peaceful state.");
                                                                                                                                                 if (g_dStartScene > 35.5)
                                                                                                                                                 {
@@ -4438,6 +4694,8 @@ void Update_Boss_Room_Mid_Animation()
 {
     if (g_dBossMiddleTime > 11.2)
     {
+        g_sChar.CP2 = false;
+        g_sChar.CP3 = true;
         g_eGameState = S_phase2Battle;
     }
     processUserInput();
@@ -4519,7 +4777,7 @@ void Update_Boss_End_Animation()
 {
     if (g_dBossEndTime > 33)
     {
-        g_dCreditsTime = 5.2;
+        g_dCreditsTime = 0.0;
         g_eGameState = S_Credits;
     }
     processUserInput();
@@ -4542,48 +4800,49 @@ void Boss_End_Animation()
     e.Y = 12;
     f.X = 32;
     f.Y = 14;
+
     
-    if (g_dBossMiddleTime > 1)
+    if (g_dBossEndTime > 1)
     {
         g_Console.writeToBuffer(c, "And so... Raymond was defeated.", 0x0F);
-        if (g_dBossMiddleTime > 4)
+        if (g_dBossEndTime > 4)
         {
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             g_Console.writeToBuffer(c, "The people of the state cheered in unison.", 0x0F);
-            if (g_dBossMiddleTime > 8)
+            if (g_dBossEndTime > 8)
             {
                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                 g_Console.writeToBuffer(c, "Robert was elected to become the next President, ", 0x0F);
                 g_Console.writeToBuffer(d, "where he would solve the people's issues with ease and passion.", 0x0F);
-                if (g_dBossMiddleTime > 12)
+                if (g_dBossEndTime > 12)
                 {
                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                     g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
                     g_Console.writeToBuffer(c, "Though there was still a small resistance amongst the people, ", 0x0F);
                     g_Console.writeToBuffer(d, "life had majorly improved for everyone. ", 0x0F);
-                    if (g_dBossMiddleTime > 16)
+                    if (g_dBossEndTime > 16)
                     {
                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                         g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
                         g_Console.writeToBuffer(c, "Now with Robert controlling the people's hearts and minds alike,", 0x0F);
                         g_Console.writeToBuffer(d, "he was sure to achieve his goal...", 0x0F);
-                        if (g_dBossMiddleTime > 20)
+                        if (g_dBossEndTime > 20)
                         {
                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                             g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
                             g_Console.writeToBuffer(c, "At least that was what he thought...", 0x0F);
                             g_Console.writeToBuffer(d, "His heart had been lured too deep with greed...", 0x0F);
-                            if (g_dBossMiddleTime > 23)
+                            if (g_dBossEndTime > 23)
                             {
                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                 g_Console.writeToBuffer(d, "                                                                                                     ", 0x00, 100);
                                 g_Console.writeToBuffer(c, "And so comes to the end of Robert's Rescue...", 0x0F);
-                                if (g_dBossMiddleTime > 27)
+                                if (g_dBossEndTime > 27)
                                 {
                                     g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                     rMap.initialise(g_Console);
                                     g_Console.writeToBuffer(e, "R o b e r t 's   R e s c u e   2", 0x0F);
-                                    if (g_dBossMiddleTime > 30)
+                                    if (g_dBossEndTime > 30)
                                     {
                                         g_Console.writeToBuffer(f, "=Coming Soon?=", 0x0F);
                                     }
@@ -5269,9 +5528,6 @@ void slashPig()
     //rMap.Border(g_Console);
     COORD c;
     //renderCharacter();
-    c.X = 3;
-    c.Y = 2;
-    g_Console.writeToBuffer(c, "=Pig=", 0x0A);
     //Sprites.pig(g_Console, 0);
     Cutscene.drawgrid(g_Console, 68, 5, '/');
     //next
@@ -6643,7 +6899,7 @@ void drawLaser2(Console& g_Console, int j)
                                 if (g_sChar.m_cLocation.X == (71 - j) && g_sChar.m_cLocation.Y == 8)
                                 {
                                     g_sChar.SetH(g_sChar.GetH() - 1);
-
+                                    
                                 }
                                 if (laserTime2 > 0.35)
                                 {
@@ -7819,6 +8075,10 @@ void Update_phase2Battle()
 }
 void phase2Battle()
 {
+    if (g_sChar.GetH() < 0)
+    {
+        g_eGameState = S_Game_Over;
+    }
     COORD c;
 
 
@@ -7826,7 +8086,6 @@ void phase2Battle()
     {
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
-            g_sRaymondBoss.SetH(1);
             g_sChar.showPlayerDMG = false;
             g_sChar.showEnemyDMG = false;
             g_sRaymondBoss.counter = true;
@@ -7917,6 +8176,8 @@ void phase2Battle()
 
             if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
             {
+                g_sRaymondBoss.SetH(g_sRaymondBoss.GetH() - 1000);
+
                 g_sMovingBlock.fight = true;
                 g_sBreakFloor.fight = true;
                 int randPosX = rand() % (20 - 4 + 1) + 4;
@@ -7981,6 +8242,7 @@ void phase2Battle()
         }
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
+            g_sRaymondBoss.SetH(g_sRaymondBoss.GetH() - 1000);
             g_sLaser.fight = true;
             int randPosX = rand() % (20 - 4 + 1) + 4;
             int randPosY = rand() % (20 - 3 + 1) + 3;
@@ -8026,6 +8288,8 @@ void phase2Battle()
         }
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
+            g_sRaymondBoss.SetH(g_sRaymondBoss.GetH() - 1000);
+
             //g_sLaser.fight = true;
             g_sLaser2.fight = true;
             g_sLaser3.fight = true;
@@ -8076,6 +8340,8 @@ void phase2Battle()
         }
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
         {
+            g_sRaymondBoss.SetH(g_sRaymondBoss.GetH() - 1000);
+
             g_sMovingBlock.fight = true;
             int randPosX = rand() % (20 - 4 + 1) + 4;
             int randPosY = rand() % (20 - 3 + 1) + 3;
@@ -8215,7 +8481,14 @@ void phase2Battle()
             g_Console.writeToBuffer(c, "Final Phase", 0x0B, 100);
         }
     }
-    
+    static bool showRayHealth = false;
+    if (showRayHealth == false)
+    {
+        c.X = 31;
+        c.Y = 6;
+        string str_rayhealth = to_string(g_sRaymondBoss.GetH());
+        g_Console.writeToBuffer(c, "Raymond Health: " + str_rayhealth, 0x04, 100);
+    }
 
 }
 void updateBomb()
@@ -8298,9 +8571,9 @@ void moveCharacter()
             }
         }
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
@@ -8320,9 +8593,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
@@ -8342,9 +8615,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
@@ -8395,9 +8668,9 @@ void moveCharacter()
             }
         }
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
 
                 // enemy on left side
@@ -8417,11 +8690,15 @@ void moveCharacter()
                 {
                     g_sGuard.xLeft = true;
                 }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
+                {
+                    g_sGuard.xRight = true;
+                }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
 
                 // enemy on left side
@@ -8441,11 +8718,15 @@ void moveCharacter()
                 {
                     g_sGuard2.xLeft = true;
                 }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
+                {
+                    g_sGuard2.xRight = true;
+                }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
 
                 // enemy on left side
@@ -8464,6 +8745,10 @@ void moveCharacter()
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
                     g_sGuard3.xLeft = true;
+                }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - i] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
+                {
+                    g_sGuard3.xRight = true;
                 }
             }
         }
@@ -8497,9 +8782,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
@@ -8519,9 +8804,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
@@ -8541,9 +8826,9 @@ void moveCharacter()
                 }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X - j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
@@ -8594,9 +8879,9 @@ void moveCharacter()
             }
         }
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
                 {
@@ -8614,11 +8899,15 @@ void moveCharacter()
                 {
                     g_sGuard.xUp = true;
                 }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + i] == rMap.Grid[g_sGuard.m_cLocation.Y][g_sGuard.m_cLocation.X])
+                {
+                    g_sGuard.xLeft = true;
+                }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
                 {
@@ -8636,11 +8925,15 @@ void moveCharacter()
                 {
                     g_sGuard.xUp = true;
                 }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + i] == rMap.Grid[g_sGuard2.m_cLocation.Y][g_sGuard2.m_cLocation.X])
+                {
+                    g_sGuard2.xLeft = true;
+                }
             }
         }
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 7; j++)
             {
                 if (rMap.Grid[g_sChar.m_cLocation.Y - i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
                 {
@@ -8657,6 +8950,10 @@ void moveCharacter()
                 if (rMap.Grid[g_sChar.m_cLocation.Y + i][g_sChar.m_cLocation.X + j] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X]) // works
                 {
                     g_sGuard.xUp = true;
+                }
+                if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + i] == rMap.Grid[g_sGuard3.m_cLocation.Y][g_sGuard3.m_cLocation.X])
+                {
+                    g_sGuard3.xLeft = true;
                 }
             }
         }
@@ -9832,6 +10129,15 @@ void renderMap_Path_Area()
     }
 
     //to inside medical facility
+    if (enterMedArea == true)
+    {
+        for (int j = 11; j < 15; j++)
+        {
+            c.X = 77;
+            c.Y = j;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&', 0x0A);
+        }
+    }
     if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 77)
     {
         g_eGameState = S_Inside_Medical_Facility;
@@ -10486,6 +10792,12 @@ void renderMap_IAF4()
     if (g_sChar.m_cLocation.Y == 9 && g_sChar.m_cLocation.X == 40)
     {
         g_sChar.talkedOldMan = true;
+        c.X = 2;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Your health has now increased to 500.", 0x0F, 100);
+        c.X = 2;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "Your damaged has also been increased by 10.", 0x0F, 100);
     }
     if (((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13) && g_sChar.m_cLocation.X == 40) || ((g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 41) && g_sChar.m_cLocation.Y == 12))
     {
@@ -10863,6 +11175,7 @@ void renderMap_Inside_Medical_Facility()
     {
         g_dMedicalFightTime = 0.0;
         g_eGameState = S_Medical_Fight_Animation;
+        enterMedArea = true;
         g_sChar.m_cLocation.X = 34;
         g_sChar.m_cLocation.Y = 12;
     }
@@ -11059,8 +11372,6 @@ void renderBox()
 void renderMap_DS1()
 {
     COORD c;
-    
-    
     while (stealth_music == false)
     {
         PlaySound(TEXT("8 Bit Menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -11075,8 +11386,11 @@ void renderMap_DS1()
     if (showObj == false)
     {
         c.X = 5;
-        c.Y = 25;
+        c.Y = 27;
         g_Console.writeToBuffer(c, "Objective: Find Ell in the next room! ", 0x0B, 100);
+        c.X = 5;
+        c.Y = 28;
+        g_Console.writeToBuffer(c, "           Fight the guards to advance to the next room! ", 0x0B, 100);
     }
 
     if (g_sGuard.entityDie == true)
@@ -11428,21 +11742,21 @@ void renderMap_DS1()
         }
     }
     //fight guard
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard.m_cLocation.X))
+    if ((g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) ||(g_sChar.m_cLocation.Y + 1 == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard.m_cLocation.X))
     {
         g_sGuard.fight = true;
         g_eGameState = S_BattleScreen;
         g_sChar.m_cLocation.Y = 5;
         g_sChar.m_cLocation.X = 37;
     }
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.m_cLocation.X))
+    if ((g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y + 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard2.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard2.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard2.m_cLocation.X))
     {
         g_sGuard2.fight = true;
         g_eGameState = S_BattleScreen;
         g_sChar.m_cLocation.Y = 16;
         g_sChar.m_cLocation.X = 28;
     }
-    if ((g_sChar.m_cLocation.Y + 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.m_cLocation.X))
+    if ((g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y + 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y - 1 == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X + 1 == g_sGuard3.m_cLocation.X) || (g_sChar.m_cLocation.Y == g_sGuard3.m_cLocation.Y) && (g_sChar.m_cLocation.X - 1 == g_sGuard3.m_cLocation.X))
     {
         g_sGuard3.fight = true;
         g_eGameState = S_BattleScreen;
@@ -12009,12 +12323,16 @@ void renderMap_DS2()
     if (showObj == false)
     {
         c.X = 5;
-        c.Y = 24;
+        c.Y = 27;
         g_Console.writeToBuffer(c, "Objective: Sneak past the guards! ", 0x0B, 100);
         d.X = 5;
-        d.Y = 25;
-        g_Console.writeToBuffer(d, "Directions: Right: '<', Left: '<', Up: 'V', Down: '^'. ", 0x0B, 100);
+        d.Y = 28;
+        g_Console.writeToBuffer(d, "Guard Directions: Up: 'V', Down: '^', Left: '>', Right: '<'", 0x0B, 100);
     }
+
+    c.X = 8;
+    c.Y = 13;
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O');
 
     c.X = 8;
     c.Y = 13;
@@ -12023,10 +12341,10 @@ void renderMap_DS2()
     if ((g_sChar.m_cLocation.Y == 13) && (g_sChar.m_cLocation.X == 7) || (g_sChar.m_cLocation.Y == 12) && (g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 14) && (g_sChar.m_cLocation.X == 8))
     {
         c.X = 5;
-        c.Y = 26;
+        c.Y = 25;
         g_Console.writeToBuffer(c, "Ell: Avoid the guards and hide in the walls.");
         c.X = 5;
-        c.Y = 27;
+        c.Y = 26;
         g_Console.writeToBuffer(c, "     I'll get you out if you're in trouble, but don't count on me.");
     }
     renderMap_GuardStealth();
@@ -12042,8 +12360,6 @@ void renderMap_DS2()
     //To DS3
     if (g_sChar.m_cLocation.Y == 18 && (g_sChar.m_cLocation.X == 17 || g_sChar.m_cLocation.X == 18 || g_sChar.m_cLocation.X == 19 || g_sChar.m_cLocation.X == 20 || g_sChar.m_cLocation.X == 21 || g_sChar.m_cLocation.X == 22 || g_sChar.m_cLocation.X == 23 || g_sChar.m_cLocation.X == 24 || g_sChar.m_cLocation.X == 25 || g_sChar.m_cLocation.X == 26))
     {
-        g_sChar.CP2 = false;
-        g_sChar.CP3 = true;
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
@@ -12066,13 +12382,12 @@ void renderMap_DS3()
     rMap.Border(g_Console);
     rMap.dungeon_stealth3(g_Console);
     renderCharacter();  // renders the character into the buffer
-
     static bool showObj = false;
     if (showObj == false)
     {
         c.X = 5;
         c.Y = 25;
-        g_Console.writeToBuffer(c, "Objective: Go to the abandoned facility room 4.", 0x0B, 100);
+        g_Console.writeToBuffer(c, "Objective: Go to the Abandoned Facility room 4 via Path Area.", 0x0B, 100);
     }
     //back to DS2
     g_sChar.enterArea = true;
@@ -12084,6 +12399,7 @@ void renderMap_DS3()
         g_sChar.m_cLocation.Y = 19;
     }
     //trigger animation
+    
     if ((g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 57)
     {
         g_dDungeonStealth3Time = 0.0;
@@ -12156,6 +12472,9 @@ void RenderBattleScreen()
         c.Y = 0;
         string str_pighealth = to_string(g_sPig.GetH());
         g_Console.writeToBuffer(c, "Enemy Health: " + str_pighealth, 0x0A, 100);
+        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Pig=", 0x0A);
         if (g_sChar.startTimer == true)
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -12226,6 +12545,9 @@ void RenderBattleScreen()
         c.Y = 0;
         string str_pig2health = to_string(g_sPig2.GetH());
         g_Console.writeToBuffer(c, "Enemy Health: " + str_pig2health, 0x0A, 100);
+        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Pig=", 0x0A);
         if (g_sChar.startTimer == true)
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -12296,6 +12618,9 @@ void RenderBattleScreen()
         c.Y = 0;
         string str_pig3health = to_string(g_sPig3.GetH());
         g_Console.writeToBuffer(c, "Enemy Health: " + str_pig3health, 0x0A, 100);
+        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Pig=", 0x0A);
         if (g_sChar.startTimer == true)
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -12366,6 +12691,9 @@ void RenderBattleScreen()
         c.Y = 0;
         string str_raymondhealth = to_string(g_sRaymondBoss.GetH());
         g_Console.writeToBuffer(c, "Enemy Health: " + str_raymondhealth, 0x0A, 100);
+        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Raymond=", 0x0A);
         if (g_sChar.startTimer == true)
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -12405,15 +12733,14 @@ void RenderBattleScreen()
                     g_dkillRobert = 0.0;
                     g_sChar.entityDie = true;
                 }
-            }
-            
-            if (g_sRaymondBoss.GetH() < 61)
-            {
-                g_sRaymondBoss.fight = false;
-                g_sRaymondBoss.startTimer = false;
-                g_dBossMiddleTime = 0.0; // set boss animation time to 0
-                g_eGameState = S_Boss_Room_Mid_Animation; //link to boss animation before phase 2
-            }
+                if (g_sRaymondBoss.GetH() < 5001)
+                {
+                    g_sChar.showPlayerDMG = true;
+                    playerDMGTime = 0.0;
+                    g_dslashRaymond = 0.0;
+                    g_sRaymondBoss.enterArea = true;
+                }
+            }          
         }
         if (g_sChar.showPlayerDMG == true)
         {
@@ -12443,7 +12770,9 @@ void RenderBattleScreen()
         c.X = 53;
         c.Y = 0;
         string str_wasphealth = to_string(g_sTutEnemy.GetH());
-        g_Console.writeToBuffer(c, "Enemy Health: " + str_wasphealth, 0x0A, 100);
+        g_Console.writeToBuffer(c, "Enemy Health: " + str_wasphealth, 0x0A, 100);        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Tutorial Wasp=", 0x0A);
         if (g_sChar.startTimer == true)
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -12512,6 +12841,9 @@ void RenderBattleScreen()
         c.Y = 0;
         string str_wasphealth = to_string(g_sMutantWasp.GetH());
         g_Console.writeToBuffer(c, "Enemy Health: " + str_wasphealth, 0x0A, 100);
+        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
         if (g_sChar.startTimer == true)
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -12580,6 +12912,9 @@ void RenderBattleScreen()
         c.Y = 0;
         string str_wasphealth = to_string(g_sMutantWasp2.GetH());
         g_Console.writeToBuffer(c, "Enemy Health: " + str_wasphealth, 0x0A, 100);
+        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Mutant Wasp=", 0x0A);
         if (g_sChar.startTimer == true)
         {
 
@@ -12654,6 +12989,9 @@ void RenderBattleScreen()
         c.Y = 0;
         string str_guardhealth = to_string(g_sGuard.GetH());
         g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x0A, 100);
+        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Guard=", 0x0A);
         if (g_sChar.startTimer == true)
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -12732,6 +13070,9 @@ void RenderBattleScreen()
         c.Y = 0;
         string str_guardhealth = to_string(g_sGuard2.GetH());
         g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x0A, 100);
+        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Guard=", 0x0A);
         if (g_sChar.startTimer == true)
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -12814,6 +13155,9 @@ void RenderBattleScreen()
         c.Y = 0;
         string str_guardhealth = to_string(g_sGuard3.GetH());
         g_Console.writeToBuffer(c, "Enemy Health: " + str_guardhealth, 0x0A, 100);
+        c.X = 3;
+        c.Y = 2;
+        g_Console.writeToBuffer(c, "=Guard=", 0x0A);
         if (g_sChar.startTimer == true)
         {
             if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
@@ -13376,6 +13720,7 @@ void RenderBattleScreen()
     {
         killRobert();
     }
+   
     if (g_sRawMeat.showItemUsed == true)
     {
         c.X = 3;
@@ -13478,7 +13823,32 @@ void UpdateBattleScreen()
             g_sChar.startTimer = true;
         }
     }
+    if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
+    {
+        if (g_sRaymondBoss.enterArea == true)
+        {
+            g_sRaymondBoss.fight = false;
+            g_sRaymondBoss.startTimer = false;
+            g_dBossMiddleTime = 0.0; // set boss animation time to 0
+            g_eGameState = S_Boss_Room_Mid_Animation; //link to boss animation before phase 2
 
+        }
+        else
+        {
+            c.X = 3;
+            c.Y = 25;
+            g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+            g_sChar.showPlayerDMG = false;
+        }
+    }
+    
+    if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
+    {
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        g_sChar.showEnemyDMG = false;
+    }
     if ((playerInvenTime > 3) && (g_sRawMeat.showItemUsed == true))
     {
         g_sRawMeat.showItemUsed = false;
@@ -13628,15 +13998,15 @@ void UpdateBattleScreen()
         g_sPig3.entityDie = true;
         g_eGameState = S_OAF;
     }
-    if ((g_dkillRobert > 4) && (g_sChar.entityDie == true))
-    {
-        g_eGameState = S_Game_Over; // show game over screen after player die animation
-    }
     if ((g_dkillTutWasp > 4) && (g_sTutEnemy.startTimer == true))
     {
         g_sTutEnemy.fight = false;
         g_sTutEnemy.startTimer = false;
         g_eGameState = S_Path_Area; // show game over screen after player die animation
+    }
+    if ((g_dkillRobert > 4) && (g_sChar.entityDie == true))
+    {
+        g_eGameState = S_Game_Over; // show game over screen after player die animation
     }
 
     if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
@@ -16323,25 +16693,46 @@ void RenderGameOver()
         //For Checkpoint
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 18)) && ((g_mouseEvent.mousePosition.X == 34) || ((g_mouseEvent.mousePosition.X == 33) || (g_mouseEvent.mousePosition.X == 35) || (g_mouseEvent.mousePosition.X == 36) || (g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40) || (g_mouseEvent.mousePosition.X == 41) || (g_mouseEvent.mousePosition.X == 42) || (g_mouseEvent.mousePosition.X == 43) || (g_mouseEvent.mousePosition.X == 44)))))
         {
+            g_sPig.fight = false;
+            g_sPig2.fight = false;
+            g_sPig3.fight = false;
+            g_sRaymondBoss.fight = false;
+            g_sMutantWasp.fight = false;
+            g_sMutantWasp2.fight = false;
+            g_sGuard.fight = false;
+            g_sGuard2.fight = false;
+            g_sGuard3.fight = false;
+            g_sTutEnemy.fight = false;
+            g_sChar.entityDie = false;
             g_dElapsedTime = 0.0;
             if (g_sChar.CP1 == true)
             {
                 g_eGameState = S_OAF;
+                g_sChar.SetH(50);
                 g_sChar.m_cLocation.X = 7;
                 g_sChar.m_cLocation.Y = 21;
             }
             if (g_sChar.CP2 == true)
             {
                 g_eGameState = S_Dungeon_Stealth_1;
+                g_sChar.SetH(50);
                 g_sChar.m_cLocation.X = 5;
                 g_sChar.m_cLocation.Y = 21;
             }
             if (g_sChar.CP3 == true)
             {
-                g_eGameState = S_Dungeon_Stealth_3;
+                g_sRaymondBoss.SetH(5000);
+                g_sLaser.fight = false;
+                g_sLaser2.fight = false;
+                g_sLaser3.fight = false; 
+                g_sMovingBlock.fight = false; 
+                g_sBreakFloor.fight = true;
+                g_eGameState = S_phase2Battle;
+                
+                g_sChar.SetH(500);
                 g_sChar.m_cLocation.X = 41;
                 g_sChar.m_cLocation.Y = 21;
-            };
+            }
         }
         //For Quit
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 22)) && ((g_mouseEvent.mousePosition.X == 37) || (g_mouseEvent.mousePosition.X == 38) || (g_mouseEvent.mousePosition.X == 39) || (g_mouseEvent.mousePosition.X == 40))))
