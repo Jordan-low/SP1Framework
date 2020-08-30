@@ -81,6 +81,8 @@ int randBlock2;
 int randBlock3;
 int randBreakFloor;
 int randBreakFloor2;
+int randBreakFloor3;
+int randBreakFloor4;
 int randBomb;
 int randBomb2;
 int randCount;
@@ -216,6 +218,8 @@ void init(void)
     g_sBomb.fight = false;
     g_sRaymond.fight = false;
     g_sRaymondBoss.fight = false;
+    g_sRaymondBoss.counter = false;
+
 
 
     g_sChar.count = 0;
@@ -364,10 +368,10 @@ void init(void)
     //bomb things
     g_sBomb.m_cLocation.X = 58;
     g_sBomb.m_cLocation.Y = 19;
-
     // Set precision for floating point output
 
     // sets the initial state for the game
+    g_eGameState = S_phase2Battle;
     g_eGameState = S_IAF4;
     //g_eGameState = S_killRaymond;
 
@@ -1488,9 +1492,9 @@ void starting_cutscene()
 
 void Update_Credits()
 {
-    if (g_dCreditsTime > 57.5)
+    if (g_dCreditsTime > 55.0)
     {
-        g_bQuitGame = true;
+        g_eGameState = S_MENU_UI;
     }
     processUserInput();
 }
@@ -1503,963 +1507,953 @@ void Credits()
     }
     Cutscene.clearScreen(g_Console);
     COORD c;
-    if (g_dCreditsTime > 0.5)
+    if (g_dCreditsTime > 1.0)
     {
-        c.X = 20;
-        c.Y = 12;
-        g_Console.writeToBuffer(c, "After defeating Raymond, Robert became");
-        c.Y = 13;
-        g_Console.writeToBuffer(c, "the President and sought to restore the");
-        c.Y = 14;
-        g_Console.writeToBuffer(c, "world back to its original state.");
-        if (g_dCreditsTime > 5.0)
+        Cutscene.clearScreen(g_Console);
+        if (g_dCreditsTime > 2.0)
         {
-            Cutscene.clearScreen(g_Console);
-            if (g_dCreditsTime > 5.5)
+            c.X = 32;
+            c.Y = 17;
+            g_Console.writeToBuffer(c, "Development Team");
+            if (g_dCreditsTime > 3.0)
             {
-                c.X = 32;
-                c.Y = 17;
+                Cutscene.clearScreen(g_Console);
+                c.Y = 16;
                 g_Console.writeToBuffer(c, "Development Team");
-                if (g_dCreditsTime > 6.5)
+                if (g_dCreditsTime > 4.0)
                 {
                     Cutscene.clearScreen(g_Console);
-                    c.Y = 16;
+                    c.Y = 15;
                     g_Console.writeToBuffer(c, "Development Team");
-                    if (g_dCreditsTime > 7.5)
+                    c.Y = 17;
+                    g_Console.writeToBuffer(c, "     Andrew");
+                    if (g_dCreditsTime > 5.0)
                     {
                         Cutscene.clearScreen(g_Console);
-                        c.Y = 15;
+                        c.Y = 14;
                         g_Console.writeToBuffer(c, "Development Team");
-                        c.Y = 17;
+                        c.Y = 16;
                         g_Console.writeToBuffer(c, "     Andrew");
-                        if (g_dCreditsTime > 8.5)
+                        c.Y = 17;
+                        g_Console.writeToBuffer(c, "     Artus");
+                        if (g_dCreditsTime > 6.0)
                         {
                             Cutscene.clearScreen(g_Console);
-                            c.Y = 14;
+                            c.Y = 13;
                             g_Console.writeToBuffer(c, "Development Team");
-                            c.Y = 16;
+                            c.Y = 15;
                             g_Console.writeToBuffer(c, "     Andrew");
-                            c.Y = 17;
+                            c.Y = 16;
                             g_Console.writeToBuffer(c, "     Artus");
-                            if (g_dCreditsTime > 9.5)
+                            c.Y = 17;
+                            g_Console.writeToBuffer(c, "     Jordan");
+                            if (g_dCreditsTime > 7.0)
                             {
                                 Cutscene.clearScreen(g_Console);
-                                c.Y = 13;
+                                c.Y = 12;
                                 g_Console.writeToBuffer(c, "Development Team");
-                                c.Y = 15;
+                                c.Y = 14;
                                 g_Console.writeToBuffer(c, "     Andrew");
-                                c.Y = 16;
+                                c.Y = 15;
                                 g_Console.writeToBuffer(c, "     Artus");
-                                c.Y = 17;
+                                c.Y = 16;
                                 g_Console.writeToBuffer(c, "     Jordan");
-                                if (g_dCreditsTime > 10.5)
+                                c.Y = 17;
+                                g_Console.writeToBuffer(c, "     Nicole");
+                                if (g_dCreditsTime > 8.0)
                                 {
                                     Cutscene.clearScreen(g_Console);
-                                    c.Y = 12;
+                                    c.Y = 11;
                                     g_Console.writeToBuffer(c, "Development Team");
-                                    c.Y = 14;
+                                    c.Y = 13;
                                     g_Console.writeToBuffer(c, "     Andrew");
-                                    c.Y = 15;
+                                    c.Y = 14;
                                     g_Console.writeToBuffer(c, "     Artus");
-                                    c.Y = 16;
+                                    c.Y = 15;
                                     g_Console.writeToBuffer(c, "     Jordan");
-                                    c.Y = 17;
+                                    c.Y = 16;
                                     g_Console.writeToBuffer(c, "     Nicole");
-                                    if (g_dCreditsTime > 11.5)
+                                    c.Y = 17;
+                                    g_Console.writeToBuffer(c, "     Renee");
+                                    if (g_dCreditsTime > 9.0)
                                     {
                                         Cutscene.clearScreen(g_Console);
-                                        c.Y = 11;
+                                        c.Y = 10;
                                         g_Console.writeToBuffer(c, "Development Team");
-                                        c.Y = 13;
+                                        c.Y = 12;
                                         g_Console.writeToBuffer(c, "     Andrew");
-                                        c.Y = 14;
+                                        c.Y = 13;
                                         g_Console.writeToBuffer(c, "     Artus");
-                                        c.Y = 15;
+                                        c.Y = 14;
                                         g_Console.writeToBuffer(c, "     Jordan");
-                                        c.Y = 16;
+                                        c.Y = 15;
                                         g_Console.writeToBuffer(c, "     Nicole");
-                                        c.Y = 17;
+                                        c.Y = 16;
                                         g_Console.writeToBuffer(c, "     Renee");
-                                        if (g_dCreditsTime > 12.5)
+                                        if (g_dCreditsTime > 10.0)
                                         {
                                             Cutscene.clearScreen(g_Console);
-                                            c.Y = 10;
+                                            c.Y = 9;
                                             g_Console.writeToBuffer(c, "Development Team");
-                                            c.Y = 12;
+                                            c.Y = 11;
                                             g_Console.writeToBuffer(c, "     Andrew");
-                                            c.Y = 13;
+                                            c.Y = 12;
                                             g_Console.writeToBuffer(c, "     Artus");
-                                            c.Y = 14;
+                                            c.Y = 13;
                                             g_Console.writeToBuffer(c, "     Jordan");
-                                            c.Y = 15;
+                                            c.Y = 14;
                                             g_Console.writeToBuffer(c, "     Nicole");
-                                            c.Y = 16;
+                                            c.Y = 15;
                                             g_Console.writeToBuffer(c, "     Renee");
-                                            if (g_dCreditsTime > 13.5)
+                                            if (g_dCreditsTime > 11.0)
                                             {
                                                 Cutscene.clearScreen(g_Console);
-                                                c.Y = 9;
+                                                c.Y = 8;
                                                 g_Console.writeToBuffer(c, "Development Team");
-                                                c.Y = 11;
+                                                c.Y = 10;
                                                 g_Console.writeToBuffer(c, "     Andrew");
-                                                c.Y = 12;
+                                                c.Y = 11;
                                                 g_Console.writeToBuffer(c, "     Artus");
-                                                c.Y = 13;
+                                                c.Y = 12;
                                                 g_Console.writeToBuffer(c, "     Jordan");
-                                                c.Y = 14;
+                                                c.Y = 13;
                                                 g_Console.writeToBuffer(c, "     Nicole");
-                                                c.Y = 15;
+                                                c.Y = 14;
                                                 g_Console.writeToBuffer(c, "     Renee");
-                                                if (g_dCreditsTime > 14.5)
+                                                c.Y = 17;
+                                                g_Console.writeToBuffer(c, "     Music");
+                                                if (g_dCreditsTime > 12.0)
                                                 {
                                                     Cutscene.clearScreen(g_Console);
-                                                    c.Y = 8;
+                                                    c.Y = 7;
                                                     g_Console.writeToBuffer(c, "Development Team");
-                                                    c.Y = 10;
+                                                    c.Y = 9;
                                                     g_Console.writeToBuffer(c, "     Andrew");
-                                                    c.Y = 11;
+                                                    c.Y = 10;
                                                     g_Console.writeToBuffer(c, "     Artus");
-                                                    c.Y = 12;
+                                                    c.Y = 11;
                                                     g_Console.writeToBuffer(c, "     Jordan");
-                                                    c.Y = 13;
+                                                    c.Y = 12;
                                                     g_Console.writeToBuffer(c, "     Nicole");
-                                                    c.Y = 14;
+                                                    c.Y = 13;
                                                     g_Console.writeToBuffer(c, "     Renee");
-                                                    c.Y = 17;
+                                                    c.Y = 16;
                                                     g_Console.writeToBuffer(c, "     Music");
-                                                    if (g_dCreditsTime > 15.5)
+                                                    if (g_dCreditsTime > 13.0)
                                                     {
                                                         Cutscene.clearScreen(g_Console);
-                                                        c.Y = 7;
-                                                        g_Console.writeToBuffer(c, "Development Team");
-                                                        c.Y = 9;
+                                                        c.Y = 8;
                                                         g_Console.writeToBuffer(c, "     Andrew");
-                                                        c.Y = 10;
+                                                        c.Y = 9;
                                                         g_Console.writeToBuffer(c, "     Artus");
-                                                        c.Y = 11;
+                                                        c.Y = 10;
                                                         g_Console.writeToBuffer(c, "     Jordan");
-                                                        c.Y = 12;
+                                                        c.Y = 11;
                                                         g_Console.writeToBuffer(c, "     Nicole");
-                                                        c.Y = 13;
+                                                        c.Y = 12;
                                                         g_Console.writeToBuffer(c, "     Renee");
-                                                        c.Y = 16;
+                                                        c.Y = 15;
                                                         g_Console.writeToBuffer(c, "     Music");
-                                                        if (g_dCreditsTime > 16.5)
+                                                        c.X = 30;
+                                                        c.Y = 17;
+                                                        g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
+                                                        if (g_dCreditsTime > 14.0)
                                                         {
                                                             Cutscene.clearScreen(g_Console);
-                                                            c.Y = 8;
+                                                            c.X = 32;
+                                                            c.Y = 7;
                                                             g_Console.writeToBuffer(c, "     Andrew");
-                                                            c.Y = 9;
+                                                            c.Y = 8;
                                                             g_Console.writeToBuffer(c, "     Artus");
-                                                            c.Y = 10;
+                                                            c.Y = 9;
                                                             g_Console.writeToBuffer(c, "     Jordan");
-                                                            c.Y = 11;
+                                                            c.Y = 10;
                                                             g_Console.writeToBuffer(c, "     Nicole");
-                                                            c.Y = 12;
+                                                            c.Y = 11;
                                                             g_Console.writeToBuffer(c, "     Renee");
-                                                            c.Y = 15;
+                                                            c.Y = 14;
                                                             g_Console.writeToBuffer(c, "     Music");
                                                             c.X = 30;
-                                                            c.Y = 17;
+                                                            c.Y = 16;
                                                             g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                            if (g_dCreditsTime > 17.5)
+                                                            c.Y = 17;
+                                                            g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                            if (g_dCreditsTime > 15.0)
                                                             {
                                                                 Cutscene.clearScreen(g_Console);
                                                                 c.X = 32;
                                                                 c.Y = 7;
-                                                                g_Console.writeToBuffer(c, "     Andrew");
-                                                                c.Y = 8;
                                                                 g_Console.writeToBuffer(c, "     Artus");
-                                                                c.Y = 9;
+                                                                c.Y = 8;
                                                                 g_Console.writeToBuffer(c, "     Jordan");
-                                                                c.Y = 10;
+                                                                c.Y = 9;
                                                                 g_Console.writeToBuffer(c, "     Nicole");
-                                                                c.Y = 11;
+                                                                c.Y = 10;
                                                                 g_Console.writeToBuffer(c, "     Renee");
-                                                                c.Y = 14;
+                                                                c.Y = 13;
                                                                 g_Console.writeToBuffer(c, "     Music");
                                                                 c.X = 30;
-                                                                c.Y = 16;
+                                                                c.Y = 15;
                                                                 g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                c.Y = 17;
+                                                                c.Y = 16;
                                                                 g_Console.writeToBuffer(c, "Written By: David Renda");
-                                                                if (g_dCreditsTime > 18.5)
+                                                                c.X = 25;
+                                                                c.Y = 17;
+                                                                g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                if (g_dCreditsTime > 16.0)
                                                                 {
                                                                     Cutscene.clearScreen(g_Console);
                                                                     c.X = 32;
                                                                     c.Y = 7;
-                                                                    g_Console.writeToBuffer(c, "     Artus");
-                                                                    c.Y = 8;
                                                                     g_Console.writeToBuffer(c, "     Jordan");
-                                                                    c.Y = 9;
+                                                                    c.Y = 8;
                                                                     g_Console.writeToBuffer(c, "     Nicole");
-                                                                    c.Y = 10;
+                                                                    c.Y = 9;
                                                                     g_Console.writeToBuffer(c, "     Renee");
-                                                                    c.Y = 13;
+                                                                    c.Y = 12;
                                                                     g_Console.writeToBuffer(c, "     Music");
                                                                     c.X = 30;
-                                                                    c.Y = 15;
+                                                                    c.Y = 14;
                                                                     g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                    c.Y = 16;
+                                                                    c.Y = 15;
                                                                     g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                     c.X = 25;
-                                                                    c.Y = 17;
+                                                                    c.Y = 16;
                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                    if (g_dCreditsTime > 19.5)
+                                                                    if (g_dCreditsTime > 17.0)
                                                                     {
                                                                         Cutscene.clearScreen(g_Console);
                                                                         c.X = 32;
                                                                         c.Y = 7;
-                                                                        g_Console.writeToBuffer(c, "     Jordan");
-                                                                        c.Y = 8;
                                                                         g_Console.writeToBuffer(c, "     Nicole");
-                                                                        c.Y = 9;
+                                                                        c.Y = 8;
                                                                         g_Console.writeToBuffer(c, "     Renee");
-                                                                        c.Y = 12;
+                                                                        c.Y = 11;
                                                                         g_Console.writeToBuffer(c, "     Music");
                                                                         c.X = 30;
-                                                                        c.Y = 14;
+                                                                        c.Y = 13;
                                                                         g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                        c.Y = 15;
+                                                                        c.Y = 14;
                                                                         g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                         c.X = 25;
-                                                                        c.Y = 16;
+                                                                        c.Y = 15;
                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                        if (g_dCreditsTime > 20.5)
+                                                                        c.X = 32;
+                                                                        c.Y = 17;
+                                                                        g_Console.writeToBuffer(c, "\"Retro Platforming\"");
+                                                                        if (g_dCreditsTime > 18.0)
                                                                         {
                                                                             Cutscene.clearScreen(g_Console);
-                                                                            c.X = 32;
                                                                             c.Y = 7;
-                                                                            g_Console.writeToBuffer(c, "     Nicole");
-                                                                            c.Y = 8;
                                                                             g_Console.writeToBuffer(c, "     Renee");
-                                                                            c.Y = 11;
+                                                                            c.Y = 10;
                                                                             g_Console.writeToBuffer(c, "     Music");
                                                                             c.X = 30;
-                                                                            c.Y = 13;
+                                                                            c.Y = 12;
                                                                             g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                            c.Y = 14;
+                                                                            c.Y = 13;
                                                                             g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                             c.X = 25;
-                                                                            c.Y = 15;
+                                                                            c.Y = 14;
                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                             c.X = 32;
-                                                                            c.Y = 17;
+                                                                            c.Y = 16;
                                                                             g_Console.writeToBuffer(c, "\"Retro Platforming\"");
-                                                                            if (g_dCreditsTime > 21.5)
+                                                                            c.X = 25;
+                                                                            c.Y = 17;
+                                                                            g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                            if (g_dCreditsTime > 19.0)
                                                                             {
                                                                                 Cutscene.clearScreen(g_Console);
-                                                                                c.Y = 7;
-                                                                                g_Console.writeToBuffer(c, "     Renee");
-                                                                                c.Y = 10;
+                                                                                c.X = 32;
+                                                                                c.Y = 9;
                                                                                 g_Console.writeToBuffer(c, "     Music");
                                                                                 c.X = 30;
-                                                                                c.Y = 12;
+                                                                                c.Y = 11;
                                                                                 g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                                c.Y = 13;
+                                                                                c.Y = 12;
                                                                                 g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                 c.X = 25;
-                                                                                c.Y = 14;
+                                                                                c.Y = 13;
                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                 c.X = 32;
-                                                                                c.Y = 16;
+                                                                                c.Y = 15;
                                                                                 g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                 c.X = 25;
-                                                                                c.Y = 17;
+                                                                                c.Y = 16;
                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                if (g_dCreditsTime > 21.5)
+                                                                                if (g_dCreditsTime > 20.0)
                                                                                 {
                                                                                     Cutscene.clearScreen(g_Console);
                                                                                     c.X = 32;
-                                                                                    c.Y = 9;
+                                                                                    c.Y = 8;
                                                                                     g_Console.writeToBuffer(c, "     Music");
                                                                                     c.X = 30;
-                                                                                    c.Y = 11;
+                                                                                    c.Y = 10;
                                                                                     g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                                    c.Y = 12;
+                                                                                    c.Y = 11;
                                                                                     g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                     c.X = 25;
-                                                                                    c.Y = 13;
+                                                                                    c.Y = 12;
                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                     c.X = 32;
-                                                                                    c.Y = 15;
+                                                                                    c.Y = 14;
                                                                                     g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                     c.X = 25;
-                                                                                    c.Y = 16;
+                                                                                    c.Y = 15;
                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                    if (g_dCreditsTime > 22.5)
+                                                                                    c.X = 32;
+                                                                                    c.Y = 17;
+                                                                                    g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
+                                                                                    if (g_dCreditsTime > 21.0)
                                                                                     {
                                                                                         Cutscene.clearScreen(g_Console);
                                                                                         c.X = 32;
-                                                                                        c.Y = 8;
+                                                                                        c.Y = 7;
                                                                                         g_Console.writeToBuffer(c, "     Music");
                                                                                         c.X = 30;
-                                                                                        c.Y = 10;
+                                                                                        c.Y = 9;
                                                                                         g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                                        c.Y = 11;
+                                                                                        c.Y = 10;
                                                                                         g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                         c.X = 25;
-                                                                                        c.Y = 12;
+                                                                                        c.Y = 11;
                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                         c.X = 32;
-                                                                                        c.Y = 14;
+                                                                                        c.Y = 13;
                                                                                         g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                         c.X = 25;
-                                                                                        c.Y = 15;
+                                                                                        c.Y = 14;
                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                         c.X = 32;
-                                                                                        c.Y = 17;
+                                                                                        c.Y = 16;
                                                                                         g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
-                                                                                        if (g_dCreditsTime > 23.5)
+                                                                                        c.X = 27;
+                                                                                        c.Y = 17;
+                                                                                        g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
+                                                                                        if (g_dCreditsTime > 22.0)
                                                                                         {
                                                                                             Cutscene.clearScreen(g_Console);
-                                                                                            c.X = 32;
-                                                                                            c.Y = 7;
-                                                                                            g_Console.writeToBuffer(c, "     Music");
                                                                                             c.X = 30;
-                                                                                            c.Y = 9;
+                                                                                            c.Y = 8;
                                                                                             g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                                            c.Y = 10;
+                                                                                            c.Y = 9;
                                                                                             g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                             c.X = 25;
-                                                                                            c.Y = 11;
+                                                                                            c.Y = 10;
                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                             c.X = 32;
-                                                                                            c.Y = 13;
+                                                                                            c.Y = 12;
                                                                                             g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                             c.X = 25;
-                                                                                            c.Y = 14;
+                                                                                            c.Y = 13;
                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                             c.X = 32;
-                                                                                            c.Y = 16;
+                                                                                            c.Y = 15;
                                                                                             g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                             c.X = 27;
-                                                                                            c.Y = 17;
+                                                                                            c.Y = 16;
                                                                                             g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
-                                                                                            if (g_dCreditsTime > 24.5)
+                                                                                            c.X = 25;
+                                                                                            c.Y = 17;
+                                                                                            g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                            if (g_dCreditsTime > 23.0)
                                                                                             {
                                                                                                 Cutscene.clearScreen(g_Console);
                                                                                                 c.X = 30;
-                                                                                                c.Y = 8;
+                                                                                                c.Y = 7;
                                                                                                 g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                                                c.Y = 9;
+                                                                                                c.Y = 8;
                                                                                                 g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                 c.X = 25;
-                                                                                                c.Y = 10;
+                                                                                                c.Y = 9;
                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                 c.X = 32;
-                                                                                                c.Y = 12;
+                                                                                                c.Y = 11;
                                                                                                 g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                                 c.X = 25;
-                                                                                                c.Y = 13;
+                                                                                                c.Y = 12;
                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                 c.X = 32;
-                                                                                                c.Y = 15;
+                                                                                                c.Y = 14;
                                                                                                 g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                                 c.X = 27;
-                                                                                                c.Y = 16;
+                                                                                                c.Y = 15;
                                                                                                 g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                 c.X = 25;
-                                                                                                c.Y = 17;
+                                                                                                c.Y = 16;
                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                                if (g_dCreditsTime > 25.5)
+                                                                                                if (g_dCreditsTime > 24.0)
                                                                                                 {
                                                                                                     Cutscene.clearScreen(g_Console);
-                                                                                                    c.X = 30;
+                                                                                                    c.X = 32;
                                                                                                     c.Y = 7;
-                                                                                                    g_Console.writeToBuffer(c, "  \"8 Bit Retro Funk\"");
-                                                                                                    c.Y = 8;
                                                                                                     g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                     c.X = 25;
-                                                                                                    c.Y = 9;
+                                                                                                    c.Y = 8;
                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                     c.X = 32;
-                                                                                                    c.Y = 11;
+                                                                                                    c.Y = 10;
                                                                                                     g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                                     c.X = 25;
-                                                                                                    c.Y = 12;
+                                                                                                    c.Y = 11;
                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                     c.X = 32;
-                                                                                                    c.Y = 14;
+                                                                                                    c.Y = 13;
                                                                                                     g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                                     c.X = 27;
-                                                                                                    c.Y = 15;
+                                                                                                    c.Y = 14;
                                                                                                     g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                     c.X = 25;
-                                                                                                    c.Y = 16;
+                                                                                                    c.Y = 15;
                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                                    if (g_dCreditsTime > 26.5)
+                                                                                                    c.X = 15;
+                                                                                                    c.Y = 17;
+                                                                                                    g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
+                                                                                                    if (g_dCreditsTime > 25.0)
                                                                                                     {
                                                                                                         Cutscene.clearScreen(g_Console);
-                                                                                                        c.X = 32;
-                                                                                                        c.Y = 7;
-                                                                                                        g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                         c.X = 25;
-                                                                                                        c.Y = 8;
+                                                                                                        c.Y = 7;
                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                         c.X = 32;
-                                                                                                        c.Y = 10;
+                                                                                                        c.Y = 9;
                                                                                                         g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                                         c.X = 25;
-                                                                                                        c.Y = 11;
+                                                                                                        c.Y = 10;
                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                         c.X = 32;
-                                                                                                        c.Y = 13;
+                                                                                                        c.Y = 12;
                                                                                                         g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                                         c.X = 27;
-                                                                                                        c.Y = 14;
+                                                                                                        c.Y = 13;
                                                                                                         g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                         c.X = 25;
-                                                                                                        c.Y = 15;
+                                                                                                        c.Y = 14;
                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                         c.X = 15;
-                                                                                                        c.Y = 17;
+                                                                                                        c.Y = 16;
                                                                                                         g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
-                                                                                                        if (g_dCreditsTime > 27.5)
+                                                                                                        c.X = 25;
+                                                                                                        c.Y = 17;
+                                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                        if (g_dCreditsTime > 26.0)
                                                                                                         {
                                                                                                             Cutscene.clearScreen(g_Console);
-                                                                                                            c.X = 25;
-                                                                                                            c.Y = 7;
-                                                                                                            g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                             c.X = 32;
-                                                                                                            c.Y = 9;
+                                                                                                            c.Y = 8;
                                                                                                             g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                                             c.X = 25;
-                                                                                                            c.Y = 10;
+                                                                                                            c.Y = 9;
                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                             c.X = 32;
-                                                                                                            c.Y = 12;
+                                                                                                            c.Y = 11;
                                                                                                             g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                                             c.X = 27;
-                                                                                                            c.Y = 13;
+                                                                                                            c.Y = 12;
                                                                                                             g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                             c.X = 25;
-                                                                                                            c.Y = 14;
+                                                                                                            c.Y = 13;
                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                             c.X = 15;
-                                                                                                            c.Y = 16;
+                                                                                                            c.Y = 15;
                                                                                                             g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                             c.X = 25;
-                                                                                                            c.Y = 17;
+                                                                                                            c.Y = 16;
                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                                            if (g_dCreditsTime > 28.5)
+                                                                                                            if (g_dCreditsTime > 27.0)
                                                                                                             {
                                                                                                                 Cutscene.clearScreen(g_Console);
                                                                                                                 c.X = 32;
-                                                                                                                c.Y = 8;
+                                                                                                                c.Y = 7;
                                                                                                                 g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                                                 c.X = 25;
-                                                                                                                c.Y = 9;
+                                                                                                                c.Y = 8;
                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                 c.X = 32;
-                                                                                                                c.Y = 11;
+                                                                                                                c.Y = 10;
                                                                                                                 g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                                                 c.X = 27;
-                                                                                                                c.Y = 12;
+                                                                                                                c.Y = 11;
                                                                                                                 g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                                 c.X = 25;
-                                                                                                                c.Y = 13;
+                                                                                                                c.Y = 12;
                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                 c.X = 15;
-                                                                                                                c.Y = 15;
+                                                                                                                c.Y = 14;
                                                                                                                 g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                                 c.X = 25;
-                                                                                                                c.Y = 16;
+                                                                                                                c.Y = 15;
                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                                                if (g_dCreditsTime > 29.5)
+                                                                                                                c.X = 32;
+                                                                                                                c.Y = 17;
+                                                                                                                g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
+                                                                                                                if (g_dCreditsTime > 28.0)
                                                                                                                 {
                                                                                                                     Cutscene.clearScreen(g_Console);
-                                                                                                                    c.X = 32;
-                                                                                                                    c.Y = 7;
-                                                                                                                    g_Console.writeToBuffer(c, "\"Retro Platforming\"");
                                                                                                                     c.X = 25;
-                                                                                                                    c.Y = 8;
+                                                                                                                    c.Y = 7;
                                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                     c.X = 32;
-                                                                                                                    c.Y = 10;
+                                                                                                                    c.Y = 9;
                                                                                                                     g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                                                     c.X = 27;
-                                                                                                                    c.Y = 11;
+                                                                                                                    c.Y = 10;
                                                                                                                     g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                                     c.X = 25;
-                                                                                                                    c.Y = 12;
+                                                                                                                    c.Y = 11;
                                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                     c.X = 15;
-                                                                                                                    c.Y = 14;
+                                                                                                                    c.Y = 13;
                                                                                                                     g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                                     c.X = 25;
-                                                                                                                    c.Y = 15;
+                                                                                                                    c.Y = 14;
                                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                     c.X = 32;
-                                                                                                                    c.Y = 17;
+                                                                                                                    c.Y = 16;
                                                                                                                     g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
-                                                                                                                    if (g_dCreditsTime > 30.5)
+                                                                                                                    c.X = 30;
+                                                                                                                    c.Y = 17;
+                                                                                                                    g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                                                                    if (g_dCreditsTime > 29.0)
                                                                                                                     {
                                                                                                                         Cutscene.clearScreen(g_Console);
-                                                                                                                        c.X = 25;
-                                                                                                                        c.Y = 7;
-                                                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                         c.X = 32;
-                                                                                                                        c.Y = 9;
+                                                                                                                        c.Y = 8;
                                                                                                                         g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                                                         c.X = 27;
-                                                                                                                        c.Y = 10;
+                                                                                                                        c.Y = 9;
                                                                                                                         g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                                         c.X = 25;
-                                                                                                                        c.Y = 11;
+                                                                                                                        c.Y = 10;
                                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                         c.X = 15;
-                                                                                                                        c.Y = 13;
+                                                                                                                        c.Y = 12;
                                                                                                                         g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                                         c.X = 25;
-                                                                                                                        c.Y = 14;
+                                                                                                                        c.Y = 13;
                                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                         c.X = 32;
-                                                                                                                        c.Y = 16;
+                                                                                                                        c.Y = 15;
                                                                                                                         g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                         c.X = 30;
-                                                                                                                        c.Y = 17;
+                                                                                                                        c.Y = 16;
                                                                                                                         g_Console.writeToBuffer(c, "Written By: David Renda");
-                                                                                                                        if (g_dCreditsTime > 31.5)
+                                                                                                                        c.X = 25;
+                                                                                                                        c.Y = 17;
+                                                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                                        if (g_dCreditsTime > 30.0)
                                                                                                                         {
                                                                                                                             Cutscene.clearScreen(g_Console);
                                                                                                                             c.X = 32;
-                                                                                                                            c.Y = 8;
+                                                                                                                            c.Y = 7;
                                                                                                                             g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                                                             c.X = 27;
-                                                                                                                            c.Y = 9;
+                                                                                                                            c.Y = 8;
                                                                                                                             g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                                             c.X = 25;
-                                                                                                                            c.Y = 10;
+                                                                                                                            c.Y = 9;
                                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                             c.X = 15;
-                                                                                                                            c.Y = 12;
+                                                                                                                            c.Y = 11;
                                                                                                                             g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                                             c.X = 25;
-                                                                                                                            c.Y = 13;
+                                                                                                                            c.Y = 12;
                                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                             c.X = 32;
-                                                                                                                            c.Y = 15;
+                                                                                                                            c.Y = 14;
                                                                                                                             g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                             c.X = 30;
-                                                                                                                            c.Y = 16;
+                                                                                                                            c.Y = 15;
                                                                                                                             g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                             c.X = 25;
-                                                                                                                            c.Y = 17;
+                                                                                                                            c.Y = 16;
                                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                                                            if (g_dCreditsTime > 32.5)
+                                                                                                                            if (g_dCreditsTime > 31.0)
                                                                                                                             {
                                                                                                                                 Cutscene.clearScreen(g_Console);
-                                                                                                                                c.X = 32;
-                                                                                                                                c.Y = 7;
-                                                                                                                                g_Console.writeToBuffer(c, "\"Land of 8 Bits\"");
                                                                                                                                 c.X = 27;
-                                                                                                                                c.Y = 8;
+                                                                                                                                c.Y = 7;
                                                                                                                                 g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                                                 c.X = 25;
-                                                                                                                                c.Y = 9;
+                                                                                                                                c.Y = 8;
                                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                 c.X = 15;
-                                                                                                                                c.Y = 11;
+                                                                                                                                c.Y = 10;
                                                                                                                                 g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                                                 c.X = 25;
-                                                                                                                                c.Y = 12;
+                                                                                                                                c.Y = 11;
                                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                 c.X = 32;
-                                                                                                                                c.Y = 14;
+                                                                                                                                c.Y = 13;
                                                                                                                                 g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                                 c.X = 30;
-                                                                                                                                c.Y = 15;
+                                                                                                                                c.Y = 14;
                                                                                                                                 g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                 c.X = 25;
-                                                                                                                                c.Y = 16;
+                                                                                                                                c.Y = 15;
                                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                                                                if (g_dCreditsTime > 33.5)
+                                                                                                                                c.X = 32;
+                                                                                                                                c.Y = 17;
+                                                                                                                                g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
+                                                                                                                                if (g_dCreditsTime > 32.0)
                                                                                                                                 {
                                                                                                                                     Cutscene.clearScreen(g_Console);
-                                                                                                                                    c.X = 27;
-                                                                                                                                    c.Y = 7;
-                                                                                                                                    g_Console.writeToBuffer(c, "Written By: Stephen Bennett");
                                                                                                                                     c.X = 25;
-                                                                                                                                    c.Y = 8;
+                                                                                                                                    c.Y = 7;
                                                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                     c.X = 15;
-                                                                                                                                    c.Y = 10;
+                                                                                                                                    c.Y = 9;
                                                                                                                                     g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                                                     c.X = 25;
-                                                                                                                                    c.Y = 11;
+                                                                                                                                    c.Y = 10;
                                                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                     c.X = 32;
-                                                                                                                                    c.Y = 13;
+                                                                                                                                    c.Y = 12;
                                                                                                                                     g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                                     c.X = 30;
-                                                                                                                                    c.Y = 14;
+                                                                                                                                    c.Y = 13;
                                                                                                                                     g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                     c.X = 25;
-                                                                                                                                    c.Y = 15;
+                                                                                                                                    c.Y = 14;
                                                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                     c.X = 32;
-                                                                                                                                    c.Y = 17;
+                                                                                                                                    c.Y = 16;
                                                                                                                                     g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
-                                                                                                                                    if (g_dCreditsTime > 34.5)
+                                                                                                                                    c.X = 30;
+                                                                                                                                    c.Y = 17;
+                                                                                                                                    g_Console.writeToBuffer(c, "Written By: David Renda");
+                                                                                                                                    if (g_dCreditsTime > 33.0)
                                                                                                                                     {
                                                                                                                                         Cutscene.clearScreen(g_Console);
-                                                                                                                                        c.X = 25;
-                                                                                                                                        c.Y = 7;
-                                                                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                         c.X = 15;
-                                                                                                                                        c.Y = 9;
+                                                                                                                                        c.Y = 8;
                                                                                                                                         g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                                                         c.X = 25;
-                                                                                                                                        c.Y = 10;
+                                                                                                                                        c.Y = 9;
                                                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                         c.X = 32;
-                                                                                                                                        c.Y = 12;
+                                                                                                                                        c.Y = 11;
                                                                                                                                         g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                                         c.X = 30;
-                                                                                                                                        c.Y = 13;
+                                                                                                                                        c.Y = 12;
                                                                                                                                         g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                         c.X = 25;
-                                                                                                                                        c.Y = 14;
+                                                                                                                                        c.Y = 13;
                                                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                         c.X = 32;
-                                                                                                                                        c.Y = 16;
+                                                                                                                                        c.Y = 15;
                                                                                                                                         g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                         c.X = 30;
-                                                                                                                                        c.Y = 17;
+                                                                                                                                        c.Y = 16;
                                                                                                                                         g_Console.writeToBuffer(c, "Written By: David Renda");
-                                                                                                                                        if (g_dCreditsTime > 35.5)
+                                                                                                                                        c.X = 25;
+                                                                                                                                        c.Y = 17;
+                                                                                                                                        g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                                                        if (g_dCreditsTime > 34.0)
                                                                                                                                         {
                                                                                                                                             Cutscene.clearScreen(g_Console);
                                                                                                                                             c.X = 15;
-                                                                                                                                            c.Y = 8;
+                                                                                                                                            c.Y = 7;
                                                                                                                                             g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                                                             c.X = 25;
-                                                                                                                                            c.Y = 9;
+                                                                                                                                            c.Y = 8;
                                                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                             c.X = 32;
-                                                                                                                                            c.Y = 11;
+                                                                                                                                            c.Y = 10;
                                                                                                                                             g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                                             c.X = 30;
-                                                                                                                                            c.Y = 12;
+                                                                                                                                            c.Y = 11;
                                                                                                                                             g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                             c.X = 25;
-                                                                                                                                            c.Y = 13;
+                                                                                                                                            c.Y = 12;
                                                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                             c.X = 32;
-                                                                                                                                            c.Y = 15;
+                                                                                                                                            c.Y = 14;
                                                                                                                                             g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                             c.X = 30;
-                                                                                                                                            c.Y = 16;
+                                                                                                                                            c.Y = 15;
                                                                                                                                             g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                             c.X = 25;
-                                                                                                                                            c.Y = 17;
+                                                                                                                                            c.Y = 16;
                                                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                                                                            if (g_dCreditsTime > 36.5)
+                                                                                                                                            if (g_dCreditsTime > 35.0)
                                                                                                                                             {
                                                                                                                                                 Cutscene.clearScreen(g_Console);
-                                                                                                                                                c.X = 15;
-                                                                                                                                                c.Y = 7;
-                                                                                                                                                g_Console.writeToBuffer(c, "\"Outdoor Festival Crowd Talking Chatter B Sound Effect\"");
                                                                                                                                                 c.X = 25;
-                                                                                                                                                c.Y = 8;
+                                                                                                                                                c.Y = 7;
                                                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                 c.X = 32;
-                                                                                                                                                c.Y = 10;
+                                                                                                                                                c.Y = 9;
                                                                                                                                                 g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                                                 c.X = 30;
-                                                                                                                                                c.Y = 11;
+                                                                                                                                                c.Y = 10;
                                                                                                                                                 g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                 c.X = 25;
-                                                                                                                                                c.Y = 12;
+                                                                                                                                                c.Y = 11;
                                                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                 c.X = 32;
-                                                                                                                                                c.Y = 14;
+                                                                                                                                                c.Y = 13;
                                                                                                                                                 g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                                 c.X = 30;
-                                                                                                                                                c.Y = 15;
+                                                                                                                                                c.Y = 14;
                                                                                                                                                 g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                 c.X = 25;
-                                                                                                                                                c.Y = 16;
+                                                                                                                                                c.Y = 15;
                                                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
-                                                                                                                                                if (g_dCreditsTime > 37.5)
+                                                                                                                                                c.X = 32;
+                                                                                                                                                c.Y = 17;
+                                                                                                                                                g_Console.writeToBuffer(c, "   \"For Peace\"");
+                                                                                                                                                if (g_dCreditsTime > 36.0)
                                                                                                                                                 {
                                                                                                                                                     Cutscene.clearScreen(g_Console);
-                                                                                                                                                    c.X = 25;
-                                                                                                                                                    c.Y = 7;
-                                                                                                                                                    g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                     c.X = 32;
-                                                                                                                                                    c.Y = 9;
+                                                                                                                                                    c.Y = 8;
                                                                                                                                                     g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                                                     c.X = 30;
-                                                                                                                                                    c.Y = 10;
+                                                                                                                                                    c.Y = 9;
                                                                                                                                                     g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                     c.X = 25;
-                                                                                                                                                    c.Y = 11;
+                                                                                                                                                    c.Y = 10;
                                                                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                     c.X = 32;
-                                                                                                                                                    c.Y = 13;
+                                                                                                                                                    c.Y = 12;
                                                                                                                                                     g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                                     c.X = 30;
-                                                                                                                                                    c.Y = 14;
+                                                                                                                                                    c.Y = 13;
                                                                                                                                                     g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                     c.X = 25;
-                                                                                                                                                    c.Y = 15;
+                                                                                                                                                    c.Y = 14;
                                                                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                     c.X = 32;
-                                                                                                                                                    c.Y = 17;
+                                                                                                                                                    c.Y = 16;
                                                                                                                                                     g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                    if (g_dCreditsTime > 38.5)
+                                                                                                                                                    c.Y = 17;
+                                                                                                                                                    g_Console.writeToBuffer(c, "  Written By: Ngiam");
+                                                                                                                                                    if (g_dCreditsTime > 37.0)
                                                                                                                                                     {
                                                                                                                                                         Cutscene.clearScreen(g_Console);
                                                                                                                                                         c.X = 32;
-                                                                                                                                                        c.Y = 8;
+                                                                                                                                                        c.Y = 7;
                                                                                                                                                         g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                                                         c.X = 30;
-                                                                                                                                                        c.Y = 9;
+                                                                                                                                                        c.Y = 8;
                                                                                                                                                         g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                         c.X = 25;
-                                                                                                                                                        c.Y = 10;
+                                                                                                                                                        c.Y = 9;
                                                                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                         c.X = 32;
-                                                                                                                                                        c.Y = 12;
+                                                                                                                                                        c.Y = 11;
                                                                                                                                                         g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                                         c.X = 30;
-                                                                                                                                                        c.Y = 13;
+                                                                                                                                                        c.Y = 12;
                                                                                                                                                         g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                         c.X = 25;
-                                                                                                                                                        c.Y = 14;
+                                                                                                                                                        c.Y = 13;
                                                                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                         c.X = 32;
-                                                                                                                                                        c.Y = 16;
+                                                                                                                                                        c.Y = 15;
                                                                                                                                                         g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                        c.Y = 17;
+                                                                                                                                                        c.Y = 16;
                                                                                                                                                         g_Console.writeToBuffer(c, "  Written By: Ngiam");
-                                                                                                                                                        if (g_dCreditsTime > 39.5)
+                                                                                                                                                        if (g_dCreditsTime > 38.0)
                                                                                                                                                         {
                                                                                                                                                             Cutscene.clearScreen(g_Console);
-                                                                                                                                                            c.X = 32;
-                                                                                                                                                            c.Y = 7;
-                                                                                                                                                            g_Console.writeToBuffer(c, "   \"8 Bit Surf\"");
                                                                                                                                                             c.X = 30;
-                                                                                                                                                            c.Y = 8;
+                                                                                                                                                            c.Y = 7;
                                                                                                                                                             g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                             c.X = 25;
-                                                                                                                                                            c.Y = 9;
+                                                                                                                                                            c.Y = 8;
                                                                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                             c.X = 32;
-                                                                                                                                                            c.Y = 11;
+                                                                                                                                                            c.Y = 10;
                                                                                                                                                             g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                                             c.X = 30;
-                                                                                                                                                            c.Y = 12;
+                                                                                                                                                            c.Y = 11;
                                                                                                                                                             g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                             c.X = 25;
-                                                                                                                                                            c.Y = 13;
+                                                                                                                                                            c.Y = 12;
                                                                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                             c.X = 32;
-                                                                                                                                                            c.Y = 15;
+                                                                                                                                                            c.Y = 14;
                                                                                                                                                             g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                            c.Y = 16;
+                                                                                                                                                            c.Y = 15;
                                                                                                                                                             g_Console.writeToBuffer(c, "  Written By: Ngiam");
-                                                                                                                                                            if (g_dCreditsTime > 40.5)
+                                                                                                                                                            c.Y = 17;
+                                                                                                                                                            g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
+                                                                                                                                                            if (g_dCreditsTime > 39.0)
                                                                                                                                                             {
                                                                                                                                                                 Cutscene.clearScreen(g_Console);
-                                                                                                                                                                c.X = 30;
-                                                                                                                                                                c.Y = 7;
-                                                                                                                                                                g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                                 c.X = 25;
-                                                                                                                                                                c.Y = 8;
+                                                                                                                                                                c.Y = 7;
                                                                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                                 c.X = 32;
-                                                                                                                                                                c.Y = 10;
+                                                                                                                                                                c.Y = 9;
                                                                                                                                                                 g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                                                 c.X = 30;
-                                                                                                                                                                c.Y = 11;
+                                                                                                                                                                c.Y = 10;
                                                                                                                                                                 g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                                 c.X = 25;
-                                                                                                                                                                c.Y = 12;
+                                                                                                                                                                c.Y = 11;
                                                                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                                 c.X = 32;
-                                                                                                                                                                c.Y = 14;
+                                                                                                                                                                c.Y = 13;
                                                                                                                                                                 g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                                c.Y = 15;
-                                                                                                                                                                g_Console.writeToBuffer(c, "  Written By: Ngiam");
-                                                                                                                                                                c.Y = 17;
+                                                                                                                                                                c.Y = 14;
+                                                                                                                                                                g_Console.writeToBuffer(c, " Written By: Ngiam");
+                                                                                                                                                                c.Y = 16;
                                                                                                                                                                 g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                if (g_dCreditsTime > 41.5)
+                                                                                                                                                                c.Y = 17;
+                                                                                                                                                                g_Console.writeToBuffer(c, " Written By: Ngiam");
+                                                                                                                                                                if (g_dCreditsTime > 40.0)
                                                                                                                                                                 {
                                                                                                                                                                     Cutscene.clearScreen(g_Console);
-                                                                                                                                                                    c.X = 25;
-                                                                                                                                                                    c.Y = 7;
-                                                                                                                                                                    g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                                     c.X = 32;
-                                                                                                                                                                    c.Y = 9;
+                                                                                                                                                                    c.Y = 8;
                                                                                                                                                                     g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                                                     c.X = 30;
-                                                                                                                                                                    c.Y = 10;
+                                                                                                                                                                    c.Y = 9;
                                                                                                                                                                     g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                                     c.X = 25;
-                                                                                                                                                                    c.Y = 11;
+                                                                                                                                                                    c.Y = 10;
                                                                                                                                                                     g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                                     c.X = 32;
-                                                                                                                                                                    c.Y = 13;
+                                                                                                                                                                    c.Y = 12;
                                                                                                                                                                     g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                                    c.Y = 14;
+                                                                                                                                                                    c.Y = 13;
                                                                                                                                                                     g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                    c.Y = 16;
+                                                                                                                                                                    c.Y = 15;
                                                                                                                                                                     g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                    c.Y = 17;
+                                                                                                                                                                    c.Y = 16;
                                                                                                                                                                     g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                    if (g_dCreditsTime > 42.5)
+                                                                                                                                                                    if (g_dCreditsTime > 41.0)
                                                                                                                                                                     {
                                                                                                                                                                         Cutscene.clearScreen(g_Console);
                                                                                                                                                                         c.X = 32;
-                                                                                                                                                                        c.Y = 8;
+                                                                                                                                                                        c.Y = 7;
                                                                                                                                                                         g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                                                         c.X = 30;
-                                                                                                                                                                        c.Y = 9;
+                                                                                                                                                                        c.Y = 8;
                                                                                                                                                                         g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                                         c.X = 25;
-                                                                                                                                                                        c.Y = 10;
+                                                                                                                                                                        c.Y = 9;
                                                                                                                                                                         g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                                         c.X = 32;
-                                                                                                                                                                        c.Y = 12;
+                                                                                                                                                                        c.Y = 11;
                                                                                                                                                                         g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                                        c.Y = 13;
+                                                                                                                                                                        c.Y = 12;
                                                                                                                                                                         g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                        c.Y = 15;
+                                                                                                                                                                        c.Y = 14;
                                                                                                                                                                         g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                        c.Y = 16;
+                                                                                                                                                                        c.Y = 15;
                                                                                                                                                                         g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                        if (g_dCreditsTime > 43.5)
+                                                                                                                                                                        if (g_dCreditsTime > 42.0)
                                                                                                                                                                         {
                                                                                                                                                                             Cutscene.clearScreen(g_Console);
-                                                                                                                                                                            c.X = 32;
-                                                                                                                                                                            c.Y = 7;
-                                                                                                                                                                            g_Console.writeToBuffer(c, "   \"8 Bit Menu\"");
                                                                                                                                                                             c.X = 30;
-                                                                                                                                                                            c.Y = 8;
+                                                                                                                                                                            c.Y = 7;
                                                                                                                                                                             g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                                             c.X = 25;
-                                                                                                                                                                            c.Y = 9;
+                                                                                                                                                                            c.Y = 8;
                                                                                                                                                                             g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                                             c.X = 32;
-                                                                                                                                                                            c.Y = 11;
+                                                                                                                                                                            c.Y = 10;
                                                                                                                                                                             g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                                            c.Y = 12;
+                                                                                                                                                                            c.Y = 11;
                                                                                                                                                                             g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                            c.Y = 14;
+                                                                                                                                                                            c.Y = 13;
                                                                                                                                                                             g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                            c.Y = 15;
+                                                                                                                                                                            c.Y = 14;
                                                                                                                                                                             g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                            if (g_dCreditsTime > 44.5)
+                                                                                                                                                                            if (g_dCreditsTime > 43.0)
                                                                                                                                                                             {
                                                                                                                                                                                 Cutscene.clearScreen(g_Console);
-                                                                                                                                                                                c.X = 30;
-                                                                                                                                                                                c.Y = 7;
-                                                                                                                                                                                g_Console.writeToBuffer(c, "Written By: David Renda");
                                                                                                                                                                                 c.X = 25;
-                                                                                                                                                                                c.Y = 8;
+                                                                                                                                                                                c.Y = 7;
                                                                                                                                                                                 g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
                                                                                                                                                                                 c.X = 32;
-                                                                                                                                                                                c.Y = 10;
+                                                                                                                                                                                c.Y = 9;
                                                                                                                                                                                 g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                                                c.Y = 11;
+                                                                                                                                                                                c.Y = 10;
                                                                                                                                                                                 g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                c.Y = 13;
+                                                                                                                                                                                c.Y = 12;
                                                                                                                                                                                 g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                                c.Y = 14;
+                                                                                                                                                                                c.Y = 13;
                                                                                                                                                                                 g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                if (g_dCreditsTime > 45.5)
+                                                                                                                                                                                if (g_dCreditsTime > 44.0)
                                                                                                                                                                                 {
-                                                                                                                                                                                    Cutscene.clearScreen(g_Console);
-                                                                                                                                                                                    c.X = 25;
-                                                                                                                                                                                    c.Y = 7;
-                                                                                                                                                                                    g_Console.writeToBuffer(c, "From: https://www.fesliyanstudios.com");
+                                                                                                                                                                                    Cutscene.clearScreen(g_Console);                                      
                                                                                                                                                                                     c.X = 32;
-                                                                                                                                                                                    c.Y = 9;
+                                                                                                                                                                                    c.Y = 8;
                                                                                                                                                                                     g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                                                    c.Y = 10;
+                                                                                                                                                                                    c.Y = 9;
                                                                                                                                                                                     g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                    c.Y = 12;
+                                                                                                                                                                                    c.Y = 11;
                                                                                                                                                                                     g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                                    c.Y = 13;
+                                                                                                                                                                                    c.Y = 12;
                                                                                                                                                                                     g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                    if (g_dCreditsTime > 46.5)
+                                                                                                                                                                                    if (g_dCreditsTime > 45.0)
                                                                                                                                                                                     {
-                                                                                                                                                                                        Cutscene.clearScreen(g_Console);                                      
+                                                                                                                                                                                        Cutscene.clearScreen(g_Console);
                                                                                                                                                                                         c.X = 32;
-                                                                                                                                                                                        c.Y = 8;
+                                                                                                                                                                                        c.Y = 7;
                                                                                                                                                                                         g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                                                        c.Y = 9;
+                                                                                                                                                                                        c.Y = 8;
                                                                                                                                                                                         g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                        c.Y = 11;
+                                                                                                                                                                                        c.Y = 10;
                                                                                                                                                                                         g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                                        c.Y = 12;
+                                                                                                                                                                                        c.Y = 11;
                                                                                                                                                                                         g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                        if (g_dCreditsTime > 47.5)
+                                                                                                                                                                                        if (g_dCreditsTime > 46.0)
                                                                                                                                                                                         {
                                                                                                                                                                                             Cutscene.clearScreen(g_Console);
                                                                                                                                                                                             c.X = 32;
                                                                                                                                                                                             c.Y = 7;
-                                                                                                                                                                                            g_Console.writeToBuffer(c, "   \"For Peace\"");
-                                                                                                                                                                                            c.Y = 8;
                                                                                                                                                                                             g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                            c.Y = 10;
+                                                                                                                                                                                            c.Y = 9;
                                                                                                                                                                                             g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                                            c.Y = 12;
+                                                                                                                                                                                            c.Y = 10;
                                                                                                                                                                                             g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                            if (g_dCreditsTime > 48.5)
+                                                                                                                                                                                            c.X = 25;
+                                                                                                                                                                                            c.Y = 17;
+                                                                                                                                                                                            g_Console.writeToBuffer(c, "Thank you for playing our game!");
+                                                                                                                                                                                            if (g_dCreditsTime > 47.0)
                                                                                                                                                                                             {
                                                                                                                                                                                                 Cutscene.clearScreen(g_Console);
                                                                                                                                                                                                 c.X = 32;
-                                                                                                                                                                                                c.Y = 7;
-                                                                                                                                                                                                g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                                c.Y = 9;
+                                                                                                                                                                                                c.Y = 8;
                                                                                                                                                                                                 g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                                                c.Y = 10;
+                                                                                                                                                                                                c.Y = 9;
                                                                                                                                                                                                 g_Console.writeToBuffer(c, " Written By: Ngiam");
                                                                                                                                                                                                 c.X = 25;
-                                                                                                                                                                                                c.Y = 17;
+                                                                                                                                                                                                c.Y = 16;
                                                                                                                                                                                                 g_Console.writeToBuffer(c, "Thank you for playing our game!");
-                                                                                                                                                                                                if (g_dCreditsTime > 49.5)
+                                                                                                                                                                                                if (g_dCreditsTime > 48.0)
                                                                                                                                                                                                 {
                                                                                                                                                                                                     Cutscene.clearScreen(g_Console);
                                                                                                                                                                                                     c.X = 32;
-                                                                                                                                                                                                    c.Y = 8;
+                                                                                                                                                                                                    c.Y = 7;
                                                                                                                                                                                                     g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                                                    c.Y = 9;
+                                                                                                                                                                                                    c.Y = 8;
                                                                                                                                                                                                     g_Console.writeToBuffer(c, " Written By: Ngiam");
                                                                                                                                                                                                     c.X = 25;
-                                                                                                                                                                                                    c.Y = 16;
+                                                                                                                                                                                                    c.Y = 15;
                                                                                                                                                                                                     g_Console.writeToBuffer(c, "Thank you for playing our game!");
-                                                                                                                                                                                                    if (g_dCreditsTime > 50.5)
+                                                                                                                                                                                                    if (g_dCreditsTime > 49.0)
                                                                                                                                                                                                     {
                                                                                                                                                                                                         Cutscene.clearScreen(g_Console);
                                                                                                                                                                                                         c.X = 32;
                                                                                                                                                                                                         c.Y = 7;
-                                                                                                                                                                                                        g_Console.writeToBuffer(c, "\"Ancient Lullaby\"");
-                                                                                                                                                                                                        c.Y = 8;
                                                                                                                                                                                                         g_Console.writeToBuffer(c, " Written By: Ngiam");
                                                                                                                                                                                                         c.X = 25;
-                                                                                                                                                                                                        c.Y = 15;
+                                                                                                                                                                                                        c.Y = 14;
                                                                                                                                                                                                         g_Console.writeToBuffer(c, "Thank you for playing our game!");
-                                                                                                                                                                                                        if (g_dCreditsTime > 51.5)
+                                                                                                                                                                                                        if (g_dCreditsTime > 50.0)
                                                                                                                                                                                                         {
                                                                                                                                                                                                             Cutscene.clearScreen(g_Console);
-                                                                                                                                                                                                            c.X = 32;
-                                                                                                                                                                                                            c.Y = 7;
-                                                                                                                                                                                                            g_Console.writeToBuffer(c, " Written By: Ngiam");
-                                                                                                                                                                                                            c.X = 25;
-                                                                                                                                                                                                            c.Y = 14;
+                                                                                                                                                                                                            c.Y = 13;
                                                                                                                                                                                                             g_Console.writeToBuffer(c, "Thank you for playing our game!");
-                                                                                                                                                                                                            if (g_dCreditsTime > 52.5)
-                                                                                                                                                                                                            {
-                                                                                                                                                                                                                Cutscene.clearScreen(g_Console);
-                                                                                                                                                                                                                c.Y = 13;
-                                                                                                                                                                                                                g_Console.writeToBuffer(c, "Thank you for playing our game!");
 
-                                                                                                                                                                                                            }
                                                                                                                                                                                                         }
                                                                                                                                                                                                     }
                                                                                                                                                                                                 }
@@ -2499,17 +2493,18 @@ void Credits()
                                                         }
                                                     }
                                                 }
-                                            }                                        
-                                        }
+                                            }
+                                        }                                        
                                     }
                                 }
                             }
-                        }          
-                    }
+                        }
+                    }          
                 }
             }
-        }       
-    }
+        }
+    }       
+    
 }
 
 void Update_Orphanage_Animation()
@@ -4515,6 +4510,7 @@ void Update_Boss_End_Animation()
 {
     if (g_dBossEndTime > 33)
     {
+        g_dCreditsTime = 5.2;
         g_eGameState = S_Credits;
     }
     processUserInput();
@@ -4528,7 +4524,7 @@ void Boss_End_Animation()
     COORD d;
     COORD e;
     COORD f;
-    renderCharacter();
+    //renderCharacter();
     c.X = 5;
     c.Y = 26;
     d.X = 5;
@@ -5752,7 +5748,7 @@ void Update_killRaymond()
 void killRaymond()
 {
     //rMap.initialise(g_Console);
-    //rMap.Border(g_Console);
+   // rMap.Border(g_Console);
     COORD c, d;
     // renderCharacter();
     c.X = 3;
@@ -7810,6 +7806,9 @@ void Update_phase2Battle()
 }
 void phase2Battle()
 {
+    COORD c;
+
+
     if ((fightCount == 1) && (fightCount2 == 1) && (fightCount3 == 1) && (fightCount4 == 1) && (fightCount5 == 1))
     {
         if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
@@ -7818,6 +7817,7 @@ void phase2Battle()
             g_sChar.showPlayerDMG = false;
             g_sChar.showEnemyDMG = false;
             g_sRaymondBoss.counter = true;
+            g_dkillRaymond = 0.0;
             g_eGameState = S_BattleScreen;
         }
 
@@ -7835,17 +7835,23 @@ void phase2Battle()
 
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
-    COORD c;
     c.X = 32;
     c.Y = 0;
     string charHealth = to_string(g_sChar.GetH());
     g_Console.writeToBuffer(c, "Your Health: " + charHealth, 0x0D, 100);
-
+    static bool showPhase1 = true;
+    if (showPhase1 == true)
+    {
+        c.X = 35;
+        c.Y = 24;
+        g_Console.writeToBuffer(c, "Phase 1", 0x0B, 100);
+    }
     //drawLaser(g_Console, 20, 0, 0);
     //drawLaser(g_Console, 40, 0);
 
     if (g_sLaser.fight == true)
     {
+
         fightCount = 1;
         if (g_sLaser.startTimer == true) // stickman work
         {
@@ -7867,7 +7873,7 @@ void phase2Battle()
             drawLaser3(g_Console, randstickman3);
         }
 
-    } 
+    }
 
     if (g_sLaser2.fight == true)
     {
@@ -7895,6 +7901,7 @@ void phase2Battle()
         }
         if (g_sLaser.fight == true)
         {
+
             if ((g_sBomb.m_cLocation.X == g_sRaymond.m_cLocation.X) && (g_sBomb.m_cLocation.Y == g_sRaymond.m_cLocation.Y)) // collison for R and B
             {
                 g_sMovingBlock.fight = true;
@@ -7917,11 +7924,18 @@ void phase2Battle()
                 // reset locations for bomb and raymond
             }
         }
-        
+
     }
     
     if (g_sLaser3.fight == true)
     {
+        static bool showPhase = true;
+        if (showPhase == true)
+        {
+            c.X = 35;
+            c.Y = 24;
+            g_Console.writeToBuffer(c, "Phase 3", 0x0B, 100);
+        }
         fightCount3 = 1;
         if (g_sLaser3.startTimer == true)
         {
@@ -7972,11 +7986,12 @@ void phase2Battle()
             g_Console.writeToBuffer(c, ras, 100);
             // reset locations for bomb and raymond
         }
-        
+
     }
-    
+
     if (g_sMovingBlock.fight == true)
     {
+
         fightCount4 = 1;
         if (g_sMovingBlock.startTimer == true) // stickman work
         {
@@ -8035,12 +8050,14 @@ void phase2Battle()
         {
             if (g_sBreakFloor.counter == true)
             {
-                randBreakFloor = rand() % (22 - 2 + 1);
-                randBreakFloor2 = rand() % (19 - 2 + 1) + 2;
+                randBreakFloor = rand() % (22 - 2 + 1) + 2;
+                randBreakFloor2 = rand() % (17 - 2 + 1) + 2;
+                randBreakFloor3 = rand() % (65 - 50 + 1) + 50;
+                randBreakFloor4 = rand() % (17 - 2 + 1) + 2;
                 g_sBreakFloor.counter = false;
             }
             drawBreakFloor(g_Console, randBreakFloor, randBreakFloor2);
-            drawBreakFloor(g_Console, randBreakFloor2, randBreakFloor);
+            drawBreakFloor(g_Console, randBreakFloor3, randBreakFloor4);
             //drawLaser3(g_Console, randstickman2);
             //drawLaser3(g_Console, randstickman3);
         }
@@ -8057,6 +8074,7 @@ void phase2Battle()
             int randPosY2 = rand() % (20 - 3 + 1) + 3;
             g_sBomb.m_cLocation.X = randPosX2;
             g_sBomb.m_cLocation.Y = randPosY2;
+
 
             // reset locations for bomb and raymond
         }
@@ -8078,33 +8096,48 @@ void phase2Battle()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
         {
             if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 1] == ' ') // check if bomb == ' '
-                g_sBomb.m_cLocation.X++;
+            {
+                if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 2] == ' ') // check if bomb == ' '
+                {
+                    g_sBomb.m_cLocation.X++;
+                }
+            }
         }
         if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 3)
         {
             if (rMap.Grid[g_sBomb.m_cLocation.Y - 1][g_sBomb.m_cLocation.X] == ' ')
             {
-                g_sBomb.m_cLocation.Y--;
+                if (rMap.Grid[g_sBomb.m_cLocation.Y - 2][g_sBomb.m_cLocation.X] == ' ')
+                {
+                    g_sBomb.m_cLocation.Y--;
+                }
             }
         }
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
         {
             if (rMap.Grid[g_sBomb.m_cLocation.Y + 1][g_sBomb.m_cLocation.X] == ' ')
             {
-                g_sBomb.m_cLocation.Y++;
+                if (rMap.Grid[g_sBomb.m_cLocation.Y + 2][g_sBomb.m_cLocation.X] == ' ')
+                {
+                    g_sBomb.m_cLocation.Y++;
+                }
             }
         }
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
         {
             if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X - 1] == ' ')
             {
-                g_sBomb.m_cLocation.X--;
+                if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X - 2] == ' ')
+                {
+                    g_sBomb.m_cLocation.X--;
+
+                }
 
             }
         }
     }
 
-  
+
     renderRaymond();
     if (g_sRaymond.startTimer == true)
     {
@@ -8129,6 +8162,48 @@ void phase2Battle()
             g_sRaymond.counter = false;
         }
     }
+    bool showObj = true;
+    if (showObj == true)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Avoid the incoming objects and", 0x0B, 100);
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "           Push the bomb ('B') to Raymond ('R') to move on to next phase", 0x0B, 100);
+
+    }
+    if ((g_sMovingBlock.fight == true) && (g_sBreakFloor.fight == true))
+    {
+        static bool showPhase = true;
+        if (showPhase == true)
+        {
+            c.X = 35;
+            c.Y = 24;
+            g_Console.writeToBuffer(c, "Phase 2", 0x0B, 100);
+        }
+    }
+    if ((g_sLaser.fight == true) && (g_sLaser2.fight == true) && (g_sLaser3.fight == true))
+    {
+        static bool showPhase = true;
+        if (showPhase == true)
+        {
+            c.X = 35;
+            c.Y = 24;
+            g_Console.writeToBuffer(c, "Phase 4", 0x0B, 100);
+        }
+    }
+    if ((g_sLaser.fight == true) && (g_sLaser2.fight == true) && (g_sLaser3.fight == true) && (g_sMovingBlock.fight == true) && (g_sBreakFloor.fight == true))
+    {
+        static bool showPhase = true;
+        if (showPhase == true)
+        {
+            c.X = 35;
+            c.Y = 24;
+            g_Console.writeToBuffer(c, "Final Phase", 0x0B, 100);
+        }
+    }
+    
+
 }
 void updateBomb()
 {
@@ -8821,10 +8896,10 @@ void renderGame()
             COORD c;  COORD d;
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x0F, 100);
+            g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x0B, 100);
             d.X = 5;
             d.Y = 28;
-            g_Console.writeToBuffer(d, "B = Backpack", 0x0F, 100);
+            g_Console.writeToBuffer(d, "B = Backpack", 0x0B, 100);
         }
     }
     /*
@@ -8861,10 +8936,10 @@ void renderGame()
         COORD c; COORD d;
         c.X = 5;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!", 0x0B, 100);
         d.X = 5;
         d.Y = 28;
-        g_Console.writeToBuffer(d, "F = Fire Extinguisher", 0x0F, 100);
+        g_Console.writeToBuffer(d, "'F' = Fire Extinguisher", 0x0B, 100);
 
     }
     /*
@@ -8907,6 +8982,7 @@ void renderMap_NPC()
 
 void renderMap_Townsquare()
 {
+    COORD c;
     while (townsquare_music == false)
     {
         PlaySound(TEXT("Land of 8 Bits.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -8919,7 +8995,13 @@ void renderMap_Townsquare()
     renderMap_NPC();
     g_sChar.talked = true;
     renderCharacter();  // renders the character into the buffer
-
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Talk to all the NPCs before exiting", 0x0B, 100);
+    }
     if ((g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == 13) || (g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 12))
     {
         g_sNPC2.talked = true;
@@ -8983,6 +9065,7 @@ void renderMap_Townsquare()
         g_eGameState = S_Protest_Area_Animation;
         g_sChar.m_cLocation.X = 40;
         g_sChar.m_cLocation.Y = 15;
+        //showObj = true;
     }
 }
 
@@ -8999,13 +9082,19 @@ void renderMap_Protest_Area()
 
     c.X = 62;
     c.Y = 4;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&');
-
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&', 0x0D);
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Collect Barrels '(B)' for consumables", 0x0B, 100);
+    }
     if (g_sChar.enterArea == true)
     {
         c.X = 62;
         c.Y = 4;
-        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'D');
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'D', 0x0D);
     }
     if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 62)
     {
@@ -9617,11 +9706,22 @@ void renderMap_Path_Area()
         PlaySound(TEXT("8 Bit Surf.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         game_music = true;
     }
-    COORD c;
+    COORD c, d;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.patharea(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Go up to the abandoned facility, go right ", 0x0B, 100);
+        d.X = 5;
+        d.Y = 27;
+        g_Console.writeToBuffer(d, "           to medical facility, go down to enter protest area.", 0x0B, 100);
+    }
 
     if (g_sChar.animationPlayed == true)
     {
@@ -9663,11 +9763,23 @@ void renderMap_Path_Area()
 //change this gamestate
 void renderMap_OAF()
 {
+    COORD c, d;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.outside_abandoned_facility(g_Console);
     renderCharacter();  // renders the character into the buffer
     renderPig();
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Go right to enter the abandoned facility, go down ", 0x0B, 100);
+        d.X = 5;
+        d.Y = 27;
+        g_Console.writeToBuffer(d, "           to go back to path area. You can fight pigs for resources.", 0x0B, 100);
+    }
 
     //back to path area
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7 || g_sChar.m_cLocation.X == 8 || g_sChar.m_cLocation.X == 9 || g_sChar.m_cLocation.X == 10 || g_sChar.m_cLocation.X == 11))
@@ -9749,12 +9861,24 @@ void renderPig()
 }
 void renderMap_IAF1()
 {
-    COORD c;
+    COORD c, d;
     srand((unsigned)time(0));
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility1(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Fix the wires by stepping on |!|. ", 0x0B, 100);
+        d.X = 5;
+        d.Y = 27;
+        g_Console.writeToBuffer(d, "           Go right to room 2, go left to room 4, go down to the outside.", 0x0B, 100);
+    }
+
     //IAF2
     if (g_sBox1.startTimer == true && g_sBox2.startTimer == true && g_sBox3.startTimer == true && g_sBox4.startTimer == true && g_sBox5.startTimer == true && g_sBox6.startTimer == true)
     {
@@ -10214,6 +10338,15 @@ void renderMap_IAF4()
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility4(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 24;
+        g_Console.writeToBuffer(c, "Objective: Talk to the wise old man for his advice! ", 0x0B, 100);
+    }
+
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
         g_eGameState = S_IAF1;
@@ -10262,6 +10395,15 @@ void renderMap_IAF2()
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility2(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Go right back to room 1, go up to room 3.", 0x0B, 100);
+    }
+
     //IAF1
     if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.Y == 15) && g_sChar.m_cLocation.X == 76)
     {
@@ -10276,7 +10418,7 @@ void renderMap_IAF2()
         g_dIAF3Time = 0.0;
         g_eGameState = S_IAF3_Animation;
         g_sChar.m_cLocation.X = 40;
-        g_sChar.m_cLocation.Y = 21;
+        g_sChar.m_cLocation.Y = 7;
     }
 
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 4)
@@ -10528,6 +10670,13 @@ void renderMap_Inside_Medical_Facility()
     rMap.insideMedicalFacility(g_Console);
     renderCharacter();  // renders the character into the buffer
 
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Talk to the patient nearest to the counter.", 0x0B, 100);
+    }
 
     if ((g_sChar.m_cLocation.Y == 10 || g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
     {
@@ -10569,6 +10718,15 @@ void renderMap_Dungeon_Cell()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_cell(g_Console);
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Place the box '[' onto the correct skull!", 0x0B, 100);
+    }
+
     if (g_sBox.startTimer == true)
     {
         for (int i = 32; i < 46; i++)
@@ -10712,12 +10870,20 @@ void renderBox()
 
 void renderMap_DS1()
 {
+    COORD c;
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Find Ell in the next room! ", 0x0B, 100);
+    }
+    
     while (stealth_music == false)
     {
         PlaySound(TEXT("8 Bit Menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         stealth_music = true;
     }
-    COORD c;
     srand((unsigned)time(0));
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
@@ -11613,14 +11779,26 @@ void renderMap_DS2()
         PlaySound(TEXT("8 Bit Menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         stealth_music = true;
     }
-    COORD c;
+    COORD c, d;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth2(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 24;
+        g_Console.writeToBuffer(c, "Objective: Sneak past the guards! ", 0x0B, 100);
+        d.X = 5;
+        d.Y = 25;
+        g_Console.writeToBuffer(d, "Directions: Right: '<', Left: '<', Up: 'V', Down: '^'. ", 0x0B, 100);
+    }
+
     c.X = 8;
     c.Y = 13;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'O');
+    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12);
 
     c.X = 8;
     c.Y = 13;
@@ -11658,12 +11836,21 @@ void renderMap_DS2()
 
 void renderMap_DS3()
 {
+    COORD c, d;
     PlaySound(NULL, NULL, NULL);
     stealth_music = false;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth3(g_Console);
     renderCharacter();  // renders the character into the buffer
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Go to the abandoned facility room 4.", 0x0B, 100);
+    }
     //back to DS2
     g_sChar.enterArea = true;
     if (g_sChar.m_cLocation.Y == 22 && (g_sChar.m_cLocation.X == 2 || g_sChar.m_cLocation.X == 3 || g_sChar.m_cLocation.X == 4 || g_sChar.m_cLocation.X == 5 || g_sChar.m_cLocation.X == 6 || g_sChar.m_cLocation.X == 7))
@@ -11721,73 +11908,10 @@ void RenderBattleScreen()
 
     if (g_sRaymondBoss.counter == true)
     {
-        Sprites.Battle_Raymond(g_Console, 0);
-        Sprites.drawRobert(g_Console, 0);
-        c.X = 53;
-        c.Y = 0;
-        string str_raymondhealth = to_string(g_sRaymondBoss.GetH());
-        g_Console.writeToBuffer(c, "Boss Health: " + str_raymondhealth, 0x0A, 100);
-        if (g_sChar.startTimer == true)
-        {
-            if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64))))
-            {
-                int randHit = rand() % 4 + 1;
-                if (randHit == 1 || randHit == 2) // player gets hit
-                {
-                    int charhealth = g_sChar.GetH() - g_sRaymondBoss.GetD(); // get player health
-                    string str_charhealth = to_string(charhealth);
+        Sprites.Battle_Raymond(g_Console, -19);
 
-                    g_sChar.SetH(charhealth); // set player health to new health
-
-                    g_sChar.showEnemyDMG = true;
-                    enemyDMGTime = 0.0;
-                    g_dslashRobert = 0.0;
-                }
-                if (randHit > 1) // guard gets hit
-                {
-                    int raymondhealth = g_sRaymondBoss.GetH() - g_sChar.GetD(); // get enemy health
-                    //string str_guardhealth = to_string(guardhealth);
-
-                    g_sRaymondBoss.SetH(raymondhealth); // set enemy health to new health
-                    g_sChar.showPlayerDMG = true;
-                    playerDMGTime = 0.0;
-                    g_dslashRaymond = 0.0;
-                }
-                startTime = 0.0;
-                g_sChar.resetTimer = true;
-                g_sChar.startTimer = false;
-                if (g_sRaymondBoss.GetH() <= 0)
-                {
-                    g_dkillRaymond = 0.0;
-                    g_sRaymondBoss.startTimer = true;
-                }
-                if (g_sChar.GetH() <= 0)
-                {
-                    g_dkillRobert = 0.0;
-                    g_sChar.entityDie = true;
-                }
-            }
-        }
-        if (g_sChar.showPlayerDMG == true)
-        {
-            COORD c;
-            c.X = 3;
-            c.Y = 25;
-            string str_charDMG = to_string(g_sChar.GetD());
-
-            g_Console.writeToBuffer(c, "You Dealt: " + str_charDMG, 0x0F, 100);
-            slashRaymond();
-        }
-        if (g_sChar.showEnemyDMG == true)
-        {
-            COORD c;
-            c.X = 3;
-            c.Y = 26;
-            string str_waspDMG = to_string(g_sRaymondBoss.GetD());
-
-            g_Console.writeToBuffer(c, "Enemy Dealt: " + str_waspDMG, 0x0F, 100);
-            slashRobert();
-        }
+        g_sRaymondBoss.startTimer = true;
+       
     }
 
     if (g_sPig.fight == true)
@@ -13260,13 +13384,15 @@ void UpdateBattleScreen()
     if ((g_dkillWasp > 6) && (g_sMutantWasp2.startTimer == true))
     {
         g_sMutantWasp2.fight = false;
+        g_sMutantWasp2.startTimer = false;
         g_dMedical2Time = 0.0;
         g_eGameState = S_Medical_Facility_Part2_Animation;
     }
     if ((g_dkillRaymond > 6) && (g_sRaymondBoss.startTimer == true))  // raymond die
     {
-        g_sRaymond.fight = false;
-        g_eGameState = S_Game_Over;
+        g_sRaymondBoss.fight = false;
+        g_dBossEndTime = 0.0;
+        g_eGameState = S_Boss_Room_End_Animation;
     }
     if ((g_dkillPig > 6) && (g_sPig.startTimer == true))
     {
@@ -13289,6 +13415,12 @@ void UpdateBattleScreen()
     if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
     {
         g_eGameState = S_Game_Over; // show game over screen after player die animation
+    }
+    if ((g_dkillTutWasp > 6) && (g_sTutEnemy.startTimer == true))
+    {
+        g_sTutEnemy.fight = false;
+        g_sTutEnemy.startTimer = false;
+        g_eGameState = S_Path_Area; // show game over screen after player die animation
     }
 
     if (g_sStinger.showItemDropped == true)
@@ -13721,9 +13853,9 @@ void renderCharacter()
         d.Y = 27;
         e.X = 5;
         e.Y = 28;
-        g_Console.writeToBuffer(c, "Got it!", 0x0F, 100);
-        g_Console.writeToBuffer(d, "Press the ENTER key to extinguish the fire!", 0x0F, 100);
-        g_Console.writeToBuffer(e, "Ensure that you are close to the fire first.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Got it!", 0x0B, 100);
+        g_Console.writeToBuffer(d, "Press the ENTER key to extinguish the fire!", 0x0B, 100);
+        g_Console.writeToBuffer(e, "Ensure that you are close to the fire first.", 0x0B, 100);
 
         rMap.Animation(g_Console, 40, 7, ' ');
         if (g_skKeyEvent[K_RETURN].keyDown && ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y + 1][g_sChar.m_cLocation.X] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y - 1][g_sChar.m_cLocation.X] == '_')))
@@ -13743,13 +13875,13 @@ void renderCharacter()
         g_Console.writeToBuffer(d, "                                                                                                                                   ", 0x00, 100);
         c.X = 5;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "Gotcha!", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Gotcha!", 0x0B, 100);
         e.X = 5;
         e.Y = 27;
-        g_Console.writeToBuffer(e, "Hurry! Get out of here now!", 0x0F, 100);
+        g_Console.writeToBuffer(e, "Hurry! Get out of here now!", 0x0B, 100);
         f.X = 5;
         f.Y = 28;
-        g_Console.writeToBuffer(f, "@ = Unlocked Door", 0x0F, 100);
+        g_Console.writeToBuffer(f, "@ = Unlocked Door", 0x0B, 100);
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }
@@ -13825,29 +13957,29 @@ void renderInputEvents()
         if (g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
         {
             ss.str("Left Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
+            //g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 1, ss.str(), 0x59);
         }
         else if (g_mouseEvent.buttonState == RIGHTMOST_BUTTON_PRESSED)
         {
             ss.str("Right Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
+            //g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 2, ss.str(), 0x59);
         }
         else
         {
             ss.str("Some Button Pressed");
-            g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
+            //g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 3, ss.str(), 0x59);
         }
         break;
     case DOUBLE_CLICK:
         ss.str("Double Clicked");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
+        //g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 4, ss.str(), 0x59);
         break;
     case MOUSE_WHEELED:
         if (g_mouseEvent.buttonState & 0xFF000000)
             ss.str("Mouse wheeled down");
         else
             ss.str("Mouse wheeled up");
-        g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
+        //g_Console.writeToBuffer(g_mouseEvent.mousePosition.X, g_mouseEvent.mousePosition.Y + 5, ss.str(), 0x59);
         break;
     default:
         break;
