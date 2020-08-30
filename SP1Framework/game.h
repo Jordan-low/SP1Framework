@@ -121,7 +121,6 @@ struct SGameChar : public Enemy
     bool showPlayerDMG;
     bool showEnemyDMG;
     bool unlockDoorDS1;
-    bool Poison;
     bool faceLeft;
     bool faceRight;
     bool fight;

@@ -280,7 +280,6 @@ void init(void)
     g_sMutantWasp2.SetH(25);
     g_sMutantWasp2.SetD(5);
 
-    g_sChar.Poison = false;
     g_sRaymondBoss.SetH(5200);
     g_sRaymondBoss.SetD(25);
     g_sChar.InvenActive = false;
