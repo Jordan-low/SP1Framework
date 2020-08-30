@@ -1,4 +1,4 @@
-// This is the main file for the game logic and function
+//This is the main file for the game logic and function
 //1
 //
 #include "game.h"
@@ -104,6 +104,8 @@ bool credits_music;
 bool null_music;
 bool enterPathArea;
 bool enterOldman;
+bool enterMedArea;
+bool enterDS3;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -195,6 +197,8 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    enterDS3 = false;
+    enterMedArea = false;
     enterPathArea = true;
     randCount = 0;
     g_sChar.entityDied = false;
@@ -255,8 +259,8 @@ void init(void)
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
 
-    g_sChar.SetH(5000); // set to 1k when enter room
-    g_sChar.SetD(100);
+    g_sChar.SetH(50); // set to 1k when enter room
+    g_sChar.SetD(500);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -274,7 +278,7 @@ void init(void)
     g_sMutantWasp.SetH(25);
     g_sMutantWasp.SetD(5);
     g_sMutantWasp2.SetH(25);
-    g_sMutantWasp2.SetD(100);
+    g_sMutantWasp2.SetD(5);
 
     g_sChar.Poison = false;
     g_sRaymondBoss.SetH(5200);
@@ -375,7 +379,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_OAF;
+    g_eGameState = S_Boss_Room_Animation;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -9453,7 +9457,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -9466,7 +9471,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -9478,7 +9484,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -9490,7 +9497,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
@@ -9502,7 +9510,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -9514,7 +9523,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
@@ -9537,7 +9547,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -9549,7 +9560,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -9561,7 +9573,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -9573,7 +9586,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
@@ -9585,7 +9599,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -9597,14 +9612,14 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
                 Medicine.QuantityCheck("Medicine");
                 item6 = true;
             }
-
         }
     }
 
@@ -9621,7 +9636,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -9633,7 +9649,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -9645,7 +9662,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -9657,7 +9675,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
@@ -9669,7 +9688,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -9681,7 +9701,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
@@ -9704,7 +9725,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -9717,7 +9739,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -9729,7 +9752,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -9741,7 +9765,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
@@ -9753,7 +9778,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -9765,7 +9791,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
@@ -9788,7 +9815,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -9800,7 +9828,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -9812,7 +9841,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -9824,7 +9854,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
@@ -9836,7 +9867,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -9848,7 +9880,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
@@ -9872,7 +9905,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -9884,7 +9918,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -9896,7 +9931,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -9908,19 +9944,22 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
                 Taco.QuantityCheck("Taco");
                 item4 = true;
             }
+
         }
         else if (ItemChance6 == 5)
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -9932,7 +9971,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
@@ -9956,7 +9996,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -9968,7 +10009,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -9980,7 +10022,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -9992,7 +10035,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
@@ -10004,7 +10048,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -10016,7 +10061,8 @@ void renderMap_Protest_Area()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
@@ -10079,6 +10125,15 @@ void renderMap_Path_Area()
     }
 
     //to inside medical facility
+    if (enterMedArea == true)
+    {
+        for (int j = 11; j < 15; j++)
+        {
+            c.X = 77;
+            c.Y = j;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&', 0x0A);
+        }
+    }
     if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 77)
     {
         g_eGameState = S_Inside_Medical_Facility;
@@ -10295,8 +10350,9 @@ void renderMap_IAF1()
         if (ItemChance == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10307,8 +10363,9 @@ void renderMap_IAF1()
         else if (ItemChance == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10331,8 +10388,9 @@ void renderMap_IAF1()
         if (ItemChance2 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10343,8 +10401,9 @@ void renderMap_IAF1()
         else if (ItemChance2 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10367,8 +10426,9 @@ void renderMap_IAF1()
         if (ItemChance3 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10379,8 +10439,9 @@ void renderMap_IAF1()
         else if (ItemChance3 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10404,8 +10465,9 @@ void renderMap_IAF1()
         if (ItemChance4 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10416,8 +10478,9 @@ void renderMap_IAF1()
         else if (ItemChance4 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10440,8 +10503,9 @@ void renderMap_IAF1()
         if (ItemChance5 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10452,8 +10516,9 @@ void renderMap_IAF1()
         else if (ItemChance5 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10476,8 +10541,9 @@ void renderMap_IAF1()
         if (ItemChance6 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10488,8 +10554,9 @@ void renderMap_IAF1()
         else if (ItemChance6 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10512,8 +10579,9 @@ void renderMap_IAF1()
         if (ItemChance7 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10524,8 +10592,9 @@ void renderMap_IAF1()
         else if (ItemChance7 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10548,8 +10617,9 @@ void renderMap_IAF1()
         if (ItemChance8 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10560,8 +10630,9 @@ void renderMap_IAF1()
         else if (ItemChance8 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10584,8 +10655,9 @@ void renderMap_IAF1()
         if (ItemChance9 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10596,8 +10668,9 @@ void renderMap_IAF1()
         else if (ItemChance9 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10620,8 +10693,9 @@ void renderMap_IAF1()
         if (ItemChance10 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10632,8 +10706,9 @@ void renderMap_IAF1()
         else if (ItemChance10 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10656,8 +10731,9 @@ void renderMap_IAF1()
         if (ItemChance11 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10668,8 +10744,9 @@ void renderMap_IAF1()
         else if (ItemChance11 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10711,6 +10788,12 @@ void renderMap_IAF4()
     if (g_sChar.m_cLocation.Y == 9 && g_sChar.m_cLocation.X == 40)
     {
         g_sChar.talkedOldMan = true;
+        c.X = 2;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Your health has now increased to 500.", 0x0F, 100);
+        c.X = 2;
+        c.Y = 27;
+        g_Console.writeToBuffer(c, "Your damaged has also been increased by 10.", 0x0F, 100);
     }
     if (((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13) && g_sChar.m_cLocation.X == 40) || ((g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 41) && g_sChar.m_cLocation.Y == 12))
     {
@@ -10807,8 +10890,9 @@ void renderMap_IAF2()
         if (ItemChance == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10820,8 +10904,9 @@ void renderMap_IAF2()
         else if (ItemChance == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10844,8 +10929,9 @@ void renderMap_IAF2()
         if (ItemChance2 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10857,8 +10943,9 @@ void renderMap_IAF2()
         else if (ItemChance2 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10881,21 +10968,22 @@ void renderMap_IAF2()
         if (ItemChance3 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
                 Stinger.QuantityCheck("Stinger");
                 item7 = true;
             }
-
         }
         else if (ItemChance3 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10918,8 +11006,9 @@ void renderMap_IAF2()
         if (ItemChance4 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -10931,8 +11020,9 @@ void renderMap_IAF2()
         else if (ItemChance4 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10955,21 +11045,22 @@ void renderMap_IAF2()
         if (ItemChance5 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
                 Stinger.QuantityCheck("Stinger");
                 item7 = true;
             }
-
         }
         else if (ItemChance5 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -10992,8 +11083,9 @@ void renderMap_IAF2()
         if (ItemChance6 == 1)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -11005,8 +11097,9 @@ void renderMap_IAF2()
         else if (ItemChance6 == 2)
         {
             c.X = 5;
-            c.Y = 25;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            c.Y = 26;
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -11078,6 +11171,7 @@ void renderMap_Inside_Medical_Facility()
     {
         g_dMedicalFightTime = 0.0;
         g_eGameState = S_Medical_Fight_Animation;
+        enterMedArea = true;
         g_sChar.m_cLocation.X = 34;
         g_sChar.m_cLocation.Y = 12;
     }
@@ -11288,10 +11382,10 @@ void renderMap_DS1()
     if (showObj == false)
     {
         c.X = 5;
-        c.Y = 25;
+        c.Y = 27;
         g_Console.writeToBuffer(c, "Objective: Find Ell in the next room! ", 0x0B, 100);
         c.X = 5;
-        c.Y = 26;
+        c.Y = 28;
         g_Console.writeToBuffer(c, "           Fight the guards to advance to the next room! ", 0x0B, 100);
     }
 
@@ -11679,7 +11773,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -11691,7 +11786,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -11703,7 +11799,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -11715,7 +11812,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
@@ -11727,7 +11825,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -11739,7 +11838,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
@@ -11763,7 +11863,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -11775,7 +11876,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -11787,7 +11889,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -11799,7 +11902,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
@@ -11811,7 +11915,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -11823,7 +11928,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
@@ -11847,7 +11953,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+            string Quantity = to_string(RawMeat.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + Quantity + " Raw Meat.", 0x0F, 100);
             static bool item1 = false;
             if (item1 == false)
             {
@@ -11859,7 +11966,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Bread.", 0x0F, 100);
+            string Quantity = to_string(Bread.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Bread. You now have " + Quantity + " Bread.", 0x0F, 100);
             static bool item2 = false;
             if (item2 == false)
             {
@@ -11871,7 +11979,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Burger.", 0x0F, 100);
+            string Quantity = to_string(Burger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Burger. You now have " + Quantity + " Burger.", 0x0F, 100);
             static bool item3 = false;
             if (item3 == false)
             {
@@ -11883,7 +11992,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Taco.", 0x0F, 100);
+            string Quantity = to_string(Taco.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Taco. You now have " + Quantity + " Taco.", 0x0F, 100);
             static bool item4 = false;
             if (item4 == false)
             {
@@ -11895,7 +12005,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Cake.", 0x0F, 100);
+            string Quantity = to_string(Cake.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Cake. You now have " + Quantity + " Cake.", 0x0F, 100);
             static bool item5 = false;
             if (item5 == false)
             {
@@ -11907,7 +12018,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Medicine.", 0x0F, 100);
+            string Quantity = to_string(Medicine.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Medicine. You now have " + Quantity + " Medicine.", 0x0F, 100);
             static bool item6 = false;
             if (item6 == false)
             {
@@ -11929,7 +12041,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -11941,7 +12054,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -11997,7 +12111,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
+            string Quantity = to_string(Stinger.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
             if (item7 == false)
             {
@@ -12009,7 +12124,8 @@ void renderMap_DS1()
         {
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+            string Quantity = to_string(GuardArmor.getQuantity());
+            g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
             if (item8 == false)
             {
@@ -12203,11 +12319,11 @@ void renderMap_DS2()
     if (showObj == false)
     {
         c.X = 5;
-        c.Y = 24;
+        c.Y = 27;
         g_Console.writeToBuffer(c, "Objective: Sneak past the guards! ", 0x0B, 100);
         d.X = 5;
-        d.Y = 25;
-        g_Console.writeToBuffer(d, "Directions: Right: '<', Left: '<', Up: 'V', Down: '^'. ", 0x0B, 100);
+        d.Y = 28;
+        g_Console.writeToBuffer(d, "Guard Directions: Up: 'V', Down: '^', Left: '>', Right: '<'", 0x0B, 100);
     }
 
     c.X = 8;
@@ -12221,10 +12337,10 @@ void renderMap_DS2()
     if ((g_sChar.m_cLocation.Y == 13) && (g_sChar.m_cLocation.X == 7) || (g_sChar.m_cLocation.Y == 12) && (g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 14) && (g_sChar.m_cLocation.X == 8))
     {
         c.X = 5;
-        c.Y = 26;
+        c.Y = 25;
         g_Console.writeToBuffer(c, "Ell: Avoid the guards and hide in the walls.");
         c.X = 5;
-        c.Y = 27;
+        c.Y = 26;
         g_Console.writeToBuffer(c, "     I'll get you out if you're in trouble, but don't count on me.");
     }
     renderMap_GuardStealth();
@@ -12262,7 +12378,6 @@ void renderMap_DS3()
     rMap.Border(g_Console);
     rMap.dungeon_stealth3(g_Console);
     renderCharacter();  // renders the character into the buffer
-
     static bool showObj = false;
     if (showObj == false)
     {
@@ -12280,6 +12395,7 @@ void renderMap_DS3()
         g_sChar.m_cLocation.Y = 19;
     }
     //trigger animation
+    
     if ((g_sChar.m_cLocation.Y == 21 || g_sChar.m_cLocation.Y == 22) && g_sChar.m_cLocation.X == 57)
     {
         g_dDungeonStealth3Time = 0.0;
@@ -12660,25 +12776,9 @@ void RenderBattleScreen()
                 int randHit = rand() % 4 + 1;
                 if (randHit == 1 || randHit == 2) // player gets hit
                 {
-                    int randPoison = rand() % 20 + 1;
-                    g_sChar.Poison = false;
                     int charhealth = g_sChar.GetH() - g_sTutEnemy.GetD(); // get player health
-                    if (randPoison > 0 && randPoison < 4)
-                    {
-
-                        g_sChar.Poison = true;
-                        if (g_sChar.Poison == true)
-                        {
-                            if ((Poisontime == 10) || (Poisontime == 20) || (Poisontime == 30))
-                            {
-                                charhealth = g_sChar.GetH() - 3;
-                            }
-                        }
-                    }
                     string str_charhealth = to_string(charhealth);
-
                     g_sChar.SetH(charhealth); // set player health to new health
-
                     g_sChar.showEnemyDMG = true;
                     enemyDMGTime = 0.0;
                     g_dslashRobert = 0.0;
@@ -12693,32 +12793,6 @@ void RenderBattleScreen()
                     playerDMGTime = 0.0;
                     g_dslashTutWasp = 0.0;
                 }
-
-                /*
-                if (g_sGuard.GetH() <= 0)
-                {
-                    Item GuardArmor;
-
-                    GuardArmor.setItemName("Guard Armor");
-
-                    Item* item3 = new Item;
-                    if (PlayerInv.pickup(item3))
-                    {
-                        c.X = 5;
-                        c.Y = 26;
-                        g_Console.writeToBuffer(c, "Item Added", 100);
-                    }
-                    else {
-                        c.X = 5;
-                        c.Y = 26;
-                        g_Console.writeToBuffer(c, "Not enough space.", 100);
-                    }
-
-                    c.X = 5;
-                    c.Y = 27;
-                    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
-                }
-                */
                 startTime = 0.0;
                 g_sChar.resetTimer = true;
                 g_sChar.startTimer = false;
@@ -12773,21 +12847,7 @@ void RenderBattleScreen()
                 int randHit = rand() % 4 + 1;
                 if (randHit == 1 || randHit == 2) // player gets hit
                 {
-                    int randPoison = rand() % 20 + 1;
-                    g_sChar.Poison = false;
                     int charhealth = g_sChar.GetH() - g_sMutantWasp.GetD(); // get player health
-                    if (randPoison > 0 && randPoison < 4)
-                    {
-
-                        g_sChar.Poison = true;
-                        if (g_sChar.Poison == true)
-                        {
-                            if ((Poisontime == 10) || (Poisontime == 20) || (Poisontime == 30))
-                            {
-                                charhealth = g_sChar.GetH() - 3;
-                            }
-                        }
-                    }
                     string str_charhealth = to_string(charhealth);
                     g_sChar.SetH(charhealth); // set player health to new health
                     g_sChar.showEnemyDMG = true;
@@ -12804,33 +12864,6 @@ void RenderBattleScreen()
                     playerDMGTime = 0.0;
                     g_dslashWasp = 0.0;
                 }
-
-                /*
-                if (g_sGuard.GetH() <= 0)
-                {
-                    Item GuardArmor;
-
-                    GuardArmor.setItemName("Guard Armor");
-
-                    Item* item3 = new Item;
-                    if (PlayerInv.pickup(item3))
-                    {
-                        c.X = 5;
-                        c.Y = 26;
-                        g_Console.writeToBuffer(c, "Item Added", 100);
-                    }
-                    else {
-                        c.X = 5;
-                        c.Y = 26;
-                        g_Console.writeToBuffer(c, "Not enough space.", 100);
-                    }
-
-                    c.X = 5;
-                    c.Y = 27;
-                    g_Console.writeToBuffer(c, PlayerInv.checkInventory("Guard Armor"), 100);
-                }
-                */
-
                 startTime = 0.0;
                 g_sChar.resetTimer = true;
                 g_sChar.startTimer = false;
@@ -12886,21 +12919,7 @@ void RenderBattleScreen()
                 int randHit = rand() % 4 + 1;
                 if (randHit == 1 || randHit == 2) // player gets hit
                 {
-                    int randPoison = rand() % 20 + 1;
-                    g_sChar.Poison = false;
                     int charhealth = g_sChar.GetH() - g_sMutantWasp.GetD(); // get player health
-                    if (randPoison > 0 && randPoison < 4)
-                    {
-
-                        g_sChar.Poison = true;
-                        if (g_sChar.Poison == true)
-                        {
-                            if ((Poisontime == 10) || (Poisontime == 20) || (Poisontime == 30))
-                            {
-                                charhealth = g_sChar.GetH() - 3;
-                            }
-                        }
-                    }
                     string str_charhealth = to_string(charhealth);
                     g_sChar.SetH(charhealth); // set player health to new health
                     g_sChar.showEnemyDMG = true;
@@ -13205,34 +13224,42 @@ void RenderBattleScreen()
 
     if (g_sChar.InvenActive == true)
     {
+        string str_Quantity1 = to_string(RawMeat.getQuantity());
+        string str_Quantity2 = to_string(Stinger.getQuantity());
+        string str_Quantity3 = to_string(GuardArmor.getQuantity());
+        string str_Quantity4 = to_string(Bread.getQuantity());
+        string str_Quantity5 = to_string(Burger.getQuantity());
+        string str_Quantity6 = to_string(Taco.getQuantity());
+        string str_Quantity7 = to_string(Cake.getQuantity());
+        string str_Quantity8 = to_string(Medicine.getQuantity());
         rMap.Road2(g_Console, 3, 24, 74);
         rMap.Road(g_Console, 2, 25, 5);
         rMap.Road2(g_Console, 3, 29, 75);
         rMap.Road(g_Console, 77, 25, 5);
         c.X = 13;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "o Raw Meat" , 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Raw Meat " + str_Quantity1, 0x0F, 100);
         c.X = 13;
         c.Y = 28;
-        g_Console.writeToBuffer(c, "o Stinger" , 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Stinger " + str_Quantity2, 0x0F, 100);
         c.X = 28;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "o Guard Armor" , 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Guard Armor " + str_Quantity3, 0x0F, 100);
         c.X = 28;
         c.Y = 28;
-        g_Console.writeToBuffer(c, "o Bread" , 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Bread " + str_Quantity4, 0x0F, 100);
         c.X = 46;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "o Burger" , 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Burger " + str_Quantity5, 0x0F, 100);
         c.X = 46;
         c.Y = 28;
-        g_Console.writeToBuffer(c, "o Taco" , 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Taco " + str_Quantity6, 0x0F, 100);
         c.X = 61;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "o Cake" , 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Cake " + str_Quantity7, 0x0F, 100);
         c.X = 61;
         c.Y = 28;
-        g_Console.writeToBuffer(c, "o Medicine" , 0x0F, 100);
+        g_Console.writeToBuffer(c, "o Medicine " + str_Quantity8, 0x0F, 100);
     }
     //change g_eGameState to inventory
     if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && (((g_mouseEvent.mousePosition.Y == 19)) && ((g_mouseEvent.mousePosition.X == 15) || (g_mouseEvent.mousePosition.X == 16) || (g_mouseEvent.mousePosition.X == 17) || (g_mouseEvent.mousePosition.X == 18) || (g_mouseEvent.mousePosition.X == 19) || (g_mouseEvent.mousePosition.X == 20) || (g_mouseEvent.mousePosition.X == 21) || (g_mouseEvent.mousePosition.X == 22) || (g_mouseEvent.mousePosition.X == 23) || (g_mouseEvent.mousePosition.X == 24) || (g_mouseEvent.mousePosition.X == 25))))
@@ -13249,20 +13276,24 @@ void RenderBattleScreen()
             g_sRawMeat.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if (g_sChar.GetH() < 50 && RawMeat.getQuantity() > 0)
+            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && RawMeat.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 5;
                 g_sRawMeat.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 RawMeat.setQuantity(RawMeat.getQuantity() - 1);
-                if (UpdateHealth > 50)
+                if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
                     g_sRawMeat.showItemUsed = false;
                     g_sChar.SetH(50);
-                    g_sInven.showItemNotUsed = true;
+                }
+                else if (UpdateHealth >= 1000)
+                {
+                    g_sRawMeat.showItemUsed = false;
+                    g_sChar.SetH(1000);
                 }
             }
-            else if (g_sChar.GetH() == 50 && RawMeat.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && RawMeat.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13326,20 +13357,24 @@ void RenderBattleScreen()
             g_sBread.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if (g_sChar.GetH() < 50 && Bread.getQuantity() > 0)
+            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Bread.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 10;
                 g_sBread.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Bread.setQuantity(Bread.getQuantity() - 1);
-                if (UpdateHealth > 50)
+                if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
                     g_sBread.showItemUsed = false;
                     g_sChar.SetH(50);
-                    g_sInven.showItemNotUsed = true;
+                }
+                else if (UpdateHealth >= 1000)
+                {
+                    g_sBread.showItemUsed = false;
+                    g_sChar.SetH(1000);
                 }
             }
-            else if (g_sChar.GetH() == 50 && Bread.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Bread.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13359,20 +13394,24 @@ void RenderBattleScreen()
             g_sBurger.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if (g_sChar.GetH() < 50 && Burger.getQuantity() > 0)
+            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Burger.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 25;
                 g_sInven.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Burger.setQuantity(Burger.getQuantity() - 1);
-                if (UpdateHealth > 50)
+                if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
                     g_sBurger.showItemUsed = false;
                     g_sChar.SetH(50);
-                    g_sInven.showItemNotUsed = true;
+                }
+                else if (UpdateHealth >= 1000)
+                {
+                    g_sBurger.showItemUsed = false;
+                    g_sChar.SetH(1000);
                 }
             }
-            else if (g_sChar.GetH() == 50 && Burger.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Burger.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13392,20 +13431,24 @@ void RenderBattleScreen()
             g_sTaco.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if (g_sChar.GetH() < 50 && Taco.getQuantity() > 0)
+            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Taco.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 25;
                 g_sTaco.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Taco.setQuantity(Taco.getQuantity() - 1);
-                if (UpdateHealth > 50)
+                if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
                     g_sTaco.showItemUsed = false;
                     g_sChar.SetH(50);
-                    g_sInven.showItemNotUsed = true;
+                }
+                else if (UpdateHealth >= 1000)
+                {
+                    g_sTaco.showItemUsed = false;
+                    g_sChar.SetH(1000);
                 }
             }
-            else if (g_sChar.GetH() == 50 && Taco.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Taco.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13425,13 +13468,24 @@ void RenderBattleScreen()
             g_sCake.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if (g_sChar.GetH() < 50 && Cake.getQuantity() > 0)
+            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Cake.getQuantity() > 0)
             {
-                g_sChar.SetH(50);
+                UpdateHealth = g_sChar.GetH() + 50;
                 g_sCake.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
                 Cake.setQuantity(Cake.getQuantity() - 1);
+                if (UpdateHealth >= 50 && UpdateHealth < 1000)
+                {
+                    g_sCake.showItemUsed = false;
+                    g_sChar.SetH(50);
+                }
+                else if (UpdateHealth >= 1000)
+                {
+                    g_sCake.showItemUsed = false;
+                    g_sChar.SetH(1000);
+                }
             }
-            else if (g_sChar.GetH() == 50 && Cake.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 10000) && Cake.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13451,11 +13505,21 @@ void RenderBattleScreen()
             g_sMedicine.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if (Medicine.getQuantity() > 0)
+            if (g_sChar.GetH() < 50 && Medicine.getQuantity() > 0)
             {
-                g_sChar.Poison = false;
+                UpdateHealth = 50;
+                g_sMedicine.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                Medicine.setQuantity(Medicine.getQuantity() - 1);
             }
-            else if (g_sChar.Poison == false && Medicine.getQuantity() > 0)
+            else if (g_sChar.GetH() < 1000 && Medicine.getQuantity() > 0)
+            {
+                UpdateHealth = 1000;
+                g_sMedicine.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                Medicine.setQuantity(Medicine.getQuantity() - 1);
+            }
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Medicine.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13623,32 +13687,32 @@ void RenderBattleScreen()
         c.X = 3;
         c.Y = 26;
         string str_Healed = to_string(g_sChar.GetH());
-        string str_Quantity = to_string(RawMeat.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        string str_Quantity1 = to_string(RawMeat.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity1 + " left.", 0x0F, 100);
     }
     if (g_sBread.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
         string str_Healed = to_string(g_sChar.GetH());
-        string str_Quantity = to_string(Bread.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        string str_Quantity2 = to_string(Bread.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity2 + " left.", 0x0F, 100);
     }
     if (g_sBurger.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
         string str_Healed = to_string(g_sChar.GetH());
-        string str_Quantity = to_string(Burger.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        string str_Quantity3 = to_string(Burger.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity3 + " left.", 0x0F, 100);
     }
     if (g_sTaco.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
         string str_Healed = to_string(g_sChar.GetH());
-        string str_Quantity = to_string(Taco.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        string str_Quantity4 = to_string(Taco.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity4 + " left.", 0x0F, 100);
     }
 
     if (g_sCake.showItemUsed == true)
@@ -13656,8 +13720,8 @@ void RenderBattleScreen()
         c.X = 3;
         c.Y = 26;
         string str_Healed = to_string(g_sChar.GetH());
-        string str_Quantity = to_string(Cake.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        string str_Quantity5 = to_string(Cake.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity5 + " left.", 0x0F, 100);
     }
 
     if (g_sMedicine.showItemUsed == true)
@@ -13665,15 +13729,26 @@ void RenderBattleScreen()
         c.X = 3;
         c.Y = 26;
         string str_Healed = to_string(g_sChar.GetH());
-        string str_Quantity = to_string(RawMeat.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        string str_Quantity6 = to_string(Medicine.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity6 + " left.", 0x0F, 100);
     }
 
-    if (g_sChar.Poison == true)
+    if (g_sStinger.showItemUsed == true)
     {
-        c.X = 1;
-        c.Y = 23;
-        g_Console.writeToBuffer(c, "You have been Poisoned.", 0x0F, 100);
+        c.X = 3;
+        c.Y = 26;
+        string str_Dmg = to_string(g_sChar.GetD());
+        string str_Quantity7 = to_string(Stinger.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. Your damage has been increased to " + str_Dmg + ". You have " + str_Quantity7 + " left.", 0x0F, 100);
+    }
+
+    if (g_sGuardArmor.showItemUsed == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+        string str_Dmg = to_string(g_sChar.GetD());
+        string str_Quantity8 = to_string(GuardArmor.getQuantity());
+        g_Console.writeToBuffer(c, "Item used. Your damage has been increased to " + str_Dmg + ". You have " + str_Quantity8 + " left.", 0x0F, 100);
     }
 
     if (g_sInven.showItemNotUsed == true)
@@ -13688,13 +13763,6 @@ void RenderBattleScreen()
         c.X = 3;
         c.Y = 26;
         g_Console.writeToBuffer(c, "Item ran out.", 0x0F, 100);
-    }
-    
-    if (g_sChar.Poison == true)
-    {
-        c.X = 1;
-        c.Y = 23;
-        g_Console.writeToBuffer(c, "You have been Poisoned.", 0x0F, 100);
     }
 }
 void UpdateBattleScreen()
@@ -13752,75 +13820,70 @@ void UpdateBattleScreen()
 
     }
 
-    if ((playerInvenTime > 3) && (g_sBread.showItemUsed == true))
+    if ((playerInvenTime > 2) && (g_sBread.showItemUsed == true))
     {
         g_sBread.showItemUsed = false;
         playerInvenTime = 0.0;
         c.X = 3;
         c.Y = 26;
-        string str_Healed = to_string(g_sChar.GetH());
-        string str_Quantity = to_string(Taco.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
     }
 
-    if ((playerInvenTime > 3) && (g_sBurger.showItemUsed == true))
+    if ((playerInvenTime > 2) && (g_sBurger.showItemUsed == true))
     {
         g_sBurger.showItemUsed = false;
         playerInvenTime = 0.0;
         c.X = 3;
         c.Y = 26;
-        string str_Healed = to_string(g_sChar.GetH());
-        string str_Quantity = to_string(Cake.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
     }
 
-    if ((playerInvenTime > 3) && (g_sTaco.showItemUsed == true))
+    if ((playerInvenTime > 2) && (g_sTaco.showItemUsed == true))
     {
         g_sTaco.showItemUsed = false;
         playerInvenTime = 0.0;
         c.X = 3;
         c.Y = 26;
-
-        string str_Healed = to_string(g_sChar.GetH());
-        string str_Quantity = to_string(RawMeat.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
     }
 
-    if ((playerInvenTime > 3) && (g_sCake.showItemUsed == true))
+    if ((playerInvenTime > 2) && (g_sCake.showItemUsed == true))
     {
         g_sCake.showItemUsed = false;
         playerInvenTime = 0.0;
         c.X = 3;
         c.Y = 26;
-        string str_Dmg = to_string(g_sChar.GetD());
-        string str_Quantity = to_string(Stinger.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You increased your damage to " + str_Dmg + ". You have " + str_Quantity + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
     }
 
-    if ((playerInvenTime > 3) && (g_sMedicine.showItemUsed == true))
+    if ((playerInvenTime > 2) && (g_sMedicine.showItemUsed == true))
     {
         g_sMedicine.showItemUsed = false;
         playerInvenTime = 0.0;
         c.X = 3;
         c.Y = 26;
-        string str_Dmg = to_string(g_sChar.GetD());
-        string str_Quantity = to_string(GuardArmor.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You increased your damage to " + str_Dmg + ". You have " + str_Quantity + " left.", 0x0F, 100);
-    }
-    if (g_sInven.showItemNotUsed == true)
-    {
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "Item not used.", 0x0F, 100);
-    }
-    if (g_sInven.showNoQuantity == true)
-    {
-        c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "Item ran out.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
     }
 
-    if ((playerInvenTime > 3) && (g_sInven.showItemNotUsed == true))
+    if ((playerInvenTime > 2) && (g_sStinger.showItemUsed == true))
+    {
+        g_sStinger.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+    }
+
+    if ((playerInvenTime > 2) && (g_sGuardArmor.showItemUsed == true))
+    {
+        g_sGuardArmor.showItemUsed = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+    }
+
+    if ((playerInvenTime > 2) && (g_sInven.showItemNotUsed == true))
     {
         g_sInven.showItemNotUsed = false;
         playerInvenTime = 0.0;
@@ -13829,7 +13892,7 @@ void UpdateBattleScreen()
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
 
     }
-    if ((playerInvenTime > 3) && (g_sInven.showNoQuantity == true))
+    if ((playerInvenTime > 2) && (g_sInven.showNoQuantity == true))
     {
         g_sInven.showNoQuantity = false;
         playerInvenTime = 0.0;
@@ -13907,6 +13970,25 @@ void UpdateBattleScreen()
         g_eGameState = S_Game_Over; // show game over screen after player die animation
     }
 
+    if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
+    {
+        //g_eGameState = S_Townsquare;
+        g_sChar.showPlayerDMG = false;
+        playerDMGTime = 0.0;
+        c.X = 3;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
+    if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
+    {
+        g_sChar.showEnemyDMG = false;
+        enemyDMGTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+
+    }
 
     if (g_sStinger.showItemDropped == true)
     {
@@ -13920,13 +14002,11 @@ void UpdateBattleScreen()
         c.Y = 26;
         g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
     }
-    if ((Poisontime > 30) && (g_sChar.Poison == true))
+    if (g_sRawMeat.showItemDropped == true)
     {
-        g_sChar.Poison = false;
-        Poisontime = 0.0;
-        c.X = 1;
-        c.Y = 23;
-        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
     }
 }
 
@@ -16577,6 +16657,7 @@ void RenderGameOver()
             }
             if (g_sChar.CP3 == true)
             {
+                g_sRaymondBoss.SetH(5000);
                 g_sLaser.fight = false;
                 g_sLaser2.fight = false;
                 g_sLaser3.fight = false; 

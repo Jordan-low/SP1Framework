@@ -1600,6 +1600,12 @@ void Map::dungeon_stealth3(Console& g_Console)
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
 	c.X = 10;
 	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = 'O', 0x0A);
+	c.X = 59;
+	c.Y = 21;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x0A);
+	c.X = 59;
+	c.Y = 22;
+	g_Console.writeToBuffer(c, Grid[c.Y][c.X] = '&', 0x0A);
 }
 void Map::boss_room(Console& g_Console)
 {
