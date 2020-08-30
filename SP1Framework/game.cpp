@@ -64,6 +64,7 @@ double g_dCreditsTime;
 double bombTime;
 double raymondTime;
 double showCollect;
+double Poisontime;
 int randnum;
 int randnum2;
 int randnum3;
@@ -367,7 +368,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_IAF1;
+    g_eGameState = S_IAF4;
     //g_eGameState = S_killRaymond;
 
 
@@ -683,6 +684,7 @@ void update(double dt)
     bombTime += dt;
     raymondTime += dt;
     showCollect += dt;
+    Poisontime += dt;
 
     switch (g_eGameState)
     {
@@ -10212,7 +10214,16 @@ void renderMap_IAF4()
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility4(g_Console);
     renderCharacter();  // renders the character into the buffer
-
+    if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
+    {
+        g_eGameState = S_IAF1;
+        g_sChar.m_cLocation.X = 76;
+        g_sChar.m_cLocation.Y = 19;
+    }
+    if ((g_sChar.m_cLocation.Y == 9) && (g_sChar.m_cLocation.X == 40))
+    {
+        g_sChar.talkedOldMan = true;
+    }
     if (((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13) && g_sChar.m_cLocation.X == 40) || ((g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 41) && g_sChar.m_cLocation.Y == 12))
     {
         if (g_sChar.talkedOldMan == false)
@@ -10230,307 +10241,16 @@ void renderMap_IAF4()
             g_sChar.SetD(g_sChar.GetD() + 10);
         }
 
-        else if (g_sChar.talkedOldMan == true)
+        
+        if ((g_sChar.talkedOldMan == true) && ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13) && g_sChar.m_cLocation.X == 40) || ((g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 41) && g_sChar.m_cLocation.Y == 12))
         {
-            c.X = 5;
+            c.X = 2;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Strange Old Man: Get going now! You have to continue your journey!", 0x0F, 100);
             c.Y = 27;
             g_Console.writeToBuffer(c, "                 Go and fulfill your destiny!", 0x0F, 100);
         }
-    }
-
-    if (g_sChar.m_cLocation.Y == 9 && g_sChar.m_cLocation.X == 40)
-    {
-        g_sChar.talkedOldMan = true;
-    }
-
-    if ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 12 || g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.Y == 14) && g_sChar.m_cLocation.X == 2)
-    {
-        showCollect = 0.0;
-        static int ItemChance4 = 0;
-        static bool temp4 = false;
-        if (temp4 == false)
-        {
-            ItemChance4 = rand() % 2 + 1;
-            temp4 = true;
-        }
-        if (ItemChance4 == 1)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
-            static bool item7 = false;
-            if (item7 == false)
-            {
-                Stinger.QuantityCheck("Stinger");
-                item7 = true;
-            }
-        }
-        else if (ItemChance4 == 2)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
-            static bool item8 = false;
-            if (item8 == false)
-            {
-                GuardArmor.QuantityCheck("Guard Armor");
-                item8 = true;
-            }
-        }
-    }
-
-    if (g_sChar.m_cLocation.Y == 7 && g_sChar.m_cLocation.X == 18)
-    {
-        showCollect = 0.0;
-        static int ItemChance5 = 0;
-        static bool temp5 = false;
-        if (temp5 == false)
-        {
-            ItemChance5 = rand() % 2 + 1;
-            temp5 = true;
-        }
-        if (ItemChance5 == 1)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
-            static bool item7 = false;
-            if (item7 == false)
-            {
-                Stinger.QuantityCheck("Stinger");
-                item7 = true;
-            }
-        }
-        else if (ItemChance5 == 2)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
-            static bool item8 = false;
-            if (item8 == false)
-            {
-                GuardArmor.QuantityCheck("Guard Armor");
-                item8 = true;
-            }
-        }
-    }
-
-    if (g_sChar.m_cLocation.Y == 2 && g_sChar.m_cLocation.X == 76)
-    {
-        showCollect = 0.0;
-        static int ItemChance6 = 0;
-        static bool temp6 = false;
-        if (temp6 == false)
-        {
-            ItemChance6 = rand() % 2 + 1;
-            temp6 = true;
-        }
-        if (ItemChance6 == 1)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
-            static bool item7 = false;
-            if (item7 == false)
-            {
-                Stinger.QuantityCheck("Stinger");
-                item7 = true;
-            }
-        }
-        else if (ItemChance6 == 2)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
-            static bool item8 = false;
-            if (item8 == false)
-            {
-                GuardArmor.QuantityCheck("Guard Armor");
-                item8 = true;
-            }
-        }
-    }
-
-    if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 62)
-    {
-        showCollect = 0.0;
-        static int ItemChance7 = 0;
-        static bool temp7 = false;
-        if (temp7 == false)
-        {
-            ItemChance7 = rand() % 2 + 1;
-            temp7 = true;
-        }
-        if (ItemChance7 == 1)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
-            static bool item7 = false;
-            if (item7 == false)
-            {
-                Stinger.QuantityCheck("Stinger");
-                item7 = true;
-            }
-        }
-        else if (ItemChance7 == 2)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
-            static bool item8 = false;
-            if (item8 == false)
-            {
-                GuardArmor.QuantityCheck("Guard Armor");
-                item8 = true;
-            }
-        }
-    }
-
-    if (g_sChar.m_cLocation.Y == 5 && g_sChar.m_cLocation.X == 67)
-    {
-        showCollect = 0.0;
-        static int ItemChance8 = 0;
-        static bool temp8 = false;
-        if (temp8 == false)
-        {
-            ItemChance8 = rand() % 2 + 1;
-            temp8 = true;
-        }
-        if (ItemChance8 == 1)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
-            static bool item7 = false;
-            if (item7 == false)
-            {
-                Stinger.QuantityCheck("Stinger");
-                item7 = true;
-            }
-        }
-        else if (ItemChance8 == 2)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
-            static bool item8 = false;
-            if (item8 == false)
-            {
-                GuardArmor.QuantityCheck("Guard Armor");
-                item8 = true;
-            }
-        }
-    }
-
-    if (g_sChar.m_cLocation.Y == 6 && g_sChar.m_cLocation.X == 63)
-    {
-        showCollect = 0.0;
-        static int ItemChance9 = 0;
-        static bool temp9 = false;
-        if (temp9 == false)
-        {
-            ItemChance9 = rand() % 2 + 1;
-            temp9 = true;
-        }
-        if (ItemChance9 == 1)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
-            static bool item7 = false;
-            if (item7 == false)
-            {
-                Stinger.QuantityCheck("Stinger");
-                item7 = true;
-            }
-        }
-        else if (ItemChance9 == 2)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
-            static bool item8 = false;
-            if (item8 == false)
-            {
-                GuardArmor.QuantityCheck("Guard Armor");
-                item8 = true;
-            }
-        }
-    }
-
-    if (g_sChar.m_cLocation.Y == 9 && g_sChar.m_cLocation.X == 76)
-    {
-        showCollect = 0.0;
-        static int ItemChance10 = 0;
-        static bool temp10 = false;
-        if (temp10 == false)
-        {
-            ItemChance10 = rand() % 2 + 1;
-            temp10 = true;
-        }
-        if (ItemChance10 == 1)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
-            static bool item7 = false;
-            if (item7 == false)
-            {
-                Stinger.QuantityCheck("Stinger");
-                item7 = true;
-            }
-        }
-        else if (ItemChance10 == 2)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
-            static bool item8 = false;
-            if (item8 == false)
-            {
-                GuardArmor.QuantityCheck("Guard Armor");
-                item8 = true;
-            }
-        }
-    }
-
-    if (g_sChar.m_cLocation.Y == 13 && g_sChar.m_cLocation.X == 67)
-    {
-        showCollect = 0.0;
-        static int ItemChance11 = 0;
-        static bool temp11 = false;
-        if (temp11 == false)
-        {
-            ItemChance11 = rand() % 2 + 1;
-            temp11 = true;
-        }
-        if (ItemChance11 == 1)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Stinger.", 0x0F, 100);
-            static bool item7 = false;
-            if (item7 == false)
-            {
-                Stinger.QuantityCheck("Stinger");
-                item7 = true;
-            }
-        }
-        else if (ItemChance11 == 2)
-        {
-            c.X = 5;
-            c.Y = 26;
-            g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
-            static bool item8 = false;
-            if (item8 == false)
-            {
-                GuardArmor.QuantityCheck("Guard Armor");
-                item8 = true;
-            }
-        }
+        
     }
 }
 
@@ -12373,7 +12093,21 @@ void RenderBattleScreen()
                 int randHit = rand() % 4 + 1;
                 if (randHit == 1 || randHit == 2) // player gets hit
                 {
+                    int randPoison = rand() % 20 + 1;
+                    g_sChar.Poison = false;
                     int charhealth = g_sChar.GetH() - g_sTutEnemy.GetD(); // get player health
+                    if (randPoison > 0 && randPoison < 4)
+                    {
+
+                        g_sChar.Poison = true;
+                        if (g_sChar.Poison == true)
+                        {
+                            if ((Poisontime == 10) || (Poisontime == 20) || (Poisontime == 30))
+                            {
+                                charhealth = g_sChar.GetH() - 3;
+                            }
+                        }
+                    }
                     string str_charhealth = to_string(charhealth);
 
                     g_sChar.SetH(charhealth); // set player health to new health
@@ -12469,15 +12203,26 @@ void RenderBattleScreen()
                 int randHit = rand() % 4 + 1;
                 if (randHit == 1 || randHit == 2) // player gets hit
                 {
+                    int randPoison = rand() % 20 + 1;
+                    g_sChar.Poison = false;
                     int charhealth = g_sChar.GetH() - g_sMutantWasp.GetD(); // get player health
+                    if (randPoison > 0 && randPoison < 4)
+                    {
+
+                        g_sChar.Poison = true;
+                        if (g_sChar.Poison == true)
+                        {
+                            if ((Poisontime == 10) || (Poisontime == 20) || (Poisontime == 30))
+                            {
+                                charhealth = g_sChar.GetH() - 3;
+                            }
+                        }
+                    }
                     string str_charhealth = to_string(charhealth);
-
                     g_sChar.SetH(charhealth); // set player health to new health
-
                     g_sChar.showEnemyDMG = true;
                     enemyDMGTime = 0.0;
                     g_dslashRobert = 0.0;
-
                 }
                 if (randHit > 1) // guard gets hit
                 {
@@ -12568,8 +12313,23 @@ void RenderBattleScreen()
                 int randHit = rand() % 4 + 1;
                 if (randHit == 1 || randHit == 2) // player gets hit
                 {
-                    g_sChar.SetH(0); // set player health to new health
+                    int randPoison = rand() % 20 + 1;
+                    g_sChar.Poison = false;
+                    int charhealth = g_sChar.GetH() - g_sMutantWasp.GetD(); // get player health
+                    if (randPoison > 0 && randPoison < 4)
+                    {
 
+                        g_sChar.Poison = true;
+                        if (g_sChar.Poison == true)
+                        {
+                            if ((Poisontime == 10) || (Poisontime == 20) || (Poisontime == 30))
+                            {
+                                charhealth = g_sChar.GetH() - 3;
+                            }
+                        }
+                    }
+                    string str_charhealth = to_string(charhealth);
+                    g_sChar.SetH(charhealth); // set player health to new health
                     g_sChar.showEnemyDMG = true;
                     enemyDMGTime = 0.0;
                     g_dslashRobert = 0.0;
@@ -13106,9 +12866,27 @@ void RenderBattleScreen()
         }
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 28) && (g_mouseEvent.mousePosition.X == 61)))
         {
-            //Poison Status
+            g_sMedicine.showItemUsed = false;
+            g_sInven.showItemNotUsed = false;
+            g_sInven.showNoQuantity = false;
+            if (Medicine.getQuantity() > 0)
+            {
+                g_sChar.Poison = false;
+            }
+            else if (g_sChar.Poison == false && Medicine.getQuantity() > 0)
+            {
+                g_sInven.showItemNotUsed = true;
+            }
+            else
+            {
+                g_sInven.showNoQuantity = true;
+            }
+            playerInvenTime = 0.0;
             g_sChar.InvenActive = false;
             g_sChar.itemActive = false;
+            InvenTime = 0.0;
+            g_sInven.startTimer = false;
+            g_sInven.resetTimer = true;
         }
         else if ((g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED) && ((g_mouseEvent.mousePosition.Y == 19) && (g_mouseEvent.mousePosition.X == 58) || (g_mouseEvent.mousePosition.X == 59) || (g_mouseEvent.mousePosition.X == 60) || (g_mouseEvent.mousePosition.X == 61) || (g_mouseEvent.mousePosition.X == 62) || (g_mouseEvent.mousePosition.X == 63) || (g_mouseEvent.mousePosition.X == 64)))
         {
@@ -13285,45 +13063,34 @@ void RenderBattleScreen()
     {
         c.X = 3;
         c.Y = 26;
-
         string str_Healed = to_string(g_sChar.GetH());
         string str_Quantity = to_string(Taco.getQuantity());
         g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
-
-        c.X = 5;
-        c.Y = 29;
-        string Tacko = to_string(Taco.getQuantity());
-        g_Console.writeToBuffer(c, Tacko, 100);
     }
 
     if (g_sCake.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
-
         string str_Healed = to_string(g_sChar.GetH());
         string str_Quantity = to_string(Cake.getQuantity());
         g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
-
-        c.X = 5;
-        c.Y = 29;
-        string Kake = to_string(Cake.getQuantity());
-        g_Console.writeToBuffer(c, Kake, 100);
     }
 
     if (g_sMedicine.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
-
         string str_Healed = to_string(g_sChar.GetH());
         string str_Quantity = to_string(RawMeat.getQuantity());
         g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity + " left.", 0x0F, 100);
+    }
 
-        c.X = 5;
-        c.Y = 29;
-        string Meds = to_string(Medicine.getQuantity());
-        g_Console.writeToBuffer(c, Meds, 100);
+    if (g_sChar.Poison == true)
+    {
+        c.X = 1;
+        c.Y = 23;
+        g_Console.writeToBuffer(c, "You have been Poisoned.", 0x0F, 100);
     }
 
     if (g_sInven.showItemNotUsed == true)
@@ -13338,6 +13105,13 @@ void RenderBattleScreen()
         c.X = 3;
         c.Y = 26;
         g_Console.writeToBuffer(c, "Item ran out.", 0x0F, 100);
+    }
+    
+    if (g_sChar.Poison == true)
+    {
+        c.X = 1;
+        c.Y = 23;
+        g_Console.writeToBuffer(c, "You have been Poisoned.", 0x0F, 100);
     }
 }
 void UpdateBattleScreen()
@@ -13517,7 +13291,7 @@ void UpdateBattleScreen()
         g_eGameState = S_Game_Over; // show game over screen after player die animation
     }
 
-    if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
+    if (g_sStinger.showItemDropped == true)
     {
         c.X = 3;
         c.Y = 26;
@@ -13528,6 +13302,14 @@ void UpdateBattleScreen()
         c.X = 3;
         c.Y = 26;
         g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+    }
+    if ((Poisontime > 30) && (g_sChar.Poison == true))
+    {
+        g_sChar.Poison = false;
+        Poisontime = 0.0;
+        c.X = 1;
+        c.Y = 23;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
     }
 }
 
@@ -14034,7 +13816,7 @@ void renderInputEvents()
 
     // mouse events    
     ss.str("");
-    /*ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";*/
+    ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
     g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
     switch (g_mouseEvent.eventFlags)
