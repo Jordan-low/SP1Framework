@@ -329,6 +329,7 @@ void init(void)
     g_sChar.animationPlayed = false;
     g_sChar.enterArea = false;
     g_sChar.talkedOldMan = false;
+    g_sChar.IAF3Convo = false;
 
     //Wire minigame
     g_sBox1.m_cLocation.X = 52;
@@ -374,7 +375,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Dungeon_Stealth_2;
+    g_eGameState = S_IAF2;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -10490,6 +10491,16 @@ void renderMap_IAF2()
         g_sChar.m_cLocation.Y = 7;
     }
 
+    if (g_sChar.IAF3Convo == true)
+    {
+        for (int i = 32; i <= 44; i++)
+        {
+            c.X = i;
+            c.Y = 2;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&', 0x0A);
+        }
+    }
+
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 4)
     {
         showCollect = 0.0;
@@ -10727,6 +10738,7 @@ void renderMap_IAF3()
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility3(g_Console);
     renderCharacter();  // renders the character into the buffer
+    g_sChar.IAF3Convo = true;
     //Back to IAF 2
     if ((g_sChar.m_cLocation.Y == 22) && (g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41))
     {
