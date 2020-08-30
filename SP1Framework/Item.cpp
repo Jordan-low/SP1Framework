@@ -1,18 +1,9 @@
 #include "Item.h"
 #include <iostream>
-#include "Enemy.h"
 
 Item::Item()
 {
 	name = " ";
-	itemChance = 0;
-	Heal = 0;
-	addDmg = 0;
-	Status = " ";
-	for (int i = 0; i < 2; i++)
-	{
-		Drops[i] = nullptr;
-	}
 }
 
 void Item::setItemName(std::string n)
@@ -53,14 +44,6 @@ void Item::setNoStatus(std::string s)
 std::string Item::getNoStatus()
 {
 	return Status;
-}
-
-void Item::itemDrops(Enemy* d)
-{
-	for (int i = 0; i < 2; i++)
-	{
-		Drops[i] = d;
-	}
 }
 
 void Item::Barrel(Console& g_Console)

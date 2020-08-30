@@ -1,7 +1,7 @@
 #ifndef _GAME_H
 #define _GAME_H
-#include "Enemy.h"
 #include "Framework\timer.h"
+#include "Entity.h"
 
 extern CStopWatch g_swTimer;
 extern bool g_bQuitGame;
@@ -98,7 +98,7 @@ enum EGAMESTATES
 };
 
 // struct for the game character
-struct SGameChar : public Enemy
+struct SGameChar : public Entity
 {
     int count;
     COORD m_cLocation;

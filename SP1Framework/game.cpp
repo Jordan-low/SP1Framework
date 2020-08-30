@@ -378,7 +378,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Protest_Area;
+    g_eGameState = S_MENU_UI;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -10790,6 +10790,13 @@ void renderMap_IAF4()
     }
     if (g_sChar.m_cLocation.Y == 9 && g_sChar.m_cLocation.X == 40)
     {
+        g_sChar.SetH(500);
+        static bool addDamage = false;
+        if (addDamage == false)
+        {
+            g_sChar.SetD(g_sChar.GetD() + 10);
+            addDamage = true;
+        }
         g_sChar.talkedOldMan = true;
         c.X = 2;
         c.Y = 26;
@@ -10811,8 +10818,6 @@ void renderMap_IAF4()
             g_Console.writeToBuffer(c, "                 never seen anyone as tyrannical as him.", 0x0F, 100);
             c.Y = 28;
             g_Console.writeToBuffer(c, "                 Here, lemme boost you to aid you on your journey.", 0x0F, 100);
-            g_sChar.SetH(500);
-            g_sChar.SetD(g_sChar.GetD() + 10);
         }
     }
 
@@ -16720,6 +16725,11 @@ void RenderGameOver()
             }
             if (g_sChar.CP3 == true)
             {
+                fightCount = 0;
+                fightCount2 = 0;
+                fightCount3 = 0;
+                fightCount4 = 0;
+                fightCount5 = 0;
                 g_sRaymondBoss.SetH(5000);
                 g_sLaser.fight = false;
                 g_sLaser2.fight = false;

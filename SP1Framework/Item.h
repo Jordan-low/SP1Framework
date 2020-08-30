@@ -1,9 +1,8 @@
 #pragma once
 #include "Framework\console.h"
-#include "Enemy.h"
 #include "string"
 
-class Item : public Enemy
+class Item
 {
 private:
 	std::string name;
@@ -11,7 +10,6 @@ private:
 	int addDmg;
 	int itemChance;
 	std::string Status;
-	Enemy* Drops[2];
 
 public:
 	Item();
@@ -21,7 +19,6 @@ public:
 	int getHealing();
 	void setNoStatus(std::string s);
 	std::string getNoStatus();
-	void itemDrops(Enemy* d);
 	void setDmgBoost(int a);
 	int getDmgBoost();
 	~Item();
