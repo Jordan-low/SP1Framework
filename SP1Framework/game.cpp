@@ -216,7 +216,7 @@ void init(void)
     g_sBreakFloor.fight = true;
     g_sBomb.fight = false;
     g_sRaymond.fight = false;
-    g_sRaymondBoss.fight = true;
+    g_sRaymondBoss.fight = false;
     g_sRaymondBoss.counter = false;
 
 
@@ -370,7 +370,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_BattleScreen;
+    g_eGameState = S_Protest_Area;
 
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
@@ -8157,9 +8157,9 @@ void phase2Battle()
     {
         c.X = 5;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "Objective: Avoid the incoming objects and", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Objective: Avoid the incoming objects and", 0x0B, 100);
         c.Y = 27;
-        g_Console.writeToBuffer(c, "           Push the bomb ('B') to Raymond ('R') to move on to next phase", 0x0F, 100);
+        g_Console.writeToBuffer(c, "           Push the bomb ('B') to Raymond ('R') to move on to next phase", 0x0B, 100);
 
     }
     if ((g_sMovingBlock.fight == true) && (g_sBreakFloor.fight == true))
@@ -8886,10 +8886,10 @@ void renderGame()
             COORD c;  COORD d;
             c.X = 5;
             c.Y = 26;
-            g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x0F, 100);
+            g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x0B, 100);
             d.X = 5;
             d.Y = 28;
-            g_Console.writeToBuffer(d, "B = Backpack", 0x0F, 100);
+            g_Console.writeToBuffer(d, "B = Backpack", 0x0B, 100);
         }
     }
     /*
@@ -8926,10 +8926,10 @@ void renderGame()
         COORD c; COORD d;
         c.X = 5;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Objective: Take the fire extinguisher and put out the fire!", 0x0B, 100);
         d.X = 5;
         d.Y = 28;
-        g_Console.writeToBuffer(d, "F = Fire Extinguisher", 0x0F, 100);
+        g_Console.writeToBuffer(d, "'F' = Fire Extinguisher", 0x0B, 100);
 
     }
     /*
@@ -8972,6 +8972,7 @@ void renderMap_NPC()
 
 void renderMap_Townsquare()
 {
+    COORD c;
     while (townsquare_music == false)
     {
         PlaySound(TEXT("Land of 8 Bits.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -8984,7 +8985,13 @@ void renderMap_Townsquare()
     renderMap_NPC();
     g_sChar.talked = true;
     renderCharacter();  // renders the character into the buffer
-
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "Objective: Talk to all the NPCs before exiting", 0x0B, 100);
+    }
     if ((g_sChar.m_cLocation.X == 66 && g_sChar.m_cLocation.Y == 13 || g_sChar.m_cLocation.X == 64 && g_sChar.m_cLocation.Y == 13) || (g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 14 || g_sChar.m_cLocation.X == 65 && g_sChar.m_cLocation.Y == 12))
     {
         g_sNPC2.talked = true;
@@ -9048,6 +9055,7 @@ void renderMap_Townsquare()
         g_eGameState = S_Protest_Area_Animation;
         g_sChar.m_cLocation.X = 40;
         g_sChar.m_cLocation.Y = 15;
+        //showObj = true;
     }
 }
 
@@ -9065,7 +9073,13 @@ void renderMap_Protest_Area()
     c.X = 62;
     c.Y = 4;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&');
-
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Collect Barrels '(B)' for consumables", 0x0B, 100);
+    }
     if (g_sChar.enterArea == true)
     {
         c.X = 62;
@@ -13496,7 +13510,7 @@ void UpdateBattleScreen()
     }
     if ((g_dkillRaymond > 6) && (g_sRaymondBoss.startTimer == true))  // raymond die
     {
-        g_sRaymond.fight = false;
+        g_sRaymondBoss.fight = false;
         g_dBossEndTime = 0.0;
         g_eGameState = S_Boss_Room_End_Animation;
     }
@@ -13951,9 +13965,9 @@ void renderCharacter()
         d.Y = 27;
         e.X = 5;
         e.Y = 28;
-        g_Console.writeToBuffer(c, "Got it!", 0x0F, 100);
-        g_Console.writeToBuffer(d, "Press the ENTER key to extinguish the fire!", 0x0F, 100);
-        g_Console.writeToBuffer(e, "Ensure that you are close to the fire first.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Got it!", 0x0B, 100);
+        g_Console.writeToBuffer(d, "Press the ENTER key to extinguish the fire!", 0x0B, 100);
+        g_Console.writeToBuffer(e, "Ensure that you are close to the fire first.", 0x0B, 100);
 
         rMap.Animation(g_Console, 40, 7, ' ');
         if (g_skKeyEvent[K_RETURN].keyDown && ((rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X + 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X - 1] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y + 1][g_sChar.m_cLocation.X] == '_') || (rMap.Grid[g_sChar.m_cLocation.Y - 1][g_sChar.m_cLocation.X] == '_')))
@@ -13973,13 +13987,13 @@ void renderCharacter()
         g_Console.writeToBuffer(d, "                                                                                                                                   ", 0x00, 100);
         c.X = 5;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "Gotcha!", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Gotcha!", 0x0B, 100);
         e.X = 5;
         e.Y = 27;
-        g_Console.writeToBuffer(e, "Hurry! Get out of here now!", 0x0F, 100);
+        g_Console.writeToBuffer(e, "Hurry! Get out of here now!", 0x0B, 100);
         f.X = 5;
         f.Y = 28;
-        g_Console.writeToBuffer(f, "@ = Unlocked Door", 0x0F, 100);
+        g_Console.writeToBuffer(f, "@ = Unlocked Door", 0x0B, 100);
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }
