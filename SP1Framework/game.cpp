@@ -375,7 +375,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_IAF2;
+    g_eGameState = S_Dungeon_Stealth_1;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -4888,6 +4888,7 @@ void Update_killGuard()
 }
 void killGuard()
 {
+    g_sGuardArmor.showItemDropped = false;
     //rMap.initialise(g_Console);
     //rMap.Border(g_Console);
     COORD c;
@@ -5176,6 +5177,7 @@ void Update_killWasp()
 }
 void killWasp()
 {
+    g_sStinger.showItemDropped = false;
     //rMap.initialise(g_Console);
     //rMap.Border(g_Console);
     COORD c;
@@ -5467,6 +5469,7 @@ void Update_killPig()
 }
 void killPig()
 {
+    g_sRawMeat.showItemDropped = false;
     //rMap.initialise(g_Console);
     //rMap.Border(g_Console);
     COORD c;
@@ -5531,6 +5534,7 @@ void killPig()
             }
         }
     }
+
     g_sRawMeat.showItemDropped = true;
     static bool item1 = false;
     if (item1 == false)
@@ -12932,7 +12936,7 @@ void RenderBattleScreen()
             g_sRawMeat.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && RawMeat.getQuantity() > 0)
+            if (g_sChar.GetH() < 50 && RawMeat.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 5;
                 g_sRawMeat.showItemUsed = true;
@@ -12940,12 +12944,19 @@ void RenderBattleScreen()
                 RawMeat.setQuantity(RawMeat.getQuantity() - 1);
                 if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
-                    g_sRawMeat.showItemUsed = false;
                     g_sChar.SetH(50);
+                    g_sRawMeat.showItemUsed = true;
                 }
-                else if (UpdateHealth >= 1000)
+            }
+            else if (g_sChar.GetH() < 1000 && RawMeat.getQuantity() > 0)
+            {
+                UpdateHealth = g_sChar.GetH() + 5;
+                g_sRawMeat.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                RawMeat.setQuantity(RawMeat.getQuantity() - 1);
+                if (UpdateHealth >= 1000)
                 {
-                    g_sRawMeat.showItemUsed = false;
+                    g_sRawMeat.showItemUsed = true;
                     g_sChar.SetH(1000);
                 }
             }
@@ -12970,7 +12981,7 @@ void RenderBattleScreen()
             g_sInven.showNoQuantity = false;
             if (Stinger.getQuantity() > 0)
             {
-                UpdateDmg = g_sChar.GetD() + 5;
+                UpdateDmg = g_sChar.GetD() + 2;
                 g_sStinger.showItemUsed = true;
                 g_sChar.SetD(UpdateDmg);
                 Stinger.setQuantity(Stinger.getQuantity() - 1);
@@ -12992,7 +13003,7 @@ void RenderBattleScreen()
             g_sInven.showNoQuantity = false;
             if (GuardArmor.getQuantity() > 0)
             {
-                UpdateDmg = g_sChar.GetD() + 10;
+                UpdateDmg = g_sChar.GetD() + 5;
                 g_sGuardArmor.showItemUsed = true;
                 g_sChar.SetD(UpdateDmg);
                 GuardArmor.setQuantity(GuardArmor.getQuantity() - 1);
@@ -13013,20 +13024,27 @@ void RenderBattleScreen()
             g_sBread.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Bread.getQuantity() > 0)
+            if (g_sChar.GetH() < 50 && Bread.getQuantity() > 0)
             {
-                UpdateHealth = g_sChar.GetH() + 10;
+                UpdateHealth = g_sChar.GetH() + 15;
                 g_sBread.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Bread.setQuantity(Bread.getQuantity() - 1);
                 if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
-                    g_sBread.showItemUsed = false;
+                    g_sBread.showItemUsed = true;
                     g_sChar.SetH(50);
                 }
-                else if (UpdateHealth >= 1000)
+            }
+            else if (g_sChar.GetH() < 1000 && Bread.getQuantity() > 0)
+            {
+                UpdateHealth = g_sChar.GetH() + 15;
+                g_sBread.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                Bread.setQuantity(Bread.getQuantity() - 1);
+                if (UpdateHealth >= 1000)
                 {
-                    g_sBread.showItemUsed = false;
+                    g_sBread.showItemUsed = true;
                     g_sChar.SetH(1000);
                 }
             }
@@ -13050,20 +13068,27 @@ void RenderBattleScreen()
             g_sBurger.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Burger.getQuantity() > 0)
+            if (g_sChar.GetH() < 50 && Burger.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 25;
-                g_sInven.showItemUsed = true;
+                g_sBurger.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Burger.setQuantity(Burger.getQuantity() - 1);
                 if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
-                    g_sBurger.showItemUsed = false;
+                    g_sBurger.showItemUsed = true;
                     g_sChar.SetH(50);
                 }
-                else if (UpdateHealth >= 1000)
+            }
+            else if (g_sChar.GetH() < 1000 && Burger.getQuantity() > 0)
+            {
+                UpdateHealth = g_sChar.GetH() + 25;
+                g_sBurger.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                Burger.setQuantity(Burger.getQuantity() - 1);
+                if (UpdateHealth >= 1000)
                 {
-                    g_sBurger.showItemUsed = false;
+                    g_sBurger.showItemUsed = true;
                     g_sChar.SetH(1000);
                 }
             }
@@ -13087,7 +13112,7 @@ void RenderBattleScreen()
             g_sTaco.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Taco.getQuantity() > 0)
+            if (g_sChar.GetH() < 50 && Taco.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 25;
                 g_sTaco.showItemUsed = true;
@@ -13095,12 +13120,19 @@ void RenderBattleScreen()
                 Taco.setQuantity(Taco.getQuantity() - 1);
                 if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
-                    g_sTaco.showItemUsed = false;
+                    g_sTaco.showItemUsed = true;
                     g_sChar.SetH(50);
                 }
-                else if (UpdateHealth >= 1000)
+            }
+            else if (g_sChar.GetH() < 1000 && Taco.getQuantity() > 0)
+            {
+                UpdateHealth = g_sChar.GetH() + 25;
+                g_sTaco.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                Taco.setQuantity(Taco.getQuantity() - 1);
+                if (UpdateHealth >= 1000)
                 {
-                    g_sTaco.showItemUsed = false;
+                    g_sTaco.showItemUsed = true;
                     g_sChar.SetH(1000);
                 }
             }
@@ -13124,24 +13156,31 @@ void RenderBattleScreen()
             g_sCake.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Cake.getQuantity() > 0)
+            if (g_sChar.GetH() < 50 && Cake.getQuantity() > 0)
             {
-                UpdateHealth = g_sChar.GetH() + 50;
+                UpdateHealth = g_sChar.GetH() + 5;
                 g_sCake.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Cake.setQuantity(Cake.getQuantity() - 1);
                 if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
-                    g_sCake.showItemUsed = false;
+                    g_sCake.showItemUsed = true;
                     g_sChar.SetH(50);
                 }
-                else if (UpdateHealth >= 1000)
+            }
+            else if (g_sChar.GetH() < 1000 && Cake.getQuantity() > 0)
+            {
+                UpdateHealth = g_sChar.GetH() + 5;
+                g_sCake.showItemUsed = true;
+                g_sChar.SetH(UpdateHealth);
+                Cake.setQuantity(Cake.getQuantity() - 1);
+                if (UpdateHealth >= 1000)
                 {
-                    g_sCake.showItemUsed = false;
+                    g_sCake.showItemUsed = true;
                     g_sChar.SetH(1000);
                 }
             }
-            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 10000) && Cake.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Cake.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13341,69 +13380,69 @@ void RenderBattleScreen()
     {
         c.X = 3;
         c.Y = 26;
-        string str_Healed = to_string(g_sChar.GetH());
+        string str_Healed1 = to_string(g_sChar.GetH());
         string str_Quantity1 = to_string(RawMeat.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity1 + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed1 + "HP. You have " + str_Quantity1 + " left.", 0x0F, 100);
     }
     if (g_sBread.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
-        string str_Healed = to_string(g_sChar.GetH());
+        string str_Healed2 = to_string(g_sChar.GetH());
         string str_Quantity2 = to_string(Bread.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity2 + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed2 + "HP. You have " + str_Quantity2 + " left.", 0x0F, 100);
     }
     if (g_sBurger.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
-        string str_Healed = to_string(g_sChar.GetH());
+        string str_Healed3 = to_string(g_sChar.GetH());
         string str_Quantity3 = to_string(Burger.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity3 + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed3 + "HP. You have " + str_Quantity3 + " left.", 0x0F, 100);
     }
     if (g_sTaco.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
-        string str_Healed = to_string(g_sChar.GetH());
+        string str_Healed4 = to_string(g_sChar.GetH());
         string str_Quantity4 = to_string(Taco.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity4 + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed4 + "HP. You have " + str_Quantity4 + " left.", 0x0F, 100);
     }
 
     if (g_sCake.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
-        string str_Healed = to_string(g_sChar.GetH());
+        string str_Healed5 = to_string(g_sChar.GetH());
         string str_Quantity5 = to_string(Cake.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity5 + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed5 + "HP. You have " + str_Quantity5 + " left.", 0x0F, 100);
     }
 
     if (g_sMedicine.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
-        string str_Healed = to_string(g_sChar.GetH());
+        string str_Healed6 = to_string(g_sChar.GetH());
         string str_Quantity6 = to_string(Medicine.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed + "HP. You have " + str_Quantity6 + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Item used. You have been healed to " + str_Healed6 + "HP. You have " + str_Quantity6 + " left.", 0x0F, 100);
     }
 
     if (g_sStinger.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
-        string str_Dmg = to_string(g_sChar.GetD());
+        string str_Dmg1 = to_string(g_sChar.GetD());
         string str_Quantity7 = to_string(Stinger.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. Your damage has been increased to " + str_Dmg + ". You have " + str_Quantity7 + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Item used. Your damage has been increased to " + str_Dmg1 + ". You have " + str_Quantity7 + " left.", 0x0F, 100);
     }
 
     if (g_sGuardArmor.showItemUsed == true)
     {
         c.X = 3;
         c.Y = 26;
-        string str_Dmg = to_string(g_sChar.GetD());
+        string str_Dmg2 = to_string(g_sChar.GetD());
         string str_Quantity8 = to_string(GuardArmor.getQuantity());
-        g_Console.writeToBuffer(c, "Item used. Your damage has been increased to " + str_Dmg + ". You have " + str_Quantity8 + " left.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "Item used. Your damage has been increased to " + str_Dmg2 + ". You have " + str_Quantity8 + " left.", 0x0F, 100);
     }
 
     if (g_sInven.showItemNotUsed == true)
@@ -13608,7 +13647,6 @@ void UpdateBattleScreen()
         c.X = 3;
         c.Y = 25;
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
     }
     if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
     {
@@ -13617,26 +13655,52 @@ void UpdateBattleScreen()
         c.X = 3;
         c.Y = 26;
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
-
     }
 
     if (g_sStinger.showItemDropped == true)
     {
         c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "You received a Stinger", 0x0F, 100);
+        c.Y = 27;
+        string str_Quantity7 = to_string(Stinger.getQuantity());
+        g_Console.writeToBuffer(c, "You received a Stinger. You now have " + str_Quantity7 + " Stingers.", 0x0F, 100);
     }
     if (g_sGuardArmor.showItemDropped == true)
     {
         c.X = 3;
-        c.Y = 26;
-        g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
+        c.Y = 27;
+        string str_Quantity8 = to_string(GuardArmor.getQuantity());
+        g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + str_Quantity8 + " Guard Armor.", 0x0F, 100);
     }
     if (g_sRawMeat.showItemDropped == true)
     {
         c.X = 3;
+        c.Y = 27;
+        string str_Quantity1 = to_string(RawMeat.getQuantity());
+        g_Console.writeToBuffer(c, "You received a Raw Meat. You now have " + str_Quantity1 + " Raw Meat.", 0x0F, 100);
+    }
+    if ((playerInvenTime > 2) && (g_sStinger.showItemDropped == true))
+    {
+        g_sStinger.showItemDropped = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
         c.Y = 26;
-        g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+    }
+    if ((playerInvenTime > 2) && (g_sGuardArmor.showItemDropped == true))
+    {
+        g_sGuardArmor.showItemDropped = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+    }
+    if ((playerInvenTime > 2) && (g_sRawMeat.showItemDropped == true))
+    {
+        g_sRawMeat.showItemDropped = false;
+        playerInvenTime = 0.0;
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
     }
 }
 
