@@ -172,7 +172,7 @@ void Minigame::wire_game(Console& g_Console)
 
 	c.X = 2;
 	c.Y = 25;
-	g_Console.writeToBuffer(c, "Objective: Connect the wires", 0x1A);
+	g_Console.writeToBuffer(c, "Objective: Connect the wires", 0x0B);
 
 	//multiple choice thing?
 }
