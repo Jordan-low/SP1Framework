@@ -8102,7 +8102,7 @@ void phase2Battle()
         {
             if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 1] == ' ') // check if bomb == ' '
             {
-                if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 1] == ' ') // check if bomb == ' '
+                if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 2] == ' ') // check if bomb == ' '
                 {
                     g_sBomb.m_cLocation.X++;
                 }
@@ -8112,14 +8112,20 @@ void phase2Battle()
         {
             if (rMap.Grid[g_sBomb.m_cLocation.Y - 1][g_sBomb.m_cLocation.X] == ' ')
             {
-                g_sBomb.m_cLocation.Y--;
+                if (rMap.Grid[g_sBomb.m_cLocation.Y - 2][g_sBomb.m_cLocation.X] == ' ')
+                {
+                    g_sBomb.m_cLocation.Y--;
+                }
             }
         }
         if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < 21)
         {
             if (rMap.Grid[g_sBomb.m_cLocation.Y + 1][g_sBomb.m_cLocation.X] == ' ')
             {
-                g_sBomb.m_cLocation.Y++;
+                if (rMap.Grid[g_sBomb.m_cLocation.Y + 2][g_sBomb.m_cLocation.X] == ' ')
+                {
+                    g_sBomb.m_cLocation.Y++;
+                }
             }
         }
         if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 3)
