@@ -102,6 +102,8 @@ bool stealth_music;
 bool phase2_music;
 bool credits_music;
 bool null_music;
+bool enterPathArea;
+bool enterOldman;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -193,6 +195,7 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    enterPathArea = true;
     randCount = 0;
     g_sChar.entityDied = false;
     g_sLaser.m_cLocation.X = 3;
@@ -242,7 +245,7 @@ void init(void)
     g_sPig.entityDie = false;
     g_sPig2.entityDie = false;
     g_sPig3.entityDie = false;
-
+    g_sMutantWasp.fight = false;
 
     /*
     TutEnemy.setEnemy(1, 1, 10, 2, 'E');
@@ -252,7 +255,7 @@ void init(void)
     Raymond.setEnemy(1, 1, 120, 25, 'E');
     */
 
-    g_sChar.SetH(10000); // set to 1k when enter room
+    g_sChar.SetH(1000); // set to 1k when enter room
     g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
@@ -326,6 +329,7 @@ void init(void)
     g_sChar.animationPlayed = false;
     g_sChar.enterArea = false;
     g_sChar.talkedOldMan = false;
+    g_sChar.IAF3Convo = false;
 
     //Wire minigame
     g_sBox1.m_cLocation.X = 52;
@@ -371,10 +375,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    //g_eGameState = S_phase2Battle;
-    g_eGameState = S_Dungeon_Stealth_1;
-    //g_eGameState = S_killRaymond;
-
+    g_eGameState = S_IAF2;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -835,7 +836,7 @@ void starting_cutscene()
             c.Y = 12;
             g_Console.writeToBuffer(c, "The world went through an economic");
             c.Y = 13;
-            g_Console.writeToBuffer(c, "crisis due to all the things");
+            g_Console.writeToBuffer(c, "crisis due to all the things that");
 
             if (g_dStartScene > 2.5)
             {
@@ -869,7 +870,7 @@ void starting_cutscene()
                         c.Y = 12;
                         g_Console.writeToBuffer(c, "Natural disasters due to multiple");
                         c.Y = 13;
-                        g_Console.writeToBuffer(c, "factors such as climate changes ");
+                        g_Console.writeToBuffer(c, "factors such as climate changes and");
                         if (g_dStartScene > 5.5)
                         {
                             Cutscene.clearScreen(g_Console);;
@@ -941,7 +942,7 @@ void starting_cutscene()
                                         c.Y = 12;
                                         g_Console.writeToBuffer(c, "caused mass panic and the country");
                                         c.Y = 13;
-                                        g_Console.writeToBuffer(c, "to suffer huge losses.");
+                                        g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                         if (g_dStartScene > 9.5)
                                         {
                                             Cutscene.clearScreen(g_Console);;
@@ -962,9 +963,10 @@ void starting_cutscene()
                                             c.Y = 11;
                                             g_Console.writeToBuffer(c, "caused mass panic and the country");
                                             c.Y = 12;
-                                            g_Console.writeToBuffer(c, "to suffer huge losses. The");
+                                            g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                             c.Y = 13;
-                                            g_Console.writeToBuffer(c, "government then turned corrupt");
+                                            g_Console.writeToBuffer(c, "                                                 ");
+                                            g_Console.writeToBuffer(c, "then turned corrupt and");
                                             if (g_dStartScene > 10.5)
                                             {
                                                 Cutscene.clearScreen(g_Console);;
@@ -983,9 +985,10 @@ void starting_cutscene()
                                                 c.Y = 10;
                                                 g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                 c.Y = 11;
-                                                g_Console.writeToBuffer(c, "to suffer huge losses. The ");
+                                                g_Console.writeToBuffer(c, "to suffer huge losses. The government ");
                                                 c.Y = 12;
-                                                g_Console.writeToBuffer(c, "government then turned corrupt and ");
+                                                g_Console.writeToBuffer(c, "                                                 ");
+                                                g_Console.writeToBuffer(c, "then turned corrupt and");
                                                 c.Y = 13;
                                                 g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                 if (g_dStartScene > 11.5)
@@ -1004,13 +1007,14 @@ void starting_cutscene()
                                                     c.Y = 9;
                                                     g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                     c.Y = 10;
-                                                    g_Console.writeToBuffer(c, "to suffer huge losses. The ");
+                                                    g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                     c.Y = 11;
-                                                    g_Console.writeToBuffer(c, "government then turned corrupt and");
+                                                    g_Console.writeToBuffer(c, "                                                 ");
+                                                    g_Console.writeToBuffer(c, "then turned corrupt and");
                                                     c.Y = 12;
                                                     g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                     c.Y = 13;
-                                                    g_Console.writeToBuffer(c, "Government officials only worried");
+                                                    g_Console.writeToBuffer(c, "Government officials are only worried");
                                                     if (g_dStartScene > 12.5)
                                                     {
                                                         c.Y = 4;
@@ -1026,11 +1030,12 @@ void starting_cutscene()
                                                         c.Y = 9;
                                                         g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                         c.Y = 10;
-                                                        g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                        g_Console.writeToBuffer(c, "                                                 ");
+                                                        g_Console.writeToBuffer(c, "then turned corrupt and");
                                                         c.Y = 11;
                                                         g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                         c.Y = 12;
-                                                        g_Console.writeToBuffer(c, "Government officials only worried");
+                                                        g_Console.writeToBuffer(c, "Government officials are only worried");
                                                         c.Y = 13;
                                                         g_Console.writeToBuffer(c, "about their own personal gain and");
                                                         if (g_dStartScene > 13.5)
@@ -1047,11 +1052,12 @@ void starting_cutscene()
                                                             c.Y = 8;
                                                             g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                             c.Y = 9;
-                                                            g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                            g_Console.writeToBuffer(c, "                                                 ");
+                                                            g_Console.writeToBuffer(c, "then turned corrupt and");
                                                             c.Y = 10;
                                                             g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                             c.Y = 11;
-                                                            g_Console.writeToBuffer(c, "Government officials only worried");
+                                                            g_Console.writeToBuffer(c, "Government officials are only worried");
                                                             c.Y = 12;
                                                             g_Console.writeToBuffer(c, "about their own personal gain and");
                                                             c.Y = 13;
@@ -1067,16 +1073,17 @@ void starting_cutscene()
                                                                 g_Console.writeToBuffer(c, "caused mass panic and the country");
                                                                 c.Y = 7;
                                                                 g_Console.writeToBuffer(c, "to suffer huge losses. The government");
-                                                                c.Y = 8;
-                                                                g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                c.Y = 8; 
+                                                                g_Console.writeToBuffer(c, "                                                 ");
+                                                                g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                 c.Y = 9;
                                                                 g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                 c.Y = 10;
-                                                                g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                 c.Y = 11;
                                                                 g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                 c.Y = 12;
-                                                                g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                 c.Y = 13;
                                                                 g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                 if (g_dStartScene > 15.5)
@@ -1089,15 +1096,16 @@ void starting_cutscene()
                                                                     c.Y = 6;
                                                                     g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                                     c.Y = 7;
-                                                                    g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                    g_Console.writeToBuffer(c, "                                                 ");
+                                                                    g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                     c.Y = 8;
                                                                     g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                     c.Y = 9;
-                                                                    g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                    g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                     c.Y = 10;
                                                                     g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                     c.Y = 11;
-                                                                    g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                    g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                     c.Y = 12;
                                                                     g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                     c.Y = 13;
@@ -1110,15 +1118,16 @@ void starting_cutscene()
                                                                         c.Y = 5;
                                                                         g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                                         c.Y = 6;
-                                                                        g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                        g_Console.writeToBuffer(c, "                                                 ");
+                                                                        g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                         c.Y = 7;
                                                                         g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                         c.Y = 8;
-                                                                        g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                        g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                         c.Y = 9;
                                                                         g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                         c.Y = 10;
-                                                                        g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                        g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                         c.Y = 11;
                                                                         g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                         c.Y = 12;
@@ -1131,15 +1140,16 @@ void starting_cutscene()
                                                                             c.Y = 4;
                                                                             g_Console.writeToBuffer(c, "to suffer huge losses. The government");
                                                                             c.Y = 5;
-                                                                            g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                            g_Console.writeToBuffer(c, "                                                 ");
+                                                                            g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                             c.Y = 6;
                                                                             g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                             c.Y = 7;
-                                                                            g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                            g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                             c.Y = 8;
                                                                             g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                             c.Y = 9;
-                                                                            g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                            g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                             c.Y = 10;
                                                                             g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                             c.Y = 11;
@@ -1152,15 +1162,16 @@ void starting_cutscene()
                                                                             {
                                                                                 Cutscene.clearScreen(g_Console);;
                                                                                 c.Y = 4;
-                                                                                g_Console.writeToBuffer(c, "then turned corrupt corrupt and");
+                                                                                g_Console.writeToBuffer(c, "                                                 ");
+                                                                                g_Console.writeToBuffer(c, "then turned corrupt and");
                                                                                 c.Y = 5;
                                                                                 g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                                 c.Y = 6;
-                                                                                g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                                g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                                 c.Y = 7;
                                                                                 g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                                 c.Y = 8;
-                                                                                g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                 c.Y = 9;
                                                                                 g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                 c.Y = 10;
@@ -1177,11 +1188,11 @@ void starting_cutscene()
                                                                                     c.Y = 4;
                                                                                     g_Console.writeToBuffer(c, "blamed each other for their losses.");
                                                                                     c.Y = 5;
-                                                                                    g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                                    g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                                     c.Y = 6;
                                                                                     g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                                     c.Y = 7;
-                                                                                    g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                    g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                     c.Y = 8;
                                                                                     g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                     c.Y = 9;
@@ -1198,11 +1209,11 @@ void starting_cutscene()
                                                                                     {
                                                                                         Cutscene.clearScreen(g_Console);;
                                                                                         c.Y = 4;
-                                                                                        g_Console.writeToBuffer(c, "Government officials only worried");
+                                                                                        g_Console.writeToBuffer(c, "Government officials are only worried");
                                                                                         c.Y = 5;
                                                                                         g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                                         c.Y = 6;
-                                                                                        g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                        g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                         c.Y = 7;
                                                                                         g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                         c.Y = 8;
@@ -1223,7 +1234,7 @@ void starting_cutscene()
                                                                                             c.Y = 4;
                                                                                             g_Console.writeToBuffer(c, "about their own personal gain and");
                                                                                             c.Y = 5;
-                                                                                            g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                            g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                             c.Y = 6;
                                                                                             g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                             c.Y = 7;
@@ -1244,7 +1255,7 @@ void starting_cutscene()
                                                                                             {
                                                                                                 Cutscene.clearScreen(g_Console);;
                                                                                                 c.Y = 4;
-                                                                                                g_Console.writeToBuffer(c, "were apathetic towards the citizens’");
+                                                                                                g_Console.writeToBuffer(c, "were apathetic towards the citizens");
                                                                                                 c.Y = 5;
                                                                                                 g_Console.writeToBuffer(c, "struggles. And so many other countries");
                                                                                                 c.Y = 6;
@@ -3243,7 +3254,6 @@ void Dungeon_Cell_Animation()
                         {
                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x0A, 100);
                             Cutscene.cleargrid(g_Console, 41, 12);
-                            Cutscene.cleargrid(g_Console, 4, 1);
                             Cutscene.drawgrid(g_Console, 4, 3, (char)12);
                             if (g_dDungeonTime > 8.6)
                             {
@@ -3616,20 +3626,20 @@ void Medical_Fight_Animation()
     rMap.Border(g_Console);
     rMap.insideMedicalFacility(g_Console);
     COORD c;
-    renderCharacter();
+    renderCharacter(); 
     c.X = 5;
     c.Y = 26;
     Cutscene.drawgridW(g_Console, 34, 12, (char)1); //Robert (Hero)
     Cutscene.drawgrid(g_Console, 34, 13, (char)12); //Ell
 
-    Cutscene.drawgrid(g_Console, 36, 12, (char)12); //Patient 1
-    Cutscene.drawgrid(g_Console, 36, 9, (char)12); //Patient 2
-    Cutscene.drawgrid(g_Console, 36, 15, (char)12); //Patient 3
-    Cutscene.drawgrid(g_Console, 46, 15, (char)12); //Patient 4
-    Cutscene.drawgrid(g_Console, 46, 9, (char)12); //Patient 5
-    Cutscene.drawgrid(g_Console, 56, 15, (char)12); //Patient 6
-    Cutscene.drawgrid(g_Console, 56, 9, (char)12); //Patient 7
-    Cutscene.drawgrid(g_Console, 23, 13, (char)12); //nurse
+    Cutscene.drawPatients(g_Console, 36, 12, (char)12); //Patient 1
+    Cutscene.drawPatients(g_Console, 36, 9, (char)12); //Patient 2
+    Cutscene.drawPatients(g_Console, 36, 15, (char)12); //Patient 3
+    Cutscene.drawPatients(g_Console, 46, 15, (char)12); //Patient 4
+    Cutscene.drawPatients(g_Console, 46, 9, (char)12); //Patient 5
+    Cutscene.drawPatients(g_Console, 56, 15, (char)12); //Patient 6
+    Cutscene.drawPatients(g_Console, 56, 9, (char)12); //Patient 7
+    Cutscene.drawPatients(g_Console, 23, 13, (char)12); //nurse
 
     if (g_dMedicalFightTime > 0.6)
     {
@@ -3639,11 +3649,11 @@ void Medical_Fight_Animation()
             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
             //patient 2 walks to hero
             Cutscene.cleargrid(g_Console, 36, 9);
-            Cutscene.drawgrid(g_Console, 36, 10, (char)12); //Patient 2
+            Cutscene.drawPatients(g_Console, 36, 10, (char)12); //Patient 2
             if (g_dMedicalFightTime > 3.9)
             {
                 Cutscene.cleargrid(g_Console, 36, 10);
-                Cutscene.drawgrid(g_Console, 35, 11, (char)12);
+                Cutscene.drawPatients(g_Console, 35, 11, (char)12);
                 if (g_dMedicalFightTime > 4.2)
                 {
                     g_Console.writeToBuffer(c, "Patient 2: You have so much medicine and you kept it from us?", 0x0F, 100);
@@ -3656,7 +3666,7 @@ void Medical_Fight_Animation()
                         g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                         //patient 3 walks to hero ( ally side )
                         Cutscene.cleargrid(g_Console, 36, 15);
-                        Cutscene.drawgrid(g_Console, 35, 14, (char)12);
+                        Cutscene.drawPatients(g_Console, 35, 14, (char)12);
                         if (g_dMedicalFightTime > 7.5)
                         {
                             g_Console.writeToBuffer(c, "Patient 3: Give it to me! Can't you see that you're healthier than me?", 0x0F, 100);
@@ -3669,11 +3679,11 @@ void Medical_Fight_Animation()
                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                 //patient 4 walks (in front of ally)
                                 Cutscene.cleargrid(g_Console, 46, 15);
-                                Cutscene.drawgrid(g_Console, 41, 14, (char)12);
+                                Cutscene.drawPatients(g_Console, 41, 14, (char)12);
                                 if (g_dMedicalFightTime > 10.8)
                                 {
                                     Cutscene.cleargrid(g_Console, 41, 14);
-                                    Cutscene.drawgrid(g_Console, 36, 13, (char)12);
+                                    Cutscene.drawPatients(g_Console, 36, 13, (char)12);
                                     if (g_dMedicalFightTime > 11.1)
                                     {
                                         g_Console.writeToBuffer(c, "Patient 4: Please! I beg you, please give my daughter", 0x0F, 100);
@@ -3686,11 +3696,11 @@ void Medical_Fight_Animation()
                                             g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
                                             // Patient 5 walks to Patient 1
                                             Cutscene.cleargrid(g_Console, 46, 9);
-                                            Cutscene.drawgrid(g_Console, 41, 10, (char)12);
+                                            Cutscene.drawPatients(g_Console, 41, 10, (char)12);
                                             if (g_dMedicalFightTime > 14.4)
                                             {
                                                 Cutscene.cleargrid(g_Console, 41, 10);
-                                                Cutscene.drawgrid(g_Console, 37, 11, (char)12);
+                                                Cutscene.drawPatients(g_Console, 37, 11, (char)12);
                                                 if (g_dMedicalFightTime > 14.7)
                                                 {
                                                     g_Console.writeToBuffer(c, "Patient 5: Give that to me! I deserve that more than you!", 0x0F, 100);
@@ -3704,29 +3714,29 @@ void Medical_Fight_Animation()
                                                             //patient 6 & 7 walking 
                                                             Cutscene.cleargrid(g_Console, 56, 15);
                                                             Cutscene.cleargrid(g_Console, 56, 9);
-                                                            Cutscene.drawgrid(g_Console, 51, 14, (char)12);
-                                                            Cutscene.drawgrid(g_Console, 51, 10, (char)12);
+                                                            Cutscene.drawPatients(g_Console, 51, 14, (char)12);
+                                                            Cutscene.drawPatients(g_Console, 51, 10, (char)12);
                                                             if (g_dMedicalFightTime > 21.0)
                                                             {
                                                                 Cutscene.cleargrid(g_Console, 51, 14);
                                                                 Cutscene.cleargrid(g_Console, 51, 10);
-                                                                Cutscene.drawgrid(g_Console, 46, 14, (char)12);
-                                                                Cutscene.drawgrid(g_Console, 46, 11, (char)12);
+                                                                Cutscene.drawPatients(g_Console, 46, 14, (char)12);
+                                                                Cutscene.drawPatients(g_Console, 46, 11, (char)12);
                                                                 if (g_dMedicalFightTime > 21.3)
                                                                 {
                                                                     Cutscene.cleargrid(g_Console, 46, 14);
                                                                     Cutscene.cleargrid(g_Console, 46, 11);
-                                                                    Cutscene.drawgrid(g_Console, 41, 14, (char)12);
-                                                                    Cutscene.drawgrid(g_Console, 41, 12, (char)12);
+                                                                    Cutscene.drawPatients(g_Console, 41, 14, (char)12);
+                                                                    Cutscene.drawPatients(g_Console, 41, 12, (char)12);
                                                                     if (g_dMedicalFightTime > 21.6)
                                                                     {
                                                                         Cutscene.cleargrid(g_Console, 41, 14);
                                                                         Cutscene.cleargrid(g_Console, 41, 12);
-                                                                        Cutscene.drawgrid(g_Console, 37, 14, (char)12);
-                                                                        Cutscene.drawgrid(g_Console, 38, 12, (char)12);
+                                                                        Cutscene.drawPatients(g_Console, 37, 14, (char)12);
+                                                                        Cutscene.drawPatients(g_Console, 38, 12, (char)12);
                                                                         if (g_dMedicalFightTime > 21.9)
                                                                         {
-                                                                            g_Console.writeToBuffer(c, "Patient 6: Why do you have som much medicine?", 0x0F, 100);
+                                                                            g_Console.writeToBuffer(c, "Patient 6: Why do you have so much medicine?", 0x0F, 100);
                                                                             c.Y = 27;
                                                                             g_Console.writeToBuffer(c, "           You must have stolen it from us!", 0x0F, 100);
                                                                             if (g_dMedicalFightTime > 24.9)
@@ -3739,15 +3749,15 @@ void Medical_Fight_Animation()
                                                                                 {
                                                                                     //nurse walks
                                                                                     Cutscene.cleargrid(g_Console, 23, 13);
-                                                                                    Cutscene.drawgrid(g_Console, 27, 14, (char)12);
+                                                                                    Cutscene.drawPatients(g_Console, 27, 14, (char)12);
                                                                                     if (g_dMedicalFightTime > 28.2)
                                                                                     {
                                                                                         Cutscene.cleargrid(g_Console, 27, 14);
-                                                                                        Cutscene.drawgrid(g_Console, 30, 15, (char)12);
+                                                                                        Cutscene.drawPatients(g_Console, 30, 15, (char)12);
                                                                                         if (g_dMedicalFightTime > 28.5)
                                                                                         {
                                                                                             Cutscene.cleargrid(g_Console, 30, 15);
-                                                                                            Cutscene.drawgrid(g_Console, 33, 15, (char)12);
+                                                                                            Cutscene.drawPatients(g_Console, 33, 15, (char)12);
                                                                                             if (g_dMedicalFightTime > 28.8)
                                                                                             {
                                                                                                 g_Console.writeToBuffer(c, "                                                                                                     ", 0x00, 100);
@@ -4444,7 +4454,6 @@ void Boss_Room_Mid_Animation()
     c.Y = 26;
     d.X = 5;
     d.Y = 27;
-    Cutscene.drawgridW(g_Console, 39, 21, (char)1); //Robert
     Cutscene.drawgrid(g_Console, 41, 21, 'R'); //Raymond
     if (g_dBossMiddleTime > 1)
     {
@@ -7826,11 +7835,11 @@ void phase2Battle()
     {
         g_sChar.SetH(g_sChar.GetH() - 1); // minus dmg if robert touch raymond
     }
-    /*while (music == false)
+    while (phase2_music == false)
     {
         PlaySound(TEXT("For Peace.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
         phase2_music = true;
-    }*/
+    }
 
 
     rMap.initialise(g_Console);
@@ -8841,6 +8850,8 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderGame()
 {
+    COORD c;  COORD d;
+
     if (g_sChar.Orp_Obj2 == false)
     {
         rMap.initialise(g_Console);
@@ -8893,7 +8904,6 @@ void renderGame()
         rMap.orphanageDoor(g_Console);
         if (g_sChar.Orp_Dialogue == true)
         {
-            COORD c;  COORD d;
             c.X = 5;
             c.Y = 26;
             g_Console.writeToBuffer(c, "Objective: Take the backpack before leaving the burning house!", 0x0B, 100);
@@ -8948,6 +8958,13 @@ void renderGame()
         g_sChar.m_cLocation.X = 20;
         g_sChar.m_cLocation.Y = 17;
     }*/
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 33;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Orphanage", 0x0F);
+    }
 }
 void renderMap_NPC()
 {
@@ -9067,6 +9084,13 @@ void renderMap_Townsquare()
         g_sChar.m_cLocation.Y = 15;
         //showObj = true;
     }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 33;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Townsquare", 0x0F);
+    }
 }
 
 void renderMap_Protest_Area()
@@ -9079,7 +9103,6 @@ void renderMap_Protest_Area()
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
     renderCharacter();  // renders the character into the buffer
-
     c.X = 62;
     c.Y = 4;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&', 0x0D);
@@ -9094,7 +9117,7 @@ void renderMap_Protest_Area()
     {
         c.X = 62;
         c.Y = 4;
-        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'D', 0x0D);
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0A);
     }
     if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 62)
     {
@@ -9103,13 +9126,25 @@ void renderMap_Protest_Area()
         g_sChar.m_cLocation.X = 69;
         g_sChar.m_cLocation.Y = 3;
     }
+
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Path_Area_Animation;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 21;
+        if (enterPathArea == true)
+        {
+            enterPathArea = false;
+            g_dPathTime = 0.0;
+            g_eGameState = S_Path_Area_Animation;
+            g_sChar.m_cLocation.X = 41;
+            g_sChar.m_cLocation.Y = 21;
+        }
+        else
+        {
+            g_eGameState = S_Path_Area;
+            g_sChar.m_cLocation.X = 41;
+            g_sChar.m_cLocation.Y = 21;
+        }
     }
+    
 
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 3)
     {
@@ -9739,6 +9774,13 @@ void renderMap_Protest_Area()
             }
         }
     }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 33;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Protest Area", 0x0F);
+    }
 }
 
 void renderMap_Path_Area()
@@ -9799,6 +9841,13 @@ void renderMap_Path_Area()
         g_eGameState = S_Protest_Area;
         g_sChar.m_cLocation.X = 72;
         g_sChar.m_cLocation.Y = 3;
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 37;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Path Area", 0x0F);
     }
 }
 
@@ -9862,6 +9911,13 @@ void renderMap_OAF()
         g_sChar.m_cLocation.X = 15;
         g_sChar.m_cLocation.Y = 12;
 
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 25;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Outside Abandoned Facility", 0x0F);
     }
 }
 void renderPig()
@@ -10393,7 +10449,13 @@ void renderMap_IAF1()
             }
         }
     }
-
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 26;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Abandoned Facility 1", 0x0F);
+    }
 }
 void renderMap_IAF4()
 {
@@ -10417,7 +10479,7 @@ void renderMap_IAF4()
         g_sChar.m_cLocation.X = 76;
         g_sChar.m_cLocation.Y = 19;
     }
-    if ((g_sChar.m_cLocation.Y == 9) && (g_sChar.m_cLocation.X == 40))
+    if (g_sChar.m_cLocation.Y == 9 && g_sChar.m_cLocation.X == 40)
     {
         g_sChar.talkedOldMan = true;
     }
@@ -10434,12 +10496,14 @@ void renderMap_IAF4()
             g_Console.writeToBuffer(c, "                 never seen anyone as tyrannical as him.", 0x0F, 100);
             c.Y = 28;
             g_Console.writeToBuffer(c, "                 Here, lemme boost you to aid you on your journey.", 0x0F, 100);
-            g_sChar.SetH(1000);
+            g_sChar.SetH(500);
             g_sChar.SetD(g_sChar.GetD() + 10);
         }
+    }
 
-        
-        if ((g_sChar.talkedOldMan == true) && ((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13) && g_sChar.m_cLocation.X == 40) || ((g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 41) && g_sChar.m_cLocation.Y == 12))
+    if (((g_sChar.m_cLocation.Y == 11 || g_sChar.m_cLocation.Y == 13) && g_sChar.m_cLocation.X == 40) || ((g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 41) && g_sChar.m_cLocation.Y == 12))
+    {
+        if ((g_sChar.talkedOldMan == true))
         {
             c.X = 2;
             c.Y = 26;
@@ -10447,7 +10511,13 @@ void renderMap_IAF4()
             c.Y = 27;
             g_Console.writeToBuffer(c, "                 Go and fulfill your destiny!", 0x0F, 100);
         }
-        
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 26;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Abandoned Facility 4", 0x0F);
     }
 }
 
@@ -10483,6 +10553,16 @@ void renderMap_IAF2()
         g_eGameState = S_IAF3_Animation;
         g_sChar.m_cLocation.X = 40;
         g_sChar.m_cLocation.Y = 7;
+    }
+
+    if (g_sChar.IAF3Convo == true)
+    {
+        for (int i = 32; i <= 44; i++)
+        {
+            c.X = i;
+            c.Y = 2;
+            g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&', 0x0A);
+        }
     }
 
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 4)
@@ -10716,14 +10796,23 @@ void renderMap_IAF2()
             }
         }
     }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 26;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Abandoned Facility 2", 0x0F);
+    }
 }
 
 void renderMap_IAF3()
 {
+    COORD c;
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.insideAbandonedFacility3(g_Console);
     renderCharacter();  // renders the character into the buffer
+    g_sChar.IAF3Convo = true;
     //Back to IAF 2
     if ((g_sChar.m_cLocation.Y == 22) && (g_sChar.m_cLocation.X == 39 || g_sChar.m_cLocation.X == 40 || g_sChar.m_cLocation.X == 41))
     {
@@ -10731,6 +10820,13 @@ void renderMap_IAF3()
         g_eGameState = S_IAF2;
         g_sChar.m_cLocation.X = 38;
         g_sChar.m_cLocation.Y = 3;
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 26;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Abandoned Facility 3", 0x0F);
     }
 }
 
@@ -10781,6 +10877,13 @@ void renderMap_Inside_Medical_Facility()
         g_Console.writeToBuffer(c, "Nurse: What are you doing behind the counter? This is for", 0x0F, 100);
         c.Y = 27;
         g_Console.writeToBuffer(c, "       staff only!!", 0x0F, 100);
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 25;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Inside Medical Facility", 0x0F);
     }
 
 }
@@ -10934,6 +11037,13 @@ void renderMap_Dungeon_Cell()
         rMap.Border(g_Console);
         mini.letter(g_Console);
     }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 33;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Dungeon Cell", 0x0F);
+    }
 }
 void renderBox()
 {
@@ -10945,13 +11055,7 @@ void renderBox()
 void renderMap_DS1()
 {
     COORD c;
-    static bool showObj = false;
-    if (showObj == false)
-    {
-        c.X = 5;
-        c.Y = 25;
-        g_Console.writeToBuffer(c, "Objective: Find Ell in the next room! ", 0x0B, 100);
-    }
+    
     
     while (stealth_music == false)
     {
@@ -10962,6 +11066,15 @@ void renderMap_DS1()
     rMap.initialise(g_Console);
     rMap.Border(g_Console);
     rMap.dungeon_stealth1(g_Console);
+
+    static bool showObj = false;
+    if (showObj == false)
+    {
+        c.X = 5;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "Objective: Find Ell in the next room! ", 0x0B, 100);
+    }
+
     if (g_sGuard.entityDie == true)
     {
         g_sGuard.m_cLocation.Y = -1;
@@ -11707,6 +11820,13 @@ void renderMap_DS1()
             }
         }
     }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 30;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Dungeon Stealth 1", 0x0F);
+    }
 }
 
 void renderMap_GuardStealth()
@@ -11894,11 +12014,7 @@ void renderMap_DS2()
 
     c.X = 8;
     c.Y = 13;
-    g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = (char)12);
-
-    c.X = 8;
-    c.Y = 13;
-    g_Console.writeToBuffer(c, (char)12, 0x0F);
+    g_Console.writeToBuffer(c, (char)12, 0x0D);
 
     if ((g_sChar.m_cLocation.Y == 13) && (g_sChar.m_cLocation.X == 7) || (g_sChar.m_cLocation.Y == 12) && (g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 14) && (g_sChar.m_cLocation.X == 8))
     {
@@ -11927,6 +12043,13 @@ void renderMap_DS2()
         g_eGameState = S_Dungeon_Stealth_3;
         g_sChar.m_cLocation.X = 5;
         g_sChar.m_cLocation.Y = 21;
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 30;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Dungeon Stealth 2", 0x0F);
     }
 }
 
@@ -11967,18 +12090,29 @@ void renderMap_DS3()
     }
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 5)
     {
-        //ask if user wants to enter battle area
-        g_dBossTime = 0.0;
-        g_eGameState = S_Boss_Room_Animation;
-        g_sChar.m_cLocation.X = 40;
-        g_sChar.m_cLocation.Y = 21;
+        if (enterOldman == true)
+        {
+            g_dBossTime = 0.0;
+            g_eGameState = S_Boss_Room_Animation;
+            g_sChar.m_cLocation.X = 40;
+            g_sChar.m_cLocation.Y = 21;
+        }
+
     }
     if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 60 || g_sChar.m_cLocation.X == 61 || g_sChar.m_cLocation.X == 62 || g_sChar.m_cLocation.X == 63 || g_sChar.m_cLocation.X == 64 || g_sChar.m_cLocation.X == 65 || g_sChar.m_cLocation.X == 66 || g_sChar.m_cLocation.X == 67 || g_sChar.m_cLocation.X == 68 || g_sChar.m_cLocation.X == 69 || g_sChar.m_cLocation.X == 70 || g_sChar.m_cLocation.X == 71 || g_sChar.m_cLocation.X == 72 || g_sChar.m_cLocation.X == 73 || g_sChar.m_cLocation.X == 74 || g_sChar.m_cLocation.X == 75 || g_sChar.m_cLocation.X == 76 || g_sChar.m_cLocation.X == 77))
     {
+        enterOldman = true;
         g_dPathTime = 0.0;
         g_eGameState = S_Protest_Area;
         g_sChar.m_cLocation.X = 63;
         g_sChar.m_cLocation.Y = 4;
+    }
+    static bool showLoc = false;
+    if (showLoc == false)
+    {
+        c.X = 30;
+        c.Y = 0;
+        g_Console.writeToBuffer(c, "Dungeon Stealth 3", 0x0F);
     }
 }
 
@@ -13313,7 +13447,7 @@ void UpdateBattleScreen()
         }
     }
 
-    if ((playerInvenTime > 2) && (g_sRawMeat.showItemUsed == true))
+    if ((playerInvenTime > 3) && (g_sRawMeat.showItemUsed == true))
     {
         g_sRawMeat.showItemUsed = false;
         playerInvenTime = 0.0;
@@ -13404,26 +13538,26 @@ void UpdateBattleScreen()
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
 
     }
-    if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
+    if ((g_dkillGuard > 4) && (g_sGuard.startTimer == true))
     {
         g_sGuard.fight = false; // to stop the fighting after enemy die
         g_sGuard.entityDie = true; // make this bool true so that the character will move to (-1,-1)
         g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
         g_sChar.unlockDoorDS1 = true;
     }
-    if ((g_dkillGuard > 6) && (g_sGuard2.startTimer == true))
+    if ((g_dkillGuard > 4) && (g_sGuard2.startTimer == true))
     {
         g_sGuard2.fight = false; // to stop the fighting after enemy die
         g_sGuard2.entityDie = true; // make this bool true so that the character will move to (-1,-1)
         g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
     }
-    if ((g_dkillGuard > 6) && (g_sGuard3.startTimer == true))
+    if ((g_dkillGuard > 4) && (g_sGuard3.startTimer == true))
     {
         g_sGuard3.fight = false; // to stop the fighting after enemy die
         g_sGuard3.entityDie = true; // make this bool true so that the character will move to (-1,-1)
         g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
     }
-    if ((g_dkillWasp > 6) && (g_sMutantWasp.startTimer == true))
+    if ((g_dkillWasp > 4) && (g_sMutantWasp.startTimer == true))
     {
         g_sMutantWasp.fight = false;
         g_sMutantWasp.startTimer = false;
@@ -13431,42 +13565,42 @@ void UpdateBattleScreen()
         g_eGameState = S_BattleScreen;
         Sprites.Battle_Wasp(g_Console, 0);
     }
-    if ((g_dkillWasp > 6) && (g_sMutantWasp2.startTimer == true))
+    if ((g_dkillWasp > 4) && (g_sMutantWasp2.startTimer == true))
     {
         g_sMutantWasp2.fight = false;
         g_sMutantWasp2.startTimer = false;
         g_dMedical2Time = 0.0;
         g_eGameState = S_Medical_Facility_Part2_Animation;
     }
-    if ((g_dkillRaymond > 6) && (g_sRaymondBoss.startTimer == true))  // raymond die
+    if ((g_dkillRaymond > 4) && (g_sRaymondBoss.startTimer == true))  // raymond die
     {
         g_sRaymondBoss.fight = false;
         g_dBossEndTime = 0.0;
         g_eGameState = S_Boss_Room_End_Animation;
     }
-    if ((g_dkillPig > 6) && (g_sPig.startTimer == true))
+    if ((g_dkillPig > 4) && (g_sPig.startTimer == true))
     {
         g_sPig.fight = false;
         g_sPig.entityDie = true;
         g_eGameState = S_OAF;
     }
-    if ((g_dkillPig > 6) && (g_sPig2.startTimer == true))
+    if ((g_dkillPig > 4) && (g_sPig2.startTimer == true))
     {
         g_sPig2.fight = false;
         g_sPig2.entityDie = true;
         g_eGameState = S_OAF;
     }
-    if ((g_dkillPig > 6) && (g_sPig3.startTimer == true))
+    if ((g_dkillPig > 4) && (g_sPig3.startTimer == true))
     {
         g_sPig3.fight = false;
         g_sPig3.entityDie = true;
         g_eGameState = S_OAF;
     }
-    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
+    if ((g_dkillRobert > 4) && (g_sChar.entityDie == true))
     {
         g_eGameState = S_Game_Over; // show game over screen after player die animation
     }
-    if ((g_dkillTutWasp > 6) && (g_sTutEnemy.startTimer == true))
+    if ((g_dkillTutWasp > 4) && (g_sTutEnemy.startTimer == true))
     {
         g_sTutEnemy.fight = false;
         g_sTutEnemy.startTimer = false;
