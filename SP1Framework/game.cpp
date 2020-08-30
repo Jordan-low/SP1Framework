@@ -13632,6 +13632,12 @@ void UpdateBattleScreen()
         c.Y = 26;
         g_Console.writeToBuffer(c, "You received a Guard Armor.", 0x0F, 100);
     }
+    if (g_sRawMeat.showItemDropped == true)
+    {
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "You received a Raw Meat.", 0x0F, 100);
+    }
 }
 
 
