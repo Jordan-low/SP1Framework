@@ -101,6 +101,8 @@ bool stealth_music;
 bool phase2_music;
 bool credits_music;
 bool null_music;
+bool enterPathArea;
+bool enterOldman;
 
 SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
@@ -192,6 +194,7 @@ Item* item8 = new Item;
 //--------------------------------------------------------------
 void init(void)
 {
+    enterPathArea = true;
     randCount = 0;
     g_sChar.entityDied = false;
     g_sLaser.m_cLocation.X = 3;
@@ -370,7 +373,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_phase2Battle;
+    g_eGameState = S_Dungeon_Stealth_2;
 
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
@@ -9084,7 +9087,6 @@ void renderMap_Protest_Area()
     rMap.Border(g_Console);
     rMap.protest_area(g_Console);
     renderCharacter();  // renders the character into the buffer
-
     c.X = 62;
     c.Y = 4;
     g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '&');
@@ -9099,7 +9101,7 @@ void renderMap_Protest_Area()
     {
         c.X = 62;
         c.Y = 4;
-        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = 'D');
+        g_Console.writeToBuffer(c, rMap.Grid[c.Y][c.X] = '@', 0x0A);
     }
     if (g_sChar.m_cLocation.Y == 4 && g_sChar.m_cLocation.X == 62)
     {
@@ -9108,13 +9110,25 @@ void renderMap_Protest_Area()
         g_sChar.m_cLocation.X = 69;
         g_sChar.m_cLocation.Y = 3;
     }
+
     if (rMap.Grid[g_sChar.m_cLocation.Y][g_sChar.m_cLocation.X] == '@')
     {
-        g_dPathTime = 0.0;
-        g_eGameState = S_Path_Area_Animation;
-        g_sChar.m_cLocation.X = 41;
-        g_sChar.m_cLocation.Y = 21;
+        if (enterPathArea == true)
+        {
+            enterPathArea = false;
+            g_dPathTime = 0.0;
+            g_eGameState = S_Path_Area_Animation;
+            g_sChar.m_cLocation.X = 41;
+            g_sChar.m_cLocation.Y = 21;
+        }
+        else
+        {
+            g_eGameState = S_Path_Area;
+            g_sChar.m_cLocation.X = 41;
+            g_sChar.m_cLocation.Y = 21;
+        }
     }
+    
 
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 3)
     {
@@ -12000,7 +12014,7 @@ void renderMap_DS2()
 
     c.X = 8;
     c.Y = 13;
-    g_Console.writeToBuffer(c, (char)12, 0x0F);
+    g_Console.writeToBuffer(c, (char)12, 0x0D);
 
     if ((g_sChar.m_cLocation.Y == 13) && (g_sChar.m_cLocation.X == 7) || (g_sChar.m_cLocation.Y == 12) && (g_sChar.m_cLocation.X == 8) || (g_sChar.m_cLocation.Y == 14) && (g_sChar.m_cLocation.X == 8))
     {
@@ -12060,14 +12074,18 @@ void renderMap_DS3()
     }
     if (g_sChar.m_cLocation.Y == 3 && g_sChar.m_cLocation.X == 5)
     {
-        //ask if user wants to enter battle area
-        g_dBossTime = 0.0;
-        g_eGameState = S_Boss_Room_Animation;
-        g_sChar.m_cLocation.X = 40;
-        g_sChar.m_cLocation.Y = 21;
+        if (enterOldman == true)
+        {
+            g_dBossTime = 0.0;
+            g_eGameState = S_Boss_Room_Animation;
+            g_sChar.m_cLocation.X = 40;
+            g_sChar.m_cLocation.Y = 21;
+        }
+
     }
     if (g_sChar.m_cLocation.Y == 2 && (g_sChar.m_cLocation.X == 60 || g_sChar.m_cLocation.X == 61 || g_sChar.m_cLocation.X == 62 || g_sChar.m_cLocation.X == 63 || g_sChar.m_cLocation.X == 64 || g_sChar.m_cLocation.X == 65 || g_sChar.m_cLocation.X == 66 || g_sChar.m_cLocation.X == 67 || g_sChar.m_cLocation.X == 68 || g_sChar.m_cLocation.X == 69 || g_sChar.m_cLocation.X == 70 || g_sChar.m_cLocation.X == 71 || g_sChar.m_cLocation.X == 72 || g_sChar.m_cLocation.X == 73 || g_sChar.m_cLocation.X == 74 || g_sChar.m_cLocation.X == 75 || g_sChar.m_cLocation.X == 76 || g_sChar.m_cLocation.X == 77))
     {
+        enterOldman = true;
         g_dPathTime = 0.0;
         g_eGameState = S_Protest_Area;
         g_sChar.m_cLocation.X = 63;
@@ -13392,7 +13410,21 @@ void UpdateBattleScreen()
             g_sChar.startTimer = true;
         }
     }
+    if ((playerDMGTime > 3) && (g_sChar.showPlayerDMG == true))
+    {
+        c.X = 3;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        g_sChar.showPlayerDMG = false;
 
+    }
+    if ((enemyDMGTime > 3) && (g_sChar.showEnemyDMG == true))
+    {
+        c.X = 3;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
+        g_sChar.showEnemyDMG = false;
+    }
     if ((playerInvenTime > 3) && (g_sRawMeat.showItemUsed == true))
     {
         g_sRawMeat.showItemUsed = false;
@@ -13489,26 +13521,26 @@ void UpdateBattleScreen()
         g_Console.writeToBuffer(c, "                                         ", 0x0F, 100);
 
     }
-    if ((g_dkillGuard > 6) && (g_sGuard.startTimer == true))
+    if ((g_dkillGuard > 4) && (g_sGuard.startTimer == true))
     {
         g_sGuard.fight = false; // to stop the fighting after enemy die
         g_sGuard.entityDie = true; // make this bool true so that the character will move to (-1,-1)
         g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
         g_sChar.unlockDoorDS1 = true;
     }
-    if ((g_dkillGuard > 6) && (g_sGuard2.startTimer == true))
+    if ((g_dkillGuard > 4) && (g_sGuard2.startTimer == true))
     {
         g_sGuard2.fight = false; // to stop the fighting after enemy die
         g_sGuard2.entityDie = true; // make this bool true so that the character will move to (-1,-1)
         g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
     }
-    if ((g_dkillGuard > 6) && (g_sGuard3.startTimer == true))
+    if ((g_dkillGuard > 4) && (g_sGuard3.startTimer == true))
     {
         g_sGuard3.fight = false; // to stop the fighting after enemy die
         g_sGuard3.entityDie = true; // make this bool true so that the character will move to (-1,-1)
         g_eGameState = S_Dungeon_Stealth_1; // if player kills guard
     }
-    if ((g_dkillWasp > 6) && (g_sMutantWasp.startTimer == true))
+    if ((g_dkillWasp > 4) && (g_sMutantWasp.startTimer == true))
     {
         g_sMutantWasp.fight = false;
         g_sMutantWasp.startTimer = false;
@@ -13516,42 +13548,42 @@ void UpdateBattleScreen()
         g_eGameState = S_BattleScreen;
         Sprites.Battle_Wasp(g_Console, 0);
     }
-    if ((g_dkillWasp > 6) && (g_sMutantWasp2.startTimer == true))
+    if ((g_dkillWasp > 4) && (g_sMutantWasp2.startTimer == true))
     {
         g_sMutantWasp2.fight = false;
         g_sMutantWasp2.startTimer = false;
         g_dMedical2Time = 0.0;
         g_eGameState = S_Medical_Facility_Part2_Animation;
     }
-    if ((g_dkillRaymond > 6) && (g_sRaymondBoss.startTimer == true))  // raymond die
+    if ((g_dkillRaymond > 4) && (g_sRaymondBoss.startTimer == true))  // raymond die
     {
         g_sRaymondBoss.fight = false;
         g_dBossEndTime = 0.0;
         g_eGameState = S_Boss_Room_End_Animation;
     }
-    if ((g_dkillPig > 6) && (g_sPig.startTimer == true))
+    if ((g_dkillPig > 4) && (g_sPig.startTimer == true))
     {
         g_sPig.fight = false;
         g_sPig.entityDie = true;
         g_eGameState = S_OAF;
     }
-    if ((g_dkillPig > 6) && (g_sPig2.startTimer == true))
+    if ((g_dkillPig > 4) && (g_sPig2.startTimer == true))
     {
         g_sPig2.fight = false;
         g_sPig2.entityDie = true;
         g_eGameState = S_OAF;
     }
-    if ((g_dkillPig > 6) && (g_sPig3.startTimer == true))
+    if ((g_dkillPig > 4) && (g_sPig3.startTimer == true))
     {
         g_sPig3.fight = false;
         g_sPig3.entityDie = true;
         g_eGameState = S_OAF;
     }
-    if ((g_dkillRobert > 6) && (g_sChar.entityDie == true))
+    if ((g_dkillRobert > 4) && (g_sChar.entityDie == true))
     {
         g_eGameState = S_Game_Over; // show game over screen after player die animation
     }
-    if ((g_dkillTutWasp > 6) && (g_sTutEnemy.startTimer == true))
+    if ((g_dkillTutWasp > 4) && (g_sTutEnemy.startTimer == true))
     {
         g_sTutEnemy.fight = false;
         g_sTutEnemy.startTimer = false;
