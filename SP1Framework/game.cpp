@@ -260,7 +260,7 @@ void init(void)
     */
 
     g_sChar.SetH(50); // set to 1k when enter room
-    g_sChar.SetD(500);
+    g_sChar.SetD(5);
     g_sGuard.SetD(15);
     g_sGuard.SetH(40);
     g_sGuard2.SetD(15);
@@ -379,7 +379,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Boss_Room_Animation;
+    g_eGameState = S_Protest_Area;
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = 18;// 18   g_Console.getConsoleSize().Y / 2;
@@ -10354,7 +10354,7 @@ void renderMap_IAF1()
         if (ItemChance == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10367,7 +10367,7 @@ void renderMap_IAF1()
         else if (ItemChance == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10392,7 +10392,7 @@ void renderMap_IAF1()
         if (ItemChance2 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10405,7 +10405,7 @@ void renderMap_IAF1()
         else if (ItemChance2 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10430,7 +10430,7 @@ void renderMap_IAF1()
         if (ItemChance3 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10443,7 +10443,7 @@ void renderMap_IAF1()
         else if (ItemChance3 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10469,7 +10469,7 @@ void renderMap_IAF1()
         if (ItemChance4 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10482,7 +10482,7 @@ void renderMap_IAF1()
         else if (ItemChance4 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10507,7 +10507,7 @@ void renderMap_IAF1()
         if (ItemChance5 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10520,7 +10520,7 @@ void renderMap_IAF1()
         else if (ItemChance5 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10545,7 +10545,7 @@ void renderMap_IAF1()
         if (ItemChance6 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10558,7 +10558,7 @@ void renderMap_IAF1()
         else if (ItemChance6 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10583,7 +10583,7 @@ void renderMap_IAF1()
         if (ItemChance7 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10596,7 +10596,7 @@ void renderMap_IAF1()
         else if (ItemChance7 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10621,7 +10621,7 @@ void renderMap_IAF1()
         if (ItemChance8 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10634,7 +10634,7 @@ void renderMap_IAF1()
         else if (ItemChance8 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10659,7 +10659,7 @@ void renderMap_IAF1()
         if (ItemChance9 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10672,7 +10672,7 @@ void renderMap_IAF1()
         else if (ItemChance9 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10697,7 +10697,7 @@ void renderMap_IAF1()
         if (ItemChance10 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10710,7 +10710,7 @@ void renderMap_IAF1()
         else if (ItemChance10 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10735,7 +10735,7 @@ void renderMap_IAF1()
         if (ItemChance11 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10748,7 +10748,7 @@ void renderMap_IAF1()
         else if (ItemChance11 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10894,7 +10894,7 @@ void renderMap_IAF2()
         if (ItemChance == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10908,7 +10908,7 @@ void renderMap_IAF2()
         else if (ItemChance == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10933,7 +10933,7 @@ void renderMap_IAF2()
         if (ItemChance2 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10947,7 +10947,7 @@ void renderMap_IAF2()
         else if (ItemChance2 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -10972,7 +10972,7 @@ void renderMap_IAF2()
         if (ItemChance3 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -10985,7 +10985,7 @@ void renderMap_IAF2()
         else if (ItemChance3 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -11010,7 +11010,7 @@ void renderMap_IAF2()
         if (ItemChance4 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -11024,7 +11024,7 @@ void renderMap_IAF2()
         else if (ItemChance4 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -11049,7 +11049,7 @@ void renderMap_IAF2()
         if (ItemChance5 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -11062,7 +11062,7 @@ void renderMap_IAF2()
         else if (ItemChance5 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -11087,7 +11087,7 @@ void renderMap_IAF2()
         if (ItemChance6 == 1)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(Stinger.getQuantity());
             g_Console.writeToBuffer(c, "You received a Stinger. You now have " + Quantity + " Stinger.", 0x0F, 100);
             static bool item7 = false;
@@ -11101,7 +11101,7 @@ void renderMap_IAF2()
         else if (ItemChance6 == 2)
         {
             c.X = 5;
-            c.Y = 26;
+            c.Y = 25;
             string Quantity = to_string(GuardArmor.getQuantity());
             g_Console.writeToBuffer(c, "You received a Guard Armor. You now have " + Quantity + " Guard Armor.", 0x0F, 100);
             static bool item8 = false;
@@ -14578,7 +14578,7 @@ void renderInputEvents()
     // mouse events    
     ss.str("");
     ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
-    g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
+    //g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
     switch (g_mouseEvent.eventFlags)
     {
