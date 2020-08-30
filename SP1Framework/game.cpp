@@ -12932,24 +12932,24 @@ void RenderBattleScreen()
             g_sRawMeat.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 10000) && RawMeat.getQuantity() > 0)
+            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && RawMeat.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 5;
                 g_sRawMeat.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 RawMeat.setQuantity(RawMeat.getQuantity() - 1);
-                if (UpdateHealth >= 50 && UpdateHealth < 10000)
+                if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
                     g_sRawMeat.showItemUsed = false;
                     g_sChar.SetH(50);
                 }
-                else if (UpdateHealth >= 10000)
+                else if (UpdateHealth >= 1000)
                 {
                     g_sRawMeat.showItemUsed = false;
                     g_sChar.SetH(10000);
                 }
             }
-            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 10000) && RawMeat.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && RawMeat.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13013,24 +13013,24 @@ void RenderBattleScreen()
             g_sBread.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 10000) && Bread.getQuantity() > 0)
+            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Bread.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 10;
                 g_sBread.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Bread.setQuantity(Bread.getQuantity() - 1);
-                if (UpdateHealth >= 50 && UpdateHealth < 10000)
+                if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
                     g_sBread.showItemUsed = false;
                     g_sChar.SetH(50);
                 }
-                else if (UpdateHealth >= 10000)
+                else if (UpdateHealth >= 1000)
                 {
                     g_sBread.showItemUsed = false;
-                    g_sChar.SetH(10000);
+                    g_sChar.SetH(1000);
                 }
             }
-            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 10000) && Bread.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Bread.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13050,24 +13050,24 @@ void RenderBattleScreen()
             g_sBurger.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 10000) && Burger.getQuantity() > 0)
+            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Burger.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 25;
                 g_sInven.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Burger.setQuantity(Burger.getQuantity() - 1);
-                if (UpdateHealth >= 50 && UpdateHealth < 10000)
+                if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
                     g_sBurger.showItemUsed = false;
                     g_sChar.SetH(50);
                 }
-                else if (UpdateHealth >= 10000)
+                else if (UpdateHealth >= 1000)
                 {
                     g_sBurger.showItemUsed = false;
-                    g_sChar.SetH(10000);
+                    g_sChar.SetH(1000);
                 }
             }
-            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 10000) && Burger.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Burger.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13098,13 +13098,13 @@ void RenderBattleScreen()
                     g_sTaco.showItemUsed = false;
                     g_sChar.SetH(50);
                 }
-                else if (UpdateHealth >= 10000)
+                else if (UpdateHealth >= 1000)
                 {
                     g_sTaco.showItemUsed = false;
-                    g_sChar.SetH(10000);
+                    g_sChar.SetH(1000);
                 }
             }
-            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 10000) && Taco.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Taco.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13124,24 +13124,24 @@ void RenderBattleScreen()
             g_sCake.showItemUsed = false;
             g_sInven.showItemNotUsed = false;
             g_sInven.showNoQuantity = false;
-            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 10000) && Cake.getQuantity() > 0)
+            if ((g_sChar.GetH() < 50 || g_sChar.GetH() < 1000) && Cake.getQuantity() > 0)
             {
                 UpdateHealth = g_sChar.GetH() + 50;
                 g_sCake.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Cake.setQuantity(Cake.getQuantity() - 1);
-                if (UpdateHealth >= 50 && UpdateHealth < 10000)
+                if (UpdateHealth >= 50 && UpdateHealth < 1000)
                 {
                     g_sCake.showItemUsed = false;
                     g_sChar.SetH(50);
                 }
-                else if (UpdateHealth >= 10000)
+                else if (UpdateHealth >= 1000)
                 {
                     g_sCake.showItemUsed = false;
-                    g_sChar.SetH(10000);
+                    g_sChar.SetH(1000);
                 }
             }
-            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 10000) && Cake.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Cake.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13168,14 +13168,14 @@ void RenderBattleScreen()
                 g_sChar.SetH(UpdateHealth);
                 Medicine.setQuantity(Medicine.getQuantity() - 1);
             }
-            else if (g_sChar.GetH() < 10000 && Medicine.getQuantity() > 0)
+            else if (g_sChar.GetH() < 1000 && Medicine.getQuantity() > 0)
             {
-                UpdateHealth = 10000;
+                UpdateHealth = 1000;
                 g_sMedicine.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Medicine.setQuantity(Medicine.getQuantity() - 1);
             }
-            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 10000) && Medicine.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Medicine.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
@@ -13447,7 +13447,7 @@ void UpdateBattleScreen()
         }
     }
 
-    if ((playerInvenTime > 3) && (g_sRawMeat.showItemUsed == true))
+    if ((playerInvenTime > 2) && (g_sRawMeat.showItemUsed == true))
     {
         g_sRawMeat.showItemUsed = false;
         playerInvenTime = 0.0;
