@@ -13550,14 +13550,14 @@ void RenderBattleScreen()
                 g_sChar.SetH(UpdateHealth);
                 Medicine.setQuantity(Medicine.getQuantity() - 1);
             }
-            else if (g_sChar.GetH() < 1000 && Medicine.getQuantity() > 0)
+            else if (g_sChar.GetH() < 500 && Medicine.getQuantity() > 0)
             {
-                UpdateHealth = 1000;
+                UpdateHealth = 500;
                 g_sMedicine.showItemUsed = true;
                 g_sChar.SetH(UpdateHealth);
                 Medicine.setQuantity(Medicine.getQuantity() - 1);
             }
-            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 1000) && Medicine.getQuantity() > 0)
+            else if ((g_sChar.GetH() == 50 || g_sChar.GetH() == 500) && Medicine.getQuantity() > 0)
             {
                 g_sInven.showItemNotUsed = true;
             }
