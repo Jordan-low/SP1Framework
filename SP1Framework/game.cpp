@@ -370,7 +370,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_phase2Battle;
+    g_eGameState = S_Boss_Room_Animation;
 
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
@@ -4440,7 +4440,6 @@ void Boss_Room_Mid_Animation()
     c.Y = 26;
     d.X = 5;
     d.Y = 27;
-    Cutscene.drawgridW(g_Console, 39, 21, (char)1); //Robert
     Cutscene.drawgrid(g_Console, 41, 21, 'R'); //Raymond
     if (g_dBossMiddleTime > 1)
     {
