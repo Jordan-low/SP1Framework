@@ -370,7 +370,7 @@ void init(void)
     // Set precision for floating point output
 
     // sets the initial state for the game
-    g_eGameState = S_Protest_Area;
+    g_eGameState = S_phase2Battle;
 
 
     g_sChar.m_cLocation.X = 4;// 4  g_Console.getConsoleSize().X / 2;
@@ -8101,7 +8101,12 @@ void phase2Battle()
         if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < 76)
         {
             if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 1] == ' ') // check if bomb == ' '
-                g_sBomb.m_cLocation.X++;
+            {
+                if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X + 1] == ' ') // check if bomb == ' '
+                {
+                    g_sBomb.m_cLocation.X++;
+                }
+            }
         }
         if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 3)
         {
@@ -8121,7 +8126,11 @@ void phase2Battle()
         {
             if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X - 1] == ' ')
             {
-                g_sBomb.m_cLocation.X--;
+                if (rMap.Grid[g_sBomb.m_cLocation.Y][g_sBomb.m_cLocation.X - 2] == ' ')
+                {
+                    g_sBomb.m_cLocation.X--;
+
+                }
 
             }
         }
